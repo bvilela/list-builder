@@ -1,0 +1,20 @@
+{
+	"ultimaData": "30-07-2022",
+	"ultimoGrupo": 6,
+	"diaReuniaoMeioSemana": "terça",
+	"diaReuniaoFimSemana": "sábado",
+	"gruposLimpeza": {
+		1: "Pessoa1, Pessoa2, Pessoa3, Pessoa4 (Grupo 1)",
+		2: "Pessoa5, Pessoa6, Pessoa7, Pessoa8, Pessoa9, Pessoa10 (Grupo 2)",
+		3: "Pessoa11, Pessoa12, Pessoa13 (Grupo 3)",
+		4: "Pessoa14, Pessoa15, Pessoa16, Pessoa17 (Grupo 4)",
+		5: "Pessoa18, Pessoa19, Pessoa20, Pessoa21, Pessoa22 (Grupo 5)",
+		6: "Pessoa23, Pessoa24, Pessoa25, Pessoa26 (Grupo 6)"
+	},
+	"mensagemCabecalho": "Mensagem do Cabeçalho",
+	"mensagemRodape": "Mensagem do Rodapé.",
+	"-removerLista": ["16-08-2022", "20-08-2022"],
+	"-adicionarLista": {
+		"17-08-2022": "Mensagem de Exceção"
+	}
+}

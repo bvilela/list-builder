@@ -1,0 +1,25 @@
+{
+	"diaReuniaoMeioSemana": "quarta",
+	"diaReuniaoFimSemana": "domingo",	
+	"ultimaData": "29-01-2023",
+	"presidente": {
+		"lista": ["Presidente1", "Presidente2", "Presidente3", "Presidente4"],
+		"ultimo": "Presidente1"
+	},
+	"leitor": {
+		"asentinela": {
+			"lista": ["LeitorA1", "LeitorA2", "LeitorA3", "LeitorA4", "LeitorA5", "LeitorA6", "LeitorA7"],
+			"ultimo": "LeitorA1"
+		},
+		"estudoBiblico": {
+			"lista": ["LeitorE1", "LeitorE2", "LeitorE3", "LeitorE4", "LeitorE5", "LeitorE6", "LeitorE7", "LeitorE8", "LeitorE9"],
+			"ultimo": "LeitorE5"
+		}
+	},
+	"audioVideo": {
+		"lista": ["AudioVideo1", "AudioVideo2", "AudioVideo3"],
+		"ultimo": "AudioVideo1"
+	},
+	"indicador": ["Indicador1", "Indicador2", "Indicador3", "Indicador4", "Indicador5", "Indicador6", "Indicador7", "Indicador8", "Indicador9"],
+	"microfone": ["Microfone1", "Microfone2", "Microfone3", "Microfone4", "Microfone5", "Microfone6", "Microfone7", "Microfone8", "Microfone9"]
+}
