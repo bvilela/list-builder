@@ -1,7 +1,5 @@
 package com.bruno.listbuilder.service.vidacrista.impl;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,7 +25,6 @@ import com.bruno.listbuilder.service.NotificationService;
 import com.bruno.listbuilder.service.vidacrista.VidaCristaExtractService;
 import com.bruno.listbuilder.service.vidacrista.VidaCristaWriterService;
 import com.bruno.listbuilder.utils.DateUtils;
-import com.bruno.listbuilder.utils.FileUtils;
 import com.bruno.listbuilder.validator.VidaCristaValidator;
 
 import lombok.extern.slf4j.Slf4j;
@@ -58,14 +55,18 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
 	public ListTypeEnum getExecutionMode() {
 		return ListTypeEnum.VIDA_CRISTA;
 	}
+	
+	@Override
+	public AppProperties getAppProperties() {
+		return this.properties;
+	}
 
 	@Override
 	public void generateList() throws ListBuilderException {
 		try {
 			logInit(log);
-
-			Path pathConfig = Paths.get(properties.getInputDir(), properties.getInputFileNameVidaCrista());
-			var dto = FileUtils.readInputFile(pathConfig, FileInputDataVidaCristaDTO.class);
+			
+			var dto = getFileInputDataDTO(FileInputDataVidaCristaDTO.class);
 
 			VidaCristaValidator.validInputDto(dto);
 			this.abbreviationMap = new LinkedHashMap<>(dto.getAbbreviations());

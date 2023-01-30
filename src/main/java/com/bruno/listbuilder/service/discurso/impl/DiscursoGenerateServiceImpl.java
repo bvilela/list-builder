@@ -43,17 +43,21 @@ public class DiscursoGenerateServiceImpl implements BaseGenerateService {
 	public ListTypeEnum getExecutionMode() {
 		return ListTypeEnum.DISCURSO;
 	}
+	
+	@Override
+	public AppProperties getAppProperties() {
+		return this.properties;
+	}
 
 	@Override
 	public void generateList() throws ListBuilderException {
 		try {
 			logInit(log);
+			
+			var dto = getFileInputDataDTO(FileInputDataDiscursoDTO.class);
 
-			Path pathAllThemesFile = Paths.get(properties.getInputDir(), properties.getInputFileNameDiscursosTemas());
-			Path pathInputFile = Paths.get(properties.getInputDir(), properties.getInputFileNameDiscursos());
-
+			Path pathAllThemesFile = Paths.get(properties.getInputDir(), "dados-discursos-temas.json");
 			var allThemesDto = FileUtils.readInputFile(pathAllThemesFile, DiscursoAllThemesDTO.class);
-			var dto = FileUtils.readInputFile(pathInputFile, FileInputDataDiscursoDTO.class);
 
 			DiscursoValidator.validAllThemesFile(allThemesDto);
 			DiscursoValidator.validFileInputData(dto);

@@ -1,7 +1,5 @@
 package com.bruno.listbuilder.service.limpeza.impl;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +23,6 @@ import com.bruno.listbuilder.service.DateService;
 import com.bruno.listbuilder.service.GroupService;
 import com.bruno.listbuilder.service.NotificationService;
 import com.bruno.listbuilder.service.limpeza.LimpezaWriterService;
-import com.bruno.listbuilder.utils.FileUtils;
 import com.bruno.listbuilder.validator.LimpezaValidator;
 
 import lombok.extern.slf4j.Slf4j;
@@ -57,15 +54,18 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
 	public ListTypeEnum getExecutionMode() {
 		return ListTypeEnum.LIMPEZA;
 	}
+	
+	@Override
+	public AppProperties getAppProperties() {
+		return this.properties;
+	}
 
 	@Override
 	public void generateList() throws ListBuilderException {
 		try {
 			logInit(log);
-
-			Path pathInputFile = Paths.get(properties.getInputDir(), properties.getInputFileNameLimpeza());
-
-			var dto = FileUtils.readInputFile(pathInputFile, FileInputDataLimpezaDTO.class);
+			
+			var dto = getFileInputDataDTO(FileInputDataLimpezaDTO.class);
 
 			var dateServiceInputDto = LimpezaValidator.validAndConvertData(dto);
 

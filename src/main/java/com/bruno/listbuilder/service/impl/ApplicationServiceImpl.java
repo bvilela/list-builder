@@ -12,10 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
-	
+
 	private ApplicationContext context;
 	private OrchestratorService orchestratorService;
-	
+
 	public ApplicationServiceImpl(ApplicationContext context, OrchestratorService orchestratorService) {
 		this.context = context;
 		this.orchestratorService = orchestratorService;
@@ -24,20 +24,23 @@ public class ApplicationServiceImpl implements ApplicationService {
 	@Override
 	public void runApplication() {
 		try {
-			
-			log.info("Applicação Iniciada...");
-			
-			var service = orchestratorService.validateAndGetServiceByListType();
-			service.generateList();
-			
-			log.info("Aplicação Finalizada com Sucesso!");
-			
-			SpringApplication.exit(context, () -> 0);
-			
+			executeApplication();
+
 		} catch (Exception e) {
-			log.error("Aplicação Finalizada com Erro: {}", e.getMessage());
+			log.error("Aplicação Finalizada com Erro!", e);
 			SpringApplication.exit(context, () -> -1);
 		}
+	}
+
+	private void executeApplication() throws Exception {
+		log.info("Aplicação Iniciada...");
+
+		var service = orchestratorService.validateAndGetServiceByListType();
+		service.generateList();
+
+		log.info("Aplicação Finalizada com Sucesso!");
+
+		SpringApplication.exit(context, () -> 0);
 	}
 
 }
