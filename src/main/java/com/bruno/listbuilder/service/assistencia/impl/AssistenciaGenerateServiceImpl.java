@@ -37,18 +37,13 @@ public class AssistenciaGenerateServiceImpl implements BaseGenerateService {
 	public ListTypeEnum getExecutionMode() {
 		return ListTypeEnum.ASSISTENCIA;
 	}
-	
-	@Override
-	public AppProperties getAppProperties() {
-		return this.properties;
-	}
 
 	@Override
 	public void generateList() throws ListBuilderException {
 		try {
 			logInit(log);
 			
-			var dto = getFileInputDataDTO(FileInputDataAssistenciaDTO.class);
+			var dto = getFileInputDataDTO(properties, FileInputDataAssistenciaDTO.class);
 
 			var dateServiceInputDto = AssistenciaValidator.validAndConvertData(dto);
 

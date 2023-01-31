@@ -54,18 +54,13 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
 	public ListTypeEnum getExecutionMode() {
 		return ListTypeEnum.LIMPEZA;
 	}
-	
-	@Override
-	public AppProperties getAppProperties() {
-		return this.properties;
-	}
 
 	@Override
 	public void generateList() throws ListBuilderException {
 		try {
 			logInit(log);
 			
-			var dto = getFileInputDataDTO(FileInputDataLimpezaDTO.class);
+			var dto = getFileInputDataDTO(properties, FileInputDataLimpezaDTO.class);
 
 			var dateServiceInputDto = LimpezaValidator.validAndConvertData(dto);
 

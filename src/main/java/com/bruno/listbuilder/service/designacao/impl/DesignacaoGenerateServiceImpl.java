@@ -45,11 +45,6 @@ public class DesignacaoGenerateServiceImpl implements BaseGenerateService {
 		return ListTypeEnum.DESIGNACAO;
 	}
 	
-	@Override
-	public AppProperties getAppProperties() {
-		return this.properties;
-	}
-	
 	public DesignacaoGenerateServiceImpl(AppProperties properties, DateService dateService, GroupService groupService,
 			DesignacaoWriterService writerService, DesignacaoCounterService counterService,
 			NotificationService notificationService) {
@@ -66,7 +61,7 @@ public class DesignacaoGenerateServiceImpl implements BaseGenerateService {
 		try {
 			logInit(log);
 			
-			var dto = getFileInputDataDTO(FileInputDataDesignacaoDTO.class);
+			var dto = getFileInputDataDTO(properties, FileInputDataDesignacaoDTO.class);
 
 			DesignacaoValidator.validAndConvertData(dto);
 			

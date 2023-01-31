@@ -55,18 +55,13 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
 	public ListTypeEnum getExecutionMode() {
 		return ListTypeEnum.VIDA_CRISTA;
 	}
-	
-	@Override
-	public AppProperties getAppProperties() {
-		return this.properties;
-	}
 
 	@Override
 	public void generateList() throws ListBuilderException {
 		try {
 			logInit(log);
 			
-			var dto = getFileInputDataDTO(FileInputDataVidaCristaDTO.class);
+			var dto = getFileInputDataDTO(properties, FileInputDataVidaCristaDTO.class);
 
 			VidaCristaValidator.validInputDto(dto);
 			this.abbreviationMap = new LinkedHashMap<>(dto.getAbbreviations());
