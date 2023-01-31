@@ -11,6 +11,7 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.function.Executable;
 
+import com.bruno.listbuilder.dto.discurso.DiscursoAllThemesDTO;
 import com.bruno.listbuilder.enuns.ListTypeEnum;
 import com.bruno.listbuilder.exception.ListBuilderException;
 import com.bvilela.utils.GsonUtils;
@@ -19,6 +20,8 @@ import lombok.Getter;
 
 public class TestUtils {
 	
+	private static final String FILE_INPUT_DISCURSO_ALL_THEMES = "dados-discursos-temas.json";
+
 	private final ListTypeEnum listType;
 	
 	@Getter
@@ -38,17 +41,29 @@ public class TestUtils {
 	}
 	
 	public void writeFileInputSyntaxError() {
-		this.writeFileInputFromDto("syntax-error");
+		this.writeFileInputFromDto(this.listType.getInputFileName(), "syntax-error");
+	}
+	
+	public void writeFileInputDiscursoAllThemesSyntaxError() {
+		this.writeFileInputFromDto(FILE_INPUT_DISCURSO_ALL_THEMES, "syntax-error");
 	}
 	
 	public void writeFileInputFromDto(Object dto) {
-		this.writeFileInputFromDto(GsonUtils.getGson().toJson(dto));
+		this.writeFileInputFromDto(this.listType.getInputFileName(), GsonUtils.getGson().toJson(dto));
 	}
 	
-	private void writeFileInputFromDto(String writeValue) {
-		String file = Paths.get(this.resourceDirectory, this.listType.getInputFileName()).toString();
+	public void writeFileInputFromDto(String fileName, Object dto) {
+		this.writeFileInputFromDto(fileName, GsonUtils.getGson().toJson(dto));
+	}
+	
+	public void writeFileInputDiscursoAllThemes(DiscursoAllThemesDTO dto) {
+		this.writeFileInputFromDto(FILE_INPUT_DISCURSO_ALL_THEMES, GsonUtils.getGson().toJson(dto));
+	}
+	
+	private void writeFileInputFromDto(String fileName, String content) {
+		String file = Paths.get(this.resourceDirectory, fileName).toString();
 		try (FileWriter fileWriter = new FileWriter(new File(file))) {
-			fileWriter.write(writeValue);
+			fileWriter.write(content);
 			fileWriter.flush();
 		} catch (IOException e) {
 			// do nothing
@@ -63,17 +78,6 @@ public class TestUtils {
 		var ex = assertThrows(ListBuilderException.class, executable);
 		String expectedMessage = String.format("Erro ao gerar lista '%s': %s", this.listType, expectedMessageError);
 		assertEquals(expectedMessage, ex.getMessage());
-	}
-	
-	public static void baseWriteFileInputFromDto(String directory, String fileName, Object dto) {
-		String file = Paths.get(directory, fileName).toString();
-
-		try (FileWriter fileWriter = new FileWriter(new File(file))) {
-			fileWriter.write(GsonUtils.getGson().toJson(dto));
-			fileWriter.flush();
-		} catch (IOException e) {
-			// do nothing
-		}
 	}
 
 	public static void cleanResourceDir() {

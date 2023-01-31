@@ -1,19 +1,11 @@
 package com.bruno.listbuilder.service.discurso.impl;
 
-import static com.bruno.listbuilder.utils.TestFileUtilsWriteFile.writeFileInputDiscursoFromDto;
-import static com.bruno.listbuilder.utils.TestFileUtilsWriteFile.writeFileInputDiscursoSyntaxError;
-import static com.bruno.listbuilder.utils.TestFileUtilsWriteFile.writeFileInputDiscursoTemasFromDto;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.nio.file.Paths;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -28,12 +20,12 @@ import com.bruno.listbuilder.config.MessageConfig;
 import com.bruno.listbuilder.dto.discurso.FileInputDataDiscursoDTO;
 import com.bruno.listbuilder.enuns.ListTypeEnum;
 import com.bruno.listbuilder.exception.ListBuilderException;
+import com.bruno.listbuilder.service.BaseGenerateServiceTest;
 import com.bruno.listbuilder.service.ConvertImageService;
-import com.bruno.listbuilder.utils.FileUtils;
-import com.bruno.listbuilder.utils.TestFileUtilsWriteFile;
 
 @SpringBootApplication
-class DiscursoGenerateServiceImplTest {
+class DiscursoGenerateServiceImplTest
+		extends BaseGenerateServiceTest<FileInputDataDiscursoDTO, FileInputDataDiscursoDtoBuilder> {
 
 	@InjectMocks
 	private DiscursoGenerateServiceImpl service;
@@ -43,36 +35,22 @@ class DiscursoGenerateServiceImplTest {
 
 	@Mock
 	private DiscursoWriterServiceImpl writerService;
-	
+
 	@Mock
 	private ConvertImageService convertImageService;
 
-	private static final String TEMAS_NAO_PODE_SER_VAZIO = "Temas não pode ser vazio";
-	private static final String MODE_EXECUTION = ListTypeEnum.DISCURSO.toString();
-	private static final String FILE_NAME_DISCURSO_ALL_THEMES = "discursos-temas";
-	private static final String FILE_NAME_DATA_DISCURSO_OK = "data-discurso-ok.json";
-	private static final String MSG_MISSING_THEME_NUMER_TITLE = "Data: 05-06-2022 - Informe o Número do Tema ou Título!";
-	private static String resourceDirectory;
+	private static final String MSG_MISSING_THEME_NUMBER_TITLE = "Data: 05-06-2022 - Informe o Número do Tema ou Título!";
 
-	@BeforeAll
-	static void setupBeforeAll() throws ListBuilderException {
-		resourceDirectory = Paths.get("src", "test", "resources", MODE_EXECUTION.toLowerCase()).toFile()
-				.getAbsolutePath();
-		FileUtils.createDirectories(resourceDirectory);
+	public DiscursoGenerateServiceImplTest() throws ListBuilderException {
+		super(ListTypeEnum.DISCURSO, FileInputDataDiscursoDtoBuilder.create().withRandomData());
 	}
 
 	@BeforeEach
 	public void setup() throws IllegalAccessException {
 		MockitoAnnotations.openMocks(this);
-		FieldUtils.writeField(properties, "inputDir", resourceDirectory, true);
+		FieldUtils.writeField(properties, "inputDir", testUtils.getResourceDirectory(), true);
 		service = new DiscursoGenerateServiceImpl(properties, writerService, convertImageService);
-		writeFileInputDiscursoTemasFromDto(FILE_NAME_DISCURSO_ALL_THEMES,
-				DiscursoAllThemesDtoBuilder.create().withRandomData().build());
-	}
-
-	@AfterAll
-	static void setupAfterAll() {
-		TestFileUtilsWriteFile.cleanDirDiscurso();
+		testUtils.writeFileInputDiscursoAllThemes(DiscursoAllThemesDtoBuilder.create().withRandomData().build());
 	}
 
 	@Test
@@ -85,158 +63,145 @@ class DiscursoGenerateServiceImplTest {
 		assertEquals(ListTypeEnum.DISCURSO, service.getExecutionMode());
 	}
 
-	private void createDataDiscursoFileOK() {
-		writeFileInputDiscursoFromDto(FILE_NAME_DATA_DISCURSO_OK,
-				FileInputDataDiscursoDtoBuilder.create().withRandomData().build());
-	}
-
 	@Test
 	void shouldGenerateListFileAllThemesInvalidPathFileException() throws IllegalAccessException {
-		createDataDiscursoFileOK();
-		String fileInvalidNameAllThemes = "xpto.json";
-		baseGenerateListException(FILE_NAME_DATA_DISCURSO_OK, fileInvalidNameAllThemes, MessageConfig.FILE_NOT_FOUND);
+		createFileInputDataOK();
+		validateListBuilderException(MessageConfig.FILE_NOT_FOUND);
 	}
 
 	@Test
 	void shouldGenerateListFileAllThemesSintaxeException() throws IllegalAccessException {
-		createDataDiscursoFileOK();
-		String fileAllThemesSyntaxError = "dados-discursos-temas-syntax-error.json";
-		writeFileInputDiscursoSyntaxError(fileAllThemesSyntaxError);
-		baseGenerateListException(FILE_NAME_DATA_DISCURSO_OK, fileAllThemesSyntaxError, MessageConfig.FILE_SYNTAX_ERROR);
+		createFileInputDataOK();
+		testUtils.writeFileInputDiscursoAllThemesSyntaxError();
+		validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
 	}
 
 	@Test
 	void shouldGenerateListFileAllThemesNullException() throws IllegalAccessException {
-		createDataDiscursoFileOK();
-		String fileAllThemes = "dados-discursos-temas-null.json";
-		writeFileInputDiscursoTemasFromDto(fileAllThemes, DiscursoAllThemesDtoBuilder.create().withNullData().build());
-		baseGenerateListException(FILE_NAME_DATA_DISCURSO_OK, fileAllThemes, TEMAS_NAO_PODE_SER_VAZIO);
+		createFileInputDataOK();
+		testUtils.writeFileInputDiscursoAllThemes(DiscursoAllThemesDtoBuilder.create().withNullData().build());
+		validateListBuilderException(MessageConfig.THEMES_REQUIRED);
 	}
 
 	@Test
 	void shouldGenerateListFileAllThemesEmptyException() throws IllegalAccessException {
-		createDataDiscursoFileOK();
-		String fileAllThemes = "dados-discursos-temas-empty.json";
-		writeFileInputDiscursoTemasFromDto(fileAllThemes, DiscursoAllThemesDtoBuilder.create().withEmptyData().build());
-		baseGenerateListException(FILE_NAME_DATA_DISCURSO_OK, fileAllThemes, TEMAS_NAO_PODE_SER_VAZIO);
+		createFileInputDataOK();
+		testUtils.writeFileInputDiscursoAllThemes(DiscursoAllThemesDtoBuilder.create().withEmptyData().build());
+		validateListBuilderException(MessageConfig.THEMES_REQUIRED);
+	}
+
+	private void createFileInputDataOK() {
+		writeFileInputFromDto(builder.build());
 	}
 
 	@Test
 	void shouldGenerateListFileInputInvalidPathException() throws IllegalAccessException {
-		String fileInvalidName = "xpto.json";
-		baseGenerateListException(fileInvalidName, MessageConfig.FILE_NOT_FOUND);
+		validateListBuilderException(MessageConfig.FILE_NOT_FOUND);
 	}
 
 	@Test
 	void shouldGenerateListFileInputSintaxeException() throws IllegalAccessException {
-		String fileSyntaxError = "data-discurso-syntax-error.json";
-		writeFileInputDiscursoSyntaxError(fileSyntaxError);
-		baseGenerateListException(fileSyntaxError, MessageConfig.FILE_SYNTAX_ERROR);
+		testUtils.writeFileInputSyntaxError();
+		validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
 	}
-	
+
 	@Test
 	void shouldGenerateListFileInputThemeNumberTitleNullException() throws IllegalAccessException {
-		baseGenerateListFileInputThemeNumberTitleException(null, null, MSG_MISSING_THEME_NUMER_TITLE);
+		final String themeNumber = null;
+		final String themeTitle = null;
+		final String expectedMessageError = MSG_MISSING_THEME_NUMBER_TITLE;
+		validateFileInputThemeNumberTitleException(themeNumber, themeTitle, expectedMessageError);
 	}
-	
+
 	@Test
 	void shouldGenerateListFileInputThemeNumberTitleBlankException() throws IllegalAccessException {
-		baseGenerateListFileInputThemeNumberTitleException(" ", " ", MSG_MISSING_THEME_NUMER_TITLE);
+		final String themeNumber = " ";
+		final String themeTitle = " ";
+		final String expectedMessageError = MSG_MISSING_THEME_NUMBER_TITLE;
+		validateFileInputThemeNumberTitleException(themeNumber, themeTitle, expectedMessageError);
 	}
-	
+
 	@Test
 	void shouldGenerateListFileInputThemeNumberInvalidTitleNullException() throws IllegalAccessException {
-		var message = "05-06-2022 - Numero do Tema invalido. Não é um número válido!";
-		baseGenerateListFileInputThemeNumberTitleException("ABC", " ", message);
+		final String themeNumber = "ABC";
+		final String themeTitle = " ";
+		final String expectedMessageError = "05-06-2022 - Numero do Tema invalido. Não é um número válido!";
+		validateFileInputThemeNumberTitleException(themeNumber, themeTitle, expectedMessageError);
 	}
-	
+
 	@Test
 	void shouldGenerateListFileInputThemeNumberNotFoundException() throws IllegalAccessException {
-		var message = "Nenhum tema encontrada para o Número: 1234";
-		baseGenerateListFileInputThemeNumberTitleException("1234", null, message);
+		final String themeNumber = "1234";
+		final String themeTitle = null;
+		final String expectedMessageError = "Nenhum tema encontrada para o Número: 1234";
+		validateFileInputThemeNumberTitleException(themeNumber, themeTitle, expectedMessageError);
 	}
-	
-	private void baseGenerateListFileInputThemeNumberTitleException(String themeNumber, String themeTitle, String message)
-			throws IllegalAccessException {
-		String fileName = "data-discurso-theme-number-null.json";
-		var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
+
+	private void validateFileInputThemeNumberTitleException(String themeNumber, String themeTitle,
+			String expectedMessageError) throws IllegalAccessException {
+		var dto = builder.build();
 		dto.getReceive().get(0).setThemeNumber(themeNumber);
 		dto.getReceive().get(0).setThemeTitle(themeTitle);
-		writeFileInputDiscursoFromDto(fileName, dto);
-		baseGenerateListException(fileName, message);
+		writeFileInputFromDto(dto);
+		validateListBuilderException(expectedMessageError);
 	}
-	
+
 	@Test
 	void shouldGenerateListFileInputSendAndReceiveNull() throws IllegalAccessException {
-		String fileName = "data-discurso-send-receive-null.json";
-		var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
-		dto.setReceive(null);
-		dto.setSend(null);
-		writeFileInputDiscursoFromDto(fileName, dto);
-		baseGenerateListException(fileName, MessageConfig.LIST_SEND_REVEICE_NULL);		
+		writeFileInputFromDto(builder.withRandomData().withReceive(null).withSend(null).build());
+		validateListBuilderException(MessageConfig.LIST_SEND_REVEICE_NULL);
 	}
-	
+
 	@Test
 	void shouldGenerateListSendReceiveSuccessByThemeNumberWithThemeTitleNull() throws IllegalAccessException {
-		var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
+		var dto = builder.build();
 		dto.getReceive().get(0).setThemeNumber("1");
 		dto.getReceive().get(0).setThemeTitle(null);
-		baseShouldGenerateListSuccess(dto);
+		validateGenerateListSuccess(dto);
 	}
 
 	@Test
 	void shouldGenerateListReceiveSuccessByThemeNumberWithThemeTitleNull() throws IllegalAccessException {
-		var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
+		var dto = builder.build();
 		dto.setSend(null);
 		dto.getReceive().get(0).setThemeNumber("1");
 		dto.getReceive().get(0).setThemeTitle(null);
-		baseShouldGenerateListSuccess(dto);
+		validateGenerateListSuccess(dto);
 	}
-	
+
 	@Test
 	void shouldGenerateListSendSuccessByThemeNumberWithThemeTitleNull() throws IllegalAccessException {
-		var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
+		var dto = builder.build();
 		dto.setReceive(null);
 		dto.getSend().get(0).setThemeNumber("1");
 		dto.getSend().get(0).setThemeTitle(null);
-		baseShouldGenerateListSuccess(dto);
+		validateGenerateListSuccess(dto);
 	}
-	
+
 	@Test
 	void shouldGenerateListFileInputSuccessByThemeNumberWithThemeTitleEmpty() throws IllegalAccessException {
-		var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
+		var dto = builder.build();
 		dto.getReceive().get(0).setThemeNumber("1");
 		dto.getReceive().get(0).setThemeTitle("");
-		baseShouldGenerateListSuccess(dto);
+		validateGenerateListSuccess(dto);
 	}
-	
+
 	@Test
 	void shouldGenerateListFileInputSuccessByThemeTitle() throws IllegalAccessException {
-		var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
+		var dto = builder.build();
 		dto.getReceive().get(0).setThemeNumber(null);
 		assertNotNull(dto.getReceive().get(0).getThemeTitle());
-		baseShouldGenerateListSuccess(dto);
+		validateGenerateListSuccess(dto);
 		assertFalse(dto.getReceive().get(0).toString().isBlank());
 	}
-	
-	void baseShouldGenerateListSuccess(FileInputDataDiscursoDTO dto) throws IllegalAccessException {
-		String fileName = "data-discurso-send-ok.json";
-		writeFileInputDiscursoFromDto(fileName, dto);
-		FieldUtils.writeField(properties, "inputFileNameDiscursos", fileName, true);
-		FieldUtils.writeField(properties, "inputFileNameDiscursosTemas", FILE_NAME_DISCURSO_ALL_THEMES, true);
-		assertDoesNotThrow(() -> service.generateList());		
+
+	void validateGenerateListSuccess(FileInputDataDiscursoDTO dto) throws IllegalAccessException {
+		writeFileInputFromDto(dto);
+		assertDoesNotThrow(() -> service.generateList());
 	}
 
-	void baseGenerateListException(String file, String message) throws IllegalAccessException {
-		baseGenerateListException(file, FILE_NAME_DISCURSO_ALL_THEMES, message);
-	}
-
-	void baseGenerateListException(String file, String fileAllThemes, String message) throws IllegalAccessException {
-		FieldUtils.writeField(properties, "inputFileNameDiscursos", file, true);
-		FieldUtils.writeField(properties, "inputFileNameDiscursosTemas", fileAllThemes, true);
-		var ex = assertThrows(ListBuilderException.class, () -> service.generateList());
-		String baseMessage = String.format("Erro ao gerar lista '%s': %s", MODE_EXECUTION, message);
-		assertEquals(ex.getMessage(), baseMessage);
+	private void validateListBuilderException(String expectedMessageError) throws IllegalAccessException {
+		testUtils.validateExpection(ListBuilderException.class, () -> service.generateList(), expectedMessageError);
 	}
 
 }
