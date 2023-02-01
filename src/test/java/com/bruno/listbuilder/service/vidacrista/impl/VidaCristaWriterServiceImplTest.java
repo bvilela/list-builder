@@ -22,7 +22,7 @@ import com.bruno.listbuilder.config.AppProperties;
 import com.bruno.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import com.bruno.listbuilder.enuns.VidaCristaExtractItemType;
 import com.bruno.listbuilder.exception.ListBuilderException;
-import com.bruno.listbuilder.utils.TestFileUtilsWriteFile;
+import com.bruno.listbuilder.utils.TestUtils;
 
 @SpringBootApplication
 class VidaCristaWriterServiceImplTest {
@@ -43,7 +43,7 @@ class VidaCristaWriterServiceImplTest {
 	
 	@AfterAll
 	static void setupAfterAll() {
-		TestFileUtilsWriteFile.cleanResourceDir();
+		TestUtils.cleanResourceDir();
 	}
 
 	@Test

@@ -25,7 +25,7 @@ import com.bruno.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import com.bruno.listbuilder.exception.ListBuilderException;
 import com.bruno.listbuilder.service.limpeza.impl.LimpezaWriterServiceImpl;
 import com.bruno.listbuilder.service.vidacrista.impl.VidaCristaWriterServiceImpl;
-import com.bruno.listbuilder.utils.TestFileUtilsWriteFile;
+import com.bruno.listbuilder.utils.TestUtils;
 
 class ConvertImageServiceImplTest {
 
@@ -53,7 +53,7 @@ class ConvertImageServiceImplTest {
 	
 	@AfterAll
 	static void setupAfterAll() {
-		TestFileUtilsWriteFile.cleanResourceDir();
+		TestUtils.cleanResourceDir();
 	}
 
 	@Test

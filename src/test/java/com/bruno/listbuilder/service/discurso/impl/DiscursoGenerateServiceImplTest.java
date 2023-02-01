@@ -50,6 +50,10 @@ class DiscursoGenerateServiceImplTest
 		MockitoAnnotations.openMocks(this);
 		FieldUtils.writeField(properties, "inputDir", testUtils.getResourceDirectory(), true);
 		service = new DiscursoGenerateServiceImpl(properties, writerService, convertImageService);
+		createFileThemes();
+	}
+	
+	private void createFileThemes() {
 		testUtils.writeFileInputDiscursoAllThemes(DiscursoAllThemesDtoBuilder.create().withRandomData().build());
 	}
 
@@ -66,6 +70,7 @@ class DiscursoGenerateServiceImplTest
 	@Test
 	void shouldGenerateListFileAllThemesInvalidPathFileException() throws IllegalAccessException {
 		createFileInputDataOK();
+		testUtils.cleanDirectory();
 		validateListBuilderException(MessageConfig.FILE_NOT_FOUND);
 	}
 
