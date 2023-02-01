@@ -63,7 +63,7 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 		var listServices = List.of(limpezaService, assistenciaService, discursoService, vidaCristaService,
 				designacaoService);
 		
-		var optionalService = listServices.stream().filter(s -> s.getExecutionMode() == listType).findFirst();
+		var optionalService = listServices.stream().filter(s -> s.getListType() == listType).findFirst();
 		
 		if (optionalService.isPresent()) {
 			log.info("Utilizando Service: {}", optionalService.get().getClass().getSimpleName());

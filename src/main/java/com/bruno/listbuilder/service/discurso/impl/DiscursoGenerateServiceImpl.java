@@ -40,7 +40,7 @@ public class DiscursoGenerateServiceImpl implements BaseGenerateService {
 	}
 
 	@Override
-	public ListTypeEnum getExecutionMode() {
+	public ListTypeEnum getListType() {
 		return ListTypeEnum.DISCURSO;
 	}
 
@@ -48,12 +48,11 @@ public class DiscursoGenerateServiceImpl implements BaseGenerateService {
 	public void generateList() throws ListBuilderException {
 		try {
 			logInit(log);
+			
+			var dto = getFileInputDataDTO(properties, FileInputDataDiscursoDTO.class);
 
-			Path pathAllThemesFile = Paths.get(properties.getInputDir(), properties.getInputFileNameDiscursosTemas());
-			Path pathInputFile = Paths.get(properties.getInputDir(), properties.getInputFileNameDiscursos());
-
+			Path pathAllThemesFile = Paths.get(properties.getInputDir(), "dados-discursos-temas.json");
 			var allThemesDto = FileUtils.readInputFile(pathAllThemesFile, DiscursoAllThemesDTO.class);
-			var dto = FileUtils.readInputFile(pathInputFile, FileInputDataDiscursoDTO.class);
 
 			DiscursoValidator.validAllThemesFile(allThemesDto);
 			DiscursoValidator.validFileInputData(dto);

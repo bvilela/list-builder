@@ -37,12 +37,12 @@ public class FileInputDataDiscursoDtoBuilder {
 		return this;
 	}
 
-    private FileInputDataDiscursoDtoBuilder withSend(List<FileInputDataDiscursoItemDTO> send) {
+    public FileInputDataDiscursoDtoBuilder withSend(List<FileInputDataDiscursoItemDTO> send) {
         this.target.setSend(send);
         return this;
     }
     
-    private FileInputDataDiscursoDtoBuilder withReceive(List<FileInputDataDiscursoItemDTO> receive) {
+    public FileInputDataDiscursoDtoBuilder withReceive(List<FileInputDataDiscursoItemDTO> receive) {
         this.target.setReceive(receive);
         return this;
     }

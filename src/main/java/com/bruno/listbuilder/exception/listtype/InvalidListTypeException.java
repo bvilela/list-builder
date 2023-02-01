@@ -1,5 +1,7 @@
 package com.bruno.listbuilder.exception.listtype;
 
+import java.util.Arrays;
+
 import com.bruno.listbuilder.enuns.ListTypeEnum;
 
 public class InvalidListTypeException extends Exception {
@@ -8,7 +10,7 @@ public class InvalidListTypeException extends Exception {
 
 	public InvalidListTypeException() {
 		super(String.format("Parametro 'tipo.lista' NÃO é um valor válido! Valores aceitos: %s",
-				ListTypeEnum.valuesList()));
+				Arrays.toString(ListTypeEnum.values())));
 	}
 
 }

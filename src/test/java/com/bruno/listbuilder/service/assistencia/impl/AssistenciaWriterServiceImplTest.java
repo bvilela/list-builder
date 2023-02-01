@@ -16,7 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.bruno.listbuilder.config.AppProperties;
 import com.bruno.listbuilder.exception.ListBuilderException;
-import com.bruno.listbuilder.utils.TestFileUtilsWriteFile;
+import com.bruno.listbuilder.utils.TestUtils;
 
 @SpringBootApplication
 class AssistenciaWriterServiceImplTest {
@@ -37,7 +37,7 @@ class AssistenciaWriterServiceImplTest {
 	
 	@AfterAll
 	static void setupAfterAll() {
-		TestFileUtilsWriteFile.cleanResourceDir();
+		TestUtils.cleanResourceDir();
 	}
 	
 	@Test

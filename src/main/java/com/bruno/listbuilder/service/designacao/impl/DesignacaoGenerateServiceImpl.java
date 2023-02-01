@@ -1,8 +1,6 @@
 package com.bruno.listbuilder.service.designacao.impl;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -43,7 +41,7 @@ public class DesignacaoGenerateServiceImpl implements BaseGenerateService {
 	private NotificationService notificationService;
 
 	@Override
-	public ListTypeEnum getExecutionMode() {
+	public ListTypeEnum getListType() {
 		return ListTypeEnum.DESIGNACAO;
 	}
 	
@@ -62,10 +60,8 @@ public class DesignacaoGenerateServiceImpl implements BaseGenerateService {
 	public void generateList() throws ListBuilderException {
 		try {
 			logInit(log);
-
-			Path pathInputFile = Paths.get(properties.getInputDir(), properties.getInputFileNameDesignacao());
-
-			var dto = FileUtils.readInputFile(pathInputFile, FileInputDataDesignacaoDTO.class);
+			
+			var dto = getFileInputDataDTO(properties, FileInputDataDesignacaoDTO.class);
 
 			DesignacaoValidator.validAndConvertData(dto);
 			

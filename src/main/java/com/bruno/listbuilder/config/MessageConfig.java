@@ -41,5 +41,6 @@ public abstract class MessageConfig {
 	
 	// Discourse
 	public static final String LIST_SEND_REVEICE_NULL = "Lista 'Receber' e 'Enviar' estão vazias!";
+    public static final String THEMES_REQUIRED = "Temas não pode ser vazio";
 
 }

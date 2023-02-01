@@ -1,7 +1,5 @@
 package com.bruno.listbuilder.enuns;
 
-import java.util.Arrays;
-
 import com.bruno.listbuilder.config.MarginBase;
 import com.bruno.listbuilder.config.SizeBase;
 import com.bruno.listbuilder.config.SizeConfig;
@@ -45,8 +43,8 @@ public enum ListTypeEnum {
 		}
 	}
 	
-	public static String valuesList() {
-		return Arrays.toString(ListTypeEnum.values());
+	public String getInputFileName() {
+		return String.format("dados-%s.json", this.toString().toLowerCase());
 	}
 	
 }

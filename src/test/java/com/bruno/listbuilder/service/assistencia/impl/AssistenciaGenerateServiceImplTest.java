@@ -1,21 +1,15 @@
 package com.bruno.listbuilder.service.assistencia.impl;
 
-import static com.bruno.listbuilder.utils.TestFileUtilsWriteFile.writeFileInputAssistenciaFromDto;
-import static com.bruno.listbuilder.utils.TestFileUtilsWriteFile.writeFileInputAssistenciaSyntaxError;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -27,18 +21,17 @@ import com.bruno.listbuilder.builder.FileInputDataAssistenciaDtoBuilder;
 import com.bruno.listbuilder.config.AppProperties;
 import com.bruno.listbuilder.config.MessageConfig;
 import com.bruno.listbuilder.dto.DateServiceInputDTO;
+import com.bruno.listbuilder.dto.assistencia.FileInputDataAssistenciaDTO;
 import com.bruno.listbuilder.enuns.ListTypeEnum;
 import com.bruno.listbuilder.exception.ListBuilderException;
+import com.bruno.listbuilder.service.BaseGenerateServiceTest;
 import com.bruno.listbuilder.service.DateService;
 import com.bruno.listbuilder.service.NotificationService;
 import com.bruno.listbuilder.service.assistencia.AssistenciaWriterService;
-import com.bruno.listbuilder.utils.FileUtils;
-import com.bruno.listbuilder.utils.TestFileUtilsWriteFile;
 
 @SpringBootApplication
-class AssistenciaGenerateServiceImplTest {
-
-	private static final String PROPERTIE_INPUT_FILE_NAME_ASSISTENCIA = "inputFileNameAssistencia";
+class AssistenciaGenerateServiceImplTest
+		extends BaseGenerateServiceTest<FileInputDataAssistenciaDTO, FileInputDataAssistenciaDtoBuilder> {
 
 	@InjectMocks
 	private AssistenciaGenerateServiceImpl service;
@@ -51,164 +44,131 @@ class AssistenciaGenerateServiceImplTest {
 
 	@Mock
 	private AssistenciaWriterService writerService;
-	
+
 	@Mock
-	private NotificationService notificationService;	
+	private NotificationService notificationService;
 
-	private final static String MODE_EXECUTION = ListTypeEnum.ASSISTENCIA.toString();
-	private static String resourceDirectory;
-
-	@BeforeAll
-	static void setupBeforeAll() throws ListBuilderException {
-		resourceDirectory = Paths.get("src", "test", "resources", MODE_EXECUTION.toLowerCase()).toFile()
-				.getAbsolutePath();
-		FileUtils.createDirectories(resourceDirectory);
-	}
-
-	@AfterAll
-	static void setupAfterAll() {
-		TestFileUtilsWriteFile.cleanDirAssistencia();
+	private AssistenciaGenerateServiceImplTest() throws ListBuilderException {
+		super(ListTypeEnum.ASSISTENCIA, FileInputDataAssistenciaDtoBuilder.create());
 	}
 
 	@BeforeEach
 	public void setup() throws IllegalAccessException {
 		MockitoAnnotations.openMocks(this);
-		FieldUtils.writeField(properties, "inputDir", resourceDirectory, true);
+		FieldUtils.writeField(properties, "inputDir", testUtils.getResourceDirectory(), true);
 		service = new AssistenciaGenerateServiceImpl(properties, dateService, writerService, notificationService);
 	}
 
 	@Test
 	void shouldModoExecutionNotNull() {
-		assertNotNull(service.getExecutionMode());
+		assertNotNull(service.getListType());
 	}
 
 	@Test
 	void shouldGetExecutionMode() {
-		var mode = service.getExecutionMode();
+		var mode = service.getListType();
 		assertEquals(ListTypeEnum.ASSISTENCIA, mode);
 	}
 
 	@Test
 	void shouldGenerateListInvalidFilePathException() throws IllegalAccessException {
-		String fileInvalidName = "xpto.json";
-		baseGenerateListException(fileInvalidName, "Erro ao ler arquivo - Arquivo não encontrado");
+		validateListBuilderException("Erro ao ler arquivo - Arquivo não encontrado");
 	}
 
 	@Test
 	void shouldGenerateListFileSintaxeException() throws IllegalAccessException {
-		String fileSyntaxError = "data-assistencia-syntax-error.json";
-		writeFileInputAssistenciaSyntaxError(fileSyntaxError);
-		baseGenerateListException(fileSyntaxError, "Erro ao ler arquivo - Arquivo não é um JSON válido");
+		testUtils.writeFileInputSyntaxError();
+		validateListBuilderException("Erro ao ler arquivo - Arquivo não é um JSON válido");
 	}
 
 	@Test
 	void shouldGenerateListExceptionLastDateNull() throws IllegalAccessException {
-		String fileName = "data-assistencia-last-date-null.json";
-		writeFileInputAssistenciaFromDto(fileName,
-				FileInputDataAssistenciaDtoBuilder.create().withLastDateNull().build());
-		baseGenerateListException(fileName, MessageConfig.LAST_DATE_REQUIRED);
+		writeFileInputFromDto(builder.withLastDateNull().build());
+		validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
 	}
 
 	@Test
 	void shouldGenerateListExceptionLastDateEmpty() throws IllegalAccessException {
-		String fileName = "data-assistencia-last-date-empty.json";
-		writeFileInputAssistenciaFromDto(fileName,
-				FileInputDataAssistenciaDtoBuilder.create().withLastDateEmpty().build());
-		baseGenerateListException(fileName, MessageConfig.LAST_DATE_REQUIRED);
+		writeFileInputFromDto(builder.withLastDateEmpty().build());
+		validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
 	}
 
 	@Test
 	void shouldGenerateListExceptionLastDateBlank() throws IllegalAccessException {
-		String fileName = "data-assistencia-last-date-blank.json";
-		writeFileInputAssistenciaFromDto(fileName,
-				FileInputDataAssistenciaDtoBuilder.create().withLastDateBlank().build());
-		baseGenerateListException(fileName, MessageConfig.LAST_DATE_REQUIRED);
+		writeFileInputFromDto(builder.withLastDateBlank().build());
+		validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
 	}
 
 	@Test
 	void shouldGenerateListExceptionLastDateInvalid() throws IllegalAccessException {
-		String fileName = "data-assistencia-last-date-invalid.json";
-		var dto = FileInputDataAssistenciaDtoBuilder.create().withLastDateInvalid().build();
-		writeFileInputAssistenciaFromDto(fileName, dto);
-		var msgErro = String.format("Última Data da Lista Anterior inválida: '%s' não é uma data válida",
+		var dto = builder.withLastDateInvalid().build();
+		writeFileInputFromDto(dto);
+		var expectedMessageError = String.format("Última Data da Lista Anterior inválida: '%s' não é uma data válida",
 				dto.getLastDate());
-		baseGenerateListException(fileName, msgErro);
+		validateListBuilderException(expectedMessageError);
 	}
 
 	@Test
 	void shouldGenerateListExceptionMidweekNull() throws IllegalAccessException {
-		String fileName = "data-assistencia-midweek-null.json";
-		writeFileInputAssistenciaFromDto(fileName,
-				FileInputDataAssistenciaDtoBuilder.create().withMidweekNull().build());
-		baseGenerateListException(fileName, MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
+		writeFileInputFromDto(builder.withMidweekNull().build());
+		validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
 	}
 
 	@Test
 	void shouldGenerateListExceptionMidweekEmpty() throws IllegalAccessException {
-		String fileName = "data-assistencia-midweek-empty.json";
-		writeFileInputAssistenciaFromDto(fileName,
-				FileInputDataAssistenciaDtoBuilder.create().withMidweekEmpty().build());
-		baseGenerateListException(fileName, MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
+		writeFileInputFromDto(builder.withMidweekEmpty().build());
+		validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
 	}
 
 	@Test
 	void shouldGenerateListExceptionMidweekBlank() throws IllegalAccessException {
-		String fileName = "data-assistencia-midweek-blank.json";
-		writeFileInputAssistenciaFromDto(fileName,
-				FileInputDataAssistenciaDtoBuilder.create().withMidweekBlank().build());
-		baseGenerateListException(fileName, MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
+		writeFileInputFromDto(builder.withMidweekBlank().build());
+		validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
 	}
 
 	@Test
 	void shouldGenerateListExceptionMidweekInvalid() throws IllegalAccessException {
-		String fileName = "data-assistencia-midweek-invalid.json";
-		var dto = FileInputDataAssistenciaDtoBuilder.create().withMidweekInvalid().build();
-		writeFileInputAssistenciaFromDto(fileName, dto);
-		var msgError = String.format("Dia da Reunião de Meio de Semana - Valor '%s' não é um Dia da Semana válido!",
+		var dto = builder.withMidweekInvalid().build();
+		writeFileInputFromDto(dto);
+		var expectedMessageError = String.format(
+				"Dia da Reunião de Meio de Semana - Valor '%s' não é um Dia da Semana válido!",
 				dto.getMeetingDayMidweek());
-		baseGenerateListException(fileName, msgError);
+		validateListBuilderException(expectedMessageError);
 	}
 
 	@Test
 	void shouldGenerateListExceptionWeekendNull() throws IllegalAccessException {
-		String fileName = "data-assistencia-weekend-null.json";
-		writeFileInputAssistenciaFromDto(fileName,
-				FileInputDataAssistenciaDtoBuilder.create().withWeekendNull().build());
-		baseGenerateListException(fileName, MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
+		writeFileInputFromDto(builder.withWeekendNull().build());
+		validateListBuilderException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
 	}
 
 	@Test
 	void shouldGenerateListExceptionWeekendEmpty() throws IllegalAccessException {
-		String fileName = "data-assistencia-weekend-empty.json";
-		writeFileInputAssistenciaFromDto(fileName,
-				FileInputDataAssistenciaDtoBuilder.create().withWeekendEmpty().build());
-		baseGenerateListException(fileName, MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
+		writeFileInputFromDto(builder.withWeekendEmpty().build());
+		validateListBuilderException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
 	}
 
 	@Test
 	void shouldGenerateListExceptionWeekendBlank() throws IllegalAccessException {
-		String fileName = "data-assistencia-weekend-blank.json";
-		writeFileInputAssistenciaFromDto(fileName,
-				FileInputDataAssistenciaDtoBuilder.create().withWeekendBlank().build());
-		baseGenerateListException(fileName, MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
+		writeFileInputFromDto(builder.withWeekendBlank().build());
+		validateListBuilderException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
 	}
 
 	@Test
 	void shouldGenerateListExceptionWeekendInvalid() throws IllegalAccessException {
-		String fileName = "data-assistencia-weekend-invalid.json";
-		var dto = FileInputDataAssistenciaDtoBuilder.create().withWeekendInvalid().build();
-		writeFileInputAssistenciaFromDto(fileName, dto);
-		var msgError = String.format("Dia da Reunião de Fim de Semana - Valor '%s' não é um Dia da Semana válido!",
+		var dto = builder.withWeekendInvalid().build();
+		writeFileInputFromDto(dto);
+		var expectedMessageError = String.format(
+				"Dia da Reunião de Fim de Semana - Valor '%s' não é um Dia da Semana válido!",
 				dto.getMeetingDayWeekend());
-		baseGenerateListException(fileName, msgError);
+		validateListBuilderException(expectedMessageError);
 	}
 
 	@Test
 	void shouldGenerateListExceptionGeneratedListIsEmpty() throws IllegalAccessException {
-		String fileName = "data-assistencia-ok.json";
-		writeFileInputAssistenciaFromDto(fileName, FileInputDataAssistenciaDtoBuilder.create().withSuccess().build());
+		writeFileInputFromDto(builder.withSuccess().build());
 		when(dateService.generateListDatesAssistencia(any(DateServiceInputDTO.class))).thenReturn(List.of());
-		baseGenerateListException(fileName, MessageConfig.LIST_DATE_EMPTY);
+		validateListBuilderException(MessageConfig.LIST_DATE_EMPTY);
 	}
 
 	@Test
@@ -219,10 +179,8 @@ class AssistenciaGenerateServiceImplTest {
 				cld(4, 16), cld(4, 19), cld(4, 8), cld(4, 23),
 				cld(4, 26), cld(4, 19), cld(4, 30));
 		// @formatter:on
-		String fileName = "data-assistencia-ok.json";
-		writeFileInputAssistenciaFromDto(fileName, FileInputDataAssistenciaDtoBuilder.create().withSuccess().build());
+		writeFileInputFromDto(builder.withSuccess().build());
 		when(dateService.generateListDatesAssistencia(any(DateServiceInputDTO.class))).thenReturn(expectedList);
-		FieldUtils.writeField(properties, PROPERTIE_INPUT_FILE_NAME_ASSISTENCIA, fileName, true);
 		assertDoesNotThrow(() -> service.generateList());
 	}
 
@@ -231,11 +189,8 @@ class AssistenciaGenerateServiceImplTest {
 		return LocalDate.of(2022, month, day);
 	}
 
-	void baseGenerateListException(String file, String message) throws IllegalAccessException {
-		FieldUtils.writeField(properties, PROPERTIE_INPUT_FILE_NAME_ASSISTENCIA, file, true);
-		var ex = assertThrows(ListBuilderException.class, () -> service.generateList());
-		String baseMessage = String.format("Erro ao gerar lista '%s': %s", MODE_EXECUTION, message);
-		assertEquals(ex.getMessage(), baseMessage);
+	private void validateListBuilderException(String expectedMessageError) throws IllegalAccessException {
+		testUtils.validateException(ListBuilderException.class, () -> service.generateList(), expectedMessageError);
 	}
 
 }

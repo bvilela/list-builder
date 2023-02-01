@@ -1,8 +1,5 @@
 package com.bruno.listbuilder.service.assistencia.impl;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.springframework.stereotype.Service;
 
 import com.bruno.listbuilder.config.AppProperties;
@@ -14,7 +11,6 @@ import com.bruno.listbuilder.service.BaseGenerateService;
 import com.bruno.listbuilder.service.DateService;
 import com.bruno.listbuilder.service.NotificationService;
 import com.bruno.listbuilder.service.assistencia.AssistenciaWriterService;
-import com.bruno.listbuilder.utils.FileUtils;
 import com.bruno.listbuilder.validator.AssistenciaValidator;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +34,7 @@ public class AssistenciaGenerateServiceImpl implements BaseGenerateService {
 	}
 
 	@Override
-	public ListTypeEnum getExecutionMode() {
+	public ListTypeEnum getListType() {
 		return ListTypeEnum.ASSISTENCIA;
 	}
 
@@ -46,11 +42,9 @@ public class AssistenciaGenerateServiceImpl implements BaseGenerateService {
 	public void generateList() throws ListBuilderException {
 		try {
 			logInit(log);
-
-			Path pathInputFile = Paths.get(properties.getInputDir(), properties.getInputFileNameAssistencia());
-
-			var dto = FileUtils.readInputFile(pathInputFile, FileInputDataAssistenciaDTO.class);
-
+			
+			var dto = getFileInputDataDTO(properties, FileInputDataAssistenciaDTO.class);
+			
 			var dateServiceInputDto = AssistenciaValidator.validAndConvertData(dto);
 
 			var listDates = dateService.generateListDatesAssistencia(dateServiceInputDto);

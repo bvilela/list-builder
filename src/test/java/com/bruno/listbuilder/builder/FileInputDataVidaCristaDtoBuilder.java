@@ -46,12 +46,12 @@ public class FileInputDataVidaCristaDtoBuilder {
 		return this;
 	}
 
-	private FileInputDataVidaCristaDtoBuilder withLastDate(String lastDate) {
+	public FileInputDataVidaCristaDtoBuilder withLastDate(String lastDate) {
 		this.target.setLastDate(lastDate);
 		return this;
 	}
 
-	private FileInputDataVidaCristaDtoBuilder withParticipants(List<List<String>> participants) {
+	public FileInputDataVidaCristaDtoBuilder withParticipants(List<List<String>> participants) {
 		this.target.setParticipants(participants);
 		return this;
 	}

@@ -20,7 +20,7 @@ import com.bruno.listbuilder.dto.limpeza.FinalListLimpezaDTO;
 import com.bruno.listbuilder.dto.limpeza.FinalListLimpezaItemDTO;
 import com.bruno.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
 import com.bruno.listbuilder.exception.ListBuilderException;
-import com.bruno.listbuilder.utils.TestFileUtilsWriteFile;
+import com.bruno.listbuilder.utils.TestUtils;
 
 @SpringBootApplication
 class LimpezaWriterServiceImplTest {
@@ -45,7 +45,7 @@ class LimpezaWriterServiceImplTest {
 	
 	@AfterAll
 	static void setupAfterAll() {
-		TestFileUtilsWriteFile.cleanResourceDir();
+		TestUtils.cleanResourceDir();
 	}
 
 	@Test
