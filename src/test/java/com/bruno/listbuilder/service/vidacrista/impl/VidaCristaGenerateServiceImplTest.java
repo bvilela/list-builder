@@ -68,12 +68,12 @@ class VidaCristaGenerateServiceImplTest
 
 	@Test
 	void shouldModoExecutionNotNull() {
-		assertNotNull(service.getExecutionMode());
+		assertNotNull(service.getListType());
 	}
 
 	@Test
 	void shouldGetExecutionMode() {
-		assertEquals(ListTypeEnum.VIDA_CRISTA, service.getExecutionMode());
+		assertEquals(ListTypeEnum.VIDA_CRISTA, service.getListType());
 	}
 
 	@Test
@@ -300,7 +300,7 @@ class VidaCristaGenerateServiceImplTest
 	}
 
 	private void validateListBuilderException(String expectedMessageError) throws IllegalAccessException {
-		testUtils.validateExpection(ListBuilderException.class, () -> service.generateList(), expectedMessageError);
+		testUtils.validateException(ListBuilderException.class, () -> service.generateList(), expectedMessageError);
 	}
 
 	private List<VidaCristaExtractWeekItemDTO> cloneListWithoutReference(List<VidaCristaExtractWeekItemDTO> listSrc) {

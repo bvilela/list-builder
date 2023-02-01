@@ -76,12 +76,12 @@ class LimpezaGenerateServiceImplTest
 
 	@Test
 	void shouldModoExecutionNotNull() {
-		assertNotNull(service.getExecutionMode());
+		assertNotNull(service.getListType());
 	}
 
 	@Test
 	void shouldGetExecutionMode() {
-		var mode = service.getExecutionMode();
+		var mode = service.getListType();
 		assertEquals(ListTypeEnum.LIMPEZA, mode);
 	}
 
@@ -346,6 +346,6 @@ class LimpezaGenerateServiceImplTest
 	}
 
 	private void validateListBuilderException(String expectedMessageError) throws IllegalAccessException {
-		testUtils.validateExpection(ListBuilderException.class, () -> service.generateList(), expectedMessageError);
+		testUtils.validateException(ListBuilderException.class, () -> service.generateList(), expectedMessageError);
 	}
 }

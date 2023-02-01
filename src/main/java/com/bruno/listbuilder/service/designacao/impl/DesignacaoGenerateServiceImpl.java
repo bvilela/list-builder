@@ -41,7 +41,7 @@ public class DesignacaoGenerateServiceImpl implements BaseGenerateService {
 	private NotificationService notificationService;
 
 	@Override
-	public ListTypeEnum getExecutionMode() {
+	public ListTypeEnum getListType() {
 		return ListTypeEnum.DESIGNACAO;
 	}
 	

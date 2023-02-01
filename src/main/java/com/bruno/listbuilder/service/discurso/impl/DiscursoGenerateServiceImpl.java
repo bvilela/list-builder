@@ -40,7 +40,7 @@ public class DiscursoGenerateServiceImpl implements BaseGenerateService {
 	}
 
 	@Override
-	public ListTypeEnum getExecutionMode() {
+	public ListTypeEnum getListType() {
 		return ListTypeEnum.DISCURSO;
 	}
 

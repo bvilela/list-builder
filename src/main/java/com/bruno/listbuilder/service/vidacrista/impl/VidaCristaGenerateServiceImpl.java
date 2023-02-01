@@ -52,7 +52,7 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
 	}
 
 	@Override
-	public ListTypeEnum getExecutionMode() {
+	public ListTypeEnum getListType() {
 		return ListTypeEnum.VIDA_CRISTA;
 	}
 

@@ -61,12 +61,12 @@ class AssistenciaGenerateServiceImplTest
 
 	@Test
 	void shouldModoExecutionNotNull() {
-		assertNotNull(service.getExecutionMode());
+		assertNotNull(service.getListType());
 	}
 
 	@Test
 	void shouldGetExecutionMode() {
-		var mode = service.getExecutionMode();
+		var mode = service.getListType();
 		assertEquals(ListTypeEnum.ASSISTENCIA, mode);
 	}
 
@@ -190,7 +190,7 @@ class AssistenciaGenerateServiceImplTest
 	}
 
 	private void validateListBuilderException(String expectedMessageError) throws IllegalAccessException {
-		testUtils.validateExpection(ListBuilderException.class, () -> service.generateList(), expectedMessageError);
+		testUtils.validateException(ListBuilderException.class, () -> service.generateList(), expectedMessageError);
 	}
 
 }

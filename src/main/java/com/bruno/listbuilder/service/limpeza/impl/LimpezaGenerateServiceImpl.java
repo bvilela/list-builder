@@ -51,7 +51,7 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
 	}
 
 	@Override
-	public ListTypeEnum getExecutionMode() {
+	public ListTypeEnum getListType() {
 		return ListTypeEnum.LIMPEZA;
 	}
 

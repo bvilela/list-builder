@@ -69,12 +69,12 @@ class DesignacaoGenerateServiceImplTest
 
 	@Test
 	void shouldModoExecutionNotNull() {
-		assertNotNull(service.getExecutionMode());
+		assertNotNull(service.getListType());
 	}
 
 	@Test
 	void shouldGetExecutionMode() {
-		assertEquals(ListTypeEnum.DESIGNACAO, service.getExecutionMode());
+		assertEquals(ListTypeEnum.DESIGNACAO, service.getListType());
 	}
 
 	@Test
@@ -427,7 +427,7 @@ class DesignacaoGenerateServiceImplTest
 	}
 
 	private void validateListBuilderException(String expectedMessageError) throws IllegalAccessException {
-		testUtils.validateExpection(ListBuilderException.class, () -> service.generateList(), expectedMessageError);
+		testUtils.validateException(ListBuilderException.class, () -> service.generateList(), expectedMessageError);
 	}
 
 }

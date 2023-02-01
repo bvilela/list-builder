@@ -34,7 +34,7 @@ public class AssistenciaGenerateServiceImpl implements BaseGenerateService {
 	}
 
 	@Override
-	public ListTypeEnum getExecutionMode() {
+	public ListTypeEnum getListType() {
 		return ListTypeEnum.ASSISTENCIA;
 	}
 
@@ -44,7 +44,7 @@ public class AssistenciaGenerateServiceImpl implements BaseGenerateService {
 			logInit(log);
 			
 			var dto = getFileInputDataDTO(properties, FileInputDataAssistenciaDTO.class);
-
+			
 			var dateServiceInputDto = AssistenciaValidator.validAndConvertData(dto);
 
 			var listDates = dateService.generateListDatesAssistencia(dateServiceInputDto);

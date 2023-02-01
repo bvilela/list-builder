@@ -59,12 +59,12 @@ class DiscursoGenerateServiceImplTest
 
 	@Test
 	void shouldModoExecutionNotNull() {
-		assertNotNull(service.getExecutionMode());
+		assertNotNull(service.getListType());
 	}
 
 	@Test
 	void shouldGetExecutionMode() {
-		assertEquals(ListTypeEnum.DISCURSO, service.getExecutionMode());
+		assertEquals(ListTypeEnum.DISCURSO, service.getListType());
 	}
 
 	@Test
@@ -206,7 +206,7 @@ class DiscursoGenerateServiceImplTest
 	}
 
 	private void validateListBuilderException(String expectedMessageError) throws IllegalAccessException {
-		testUtils.validateExpection(ListBuilderException.class, () -> service.generateList(), expectedMessageError);
+		testUtils.validateException(ListBuilderException.class, () -> service.generateList(), expectedMessageError);
 	}
 
 }
