@@ -66,8 +66,12 @@ class AssistenciaGenerateServiceImplTest
 
 	@Test
 	void shouldGetExecutionMode() {
-		var mode = service.getListType();
-		assertEquals(ListTypeEnum.ASSISTENCIA, mode);
+		assertEquals(testUtils.getListType(), service.getListType());
+	}
+	
+	@Test
+	void shouldCorrectFileInputName() {
+		assertEquals("dados-assistencia.json", service.getListType().getInputFileName());
 	}
 
 	@Test

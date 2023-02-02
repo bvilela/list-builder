@@ -64,7 +64,12 @@ class DiscursoGenerateServiceImplTest
 
 	@Test
 	void shouldGetExecutionMode() {
-		assertEquals(ListTypeEnum.DISCURSO, service.getListType());
+		assertEquals(testUtils.getListType(), service.getListType());
+	}
+	
+	@Test
+	void shouldCorrectFileInputName() {
+		assertEquals("dados-discurso.json", service.getListType().getInputFileName());
 	}
 
 	@Test

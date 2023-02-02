@@ -20,8 +20,9 @@ import lombok.Getter;
 
 public class TestUtils {
 
-	private static final String FILE_INPUT_DISCURSO_ALL_THEMES = "dados-discursos-temas.json";
+	private static final String FILE_INPUT_DISCURSO_ALL_THEMES = "dados-discurso-temas.json";
 
+	@Getter
 	private final ListTypeEnum listType;
 
 	@Getter

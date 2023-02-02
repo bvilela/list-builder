@@ -51,7 +51,7 @@ public class DiscursoGenerateServiceImpl implements BaseGenerateService {
 			
 			var dto = getFileInputDataDTO(properties, FileInputDataDiscursoDTO.class);
 
-			Path pathAllThemesFile = Paths.get(properties.getInputDir(), "dados-discursos-temas.json");
+			Path pathAllThemesFile = Paths.get(properties.getInputDir(), "dados-discurso-temas.json");
 			var allThemesDto = FileUtils.readInputFile(pathAllThemesFile, DiscursoAllThemesDTO.class);
 
 			DiscursoValidator.validAllThemesFile(allThemesDto);

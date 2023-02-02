@@ -81,8 +81,12 @@ class LimpezaGenerateServiceImplTest
 
 	@Test
 	void shouldGetExecutionMode() {
-		var mode = service.getListType();
-		assertEquals(ListTypeEnum.LIMPEZA, mode);
+		assertEquals(testUtils.getListType(), service.getListType());
+	}
+	
+	@Test
+	void shouldCorrectFileInputName() {
+		assertEquals("dados-limpeza.json", service.getListType().getInputFileName());
 	}
 
 	@Test

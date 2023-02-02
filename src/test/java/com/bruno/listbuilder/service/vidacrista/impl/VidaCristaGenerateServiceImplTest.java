@@ -73,7 +73,12 @@ class VidaCristaGenerateServiceImplTest
 
 	@Test
 	void shouldGetExecutionMode() {
-		assertEquals(ListTypeEnum.VIDA_CRISTA, service.getListType());
+		assertEquals(testUtils.getListType(), service.getListType());
+	}
+	
+	@Test
+	void shouldCorrectFileInputName() {
+		assertEquals("dados-vida-crista.json", service.getListType().getInputFileName());
 	}
 
 	@Test
