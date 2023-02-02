@@ -74,7 +74,12 @@ class DesignacaoGenerateServiceImplTest
 
 	@Test
 	void shouldGetExecutionMode() {
-		assertEquals(ListTypeEnum.DESIGNACAO, service.getListType());
+		assertEquals(testUtils.getListType(), service.getListType());
+	}
+	
+	@Test
+	void shouldCorrectFileInputName() {
+		assertEquals("dados-designacao.json", service.getListType().getInputFileName());
 	}
 
 	@Test

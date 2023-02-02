@@ -44,7 +44,7 @@ public enum ListTypeEnum {
 	}
 	
 	public String getInputFileName() {
-		return String.format("dados-%s.json", this.toString().toLowerCase());
+		return String.format("dados-%s.json", this.toString().toLowerCase()).replace("_", "-");
 	}
 	
 }
