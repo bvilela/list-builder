@@ -57,6 +57,8 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
 
 	@Override
 	public List<VidaCristaExtractWeekDTO> extractWeeksBySite(String url) throws IOException, ListBuilderException {
+		log.info("Sanitizando URL");
+		url = sanitizeUrl(url);
 		log.info("Extraindo Dados da URL: {}", url);
 		Document doc = Jsoup.connect(url).get();
 
@@ -90,6 +92,10 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
 		}
 
 		return list;
+	}
+
+	private String sanitizeUrl(String url) {
+		return url.replace("março", "marco");
 	}
 
 	private void checkEmpty(Elements elements, String msg) throws ListBuilderException {
