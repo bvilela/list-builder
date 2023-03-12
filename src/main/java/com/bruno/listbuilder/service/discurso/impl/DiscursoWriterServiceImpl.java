@@ -1,16 +1,5 @@
 package com.bruno.listbuilder.service.discurso.impl;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.bruno.listbuilder.config.AppProperties;
 import com.bruno.listbuilder.dto.discurso.FileInputDataDiscursoDTO;
 import com.bruno.listbuilder.dto.discurso.FileInputDataDiscursoItemDTO;
@@ -21,33 +10,34 @@ import com.bruno.listbuilder.utils.AppUtils;
 import com.bruno.listbuilder.utils.DateUtils;
 import com.bruno.listbuilder.utils.FileUtils;
 import com.bruno.listbuilder.utils.impl.PDFWriterUtilsImpl;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class DiscursoWriterServiceImpl implements DiscursoWriterService {
 
-	private AppProperties properties;
+	private final AppProperties properties;
 
 	private static final String SEND = "send";
 	private static final String RECEIVE = "receive";
 	private static final ListTypeEnum LIST_TYPE = ListTypeEnum.DISCURSO;
 	
 	private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
-
-	@Autowired
-	public DiscursoWriterServiceImpl(AppProperties properties) {
-		this.properties = properties;
-	}
 
 	@Override
 	public Path writerPDF(FileInputDataDiscursoDTO dto) throws ListBuilderException {
@@ -157,7 +147,7 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
 		if (AppUtils.listIsNullOrEmpty(dto.getSend())) {
 			return dto.getReceive().size();
 		}		
-		return dto.getReceive().size() >= dto.getSend().size() ? dto.getReceive().size() : dto.getSend().size();
+		return Math.max(dto.getReceive().size(), dto.getSend().size());
 	}
 
 	private PdfPCell createCellSubHeader(String subHeader) throws ListBuilderException {

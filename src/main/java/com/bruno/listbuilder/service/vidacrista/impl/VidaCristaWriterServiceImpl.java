@@ -1,17 +1,5 @@
 package com.bruno.listbuilder.service.vidacrista.impl;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Service;
-
 import com.bruno.listbuilder.config.AppProperties;
 import com.bruno.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import com.bruno.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
@@ -23,33 +11,31 @@ import com.bruno.listbuilder.utils.AppUtils;
 import com.bruno.listbuilder.utils.DateUtils;
 import com.bruno.listbuilder.utils.FileUtils;
 import com.bruno.listbuilder.utils.impl.PDFWriterUtilsImpl;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Service;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 
-	private AppProperties properties;
-
+	private final AppProperties properties;
 	private static final ListTypeEnum LIST_TYPE = ListTypeEnum.VIDA_CRISTA;
-	
 	private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
-
-	@Autowired
-	public VidaCristaWriterServiceImpl(AppProperties properties) {
-		this.properties = properties;
-	}
 
 	@Override
 	public Path writerPDF(List<VidaCristaExtractWeekDTO> listWeeks) throws ListBuilderException {
@@ -76,7 +62,7 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 
 			document.open();
 
-			PdfPTable table = null;
+			PdfPTable table;
 			int countWeekInPage = 0;
 
 			table = addHeaderAndTable(document);
@@ -138,7 +124,7 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 					case NO_PARTICIPANTS -> addItemTitle(columnTable, item);
 					case WITH_PARTICIPANTS -> addItemWithParticipants(columnTable, item);
 					case LABEL -> addItemLabel(columnTable, item);
-					default -> log.info("Nenhuma ação para o tipo {}", item.getType().toString());
+					default -> log.info("Nenhuma ação para o tipo {}", item.getType());
 				}
 			}	
 		}

@@ -1,14 +1,5 @@
 package com.bruno.listbuilder.service.limpeza.impl;
 
-import java.io.FileOutputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.Objects;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.bruno.listbuilder.config.AppProperties;
 import com.bruno.listbuilder.dto.limpeza.FinalListLimpezaDTO;
 import com.bruno.listbuilder.dto.limpeza.FinalListLimpezaItemDTO;
@@ -24,20 +15,24 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.io.FileOutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class LimpezaWriterServiceImpl implements LimpezaWriterService {
 	
-	private AppProperties properties;
+	private final AppProperties properties;
 	
 	private static final ListTypeEnum LIST_TYPE = ListTypeEnum.LIMPEZA;
 	
 	private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
-	
-	@Autowired
-	public LimpezaWriterServiceImpl(AppProperties properties) {
-		this.properties = properties;
-	}
 	
 	@Override
 	public Path writerPDF(FinalListLimpezaDTO dto, String footerMessage, String headerMessage, int layout) throws ListBuilderException {
@@ -56,7 +51,7 @@ public class LimpezaWriterServiceImpl implements LimpezaWriterService {
             document.open();
             
             pdfUtils.addImageHeader(document, LIST_TYPE);
-            addImageMonth(document, LIST_TYPE, dateBase);
+            addImageMonth(document, dateBase);
             this.addHeaderMessage(document, headerMessage);
             
             if (layout == 2) {
@@ -76,11 +71,11 @@ public class LimpezaWriterServiceImpl implements LimpezaWriterService {
         }
 	}
 	
-	private void addImageMonth(Document document, ListTypeEnum listType, LocalDate date) throws ListBuilderException {
+	private void addImageMonth(Document document, LocalDate date) throws ListBuilderException {
 		try {
 			var month = String.format("%02d", date.getMonthValue());
 			var imageMonthName = String.format("month_%s.jpg", month);
-			pdfUtils.addImageSubHeader(document, listType, imageMonthName);
+			pdfUtils.addImageSubHeader(document, LIST_TYPE, imageMonthName);
 
 		} catch (Exception e) {
 			throw new ListBuilderException("Erro ao adicionar Imagem do nome do Mes. Erro: %s", e.getMessage());
@@ -108,8 +103,8 @@ public class LimpezaWriterServiceImpl implements LimpezaWriterService {
 			document.add(paragraphGroup);
 			
 			String dateFormatted1 = this.getDateDayOfWeekLabel(item.getDate1(), item.getLabel1());
-			String dateFormatted2 = null;
-			Paragraph paragraph2 = null;
+			String dateFormatted2;
+			Paragraph paragraph2;
 			
 			if (Objects.isNull(item.getDate2())) {
 				paragraph2 = pdfUtils.createParagraphBold13Normal13("Datas: ", dateFormatted1);

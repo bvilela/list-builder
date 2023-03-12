@@ -1,20 +1,5 @@
 package com.bruno.listbuilder.service.designacao.impl;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.bruno.listbuilder.config.AppProperties;
 import com.bruno.listbuilder.config.SizeConfig;
 import com.bruno.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
@@ -28,32 +13,37 @@ import com.bruno.listbuilder.utils.DateUtils;
 import com.bruno.listbuilder.utils.FileUtils;
 import com.bruno.listbuilder.utils.impl.DocxWriterUtilsImpl;
 import com.bruno.listbuilder.utils.impl.PDFWriterUtilsImpl;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import lombok.RequiredArgsConstructor;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.springframework.stereotype.Service;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
 
-	private AppProperties properties;
+	private final AppProperties properties;
 
 	private static final ListTypeEnum LIST_TYPE = ListTypeEnum.DESIGNACAO;
 	private static final int BREAK_LINE_DEFAULT = 2;
 	private static final int BREAK_LINE_PRESIDENT = 1;
 	private static final float HORIZONTAL_MARGINS_DISCOUNT = AppUtils.getHorizontalMargins(LIST_TYPE);
-	
 	private final DocxWriterUtilsImpl docxUtils = new DocxWriterUtilsImpl();
 	private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
-
-	@Autowired
-	public DesignacaoWriterServiceImpl(AppProperties properties) {
-		this.properties = properties;
-	}
 
 	@Override
 	public Path writerPDF(DesignacaoWriterDTO dto) throws ListBuilderException {
@@ -80,8 +70,7 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
 			
 			document.open();
 			
-			PdfPTable tableMaster = null;
-			tableMaster = addHeaderAndTableMaster(document);
+			PdfPTable tableMaster = addHeaderAndTableMaster(document);
 			
 			writeSectionsLine1(tableMaster, dto);
 			writeSectionsLine2(tableMaster, dto);
@@ -137,7 +126,7 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
 			cellTable.setLockedWidth(true);
 			
 			PdfPCell internalCellDate = new PdfPCell(pdfUtils.createParagraphBold12(dateLabel));
-			PdfPCell internalCellName = null;
+			PdfPCell internalCellName;
 			if (isTextBold(item)) {
 				internalCellName = new PdfPCell(pdfUtils.createParagraphBold12(item.getName()));
 			} else {

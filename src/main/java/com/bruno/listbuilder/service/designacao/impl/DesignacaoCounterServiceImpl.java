@@ -1,21 +1,15 @@
 package com.bruno.listbuilder.service.designacao.impl;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-
 import com.bruno.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 import com.bruno.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
 import com.bruno.listbuilder.service.designacao.DesignacaoCounterService;
-
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -37,12 +31,12 @@ public class DesignacaoCounterServiceImpl implements DesignacaoCounterService {
 		// Readers
 		var readerBibleStudy = count(dto.getReaderBibleStudy());
 		var readerWatchtower = count(dto.getReaderWatchtower());
-		var readerGeral = mergeMap(readerBibleStudy, readerWatchtower);
+		var readerGeneral = mergeMap(readerBibleStudy, readerWatchtower);
 		
 		// AudioVideo
 		var audioVideoPrincipal = countWithSplit(dto.getAudioVideo(), 0);
 		var audioVideoHelper = countWithSplit(dto.getAudioVideo(), 1);
-		var audioVideoGeral = mergeMap(audioVideoPrincipal, audioVideoHelper);
+		var audioVideoGeneral = mergeMap(audioVideoPrincipal, audioVideoHelper);
 		
 		// President
 		var president = count(dto.getPresident());
@@ -50,18 +44,18 @@ public class DesignacaoCounterServiceImpl implements DesignacaoCounterService {
 		// Indicator
 		var indicatorName1 = countWithSplit(dto.getIndicator(), 0);
 		var indicatorName2 = countWithSplit(dto.getIndicator(), 1);
-		var indicatorGeral = mergeMap(indicatorName1, indicatorName2);
+		var indicatorGeneral = mergeMap(indicatorName1, indicatorName2);
 		
 		// Microphone
 		var microphoneName1 = countWithSplit(dto.getMicrophone(), 0);
 		var microphoneName2 = countWithSplit(dto.getMicrophone(), 1);
-		var microphoneGeral = mergeMap(microphoneName1, microphoneName2);
+		var microphoneGeneral = mergeMap(microphoneName1, microphoneName2);
 		
 		// Indicator and Microphone
-		var indicatorAndMicrophone = mergeMap(indicatorGeral, microphoneGeral);
+		var indicatorAndMicrophone = mergeMap(indicatorGeneral, microphoneGeneral);
 		
-		var countersDto = new CounterDto(readerGeral, readerBibleStudy, readerWatchtower, audioVideoGeral,
-				audioVideoPrincipal, audioVideoHelper, president, indicatorGeral, microphoneGeral,
+		var countersDto = new CounterDto(readerGeneral, readerBibleStudy, readerWatchtower, audioVideoGeneral,
+				audioVideoPrincipal, audioVideoHelper, president, indicatorGeneral, microphoneGeneral,
 				indicatorAndMicrophone);
 		
 		return printCounterTable(countersDto);

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -40,8 +41,8 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
 	public String getUrlMeetingWorkbook(LocalDate lastDate) {
 		var nextMonday = DateUtils.nextDayOfWeek(lastDate, DayOfWeek.MONDAY);
 
-		String month1 = null;
-		String month2 = null;
+		String month1;
+		String month2;
 		String year = String.valueOf(nextMonday.getYear());
 
 		if (nextMonday.getMonthValue() % 2 == 0) {
@@ -184,9 +185,8 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
 	}
 
 	@Override
-	public void extractWeekItemsBySite(List<VidaCristaExtractWeekDTO> listWeeks)
-			throws IOException, ListBuilderException {
-		
+	@SneakyThrows
+	public void extractWeekItemsBySite(List<VidaCristaExtractWeekDTO> listWeeks) {
 		for (VidaCristaExtractWeekDTO week : listWeeks) {
 			var list = readWeekItemsFromUrl(week.getLink());
 			week.setItems(list);

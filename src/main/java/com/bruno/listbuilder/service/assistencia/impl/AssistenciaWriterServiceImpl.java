@@ -1,14 +1,5 @@
 package com.bruno.listbuilder.service.assistencia.impl;
 
-import java.io.FileOutputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.bruno.listbuilder.config.AppProperties;
 import com.bruno.listbuilder.enuns.DayOfWeekEnum;
 import com.bruno.listbuilder.enuns.ListTypeEnum;
@@ -17,33 +8,30 @@ import com.bruno.listbuilder.service.assistencia.AssistenciaWriterService;
 import com.bruno.listbuilder.utils.DateUtils;
 import com.bruno.listbuilder.utils.FileUtils;
 import com.bruno.listbuilder.utils.impl.PDFWriterUtilsImpl;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
+import com.itextpdf.text.*;
 import com.itextpdf.text.Font.FontFamily;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.io.FileOutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AssistenciaWriterServiceImpl implements AssistenciaWriterService {
-	
-	private AppProperties properties;
-	
+
+	private final AppProperties properties;
+
 	private static final ListTypeEnum LIST_TYPE = ListTypeEnum.ASSISTENCIA;
-	
 	private final String[] header = new String[]{"Dia", "Data", "Assistência"};
 	private final Font fontDefault = new Font(FontFamily.HELVETICA, 9, Font.BOLD);
-	
 	private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
-	
-	@Autowired
-	public AssistenciaWriterServiceImpl(AppProperties properties) {
-		this.properties = properties;
-	}
 
 	@Override
 	public void writerPDF(List<LocalDate> listDates) throws ListBuilderException {

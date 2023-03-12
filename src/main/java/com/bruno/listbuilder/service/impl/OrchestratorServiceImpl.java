@@ -2,6 +2,7 @@ package com.bruno.listbuilder.service.impl;
 
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,26 +23,17 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class OrchestratorServiceImpl implements OrchestratorService {
 
 	@Value("${tipo.lista:#{null}}")
 	private String listType;
 
-	private LimpezaGenerateServiceImpl limpezaService;
-	private AssistenciaGenerateServiceImpl assistenciaService;
-	private DiscursoGenerateServiceImpl discursoService;
-	private VidaCristaGenerateServiceImpl vidaCristaService;
-	private DesignacaoGenerateServiceImpl designacaoService;
-
-	public OrchestratorServiceImpl(LimpezaGenerateServiceImpl limpezaService,
-			AssistenciaGenerateServiceImpl assistenciaService, DiscursoGenerateServiceImpl discursoService,
-			VidaCristaGenerateServiceImpl vidaCristaService, DesignacaoGenerateServiceImpl designacaoService) {
-		this.limpezaService = limpezaService;
-		this.assistenciaService = assistenciaService;
-		this.discursoService = discursoService;
-		this.vidaCristaService = vidaCristaService;
-		this.designacaoService = designacaoService;
-	}
+	private final LimpezaGenerateServiceImpl limpezaService;
+	private final AssistenciaGenerateServiceImpl assistenciaService;
+	private final DiscursoGenerateServiceImpl discursoService;
+	private final VidaCristaGenerateServiceImpl vidaCristaService;
+	private final DesignacaoGenerateServiceImpl designacaoService;
 
 	@Override
 	public BaseGenerateService validateAndGetServiceByListType()

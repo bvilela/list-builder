@@ -14,9 +14,11 @@ import com.bruno.listbuilder.service.discurso.impl.DiscursoGenerateServiceImpl;
 import com.bruno.listbuilder.service.limpeza.impl.LimpezaGenerateServiceImpl;
 import com.bruno.listbuilder.service.limpeza.impl.LimpezaWriterServiceImpl;
 import com.bruno.listbuilder.service.vidacrista.impl.VidaCristaGenerateServiceImpl;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -68,13 +70,15 @@ class OrchestratorServiceImplTest {
 	@BeforeEach
 	public void setup() {
 		MockitoAnnotations.openMocks(this);
-		limpezaService = new LimpezaGenerateServiceImpl(properties, dateService, groupService, limpezaWriterService, notificationService, convertImageService);
+		limpezaService = new LimpezaGenerateServiceImpl(properties, limpezaWriterService, dateService, groupService, notificationService, convertImageService);
 		assistenciaService = new AssistenciaGenerateServiceImpl(properties, dateService, assistenciaWriterService, notificationService);
 		service = new OrchestratorServiceImpl(limpezaService, assistenciaService, discursoService, vidaCristaService, designacaoService);
 	}
 	
 	@Test
-	void executeListTypeNullShouldBeInvalid() throws IllegalAccessException {
+	@DisplayName("If ListTypeNull, then throws RequiredListTypeException")
+	@SneakyThrows
+	void executeListTypeNullShouldBeInvalid() {
 		setListType(null);
     	Assertions.assertThrows(RequiredListTypeException.class, () -> service.validateAndGetServiceByListType());
 	}
@@ -103,8 +107,9 @@ class OrchestratorServiceImplTest {
 		var serviceRet = service.validateAndGetServiceByListType();
 		Assertions.assertNotNull(serviceRet);
 	}
-	
-	private void setListType(String listType) throws IllegalAccessException {
+
+	@SneakyThrows
+	private void setListType(String listType) {
 		FieldUtils.writeField(service, "listType", listType, true);
 	}
 }

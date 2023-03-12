@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.bruno.listbuilder.config.AppProperties;
@@ -25,19 +26,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class DiscursoGenerateServiceImpl implements BaseGenerateService {
 
-	private AppProperties properties;
-
-	private DiscursoWriterService writerService;
-	private ConvertImageService convertImageService;
-
-	public DiscursoGenerateServiceImpl(AppProperties properties, DiscursoWriterService writerService,
-			ConvertImageService convertImageService) {
-		this.properties = properties;
-		this.writerService = writerService;
-		this.convertImageService = convertImageService;
-	}
+	private final AppProperties properties;
+	private final DiscursoWriterService writerService;
+	private final ConvertImageService convertImageService;
 
 	@Override
 	public ListTypeEnum getListType() {

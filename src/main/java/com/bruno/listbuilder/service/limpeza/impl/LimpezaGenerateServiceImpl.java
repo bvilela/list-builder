@@ -1,13 +1,5 @@
 package com.bruno.listbuilder.service.limpeza.impl;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-
 import com.bruno.listbuilder.config.AppProperties;
 import com.bruno.listbuilder.dto.ItemDateDTO;
 import com.bruno.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
@@ -17,38 +9,31 @@ import com.bruno.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
 import com.bruno.listbuilder.enuns.DayOfWeekEnum;
 import com.bruno.listbuilder.enuns.ListTypeEnum;
 import com.bruno.listbuilder.exception.ListBuilderException;
-import com.bruno.listbuilder.service.BaseGenerateService;
-import com.bruno.listbuilder.service.ConvertImageService;
-import com.bruno.listbuilder.service.DateService;
-import com.bruno.listbuilder.service.GroupService;
-import com.bruno.listbuilder.service.NotificationService;
+import com.bruno.listbuilder.service.*;
 import com.bruno.listbuilder.service.limpeza.LimpezaWriterService;
 import com.bruno.listbuilder.validator.LimpezaValidator;
-
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class LimpezaGenerateServiceImpl implements BaseGenerateService {
 
-	private AppProperties properties;
+	private final AppProperties properties;
 
-	private LimpezaWriterService writerService;
-	private DateService dateService;
-	private GroupService groupService;
-	private NotificationService notificationService;
-	private ConvertImageService convertImageService;
-
-	public LimpezaGenerateServiceImpl(AppProperties properties, DateService dateService,
-			GroupService groupService, LimpezaWriterService writerService,
-			NotificationService notificationService, ConvertImageService convertImageService) {
-		this.properties = properties;
-		this.dateService = dateService;
-		this.groupService = groupService;
-		this.writerService = writerService;
-		this.notificationService = notificationService;
-		this.convertImageService = convertImageService;
-	}
+	private final LimpezaWriterService writerService;
+	private final DateService dateService;
+	private final GroupService groupService;
+	private final NotificationService notificationService;
+	private final ConvertImageService convertImageService;
 
 	@Override
 	public ListTypeEnum getListType() {
@@ -126,9 +111,8 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
 			String label2 = null;
 
 			if (dates.size() == 2) {
-				showLabel = true;
 				date2 = dates.get(1).getDate();
-				label2 = getLabel(dates.get(1), showLabel);
+				label2 = getLabel(dates.get(1), true);
 			}
 
 			// @formatter:off

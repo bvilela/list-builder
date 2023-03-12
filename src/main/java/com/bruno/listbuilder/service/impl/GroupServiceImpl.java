@@ -148,9 +148,9 @@ public class GroupServiceImpl implements GroupService {
 		}
 		
 		List<DesignacaoWriterItemDTO> listWriterItems = new ArrayList<>();
-		for (int i = 0; i < listDates.size(); i++) {
+		for (LocalDate listDate : listDates) {
 			indexLast = indexLast == dto.getList().size() - 1 ? 0 : ++indexLast;
-			listWriterItems.add(new DesignacaoWriterItemDTO(listDates.get(i), dto.getList().get(indexLast)));
+			listWriterItems.add(new DesignacaoWriterItemDTO(listDate, dto.getList().get(indexLast)));
 		}
 
 		return listWriterItems;

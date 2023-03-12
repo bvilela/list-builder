@@ -1,25 +1,20 @@
 package com.bruno.listbuilder.service.impl;
 
+import com.bruno.listbuilder.service.ApplicationService;
+import com.bruno.listbuilder.service.OrchestratorService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.bruno.listbuilder.service.ApplicationService;
-import com.bruno.listbuilder.service.OrchestratorService;
-
-import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ApplicationServiceImpl implements ApplicationService {
 
-	private ApplicationContext context;
-	private OrchestratorService orchestratorService;
-
-	public ApplicationServiceImpl(ApplicationContext context, OrchestratorService orchestratorService) {
-		this.context = context;
-		this.orchestratorService = orchestratorService;
-	}
+	private final ApplicationContext context;
+	private final OrchestratorService orchestratorService;
 
 	@Override
 	public void runApplication() {

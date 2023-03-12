@@ -62,7 +62,7 @@ class LimpezaGenerateServiceImplTest
 	void setupBeforeEach() throws IllegalAccessException {
 		MockitoAnnotations.openMocks(this);
 		FieldUtils.writeField(properties, "inputDir", BaseGenerateServiceTest.testUtils.getResourceDirectory(), true);
-		service = new LimpezaGenerateServiceImpl(properties, dateService, groupService, writerService,
+		service = new LimpezaGenerateServiceImpl(properties, writerService, dateService, groupService,
 				notificationService, convertImageService);
 	}
 

@@ -1,20 +1,5 @@
 package com.bruno.listbuilder.service.impl;
 
-import java.io.IOException;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import com.bruno.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 import com.bruno.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
 import com.bruno.listbuilder.dto.limpeza.FinalListLimpezaDTO;
@@ -33,11 +18,25 @@ import com.bvilela.lib.enuns.ColorEnum;
 import com.bvilela.lib.exception.GoogleCalendarLibException;
 import com.bvilela.lib.model.CalendarEvent;
 import com.bvilela.lib.service.GoogleCalendarService;
-
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
 	
 	@Value("${notif.active}")
@@ -52,13 +51,8 @@ public class NotificationServiceImpl implements NotificationService {
 	@Value("${notif.christianlife.midweek.meeting.day:#{null}}")
 	private String notifChristianlifeMidweekMeetingDay;
 	
-	private GoogleCalendarService calendarService;
-	
-	@Autowired
-	public NotificationServiceImpl(GoogleCalendarService calendarService) {
-		this.calendarService = calendarService;
-	}
-	
+	private final GoogleCalendarService calendarService;
+
 	private record NotifVidaCrista(List<VidaCristaExtractWeekItemDTO> listItems, LocalDate date) {
 	}
 

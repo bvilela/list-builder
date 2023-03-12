@@ -1,16 +1,5 @@
 package com.bruno.listbuilder.service.vidacrista.impl;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
-
-import org.springframework.stereotype.Service;
-
 import com.bruno.listbuilder.config.AppProperties;
 import com.bruno.listbuilder.dto.vidacrista.FileInputDataVidaCristaDTO;
 import com.bruno.listbuilder.dto.vidacrista.FileInputDataVidaCristaRenameItemDTO;
@@ -26,30 +15,27 @@ import com.bruno.listbuilder.service.vidacrista.VidaCristaExtractService;
 import com.bruno.listbuilder.service.vidacrista.VidaCristaWriterService;
 import com.bruno.listbuilder.utils.DateUtils;
 import com.bruno.listbuilder.validator.VidaCristaValidator;
-
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.Map.Entry;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
 
 	private Map<String, String> abbreviationMap;
 
-	private AppProperties properties;
-
-	private VidaCristaExtractService extractService;
-	private VidaCristaWriterService writerService;
-	private NotificationService notificationService;
-	private ConvertImageService convertImageService;
-
-	public VidaCristaGenerateServiceImpl(AppProperties properties, VidaCristaExtractService extractService,
-			VidaCristaWriterService writerService, NotificationService notificationService, ConvertImageService convertImageService) {
-		this.properties = properties;
-		this.extractService = extractService;
-		this.writerService = writerService;
-		this.notificationService = notificationService;
-		this.convertImageService = convertImageService;
-	}
+	private final AppProperties properties;
+	private final VidaCristaExtractService extractService;
+	private final VidaCristaWriterService writerService;
+	private final NotificationService notificationService;
+	private final ConvertImageService convertImageService;
 
 	@Override
 	public ListTypeEnum getListType() {

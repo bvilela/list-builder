@@ -1,13 +1,5 @@
 package com.bruno.listbuilder.service.designacao.impl;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Stream;
-
-import org.springframework.stereotype.Service;
-
 import com.bruno.listbuilder.config.AppProperties;
 import com.bruno.listbuilder.config.MessageConfig;
 import com.bruno.listbuilder.dto.DateServiceInputDTO;
@@ -25,35 +17,32 @@ import com.bruno.listbuilder.service.designacao.DesignacaoWriterService;
 import com.bruno.listbuilder.utils.DateUtils;
 import com.bruno.listbuilder.utils.FileUtils;
 import com.bruno.listbuilder.validator.DesignacaoValidator;
-
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class DesignacaoGenerateServiceImpl implements BaseGenerateService {
+
+	private final AppProperties properties;
 	
-	private AppProperties properties;
-	
-	private DateService dateService;
-	private GroupService groupService;
-	private DesignacaoWriterService writerService;
-	private DesignacaoCounterService counterService;
-	private NotificationService notificationService;
+	private final DateService dateService;
+	private final GroupService groupService;
+	private final DesignacaoWriterService writerService;
+	private final DesignacaoCounterService counterService;
+	private final NotificationService notificationService;
 
 	@Override
 	public ListTypeEnum getListType() {
 		return ListTypeEnum.DESIGNACAO;
-	}
-	
-	public DesignacaoGenerateServiceImpl(AppProperties properties, DateService dateService, GroupService groupService,
-			DesignacaoWriterService writerService, DesignacaoCounterService counterService,
-			NotificationService notificationService) {
-		this.properties = properties;
-		this.dateService = dateService;
-		this.groupService = groupService;
-		this.writerService = writerService;
-		this.counterService = counterService;
-		this.notificationService = notificationService;
 	}
 
 	@Override
