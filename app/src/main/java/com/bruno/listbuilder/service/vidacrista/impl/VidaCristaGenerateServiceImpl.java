@@ -9,7 +9,6 @@ import com.bruno.listbuilder.enuns.ListTypeEnum;
 import com.bruno.listbuilder.enuns.VidaCristaExtractItemType;
 import com.bruno.listbuilder.exception.ListBuilderException;
 import com.bruno.listbuilder.service.BaseGenerateService;
-import com.bruno.listbuilder.service.ConvertImageService;
 import com.bruno.listbuilder.service.NotificationService;
 import com.bruno.listbuilder.service.vidacrista.VidaCristaExtractService;
 import com.bruno.listbuilder.service.vidacrista.VidaCristaWriterService;
@@ -35,7 +34,6 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
 	private final VidaCristaExtractService extractService;
 	private final VidaCristaWriterService writerService;
 	private final NotificationService notificationService;
-	private final ConvertImageService convertImageService;
 
 	@Override
 	public ListTypeEnum getListType() {
@@ -63,10 +61,8 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
 
 			populateExtractListWithParticipants(listWeeks, dto.getParticipants());
 
-			var pathPdf = writerService.writerPDF(listWeeks);
+			writerService.writerPDF(listWeeks);
 			
-			convertImageService.convertToImage(pathPdf);
-
 			notificationService.vidaCrista(listWeeks);
 			
 			logFinish(log);

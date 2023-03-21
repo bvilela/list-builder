@@ -33,8 +33,6 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
 	private final DateService dateService;
 	private final GroupService groupService;
 	private final NotificationService notificationService;
-	private final ConvertImageService convertImageService;
-
 	@Override
 	public ListTypeEnum getListType() {
 		return ListTypeEnum.LIMPEZA;
@@ -53,11 +51,9 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
 			var listGroups = groupService.generateListGroupsLimpeza(dto, listDates, properties.getLayoutLimpeza());
 			var listGenerated = generateFinalList(listDates, listGroups, properties.getLayoutLimpeza());
 
-			var pathPdf = writerService.writerPDF(listGenerated, dto.getFooterMessage(), dto.getHeaderMessage(),
+			writerService.writerPDF(listGenerated, dto.getFooterMessage(), dto.getHeaderMessage(),
 					properties.getLayoutLimpeza());
 			
-			convertImageService.convertToImage(pathPdf);
-
 			notificationService.limpeza(listGenerated, properties.getLayoutLimpeza());
 
 			logFinish(log);

@@ -21,7 +21,6 @@ import com.bruno.listbuilder.config.MessageConfig;
 import com.bruno.listbuilder.dto.discurso.FileInputDataDiscursoDTO;
 import com.bruno.listbuilder.enuns.ListTypeEnum;
 import com.bruno.listbuilder.exception.ListBuilderException;
-import com.bruno.listbuilder.service.ConvertImageService;
 
 @SpringBootApplication
 class DiscursoGenerateServiceImplTest
@@ -36,9 +35,6 @@ class DiscursoGenerateServiceImplTest
 	@Mock
 	private DiscursoWriterServiceImpl writerService;
 
-	@Mock
-	private ConvertImageService convertImageService;
-
 	private static final String MSG_MISSING_THEME_NUMBER_TITLE = "Data: 05-06-2022 - Informe o Número do Tema ou Título!";
 
 	public DiscursoGenerateServiceImplTest() throws ListBuilderException {
@@ -49,7 +45,7 @@ class DiscursoGenerateServiceImplTest
 	public void setup() throws IllegalAccessException {
 		MockitoAnnotations.openMocks(this);
 		FieldUtils.writeField(properties, "inputDir", BaseGenerateServiceTest.testUtils.getResourceDirectory(), true);
-		service = new DiscursoGenerateServiceImpl(properties, writerService, convertImageService);
+		service = new DiscursoGenerateServiceImpl(properties, writerService);
 		createFileThemes();
 	}
 	

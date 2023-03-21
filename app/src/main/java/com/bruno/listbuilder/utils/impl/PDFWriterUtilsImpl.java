@@ -9,8 +9,6 @@ import java.nio.file.Path;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.PDFRenderer;
 
 import com.bruno.listbuilder.config.SizeBase;
 import com.bruno.listbuilder.enuns.ListTypeEnum;
@@ -146,29 +144,6 @@ public final class PDFWriterUtilsImpl implements WriterUtils<Document> {
 		image.scaleAbsolute(sizeBase.getWidth(), sizeBase.getHeight());
 		image.setAlignment(Image.MIDDLE);
 		return image;
-	}
-
-	public void convertDocumentToImage(Path path) throws IOException {
-		File newFile = new File(path.toUri());
-		PDDocument pdfDocument = PDDocument.load(newFile);
-
-		PDFRenderer pdfRenderer = new PDFRenderer(pdfDocument);
-		var numberOfPages = pdfDocument.getNumberOfPages();
-		
-		if (numberOfPages == 1) {
-			BufferedImage img = pdfRenderer.renderImage(0);
-			ImageIO.write(img, "JPEG", new File(path.toString().replace(".pdf", ".png")));
-		}
-		else {
-			for (int i = 0; i < numberOfPages; i++) {
-				BufferedImage img = pdfRenderer.renderImage(i);
-				var pageNumber = StringUtils.leftPad(String.valueOf(i+1), 2, "0");
-				var finalName = String.format("-pag%s.png", pageNumber);
-				ImageIO.write(img, "JPEG", new File(path.toString().replace(".pdf", finalName)));
-			}			
-		}
-
-		pdfDocument.close();
 	}
 	
 	public PdfPTable getTable(Document document, int numberColumns, ListTypeEnum listType) throws DocumentException {

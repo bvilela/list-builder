@@ -5,15 +5,11 @@ import com.bruno.listbuilder.enuns.ListTypeEnum;
 import com.bruno.listbuilder.exception.listtype.InvalidListTypeException;
 import com.bruno.listbuilder.exception.listtype.RequiredListTypeException;
 import com.bruno.listbuilder.exception.listtype.ServiceListTypeNotFoundException;
-import com.bruno.listbuilder.service.ConvertImageService;
 import com.bruno.listbuilder.service.NotificationService;
 import com.bruno.listbuilder.service.assistencia.impl.AssistenciaGenerateServiceImpl;
 import com.bruno.listbuilder.service.assistencia.impl.AssistenciaWriterServiceImpl;
 import com.bruno.listbuilder.service.designacao.impl.DesignacaoGenerateServiceImpl;
 import com.bruno.listbuilder.service.discurso.impl.DiscursoGenerateServiceImpl;
-import com.bruno.listbuilder.service.impl.DateServiceImpl;
-import com.bruno.listbuilder.service.impl.GroupServiceImpl;
-import com.bruno.listbuilder.service.impl.OrchestratorServiceImpl;
 import com.bruno.listbuilder.service.limpeza.impl.LimpezaGenerateServiceImpl;
 import com.bruno.listbuilder.service.limpeza.impl.LimpezaWriterServiceImpl;
 import com.bruno.listbuilder.service.vidacrista.impl.VidaCristaGenerateServiceImpl;
@@ -66,14 +62,11 @@ class OrchestratorServiceImplTest {
 	
 	@Mock
 	private NotificationService notificationService;
-	
-	@Mock
-	private ConvertImageService convertImageService;
 
 	@BeforeEach
 	public void setup() {
 		MockitoAnnotations.openMocks(this);
-		limpezaService = new LimpezaGenerateServiceImpl(properties, limpezaWriterService, dateService, groupService, notificationService, convertImageService);
+		limpezaService = new LimpezaGenerateServiceImpl(properties, limpezaWriterService, dateService, groupService, notificationService);
 		assistenciaService = new AssistenciaGenerateServiceImpl(properties, dateService, assistenciaWriterService, notificationService);
 		service = new OrchestratorServiceImpl(limpezaService, assistenciaService, discursoService, vidaCristaService, designacaoService);
 	}

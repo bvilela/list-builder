@@ -4,7 +4,6 @@ import com.bruno.listbuilder.builder.FileInputDataVidaCristaDtoBuilder;
 import com.bruno.listbuilder.builder.FileInputDataVidaCristaRenameItemDtoBuilder;
 import com.bruno.listbuilder.builder.VidaCristaExtractWeekDtoBuilder;
 import com.bruno.listbuilder.builder.VidaCristaExtractWeekItemDtoBuilder;
-import com.bruno.listbuilder.service.BaseGenerateServiceTest;
 import com.bruno.listbuilder.config.AppProperties;
 import com.bruno.listbuilder.config.MessageConfig;
 import com.bruno.listbuilder.dto.vidacrista.FileInputDataVidaCristaDTO;
@@ -12,7 +11,7 @@ import com.bruno.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import com.bruno.listbuilder.enuns.ListTypeEnum;
 import com.bruno.listbuilder.enuns.VidaCristaExtractItemType;
 import com.bruno.listbuilder.exception.ListBuilderException;
-import com.bruno.listbuilder.service.ConvertImageService;
+import com.bruno.listbuilder.service.BaseGenerateServiceTest;
 import com.bruno.listbuilder.service.NotificationService;
 import com.bruno.listbuilder.service.vidacrista.VidaCristaExtractService;
 import com.bruno.listbuilder.service.vidacrista.VidaCristaWriterService;
@@ -47,9 +46,6 @@ class VidaCristaGenerateServiceImplTest
 	@Mock
 	private NotificationService notificationService;
 
-	@Mock
-	private ConvertImageService convertImageService;
-
 	public VidaCristaGenerateServiceImplTest() throws ListBuilderException {
 		super(ListTypeEnum.VIDA_CRISTA, FileInputDataVidaCristaDtoBuilder.create().withRandomData());
 	}
@@ -58,8 +54,7 @@ class VidaCristaGenerateServiceImplTest
 	public void setup() throws IllegalAccessException {
 		MockitoAnnotations.openMocks(this);
 		FieldUtils.writeField(properties, "inputDir", BaseGenerateServiceTest.testUtils.getResourceDirectory(), true);
-		service = new VidaCristaGenerateServiceImpl(properties, extractService, writerService, notificationService,
-				convertImageService);
+		service = new VidaCristaGenerateServiceImpl(properties, extractService, writerService, notificationService);
 	}
 
 	@Test

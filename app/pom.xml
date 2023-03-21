@@ -17,12 +17,17 @@
 	<description>Spring Boot Project to Builder Lists</description>
 
 	<properties>
+		<java.version>17</java.version>
 		<start-class>com.bruno.listbuilder.Application</start-class>
 		<sonar.organization>bvilela</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.outputEncoding>UTF-8</project.build.outputEncoding>
+		<project.reporting.sourceEncoding>UTF-8</project.reporting.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>17</java.version>
+		<maven.compile.encoding>UTF-8</maven.compile.encoding>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
 
 	<dependencies>

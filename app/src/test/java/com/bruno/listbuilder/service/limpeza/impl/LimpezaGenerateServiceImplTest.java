@@ -9,7 +9,6 @@ import com.bruno.listbuilder.dto.ItemDateDTO;
 import com.bruno.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
 import com.bruno.listbuilder.enuns.ListTypeEnum;
 import com.bruno.listbuilder.exception.ListBuilderException;
-import com.bruno.listbuilder.service.ConvertImageService;
 import com.bruno.listbuilder.service.NotificationService;
 import com.bruno.listbuilder.service.impl.DateServiceImpl;
 import com.bruno.listbuilder.service.impl.GroupServiceImpl;
@@ -51,9 +50,6 @@ class LimpezaGenerateServiceImplTest
 	@Mock
 	private NotificationService notificationService;
 
-	@Mock
-	private ConvertImageService convertImageService;
-
 	public LimpezaGenerateServiceImplTest() throws ListBuilderException {
 		super(ListTypeEnum.LIMPEZA, FileInputDataLimpezaDtoBuilder.create());
 	}
@@ -62,8 +58,7 @@ class LimpezaGenerateServiceImplTest
 	void setupBeforeEach() throws IllegalAccessException {
 		MockitoAnnotations.openMocks(this);
 		FieldUtils.writeField(properties, "inputDir", BaseGenerateServiceTest.testUtils.getResourceDirectory(), true);
-		service = new LimpezaGenerateServiceImpl(properties, writerService, dateService, groupService,
-				notificationService, convertImageService);
+		service = new LimpezaGenerateServiceImpl(properties, writerService, dateService, groupService, notificationService);
 	}
 
 	@Test

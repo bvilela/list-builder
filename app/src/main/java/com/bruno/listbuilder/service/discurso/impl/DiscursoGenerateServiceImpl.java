@@ -15,7 +15,6 @@ import com.bruno.listbuilder.dto.discurso.FileInputDataDiscursoItemDTO;
 import com.bruno.listbuilder.enuns.ListTypeEnum;
 import com.bruno.listbuilder.exception.ListBuilderException;
 import com.bruno.listbuilder.service.BaseGenerateService;
-import com.bruno.listbuilder.service.ConvertImageService;
 import com.bruno.listbuilder.service.discurso.DiscursoWriterService;
 import com.bruno.listbuilder.utils.AppUtils;
 import com.bruno.listbuilder.utils.DateUtils;
@@ -31,7 +30,6 @@ public class DiscursoGenerateServiceImpl implements BaseGenerateService {
 
 	private final AppProperties properties;
 	private final DiscursoWriterService writerService;
-	private final ConvertImageService convertImageService;
 
 	@Override
 	public ListTypeEnum getListType() {
@@ -53,10 +51,8 @@ public class DiscursoGenerateServiceImpl implements BaseGenerateService {
 			setThemesByNumberAndConvertDate(dto.getReceive(), "Lista Receber", allThemesDto);
 			setThemesByNumberAndConvertDate(dto.getSend(), "Lista Enviar", allThemesDto);
 
-			var pathPdf = writerService.writerPDF(dto);
+			writerService.writerPDF(dto);
 			
-			convertImageService.convertToImage(pathPdf);
-
 			logFinish(log);
 
 		} catch (Exception e) {
