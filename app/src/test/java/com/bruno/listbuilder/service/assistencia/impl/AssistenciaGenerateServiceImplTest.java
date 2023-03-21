@@ -171,7 +171,7 @@ class AssistenciaGenerateServiceImplTest
 	}
 
 	@Test
-	void shouldGenerateListSuccess() throws IllegalAccessException, ListBuilderException {
+	void shouldGenerateListSuccess() {
 		// @formatter:off
 		var expectedList = List.of(
 				cld(4, 2),  cld(4, 4),  cld(4, 8), cld(4, 12),

@@ -11,7 +11,7 @@ public enum VidaCristaExtractItemType {
 	WITH_PARTICIPANTS(true);
 	
 	@Getter
-	private boolean hasParticipants;
+	private final boolean hasParticipants;
 	
 	VidaCristaExtractItemType(boolean hasParticipants) {
 		this.hasParticipants = hasParticipants;

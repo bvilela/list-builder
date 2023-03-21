@@ -16,8 +16,8 @@ public enum ListTypeEnum {
 	DISCURSO,
 	VIDA_CRISTA(SizeConfig.CHRISTIAN_LIFE_MARGIN, SizeConfig.CHRISTIAN_LIFE_HEADER, SizeConfig.CHRISTIAN_LIFE_SUBHEADER);
 	
-	private MarginBase pageMg;
-	private SizeBase header;
+	private final MarginBase pageMg;
+	private final SizeBase header;
 	private SizeBase subHeader;
 	
 	private ListTypeEnum() {

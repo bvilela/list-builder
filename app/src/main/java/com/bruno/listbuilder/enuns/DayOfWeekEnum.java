@@ -17,8 +17,8 @@ public enum DayOfWeekEnum {
 	SABADO("Sábado", DayOfWeek.SATURDAY),
 	DOMINGO("Domingo", DayOfWeek.SUNDAY);
 	
-	private String name;
-	private DayOfWeek dayOfWeek;
+	private final String name;
+	private final DayOfWeek dayOfWeek;
 	
 	DayOfWeekEnum(String name, DayOfWeek dayOfWeek) {
 		this.name = name;

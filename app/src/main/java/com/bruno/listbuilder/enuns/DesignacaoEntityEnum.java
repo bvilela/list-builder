@@ -12,7 +12,7 @@ public enum DesignacaoEntityEnum {
 	INDICATOR("Indicador"),
 	MICROPHONE("Microfone");
 	
-	private String label;
+	private final String label;
 	
 	DesignacaoEntityEnum(String label) {
 		this.label = label;
