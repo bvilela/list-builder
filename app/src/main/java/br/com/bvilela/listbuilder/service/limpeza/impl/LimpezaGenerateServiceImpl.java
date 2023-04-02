@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Service
+@Service("LIMPEZA")
 @RequiredArgsConstructor
 public class LimpezaGenerateServiceImpl implements BaseGenerateService {
 

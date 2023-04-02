@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Slf4j
-@Service
+@Service("DESIGNACAO")
 @RequiredArgsConstructor
 public class DesignacaoGenerateServiceImpl implements BaseGenerateService {
 

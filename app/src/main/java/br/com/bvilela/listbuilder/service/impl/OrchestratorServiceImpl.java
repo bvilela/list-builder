@@ -1,7 +1,5 @@
 package br.com.bvilela.listbuilder.service.impl;
 
-import java.util.List;
-
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.listtype.InvalidListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.RequiredListTypeException;
@@ -15,10 +13,12 @@ import br.com.bvilela.listbuilder.service.limpeza.impl.LimpezaGenerateServiceImp
 import br.com.bvilela.listbuilder.service.vidacrista.impl.VidaCristaGenerateServiceImpl;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -28,11 +28,7 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 	@Value("${tipo.lista:#{null}}")
 	private String listType;
 
-	private final LimpezaGenerateServiceImpl limpezaService;
-	private final AssistenciaGenerateServiceImpl assistenciaService;
-	private final DiscursoGenerateServiceImpl discursoService;
-	private final VidaCristaGenerateServiceImpl vidaCristaService;
-	private final DesignacaoGenerateServiceImpl designacaoService;
+	private final Map<String, BaseGenerateService> generateServiceStrategyMap;
 
 	@Override
 	public BaseGenerateService validateAndGetServiceByListType()
@@ -51,16 +47,13 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 	private BaseGenerateService getServiceByListType(ListTypeEnum listType) throws ServiceListTypeNotFoundException {
 		log.info("Verificando qual Service utilizar...");
 		
-		var listServices = List.of(limpezaService, assistenciaService, discursoService, vidaCristaService,
-				designacaoService);
-		
-		var optionalService = listServices.stream().filter(s -> s.getListType() == listType).findFirst();
-		
-		if (optionalService.isPresent()) {
-			log.info("Utilizando Service: {}", optionalService.get().getClass().getSimpleName());
-			return optionalService.get();
+		var strategy = generateServiceStrategyMap.get(listType.toString());
+
+		if (strategy == null) {
+			throw new ServiceListTypeNotFoundException(listType);
 		}
 
-		throw new ServiceListTypeNotFoundException(listType);
+		log.info("Utilizando Service: {}", strategy.getClass().getSimpleName());
+		return strategy;
 	}
 }

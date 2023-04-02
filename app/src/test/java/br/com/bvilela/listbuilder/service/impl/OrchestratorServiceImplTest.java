@@ -1,18 +1,15 @@
 package br.com.bvilela.listbuilder.service.impl;
 
-import br.com.bvilela.listbuilder.config.AppProperties;
+import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.listtype.InvalidListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.RequiredListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundException;
+import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.assistencia.impl.AssistenciaGenerateServiceImpl;
-import br.com.bvilela.listbuilder.service.assistencia.impl.AssistenciaWriterServiceImpl;
 import br.com.bvilela.listbuilder.service.designacao.impl.DesignacaoGenerateServiceImpl;
 import br.com.bvilela.listbuilder.service.discurso.impl.DiscursoGenerateServiceImpl;
 import br.com.bvilela.listbuilder.service.limpeza.impl.LimpezaGenerateServiceImpl;
-import br.com.bvilela.listbuilder.service.limpeza.impl.LimpezaWriterServiceImpl;
 import br.com.bvilela.listbuilder.service.vidacrista.impl.VidaCristaGenerateServiceImpl;
-import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.service.NotificationService;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
@@ -24,51 +21,31 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @SpringBootApplication
 class OrchestratorServiceImplTest {
 
 	@InjectMocks
 	private OrchestratorServiceImpl service;
-	
-	@InjectMocks
+
+	@Mock
 	private LimpezaGenerateServiceImpl limpezaService;
-	
-	@InjectMocks
+
+	@Mock
 	private AssistenciaGenerateServiceImpl assistenciaService;
-	
+
 	@Mock
-	private DiscursoGenerateServiceImpl discursoService;
-	
-	@Mock
-	private VidaCristaGenerateServiceImpl vidaCristaService;
-	
-	@Mock
-	private AppProperties properties;
-	
-	@Mock
-	private DateServiceImpl dateService;
-	
-	@Mock
-	private GroupServiceImpl groupService;
-	
-	@Mock
-	private LimpezaWriterServiceImpl limpezaWriterService;
-	
-	@Mock
-	private AssistenciaWriterServiceImpl assistenciaWriterService;
-	
-	@Mock
-	private DesignacaoGenerateServiceImpl designacaoService;
-	
-	@Mock
-	private NotificationService notificationService;
+	private Map<String, BaseGenerateService> generateServiceStrategyMap;
 
 	@BeforeEach
 	public void setup() {
 		MockitoAnnotations.openMocks(this);
-		limpezaService = new LimpezaGenerateServiceImpl(properties, limpezaWriterService, dateService, groupService, notificationService);
-		assistenciaService = new AssistenciaGenerateServiceImpl(properties, dateService, assistenciaWriterService, notificationService);
-		service = new OrchestratorServiceImpl(limpezaService, assistenciaService, discursoService, vidaCristaService, designacaoService);
+		generateServiceStrategyMap = new HashMap<>();
+		generateServiceStrategyMap.put("LIMPEZA", limpezaService);
+		generateServiceStrategyMap.put("ASSISTENCIA", assistenciaService);
+		service = new OrchestratorServiceImpl(generateServiceStrategyMap);
 	}
 	
 	@Test
@@ -92,13 +69,15 @@ class OrchestratorServiceImplTest {
 	}
 	
 	@Test
-	void shouldExecuteServiceNotFound() throws IllegalAccessException {
-		setListType(ListTypeEnum.DESIGNACAO.toString());
+	@SneakyThrows
+	void shouldExecuteServiceNotFound() {
+		setListType("DESIGNACAO");
 		Assertions.assertThrows(ServiceListTypeNotFoundException.class, () -> service.validateAndGetServiceByListType());
 	}
 	
 	@Test
-	void shouldExecuteServiceSuccess() throws IllegalAccessException, InvalidListTypeException, RequiredListTypeException, ServiceListTypeNotFoundException {
+	@SneakyThrows
+	void shouldExecuteServiceSuccess() {
 		setListType(ListTypeEnum.LIMPEZA.toString());
 		var serviceRet = service.validateAndGetServiceByListType();
 		Assertions.assertNotNull(serviceRet);

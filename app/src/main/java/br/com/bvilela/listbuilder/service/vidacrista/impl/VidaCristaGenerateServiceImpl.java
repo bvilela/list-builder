@@ -24,7 +24,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 @Slf4j
-@Service
+@Service("VIDA_CRISTA")
 @RequiredArgsConstructor
 public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
 

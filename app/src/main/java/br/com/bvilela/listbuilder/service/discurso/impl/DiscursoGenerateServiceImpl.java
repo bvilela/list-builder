@@ -24,7 +24,7 @@ import br.com.bvilela.listbuilder.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service
+@Service("DISCURSO")
 @RequiredArgsConstructor
 public class DiscursoGenerateServiceImpl implements BaseGenerateService {
 
