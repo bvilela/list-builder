@@ -1,12 +1,12 @@
 package br.com.bvilela.listbuilder.service.impl;
 
+import br.com.bvilela.lib.service.GoogleCalendarCreateService;
 import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekDtoBuilder;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import com.bvilela.lib.service.GoogleCalendarService;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ class NotificationServiceImplTest {
 	private NotificationServiceImpl service;
 
 	@Mock
-	private GoogleCalendarService calendarService;
+	private GoogleCalendarCreateService calendarService;
 	
 	private static final int LAYOUT1 = 1;
 	private static final int LAYOUT2 = 2;	

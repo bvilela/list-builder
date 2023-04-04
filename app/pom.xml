@@ -82,9 +82,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.bvilela.lib</groupId>
+			<groupId>br.com.bvilela.lib</groupId>
 			<artifactId>google-calendar-util-lib</artifactId>
-			<version>0.0.3</version>
+			<version>1.0.0</version>
 		</dependency>
 	
 		<!-- Create Docx -->

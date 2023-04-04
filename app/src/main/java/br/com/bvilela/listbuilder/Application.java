@@ -16,7 +16,7 @@ import org.springframework.context.event.EventListener;
 import br.com.bvilela.listbuilder.service.ApplicationService;
 
 @SpringBootApplication
-@ComponentScan({"com.bruno.listbuilder", "com.bvilela.lib"})
+@ComponentScan({"br.com.bvilela.listbuilder", "br.com.bvilela.lib", "com.bvilela.lib"})
 public class Application implements ApplicationRunner {
 
 	private ApplicationService applicationService;

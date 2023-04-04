@@ -55,8 +55,7 @@
 			<appender-ref ref="CONSOLE" />
 			<appender-ref ref="FILE" />
 		</root>
-		<logger name="com.bruno.listbuilder" level="info"
-			additivity="false">
+		<logger name="br.com.bvilela" level="info" additivity="false">
 			<appender-ref ref="CONSOLE" />
 			<appender-ref ref="FILE" />
 		</logger>
@@ -67,8 +66,7 @@
 			<appender-ref ref="CONSOLE" />
 			<appender-ref ref="FILE" />
 		</root>
-		<logger name="com.bruno.listbuilder" level="debug"
-			additivity="false">
+		<logger name="br.com.bvilela" level="debug" additivity="false">
 			<appender-ref ref="CONSOLE" />
 			<appender-ref ref="FILE" />
 		</logger>

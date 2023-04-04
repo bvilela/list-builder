@@ -1,5 +1,8 @@
 package br.com.bvilela.listbuilder.service.impl;
 
+import br.com.bvilela.lib.enuns.ColorEnum;
+import br.com.bvilela.lib.model.CalendarEvent;
+import br.com.bvilela.lib.service.GoogleCalendarCreateService;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
@@ -14,17 +17,13 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import br.com.bvilela.listbuilder.utils.DateUtils;
-import com.bvilela.lib.enuns.ColorEnum;
-import com.bvilela.lib.exception.GoogleCalendarLibException;
-import com.bvilela.lib.model.CalendarEvent;
-import com.bvilela.lib.service.GoogleCalendarService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,13 +50,14 @@ public class NotificationServiceImpl implements NotificationService {
 	@Value("${notif.christianlife.midweek.meeting.day:#{null}}")
 	private String notifChristianlifeMidweekMeetingDay;
 	
-	private final GoogleCalendarService calendarService;
+	private final GoogleCalendarCreateService calendarService;
 
 	private record NotifVidaCrista(List<VidaCristaExtractWeekItemDTO> listItems, LocalDate date) {
 	}
 
 	@Override
-	public void limpeza(FinalListLimpezaDTO limpezaDto, int idLayout) throws IOException, GoogleCalendarLibException, ListBuilderException {
+	@SneakyThrows
+	public void limpeza(FinalListLimpezaDTO limpezaDto, int idLayout) {
 		
 		if (!notifActive) {
 			return;
@@ -79,22 +79,23 @@ public class NotificationServiceImpl implements NotificationService {
 		CalendarEvent nextList = doNextList(ListTypeEnum.LIMPEZA, lastDate);
 		listNotification.add(nextList);
 		
-		calendarService.createEvents(listNotification, log);
+		calendarService.createEvents(listNotification);
 	}
 
 	@Override
-	public void assistencia(List<LocalDate> list) throws IOException, GoogleCalendarLibException, ListBuilderException {
+	@SneakyThrows
+	public void assistencia(List<LocalDate> list) {
 		if (!notifActive) {
 			return;
 		}
 		var lastDate = list.get(list.size() - 1);
 		CalendarEvent nextList = doNextList(ListTypeEnum.ASSISTENCIA, lastDate);
-		calendarService.createEvent(nextList, log);
+		calendarService.createEvent(nextList);
 	}
 
 	@Override
-	public void vidaCrista(List<VidaCristaExtractWeekDTO> listWeeks)
-			throws IOException, GoogleCalendarLibException, ListBuilderException {
+	@SneakyThrows
+	public void vidaCrista(List<VidaCristaExtractWeekDTO> listWeeks) {
 		if (!notifActive) {
 			return;
 		}
@@ -118,12 +119,12 @@ public class NotificationServiceImpl implements NotificationService {
 
 		var lastWeek = listWeeks.get(listWeeks.size() - 1);
 		CalendarEvent nextList = doNextList(ListTypeEnum.VIDA_CRISTA, lastWeek.getDate1());
-		calendarService.createEvent(nextList, log);
+		calendarService.createEvent(nextList);
 	}
 	
 	@Override
-	public void designacao(DesignacaoWriterDTO dto)
-			throws IOException, GoogleCalendarLibException, ListBuilderException {
+	@SneakyThrows
+	public void designacao(DesignacaoWriterDTO dto) {
 
 		if (!notifActive) {
 			return;
@@ -142,7 +143,7 @@ public class NotificationServiceImpl implements NotificationService {
 		CalendarEvent nextList = doNextList(ListTypeEnum.DESIGNACAO, lastDate);
 		
 		calendarEventList.add(nextList);
-		calendarService.createEvents(calendarEventList, log);
+		calendarService.createEvents(calendarEventList);
 	}
 
 	private void createEventsDesignacao(List<DesignacaoWriterItemDTO> list,
@@ -158,8 +159,8 @@ public class NotificationServiceImpl implements NotificationService {
 		}
 	}
 
-	private void createAndSendEventsVidaCrista(List<NotifVidaCrista> eventsToNotif, DayOfWeek dayOfWeek)
-			throws IOException, GoogleCalendarLibException {
+	@SneakyThrows
+	private void createAndSendEventsVidaCrista(List<NotifVidaCrista> eventsToNotif, DayOfWeek dayOfWeek) {
 		List<CalendarEvent> calendarEventList = new ArrayList<>();
 
 		for (NotifVidaCrista notifRecord : eventsToNotif) {
@@ -175,7 +176,7 @@ public class NotificationServiceImpl implements NotificationService {
 			}
 		}
 
-		calendarService.createEvents(calendarEventList, log);
+		calendarService.createEvents(calendarEventList);
 	}
 
 	private void checkNotifName() throws ListBuilderException {
