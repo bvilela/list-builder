@@ -4,6 +4,7 @@ import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.ExitCodeEvent;
@@ -16,14 +17,11 @@ import org.springframework.context.event.EventListener;
 import br.com.bvilela.listbuilder.service.ApplicationService;
 
 @SpringBootApplication
+@RequiredArgsConstructor
 @ComponentScan({"br.com.bvilela.listbuilder", "br.com.bvilela.lib", "com.bvilela.lib"})
 public class Application implements ApplicationRunner {
 
-	private ApplicationService applicationService;
-
-	public Application(ApplicationService applicationService) {
-		this.applicationService = applicationService;
-	}
+	private final ApplicationService applicationService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
