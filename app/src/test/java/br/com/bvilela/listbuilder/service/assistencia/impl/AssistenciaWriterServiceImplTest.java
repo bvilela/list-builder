@@ -19,40 +19,46 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 
 @SpringBootApplication
 class AssistenciaWriterServiceImplTest {
-	
-	@InjectMocks
-	private AssistenciaWriterServiceImpl service;
 
-	@InjectMocks
-	private AppProperties properties;
-	
-	@BeforeEach
-	void setupBeforeEach() throws IllegalAccessException {
-		MockitoAnnotations.openMocks(this);
-		String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
-		FieldUtils.writeField(properties, "outputDir", pathOutput, true);
-		service = new AssistenciaWriterServiceImpl(properties);
-	}
-	
-	@AfterAll
-	static void setupAfterAll() {
-		TestUtils.cleanResourceDir();
-	}
-	
-	@Test
-	void shouldWriterPDFSuccess() throws ListBuilderException {
-		// @formatter:off
-		var list = List.of(
-				cld(4, 2),  cld(4, 4),  cld(4, 8), cld(4, 12),
-				cld(4, 16), cld(4, 19), cld(4, 8), cld(4, 23),
-				cld(4, 26), cld(4, 19), cld(4, 30));
-		// @formatter:on
-		Assertions.assertDoesNotThrow(() -> service.writerPDF(list));
-	}
-	
-	/** Create Local Date */
-	private LocalDate cld(int month, int day) {
-		return LocalDate.of(2022, month, day);
-	}
+    @InjectMocks private AssistenciaWriterServiceImpl service;
 
+    @InjectMocks private AppProperties properties;
+
+    @BeforeEach
+    void setupBeforeEach() throws IllegalAccessException {
+        MockitoAnnotations.openMocks(this);
+        String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
+        FieldUtils.writeField(properties, "outputDir", pathOutput, true);
+        service = new AssistenciaWriterServiceImpl(properties);
+    }
+
+    @AfterAll
+    static void setupAfterAll() {
+        TestUtils.cleanResourceDir();
+    }
+
+    @Test
+    void shouldWriterPDFSuccess() throws ListBuilderException {
+        // @formatter:off
+        var list =
+                List.of(
+                        cld(4, 2),
+                        cld(4, 4),
+                        cld(4, 8),
+                        cld(4, 12),
+                        cld(4, 16),
+                        cld(4, 19),
+                        cld(4, 8),
+                        cld(4, 23),
+                        cld(4, 26),
+                        cld(4, 19),
+                        cld(4, 30));
+        // @formatter:on
+        Assertions.assertDoesNotThrow(() -> service.writerPDF(list));
+    }
+
+    /** Create Local Date */
+    private LocalDate cld(int month, int day) {
+        return LocalDate.of(2022, month, day);
+    }
 }

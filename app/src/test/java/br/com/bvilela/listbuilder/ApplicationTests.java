@@ -8,14 +8,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-
 class ApplicationTests {
 
-    @InjectMocks
-    private Application application;
+    @InjectMocks private Application application;
 
-    @Mock
-    private ApplicationServiceImpl service;
+    @Mock private ApplicationServiceImpl service;
 
     @BeforeEach
     public void setup() throws IllegalAccessException {
@@ -37,5 +34,4 @@ class ApplicationTests {
     void shouldBeExitCodeEventListenerBean() {
         Assertions.assertDoesNotThrow(() -> application.exitCodeEventListenerBean());
     }
-
 }

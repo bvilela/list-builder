@@ -19,33 +19,35 @@ import br.com.bvilela.listbuilder.service.OrchestratorService;
 @SpringBootApplication
 class ApplicationServiceImplTest {
 
-	@InjectMocks
-	private ApplicationServiceImpl applicationService;
-	
-	@Mock
-	private ApplicationContext context;
-	
-	@Mock
-	private OrchestratorService orchestratorService;
-	
-	@Mock
-	private LimpezaGenerateServiceImpl limpezaService;
-	
-	@BeforeEach
-	public void setup() throws IllegalAccessException {
-		MockitoAnnotations.openMocks(this);
-		applicationService = new ApplicationServiceImpl(context, orchestratorService);
-	}
-	
-	@Test
-	void shouldRunApplicationSuccess() throws InvalidListTypeException, RequiredListTypeException, ServiceListTypeNotFoundException {
-		Mockito.when(orchestratorService.validateAndGetServiceByListType()).thenReturn(limpezaService);
-		Assertions.assertDoesNotThrow(() -> applicationService.runApplication());
-	}
-	
-	@Test
-	void shouldRunApplicationException() throws InvalidListTypeException, RequiredListTypeException, ServiceListTypeNotFoundException {
-		Mockito.when(orchestratorService.validateAndGetServiceByListType()).thenThrow(new RequiredListTypeException());
-		Assertions.assertDoesNotThrow(() -> applicationService.runApplication());
-	}
+    @InjectMocks private ApplicationServiceImpl applicationService;
+
+    @Mock private ApplicationContext context;
+
+    @Mock private OrchestratorService orchestratorService;
+
+    @Mock private LimpezaGenerateServiceImpl limpezaService;
+
+    @BeforeEach
+    public void setup() throws IllegalAccessException {
+        MockitoAnnotations.openMocks(this);
+        applicationService = new ApplicationServiceImpl(context, orchestratorService);
+    }
+
+    @Test
+    void shouldRunApplicationSuccess()
+            throws InvalidListTypeException, RequiredListTypeException,
+                    ServiceListTypeNotFoundException {
+        Mockito.when(orchestratorService.validateAndGetServiceByListType())
+                .thenReturn(limpezaService);
+        Assertions.assertDoesNotThrow(() -> applicationService.runApplication());
+    }
+
+    @Test
+    void shouldRunApplicationException()
+            throws InvalidListTypeException, RequiredListTypeException,
+                    ServiceListTypeNotFoundException {
+        Mockito.when(orchestratorService.validateAndGetServiceByListType())
+                .thenThrow(new RequiredListTypeException());
+        Assertions.assertDoesNotThrow(() -> applicationService.runApplication());
+    }
 }

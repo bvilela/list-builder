@@ -9,7 +9,7 @@ import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
 
 public class VidaCristaExtractWeekItemDtoBuilder {
 
-	private VidaCristaExtractWeekItemDTO target;
+    private VidaCristaExtractWeekItemDTO target;
 
     public VidaCristaExtractWeekItemDtoBuilder() {
         this.target = new VidaCristaExtractWeekItemDTO();
@@ -22,17 +22,17 @@ public class VidaCristaExtractWeekItemDtoBuilder {
     public VidaCristaExtractWeekItemDTO build() {
         return target;
     }
-    
+
     public VidaCristaExtractWeekItemDtoBuilder withRandomData(VidaCristaExtractItemType type) {
-    	this.withTitle(RandomStringUtils.randomAlphabetic(15));
-    	this.withType(type);
-    	this.withParticipants(List.of(
-    			RandomStringUtils.randomAlphabetic(15),
-    			RandomStringUtils.randomAlphabetic(15),
-    			RandomStringUtils.randomAlphabetic(15),
-    			RandomStringUtils.randomAlphabetic(15),
-    			RandomStringUtils.randomAlphabetic(15)
-    			));
+        this.withTitle(RandomStringUtils.randomAlphabetic(15));
+        this.withType(type);
+        this.withParticipants(
+                List.of(
+                        RandomStringUtils.randomAlphabetic(15),
+                        RandomStringUtils.randomAlphabetic(15),
+                        RandomStringUtils.randomAlphabetic(15),
+                        RandomStringUtils.randomAlphabetic(15),
+                        RandomStringUtils.randomAlphabetic(15)));
         return this;
     }
 
@@ -40,15 +40,14 @@ public class VidaCristaExtractWeekItemDtoBuilder {
         this.target.setTitle(title);
         return this;
     }
-    
+
     private VidaCristaExtractWeekItemDtoBuilder withType(VidaCristaExtractItemType type) {
         this.target.setType(type);
         return this;
     }
-    
+
     private VidaCristaExtractWeekItemDtoBuilder withParticipants(List<String> participants) {
         this.target.setParticipants(participants);
         return this;
     }
-	
 }

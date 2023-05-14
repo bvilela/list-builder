@@ -29,6 +29,7 @@ Application read data from JSON file, process and generate a PDF file.
 * [Java Util Validation Lib](https://github.com/bvilela/java-util-validation-lib) (Personal library with useful validations)
 * [Google Calendar Util Lib](https://github.com/bvilela/google-calendar-util-lib) (Personal library with useful services for Google Calendar API)
 * Static Code Analysis: SonarCloud
+* [googleformatter-maven-plugin](googleformatter-maven-plugin)
 
 ### GitHub Action
 * Build and Test Java with Maven (branch)

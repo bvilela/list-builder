@@ -27,64 +27,65 @@ import java.util.Map;
 @SpringBootApplication
 class OrchestratorServiceImplTest {
 
-	@InjectMocks
-	private OrchestratorServiceImpl service;
+    @InjectMocks private OrchestratorServiceImpl service;
 
-	@Mock
-	private LimpezaGenerateServiceImpl limpezaService;
+    @Mock private LimpezaGenerateServiceImpl limpezaService;
 
-	@Mock
-	private AssistenciaGenerateServiceImpl assistenciaService;
+    @Mock private AssistenciaGenerateServiceImpl assistenciaService;
 
-	@Mock
-	private Map<String, BaseGenerateService> generateServiceStrategyMap;
+    @Mock private Map<String, BaseGenerateService> generateServiceStrategyMap;
 
-	@BeforeEach
-	public void setup() {
-		MockitoAnnotations.openMocks(this);
-		generateServiceStrategyMap = new HashMap<>();
-		generateServiceStrategyMap.put("LIMPEZA", limpezaService);
-		generateServiceStrategyMap.put("ASSISTENCIA", assistenciaService);
-		service = new OrchestratorServiceImpl(generateServiceStrategyMap);
-	}
-	
-	@Test
-	@DisplayName("If ListTypeNull, then throws RequiredListTypeException")
-	@SneakyThrows
-	void executeListTypeNullShouldBeInvalid() {
-		setListType(null);
-    	Assertions.assertThrows(RequiredListTypeException.class, () -> service.validateAndGetServiceByListType());
-	}
-	
-	@Test
-	void executeListTypeEmptyShouldBeInvalid() throws IllegalAccessException {
-		setListType("");
-    	Assertions.assertThrows(RequiredListTypeException.class, () -> service.validateAndGetServiceByListType());
-	}
-	
-	@Test
-	void executeListTypeShouldBeInvalid() throws IllegalAccessException {
-		setListType("xpto");
-    	Assertions.assertThrows(InvalidListTypeException.class, () -> service.validateAndGetServiceByListType());
-	}
-	
-	@Test
-	@SneakyThrows
-	void shouldExecuteServiceNotFound() {
-		setListType("DESIGNACAO");
-		Assertions.assertThrows(ServiceListTypeNotFoundException.class, () -> service.validateAndGetServiceByListType());
-	}
-	
-	@Test
-	@SneakyThrows
-	void shouldExecuteServiceSuccess() {
-		setListType(ListTypeEnum.LIMPEZA.toString());
-		var serviceRet = service.validateAndGetServiceByListType();
-		Assertions.assertNotNull(serviceRet);
-	}
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+        generateServiceStrategyMap = new HashMap<>();
+        generateServiceStrategyMap.put("LIMPEZA", limpezaService);
+        generateServiceStrategyMap.put("ASSISTENCIA", assistenciaService);
+        service = new OrchestratorServiceImpl(generateServiceStrategyMap);
+    }
 
-	@SneakyThrows
-	private void setListType(String listType) {
-		FieldUtils.writeField(service, "listType", listType, true);
-	}
+    @Test
+    @DisplayName("If ListTypeNull, then throws RequiredListTypeException")
+    @SneakyThrows
+    void executeListTypeNullShouldBeInvalid() {
+        setListType(null);
+        Assertions.assertThrows(
+                RequiredListTypeException.class, () -> service.validateAndGetServiceByListType());
+    }
+
+    @Test
+    void executeListTypeEmptyShouldBeInvalid() throws IllegalAccessException {
+        setListType("");
+        Assertions.assertThrows(
+                RequiredListTypeException.class, () -> service.validateAndGetServiceByListType());
+    }
+
+    @Test
+    void executeListTypeShouldBeInvalid() throws IllegalAccessException {
+        setListType("xpto");
+        Assertions.assertThrows(
+                InvalidListTypeException.class, () -> service.validateAndGetServiceByListType());
+    }
+
+    @Test
+    @SneakyThrows
+    void shouldExecuteServiceNotFound() {
+        setListType("DESIGNACAO");
+        Assertions.assertThrows(
+                ServiceListTypeNotFoundException.class,
+                () -> service.validateAndGetServiceByListType());
+    }
+
+    @Test
+    @SneakyThrows
+    void shouldExecuteServiceSuccess() {
+        setListType(ListTypeEnum.LIMPEZA.toString());
+        var serviceRet = service.validateAndGetServiceByListType();
+        Assertions.assertNotNull(serviceRet);
+    }
+
+    @SneakyThrows
+    private void setListType(String listType) {
+        FieldUtils.writeField(service, "listType", listType, true);
+    }
 }

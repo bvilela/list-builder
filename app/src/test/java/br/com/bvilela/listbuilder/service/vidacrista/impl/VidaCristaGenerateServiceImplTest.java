@@ -29,286 +29,347 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class VidaCristaGenerateServiceImplTest
-		extends BaseGenerateServiceTest<FileInputDataVidaCristaDTO, FileInputDataVidaCristaDtoBuilder> {
+        extends BaseGenerateServiceTest<
+                FileInputDataVidaCristaDTO, FileInputDataVidaCristaDtoBuilder> {
 
-	@InjectMocks
-	private VidaCristaGenerateServiceImpl service;
+    @InjectMocks private VidaCristaGenerateServiceImpl service;
 
-	@InjectMocks
-	private AppProperties properties;
+    @InjectMocks private AppProperties properties;
 
-	@Mock
-	private VidaCristaExtractService extractService;
+    @Mock private VidaCristaExtractService extractService;
 
-	@Mock
-	private VidaCristaWriterService writerService;
+    @Mock private VidaCristaWriterService writerService;
 
-	@Mock
-	private NotificationService notificationService;
+    @Mock private NotificationService notificationService;
 
-	public VidaCristaGenerateServiceImplTest() throws ListBuilderException {
-		super(ListTypeEnum.VIDA_CRISTA, FileInputDataVidaCristaDtoBuilder.create().withRandomData());
-	}
+    public VidaCristaGenerateServiceImplTest() throws ListBuilderException {
+        super(
+                ListTypeEnum.VIDA_CRISTA,
+                FileInputDataVidaCristaDtoBuilder.create().withRandomData());
+    }
 
-	@BeforeEach
-	public void setup() throws IllegalAccessException {
-		MockitoAnnotations.openMocks(this);
-		FieldUtils.writeField(properties, "inputDir", BaseGenerateServiceTest.testUtils.getResourceDirectory(), true);
-		service = new VidaCristaGenerateServiceImpl(properties, extractService, writerService, notificationService);
-	}
+    @BeforeEach
+    public void setup() throws IllegalAccessException {
+        MockitoAnnotations.openMocks(this);
+        FieldUtils.writeField(
+                properties,
+                "inputDir",
+                BaseGenerateServiceTest.testUtils.getResourceDirectory(),
+                true);
+        service =
+                new VidaCristaGenerateServiceImpl(
+                        properties, extractService, writerService, notificationService);
+    }
 
-	@Test
-	void shouldModoExecutionNotNull() {
-		Assertions.assertNotNull(service.getListType());
-	}
+    @Test
+    void shouldModoExecutionNotNull() {
+        Assertions.assertNotNull(service.getListType());
+    }
 
-	@Test
-	void shouldGetExecutionMode() {
-		assertEquals(BaseGenerateServiceTest.testUtils.getListType(), service.getListType());
-	}
-	
-	@Test
-	void shouldCorrectFileInputName() {
-		assertEquals("dados-vida-crista.json", service.getListType().getInputFileName());
-	}
+    @Test
+    void shouldGetExecutionMode() {
+        assertEquals(BaseGenerateServiceTest.testUtils.getListType(), service.getListType());
+    }
 
-	@Test
-	void shouldGenerateListFileNotFoundException() throws IllegalAccessException {
-		validateListBuilderException(MessageConfig.FILE_NOT_FOUND);
-	}
+    @Test
+    void shouldCorrectFileInputName() {
+        assertEquals("dados-vida-crista.json", service.getListType().getInputFileName());
+    }
 
-	@Test
-	void shouldGenerateListFileSyntaxException() throws IllegalAccessException {
-		BaseGenerateServiceTest.testUtils.writeFileInputSyntaxError();
-		validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
-	}
+    @Test
+    void shouldGenerateListFileNotFoundException() throws IllegalAccessException {
+        validateListBuilderException(MessageConfig.FILE_NOT_FOUND);
+    }
 
-	@Test
-	void shouldGenerateListExceptionLastDateNull() throws IllegalAccessException {
-		validateGenerateListLastDateException(null);
-	}
+    @Test
+    void shouldGenerateListFileSyntaxException() throws IllegalAccessException {
+        BaseGenerateServiceTest.testUtils.writeFileInputSyntaxError();
+        validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
+    }
 
-	@Test
-	void shouldGenerateListExceptionLastDateEmpty() throws IllegalAccessException {
-		validateGenerateListLastDateException("");
-	}
+    @Test
+    void shouldGenerateListExceptionLastDateNull() throws IllegalAccessException {
+        validateGenerateListLastDateException(null);
+    }
 
-	@Test
-	void shouldGenerateListExceptionLastDateBlank() throws IllegalAccessException {
-		validateGenerateListLastDateException(" ");
-	}
+    @Test
+    void shouldGenerateListExceptionLastDateEmpty() throws IllegalAccessException {
+        validateGenerateListLastDateException("");
+    }
 
-	private void validateGenerateListLastDateException(String lastDate) throws IllegalAccessException {
-		writeFileInputFromDto(builder.withLastDate(lastDate).build());
-		validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
-	}
+    @Test
+    void shouldGenerateListExceptionLastDateBlank() throws IllegalAccessException {
+        validateGenerateListLastDateException(" ");
+    }
 
-	@Test
-	void shouldGenerateListExceptionParticipantsNull() throws IllegalAccessException {
-		validateGenerateListParticipantsException(null);
-	}
+    private void validateGenerateListLastDateException(String lastDate)
+            throws IllegalAccessException {
+        writeFileInputFromDto(builder.withLastDate(lastDate).build());
+        validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
+    }
 
-	@Test
-	void shouldGenerateListExceptionParticipantsEmpty() throws IllegalAccessException {
-		validateGenerateListParticipantsException(List.of());
-	}
+    @Test
+    void shouldGenerateListExceptionParticipantsNull() throws IllegalAccessException {
+        validateGenerateListParticipantsException(null);
+    }
 
-	private void validateGenerateListParticipantsException(List<List<String>> participants)
-			throws IllegalAccessException {
-		writeFileInputFromDto(builder.withParticipants(participants).build());
-		validateListBuilderException(MessageConfig.PARTICIPANTS_REQUIRED);
-	}
+    @Test
+    void shouldGenerateListExceptionParticipantsEmpty() throws IllegalAccessException {
+        validateGenerateListParticipantsException(List.of());
+    }
 
-	@Test
-	void shouldGenerateListExceptionNumberWeeksExtractDiffNumberWeekInputDto() throws IllegalAccessException {
-		writeFileInputFromDto(builder.build());
-		var expectedMessageError = "Quantidade de semanas extraída do site é diferente da quantidade de semanas com participantes";
-		validateListBuilderException(expectedMessageError);
-	}
+    private void validateGenerateListParticipantsException(List<List<String>> participants)
+            throws IllegalAccessException {
+        writeFileInputFromDto(builder.withParticipants(participants).build());
+        validateListBuilderException(MessageConfig.PARTICIPANTS_REQUIRED);
+    }
 
-	@Test
-	void shouldGenerateListRenameItemsExceptionWeekIndexNull() throws IllegalAccessException {
-		var renameItem = FileInputDataVidaCristaRenameItemDtoBuilder.create().withData(null, "original Title", null)
-				.build();
-		var dto = builder.withRandomData().withRenameItems(List.of(renameItem)).build();
-		writeFileInputFromDto(dto);
-		var expectedMessageError = "Numero da Semana é obrigatório";
-		validateListBuilderException(expectedMessageError);
-	}
+    @Test
+    void shouldGenerateListExceptionNumberWeeksExtractDiffNumberWeekInputDto()
+            throws IllegalAccessException {
+        writeFileInputFromDto(builder.build());
+        var expectedMessageError =
+                "Quantidade de semanas extraída do site é diferente da quantidade de semanas com participantes";
+        validateListBuilderException(expectedMessageError);
+    }
 
-	@Test
-	void shouldGenerateListRenameItemsExceptionWeekOriginalNameNull() throws IllegalAccessException {
-		baseGenerateListRenameItemsExceptionWeekOriginalName(null);
-	}
+    @Test
+    void shouldGenerateListRenameItemsExceptionWeekIndexNull() throws IllegalAccessException {
+        var renameItem =
+                FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                        .withData(null, "original Title", null)
+                        .build();
+        var dto = builder.withRandomData().withRenameItems(List.of(renameItem)).build();
+        writeFileInputFromDto(dto);
+        var expectedMessageError = "Numero da Semana é obrigatório";
+        validateListBuilderException(expectedMessageError);
+    }
 
-	@Test
-	void shouldGenerateListRenameItemsExceptionWeekOriginalNameEmpty() throws IllegalAccessException {
-		baseGenerateListRenameItemsExceptionWeekOriginalName("");
-	}
+    @Test
+    void shouldGenerateListRenameItemsExceptionWeekOriginalNameNull()
+            throws IllegalAccessException {
+        baseGenerateListRenameItemsExceptionWeekOriginalName(null);
+    }
 
-	@Test
-	void shouldGenerateListRenameItemsExceptionWeekOriginalNameBlank() throws IllegalAccessException {
-		baseGenerateListRenameItemsExceptionWeekOriginalName(" ");
-	}
+    @Test
+    void shouldGenerateListRenameItemsExceptionWeekOriginalNameEmpty()
+            throws IllegalAccessException {
+        baseGenerateListRenameItemsExceptionWeekOriginalName("");
+    }
 
-	private void baseGenerateListRenameItemsExceptionWeekOriginalName(String originalName)
-			throws IllegalAccessException {
-		var renameItem = FileInputDataVidaCristaRenameItemDtoBuilder.create().withData(1, originalName, "new Title")
-				.build();
-		var dto = builder.withRandomData().withRenameItems(List.of(renameItem)).build();
-		writeFileInputFromDto(dto);
-		var expectedMessageError = "Nome Original do Item é obrigatório";
-		validateListBuilderException(expectedMessageError);
-	}
+    @Test
+    void shouldGenerateListRenameItemsExceptionWeekOriginalNameBlank()
+            throws IllegalAccessException {
+        baseGenerateListRenameItemsExceptionWeekOriginalName(" ");
+    }
 
-	@Test
-	void shouldProcessRenameOrRemoveItemRename() {
-		var weekItemDto = VidaCristaExtractWeekItemDtoBuilder.create().withTitle("Title 1").build();
-		var listItemWeekToRemove = new ArrayList<VidaCristaExtractWeekItemDTO>();
-		var itemRename = FileInputDataVidaCristaRenameItemDtoBuilder.create().withData(1, "Title 1", "Title 1 renamed")
-				.build();
-		service.processRenameOrRemoveItem(weekItemDto, itemRename, listItemWeekToRemove);
-		Assertions.assertTrue(listItemWeekToRemove.isEmpty());
-		assertEquals("Title 1 renamed", weekItemDto.getTitle());
-	}
+    private void baseGenerateListRenameItemsExceptionWeekOriginalName(String originalName)
+            throws IllegalAccessException {
+        var renameItem =
+                FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                        .withData(1, originalName, "new Title")
+                        .build();
+        var dto = builder.withRandomData().withRenameItems(List.of(renameItem)).build();
+        writeFileInputFromDto(dto);
+        var expectedMessageError = "Nome Original do Item é obrigatório";
+        validateListBuilderException(expectedMessageError);
+    }
 
-	@Test
-	void shouldProcessRenameOrRemoveItemRemoveCaseNull() {
-		var weekItemDto = VidaCristaExtractWeekItemDtoBuilder.create().withTitle("Title 1").build();
-		var listItemWeekToRemove = new ArrayList<VidaCristaExtractWeekItemDTO>();
-		var itemRename = FileInputDataVidaCristaRenameItemDtoBuilder.create().withData(1, "Title 1", null).build();
-		service.processRenameOrRemoveItem(weekItemDto, itemRename, listItemWeekToRemove);
-		assertEquals(1, listItemWeekToRemove.size());
-		assertEquals("Title 1", weekItemDto.getTitle());
-	}
+    @Test
+    void shouldProcessRenameOrRemoveItemRename() {
+        var weekItemDto = VidaCristaExtractWeekItemDtoBuilder.create().withTitle("Title 1").build();
+        var listItemWeekToRemove = new ArrayList<VidaCristaExtractWeekItemDTO>();
+        var itemRename =
+                FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                        .withData(1, "Title 1", "Title 1 renamed")
+                        .build();
+        service.processRenameOrRemoveItem(weekItemDto, itemRename, listItemWeekToRemove);
+        Assertions.assertTrue(listItemWeekToRemove.isEmpty());
+        assertEquals("Title 1 renamed", weekItemDto.getTitle());
+    }
 
-	@Test
-	void shouldProcessRenameOrRemoveItemRemoveCaseEmpty() {
-		var weekItemDto = VidaCristaExtractWeekItemDtoBuilder.create().withTitle("Title 1").build();
-		var listItemWeekToRemove = new ArrayList<VidaCristaExtractWeekItemDTO>();
-		var itemRename = FileInputDataVidaCristaRenameItemDtoBuilder.create().withData(1, "Title 1", "").build();
-		service.processRenameOrRemoveItem(weekItemDto, itemRename, listItemWeekToRemove);
-		assertEquals(1, listItemWeekToRemove.size());
-		assertEquals("Title 1", weekItemDto.getTitle());
-	}
+    @Test
+    void shouldProcessRenameOrRemoveItemRemoveCaseNull() {
+        var weekItemDto = VidaCristaExtractWeekItemDtoBuilder.create().withTitle("Title 1").build();
+        var listItemWeekToRemove = new ArrayList<VidaCristaExtractWeekItemDTO>();
+        var itemRename =
+                FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                        .withData(1, "Title 1", null)
+                        .build();
+        service.processRenameOrRemoveItem(weekItemDto, itemRename, listItemWeekToRemove);
+        assertEquals(1, listItemWeekToRemove.size());
+        assertEquals("Title 1", weekItemDto.getTitle());
+    }
 
-	@Test
-	void shouldCheckRenameItemFromWeekNoRenameItemsForThisWeek() {
-		int weekIndex = 0;
-		var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
-		var listRenameItems = List.of(FileInputDataVidaCristaRenameItemDtoBuilder.create()
-				.withData(weekIndex + 3, week.getItems().get(6).getTitle(), "Title Renamed").build());
-		service.checkRenameItemFromWeek(week, listRenameItems, weekIndex);
-	}
+    @Test
+    void shouldProcessRenameOrRemoveItemRemoveCaseEmpty() {
+        var weekItemDto = VidaCristaExtractWeekItemDtoBuilder.create().withTitle("Title 1").build();
+        var listItemWeekToRemove = new ArrayList<VidaCristaExtractWeekItemDTO>();
+        var itemRename =
+                FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                        .withData(1, "Title 1", "")
+                        .build();
+        service.processRenameOrRemoveItem(weekItemDto, itemRename, listItemWeekToRemove);
+        assertEquals(1, listItemWeekToRemove.size());
+        assertEquals("Title 1", weekItemDto.getTitle());
+    }
 
-	@Test
-	void shouldCheckRenameItemFromWeekMatchNameToRename() {
-		int weekIndex = 0;
-		var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
-		var listRenameItems = List.of(FileInputDataVidaCristaRenameItemDtoBuilder.create()
-				.withData(weekIndex + 1, week.getItems().get(week.getItems().size() - 1).getTitle(), "Title Renamed")
-				.build());
-		service.checkRenameItemFromWeek(week, listRenameItems, weekIndex);
-		assertEquals("Title Renamed", week.getItems().get(week.getItems().size() - 1).getTitle());
-		Assertions.assertFalse(listRenameItems.get(0).toString().isEmpty());
-	}
+    @Test
+    void shouldCheckRenameItemFromWeekNoRenameItemsForThisWeek() {
+        int weekIndex = 0;
+        var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
+        var listRenameItems =
+                List.of(
+                        FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                                .withData(
+                                        weekIndex + 3,
+                                        week.getItems().get(6).getTitle(),
+                                        "Title Renamed")
+                                .build());
+        service.checkRenameItemFromWeek(week, listRenameItems, weekIndex);
+    }
 
-	@Test
-	void shouldCheckRenameItemFromWeekNoMatchNameToRename() {
-		int weekIndex = 0;
-		var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
-		var listRenameItems = List.of(FileInputDataVidaCristaRenameItemDtoBuilder.create()
-				.withData(weekIndex + 1, "ABC", "Title Renamed").build());
-		service.checkRenameItemFromWeek(week, listRenameItems, weekIndex);
-		Assertions.assertTrue(week.getItems().stream().filter(e -> e.getTitle().equalsIgnoreCase("Title Renamed")).toList()
-				.isEmpty());
-	}
+    @Test
+    void shouldCheckRenameItemFromWeekMatchNameToRename() {
+        int weekIndex = 0;
+        var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
+        var listRenameItems =
+                List.of(
+                        FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                                .withData(
+                                        weekIndex + 1,
+                                        week.getItems().get(week.getItems().size() - 1).getTitle(),
+                                        "Title Renamed")
+                                .build());
+        service.checkRenameItemFromWeek(week, listRenameItems, weekIndex);
+        assertEquals("Title Renamed", week.getItems().get(week.getItems().size() - 1).getTitle());
+        Assertions.assertFalse(listRenameItems.get(0).toString().isEmpty());
+    }
 
-	@Test
-	void shouldCheckRenameItemFromWeekMatchNameToRemove() {
-		int weekIndex = 0;
-		var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
-		var originalWeekItems = new ArrayList<>(week.getItems());
-		var initialWeekItemsSize = week.getItems().size();
-		var listRenameItems = List.of(FileInputDataVidaCristaRenameItemDtoBuilder.create()
-				.withData(weekIndex + 1, week.getItems().get(initialWeekItemsSize - 1).getTitle(), null).build());
-		service.checkRenameItemFromWeek(week, listRenameItems, weekIndex);
-		assertEquals(initialWeekItemsSize - 1, week.getItems().size());
-		assertEquals(originalWeekItems.get(0), week.getItems().get(0));
-		assertEquals(originalWeekItems.get(1), week.getItems().get(1));
-		assertEquals(originalWeekItems.get(2), week.getItems().get(2));
-		assertEquals(originalWeekItems.get(3), week.getItems().get(3));
-		assertEquals(originalWeekItems.get(4), week.getItems().get(4));
-		assertEquals(originalWeekItems.get(5), week.getItems().get(5));
-	}
+    @Test
+    void shouldCheckRenameItemFromWeekNoMatchNameToRename() {
+        int weekIndex = 0;
+        var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
+        var listRenameItems =
+                List.of(
+                        FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                                .withData(weekIndex + 1, "ABC", "Title Renamed")
+                                .build());
+        service.checkRenameItemFromWeek(week, listRenameItems, weekIndex);
+        Assertions.assertTrue(
+                week.getItems().stream()
+                        .filter(e -> e.getTitle().equalsIgnoreCase("Title Renamed"))
+                        .toList()
+                        .isEmpty());
+    }
 
-	@Test
-	void shouldCheckRenameItemFromWeekMatchNameToRenameNoItemsCanRenamed() {
-		int weekIndex = 0;
-		var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
-		var originalWeekItems = cloneListWithoutReference(week.getItems());
-		var initialWeekItemsSize = week.getItems().size();
-		var auxList = new ArrayList<>(week.getItems());
-		auxList.remove(initialWeekItemsSize - 1);
-		week.setItems(auxList);
-		var listRenameItems = List.of(FileInputDataVidaCristaRenameItemDtoBuilder.create()
-				.withData(weekIndex + 1, week.getItems().get(1).getTitle(), "Title Rename").build());
-		service.checkRenameItemFromWeek(week, listRenameItems, weekIndex);
-		assertEquals(initialWeekItemsSize - 1, week.getItems().size());
-		assertEquals(originalWeekItems.get(0), week.getItems().get(0));
-		assertEquals(originalWeekItems.get(1), week.getItems().get(1));
-		assertEquals(originalWeekItems.get(2), week.getItems().get(2));
-		assertEquals(originalWeekItems.get(3), week.getItems().get(3));
-		assertEquals(originalWeekItems.get(4), week.getItems().get(4));
-		assertEquals(originalWeekItems.get(5), week.getItems().get(5));
-	}
+    @Test
+    void shouldCheckRenameItemFromWeekMatchNameToRemove() {
+        int weekIndex = 0;
+        var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
+        var originalWeekItems = new ArrayList<>(week.getItems());
+        var initialWeekItemsSize = week.getItems().size();
+        var listRenameItems =
+                List.of(
+                        FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                                .withData(
+                                        weekIndex + 1,
+                                        week.getItems().get(initialWeekItemsSize - 1).getTitle(),
+                                        null)
+                                .build());
+        service.checkRenameItemFromWeek(week, listRenameItems, weekIndex);
+        assertEquals(initialWeekItemsSize - 1, week.getItems().size());
+        assertEquals(originalWeekItems.get(0), week.getItems().get(0));
+        assertEquals(originalWeekItems.get(1), week.getItems().get(1));
+        assertEquals(originalWeekItems.get(2), week.getItems().get(2));
+        assertEquals(originalWeekItems.get(3), week.getItems().get(3));
+        assertEquals(originalWeekItems.get(4), week.getItems().get(4));
+        assertEquals(originalWeekItems.get(5), week.getItems().get(5));
+    }
 
-	@Test
-	void shouldCheckRenameItemFromWeekMatchNameToRemoveAndRename() {
-		int weekIndex = 0;
-		var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
-		var auxList = new ArrayList<>(week.getItems());
-		auxList.add(VidaCristaExtractWeekItemDtoBuilder.create()
-				.withRandomData(VidaCristaExtractItemType.WITH_PARTICIPANTS).build());
-		week.setItems(auxList);
-		var initialWeekItemsSize = week.getItems().size();
-		var listRenameItems = List.of(
-				FileInputDataVidaCristaRenameItemDtoBuilder.create()
-						.withData(weekIndex + 1, week.getItems().get(initialWeekItemsSize - 2).getTitle(),
-								"Title Renamed")
-						.build(),
-				FileInputDataVidaCristaRenameItemDtoBuilder.create()
-						.withData(weekIndex + 1, week.getItems().get(initialWeekItemsSize - 1).getTitle(), null)
-						.build());
-		var originalWeekItems = cloneListWithoutReference(week.getItems());
-		service.checkRenameItemFromWeek(week, listRenameItems, weekIndex);
-		assertEquals(initialWeekItemsSize, originalWeekItems.size());
-		assertEquals(initialWeekItemsSize - 1, week.getItems().size());
-		assertEquals(originalWeekItems.get(0), week.getItems().get(0));
-		assertEquals(originalWeekItems.get(1), week.getItems().get(1));
-		assertEquals(originalWeekItems.get(2), week.getItems().get(2));
-		assertEquals(originalWeekItems.get(3), week.getItems().get(3));
-		assertEquals(originalWeekItems.get(4), week.getItems().get(4));
-		assertEquals(originalWeekItems.get(5), week.getItems().get(5));
-		Assertions.assertNotEquals(originalWeekItems.get(6), week.getItems().get(6));
-		assertEquals("Title Renamed", week.getItems().get(6).getTitle());
-		Assertions.assertNotNull(originalWeekItems.get(7));
-	}
+    @Test
+    void shouldCheckRenameItemFromWeekMatchNameToRenameNoItemsCanRenamed() {
+        int weekIndex = 0;
+        var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
+        var originalWeekItems = cloneListWithoutReference(week.getItems());
+        var initialWeekItemsSize = week.getItems().size();
+        var auxList = new ArrayList<>(week.getItems());
+        auxList.remove(initialWeekItemsSize - 1);
+        week.setItems(auxList);
+        var listRenameItems =
+                List.of(
+                        FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                                .withData(
+                                        weekIndex + 1,
+                                        week.getItems().get(1).getTitle(),
+                                        "Title Rename")
+                                .build());
+        service.checkRenameItemFromWeek(week, listRenameItems, weekIndex);
+        assertEquals(initialWeekItemsSize - 1, week.getItems().size());
+        assertEquals(originalWeekItems.get(0), week.getItems().get(0));
+        assertEquals(originalWeekItems.get(1), week.getItems().get(1));
+        assertEquals(originalWeekItems.get(2), week.getItems().get(2));
+        assertEquals(originalWeekItems.get(3), week.getItems().get(3));
+        assertEquals(originalWeekItems.get(4), week.getItems().get(4));
+        assertEquals(originalWeekItems.get(5), week.getItems().get(5));
+    }
 
-	private void validateListBuilderException(String expectedMessageError) throws IllegalAccessException {
-		BaseGenerateServiceTest.testUtils.validateException(ListBuilderException.class, () -> service.generateList(), expectedMessageError);
-	}
+    @Test
+    void shouldCheckRenameItemFromWeekMatchNameToRemoveAndRename() {
+        int weekIndex = 0;
+        var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
+        var auxList = new ArrayList<>(week.getItems());
+        auxList.add(
+                VidaCristaExtractWeekItemDtoBuilder.create()
+                        .withRandomData(VidaCristaExtractItemType.WITH_PARTICIPANTS)
+                        .build());
+        week.setItems(auxList);
+        var initialWeekItemsSize = week.getItems().size();
+        var listRenameItems =
+                List.of(
+                        FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                                .withData(
+                                        weekIndex + 1,
+                                        week.getItems().get(initialWeekItemsSize - 2).getTitle(),
+                                        "Title Renamed")
+                                .build(),
+                        FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                                .withData(
+                                        weekIndex + 1,
+                                        week.getItems().get(initialWeekItemsSize - 1).getTitle(),
+                                        null)
+                                .build());
+        var originalWeekItems = cloneListWithoutReference(week.getItems());
+        service.checkRenameItemFromWeek(week, listRenameItems, weekIndex);
+        assertEquals(initialWeekItemsSize, originalWeekItems.size());
+        assertEquals(initialWeekItemsSize - 1, week.getItems().size());
+        assertEquals(originalWeekItems.get(0), week.getItems().get(0));
+        assertEquals(originalWeekItems.get(1), week.getItems().get(1));
+        assertEquals(originalWeekItems.get(2), week.getItems().get(2));
+        assertEquals(originalWeekItems.get(3), week.getItems().get(3));
+        assertEquals(originalWeekItems.get(4), week.getItems().get(4));
+        assertEquals(originalWeekItems.get(5), week.getItems().get(5));
+        Assertions.assertNotEquals(originalWeekItems.get(6), week.getItems().get(6));
+        assertEquals("Title Renamed", week.getItems().get(6).getTitle());
+        Assertions.assertNotNull(originalWeekItems.get(7));
+    }
 
-	private List<VidaCristaExtractWeekItemDTO> cloneListWithoutReference(List<VidaCristaExtractWeekItemDTO> listSrc) {
-		var newList = new ArrayList<VidaCristaExtractWeekItemDTO>();
-		for (VidaCristaExtractWeekItemDTO item : listSrc) {
-			var newItem = new VidaCristaExtractWeekItemDTO();
-			newItem.setType(item.getType());
-			newItem.setTitle(item.getTitle());
-			newItem.setParticipants(item.getParticipants());
-			newList.add(newItem);
-		}
-		return newList;
-	}
+    private void validateListBuilderException(String expectedMessageError)
+            throws IllegalAccessException {
+        BaseGenerateServiceTest.testUtils.validateException(
+                ListBuilderException.class, () -> service.generateList(), expectedMessageError);
+    }
 
+    private List<VidaCristaExtractWeekItemDTO> cloneListWithoutReference(
+            List<VidaCristaExtractWeekItemDTO> listSrc) {
+        var newList = new ArrayList<VidaCristaExtractWeekItemDTO>();
+        for (VidaCristaExtractWeekItemDTO item : listSrc) {
+            var newItem = new VidaCristaExtractWeekItemDTO();
+            newItem.setType(item.getType());
+            newItem.setTitle(item.getTitle());
+            newItem.setParticipants(item.getParticipants());
+            newList.add(newItem);
+        }
+        return newList;
+    }
 }
