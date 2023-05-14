@@ -13,6 +13,7 @@ import java.time.LocalDate;
 
 import br.com.bvilela.lib.utils.GsonUtils;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ClassPathResource;
 
@@ -61,9 +62,10 @@ public final class FileUtils {
 		}
 	}
 	
-	public static void writeTxtFile(File file, StringBuilder sb) throws ListBuilderException {
+	@SneakyThrows
+	public static void writeTxtFile(File file, StringBuilder stringBuilder) {
 		try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
-			writer.append(sb);	
+			writer.append(stringBuilder);
 		} catch (IOException e) {
 			log.error("Error Escrever Arquivo TXT: {}", e.getMessage());
 			throw new ListBuilderException("Erro ao escrever arquivo TXT");			

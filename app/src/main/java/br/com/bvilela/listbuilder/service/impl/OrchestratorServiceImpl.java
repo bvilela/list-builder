@@ -6,18 +6,12 @@ import br.com.bvilela.listbuilder.exception.listtype.RequiredListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.OrchestratorService;
-import br.com.bvilela.listbuilder.service.assistencia.impl.AssistenciaGenerateServiceImpl;
-import br.com.bvilela.listbuilder.service.designacao.impl.DesignacaoGenerateServiceImpl;
-import br.com.bvilela.listbuilder.service.discurso.impl.DiscursoGenerateServiceImpl;
-import br.com.bvilela.listbuilder.service.limpeza.impl.LimpezaGenerateServiceImpl;
-import br.com.bvilela.listbuilder.service.vidacrista.impl.VidaCristaGenerateServiceImpl;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 @Slf4j

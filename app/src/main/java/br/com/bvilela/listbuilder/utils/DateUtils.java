@@ -44,10 +44,10 @@ public final class DateUtils {
 	}
 
 	public static Month getMonthByNamePT(String namePT) {
-		DateTimeFormatter df = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-MMMM-yyyy")
+		DateTimeFormatter formatter = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-MMMM-yyyy")
 				.toFormatter(LOCALE_PT_BR);
 		var fakeDate = "01-" + namePT + "-2022";
-		return LocalDate.parse(fakeDate, df).getMonth();
+		return LocalDate.parse(fakeDate, formatter).getMonth();
 	}
 
 	public static LocalDate parse(String date) {

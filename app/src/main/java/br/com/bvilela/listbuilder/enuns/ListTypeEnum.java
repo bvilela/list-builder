@@ -20,13 +20,13 @@ public enum ListTypeEnum {
 	private final SizeBase header;
 	private SizeBase subHeader;
 	
-	private ListTypeEnum() {
+	ListTypeEnum() {
 		this.pageMg = SizeConfig.DEFAULT_MARGIN;
 		this.header = SizeConfig.DEFAULT_HEADER;
 		this.subHeader = SizeConfig.DEFAULT_SUBHEADER;
 	}
 	
-	private ListTypeEnum(MarginBase pageMg, SizeBase... header) {
+	ListTypeEnum(MarginBase pageMg, SizeBase... header) {
 		this.pageMg = pageMg;
 		this.header = header[0];
 		if (header.length > 1) {

@@ -174,7 +174,7 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
 	
 	private boolean isTextBold(DesignacaoWriterItemDTO item) {
 		var name = item.getName().toLowerCase();
-		return (name.contains("congresso") || name.contains("assembleia") || name.contains("visita"));
+		return name.contains("congresso") || name.contains("assembleia") || name.contains("visita");
 	}
 	
 	private List<DesignacaoWriterItemDTO> getAllReaders(DesignacaoWriterDTO dto) {

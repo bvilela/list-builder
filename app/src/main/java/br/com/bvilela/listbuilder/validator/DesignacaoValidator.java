@@ -6,13 +6,13 @@ import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class DesignacaoValidator {
-	
-	private DesignacaoValidator() {
-	}
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class DesignacaoValidator {
 
 	public static void validAndConvertData(FileInputDataDesignacaoDTO dto) throws ListBuilderException {
 		log.info("Validando Dados de Entrada!");
@@ -58,7 +58,7 @@ public class DesignacaoValidator {
 	}
 	
 	private static <T> boolean listEmpty(List<T> list) {
-		return (list == null || list.isEmpty()); 
+		return list == null || list.isEmpty();
 	}
 	
 }

@@ -46,12 +46,12 @@ public final class DocxWriterUtilsImpl implements WriterUtils<XWPFDocument> {
 		pageSize.setH(SizeConfig.DOCX_A4_HEIGHT_POINT);
 		
     	// Setting Margin
-		var mg = listTypeEnum.getPageMg();
+		var pageMg = listTypeEnum.getPageMg();
 		CTPageMar pageMar = sectPr.addNewPgMar();
-        pageMar.setLeft(convertBigInt(mg.getLeft()));
-        pageMar.setTop(convertBigInt(mg.getTop()));
-        pageMar.setRight(convertBigInt(mg.getRight()));
-        pageMar.setBottom(convertBigInt(mg.getLeft()));
+        pageMar.setLeft(convertBigInt(pageMg.getLeft()));
+        pageMar.setTop(convertBigInt(pageMg.getTop()));
+        pageMar.setRight(convertBigInt(pageMg.getRight()));
+        pageMar.setBottom(convertBigInt(pageMg.getLeft()));
         
         return doc;
 	}

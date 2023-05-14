@@ -65,7 +65,7 @@
 
     <rule ref="category/java/codestyle.xml/LongVariable">
         <properties>
-            <property name="minimum" value="30" />
+            <property name="minimum" value="35" />
         </properties>
     </rule>
     <rule ref="category/java/codestyle.xml/ShortClassName"/>

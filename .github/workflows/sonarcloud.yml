@@ -26,6 +26,27 @@ jobs:
           distribution: 'temurin'
           cache: maven # Memorizar dependências
 
+      - name: Check PMD
+        uses: pmd/pmd-github-action@v1
+        id: pmd
+        with:
+          version: '6.40.0'
+          sourcePath: 'app/src/main/java'
+          rulesets: 'app/pmd-ruleset.xml'
+          analyzeModifiedFilesOnly: false
+
+      - name: No Violation of PMD Rules
+        if: steps.pmd.outputs.violations == 0
+        run: |
+          echo "No violation of the PMD Rules. Congratulations! :)"         
+
+      - name: Validating Violations of PMD Rules
+        if: steps.pmd.outputs.violations != 0
+        run: |
+          echo "Number of Violations: ${{ steps.pmd.outputs.violations }} - (Must be Zero!!!)"
+          echo "Check previous step for more details!!!"
+          exit 1
+
       - name: Run Unit Test
         run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml test --file app/pom.xml 
         env:

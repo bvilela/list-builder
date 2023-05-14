@@ -113,7 +113,7 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
 	public String adjustQuotes(String text) {
 		String quotes = "\"";
 		text = text.replace("\" ", quotes);
-		boolean adjust = (text.startsWith(quotes) && !text.endsWith(quotes)); 
+		boolean adjust = text.startsWith(quotes) && !text.endsWith(quotes);
 		return adjust ? text.concat(quotes) : text;
 	}
 

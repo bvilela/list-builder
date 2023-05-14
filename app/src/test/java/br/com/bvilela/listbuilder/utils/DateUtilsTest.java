@@ -1,7 +1,6 @@
 package br.com.bvilela.listbuilder.utils;
 
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

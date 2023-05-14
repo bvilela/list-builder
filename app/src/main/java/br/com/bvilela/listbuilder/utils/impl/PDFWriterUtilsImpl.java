@@ -37,8 +37,8 @@ public final class PDFWriterUtilsImpl implements WriterUtils<Document> {
 	
 	@Override
 	public Document getDocument(ListTypeEnum list) {
-		var mg = list.getPageMg();
-		return new Document(PageSize.A4, mg.getLeft(), mg.getRight(), mg.getTop(), mg.getBottom());
+		var pageMg = list.getPageMg();
+		return new Document(PageSize.A4, pageMg.getLeft(), pageMg.getRight(), pageMg.getTop(), pageMg.getBottom());
 	}
 
 	public Paragraph createParagraphNormal(String message) {
@@ -69,8 +69,8 @@ public final class PDFWriterUtilsImpl implements WriterUtils<Document> {
 		return createParagraphBoldNormal(boldText, BOLD13, normalText, NORMAL13);
 	}
 
-	public PdfPCell newCellNoBorder(Paragraph p) {
-		var cell = new PdfPCell(p);
+	public PdfPCell newCellNoBorder(Paragraph paragraph) {
+		var cell = new PdfPCell(paragraph);
 		cell.setBorder(Rectangle.NO_BORDER);
 		return cell;
 	}

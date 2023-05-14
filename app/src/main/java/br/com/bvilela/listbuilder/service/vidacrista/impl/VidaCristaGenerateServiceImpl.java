@@ -15,6 +15,7 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.utils.DateUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,8 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
 	}
 
 	@Override
-	public void generateList() throws ListBuilderException {
+	@SneakyThrows
+	public void generateList() {
 		try {
 			logInit(log);
 			
@@ -139,7 +141,7 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
 
 	private String getAbbreviation(String abbreviate) {
 		var name = this.abbreviationMap.get(abbreviate);
-		return (name != null && !name.isBlank()) ? name : abbreviate;
+		return name != null && !name.isBlank() ? name : abbreviate;
 	}
 	
 	private void renameItems(List<VidaCristaExtractWeekDTO> listWeeks,

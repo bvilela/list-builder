@@ -101,18 +101,18 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 	}
 
 	private PdfPTable addNewPage(Document document) throws DocumentException, ListBuilderException {
-		var mg = LIST_TYPE.getPageMg();
-		document.setMargins(mg.getLeft(), mg.getRight(), (mg.getTop() - AppUtils.getPointsFromMM(3)), mg.getBottom());
+		var pageMg = LIST_TYPE.getPageMg();
+		document.setMargins(pageMg.getLeft(), pageMg.getRight(), pageMg.getTop() - AppUtils.getPointsFromMM(3), pageMg.getBottom());
 		document.newPage();
 		return addHeaderAndTable(document);
 	}
 
 	private void printContentWeek(VidaCristaExtractWeekDTO week, PdfPTable columnTable) throws ListBuilderException {
 		if (week.isSkip()) {
-			var p1 = pdfUtils.createParagraphBold16(" ");
-			var p2 = pdfUtils.createParagraphBold16(week.getSkipMessage());
-			var cell1 = pdfUtils.newCellNoBorder(p1);
-			var cell2 = pdfUtils.newCellNoBorder(p2);
+			var paragraph1 = pdfUtils.createParagraphBold16(" ");
+			var paragraph2 = pdfUtils.createParagraphBold16(week.getSkipMessage());
+			var cell1 = pdfUtils.newCellNoBorder(paragraph1);
+			var cell2 = pdfUtils.newCellNoBorder(paragraph2);
 			cell2.setPaddingTop(10);
 			cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
 			columnTable.addCell(cell1);
@@ -138,8 +138,8 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 	private void addItemWithParticipants(PdfPTable columnTable, VidaCristaExtractWeekItemDTO item) {
 		addItemTitle(columnTable, item);
 		var participants = AppUtils.printList(item.getParticipants());
-		var p = pdfUtils.createParagraphNormal(participants);
-		var cell = pdfUtils.newCellNoBorder(p);
+		var paragraph = pdfUtils.createParagraphNormal(participants);
+		var cell = pdfUtils.newCellNoBorder(paragraph);
 		cell.setPaddingTop(-1);
 		columnTable.addCell(cell);
 	}
@@ -157,15 +157,15 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 	private void addItemPresident(PdfPTable columnTable, VidaCristaExtractWeekItemDTO item) {
 		var participants = AppUtils.printList(item.getParticipants());
 		participants = StringUtils.leftPad(participants, 30, " ");
-		var p = pdfUtils.createParagraphBold12Normal14(item.getTitle(), participants);
-		var cell = pdfUtils.newCellNoBorder(p);
+		var paragraph = pdfUtils.createParagraphBold12Normal14(item.getTitle(), participants);
+		var cell = pdfUtils.newCellNoBorder(paragraph);
 		cell.setPaddingTop(10);
 		columnTable.addCell(cell);
 	}
 
 	private void addItemTitle(PdfPTable columnTable, VidaCristaExtractWeekItemDTO item) {
-		var p = pdfUtils.createParagraphBold12(item.getTitle());
-		var cell = pdfUtils.newCellNoBorder(p);
+		var paragraph = pdfUtils.createParagraphBold12(item.getTitle());
+		var cell = pdfUtils.newCellNoBorder(paragraph);
 		cell.setPaddingTop(10);
 		columnTable.addCell(cell);
 	}
