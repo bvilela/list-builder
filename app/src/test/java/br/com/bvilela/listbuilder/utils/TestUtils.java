@@ -3,6 +3,7 @@ package br.com.bvilela.listbuilder.utils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
@@ -57,7 +58,7 @@ public class TestUtils {
 
 	private void writeFileInputFromDto(String fileName, String content) {
 		String file = Paths.get(this.resourceDirectory, fileName).toString();
-		try (FileWriter fileWriter = new FileWriter(new File(file))) {
+		try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
 			fileWriter.write(content);
 			fileWriter.flush();
 		} catch (IOException e) {
