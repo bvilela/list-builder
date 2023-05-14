@@ -30,12 +30,10 @@ class OrchestratorServiceImplTest {
 
     @Mock private AssistenciaGenerateServiceImpl assistenciaService;
 
-    @Mock private Map<String, BaseGenerateService> generateServiceStrategyMap;
-
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        generateServiceStrategyMap = new HashMap<>();
+        Map<String, BaseGenerateService> generateServiceStrategyMap = new HashMap<>();
         generateServiceStrategyMap.put("LIMPEZA", limpezaService);
         generateServiceStrategyMap.put("ASSISTENCIA", assistenciaService);
         service = new OrchestratorServiceImpl(generateServiceStrategyMap);

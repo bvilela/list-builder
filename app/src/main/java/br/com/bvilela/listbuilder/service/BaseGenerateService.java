@@ -24,8 +24,8 @@ public interface BaseGenerateService {
 		log.info("Lista '{}' gerada com Sucesso!", getListType());
 	}
 
-	default ListBuilderException defaultListBuilderException(Exception e) {
-		return new ListBuilderException("Erro ao gerar lista '%s': %s", getListType(), e.getMessage());
+	default ListBuilderException defaultListBuilderException(Exception exception) {
+		return new ListBuilderException("Erro ao gerar lista '%s': %s", getListType(), exception.getMessage());
 	}
 
 	default <T> T getFileInputDataDTO(AppProperties appProperties, Class<T> clazz)

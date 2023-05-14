@@ -355,7 +355,8 @@ class VidaCristaGenerateServiceImplTest
     }
 
     private void validateListBuilderException(String expectedMessageError) {
-        BaseGenerateServiceTest.testUtils.validateException(() -> service.generateList(), expectedMessageError);
+        BaseGenerateServiceTest.testUtils.validateException(
+                () -> service.generateList(), expectedMessageError);
     }
 
     private List<VidaCristaExtractWeekItemDTO> cloneListWithoutReference(

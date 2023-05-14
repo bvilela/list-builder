@@ -130,7 +130,9 @@ class VidaCristaExtractServiceImplTest {
                 VidaCristaExtractItemType.PRESIDENT,
                 "Presidente da Reunião");
         checkWeekItem(
-                week.getItems().get(index++), VidaCristaExtractItemType.READ_OF_WEEK, "1 SAMUEL 27-29");
+                week.getItems().get(index++),
+                VidaCristaExtractItemType.READ_OF_WEEK,
+                "1 SAMUEL 27-29");
         checkWeekItem(
                 week.getItems().get(index++),
                 VidaCristaExtractItemType.WITH_PARTICIPANTS,
@@ -174,7 +176,9 @@ class VidaCristaExtractServiceImplTest {
         checkWeekItem(
                 week.getItems().get(index++), VidaCristaExtractItemType.LABEL, "NOSSA VIDA CRISTÃ");
         checkWeekItem(
-                week.getItems().get(index++), VidaCristaExtractItemType.NO_PARTICIPANTS, "Cântico 129");
+                week.getItems().get(index++),
+                VidaCristaExtractItemType.NO_PARTICIPANTS,
+                "Cântico 129");
         checkWeekItem(
                 week.getItems().get(index++),
                 VidaCristaExtractItemType.WITH_PARTICIPANTS,

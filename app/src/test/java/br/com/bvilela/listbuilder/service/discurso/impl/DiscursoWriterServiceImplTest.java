@@ -39,35 +39,36 @@ class DiscursoWriterServiceImplTest {
     }
 
     @Test
-    void shouldWriterPDFException() throws ListBuilderException {
+    void shouldWriterPDFException() {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         dto.getReceive().get(0).setDateConverted(null);
-        var ex = Assertions.assertThrows(ListBuilderException.class, () -> service.writerPDF(dto));
-        Assertions.assertTrue(ex.getMessage().contains("Erro ao Gerar PDF - Erro: "));
+        var exception =
+                Assertions.assertThrows(ListBuilderException.class, () -> service.writerPDF(dto));
+        Assertions.assertTrue(exception.getMessage().contains("Erro ao Gerar PDF - Erro: "));
     }
 
     @Test
-    void shouldWriterPDFSuccessSendReceive() throws ListBuilderException {
+    void shouldWriterPDFSuccessSendReceive() {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         Assertions.assertDoesNotThrow(() -> service.writerPDF(dto));
     }
 
     @Test
-    void shouldWriterPDFSuccessSendOnly() throws ListBuilderException {
+    void shouldWriterPDFSuccessSendOnly() {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         dto.setReceive(null);
         Assertions.assertDoesNotThrow(() -> service.writerPDF(dto));
     }
 
     @Test
-    void shouldWriterPDFSuccessReceiveOnly() throws ListBuilderException {
+    void shouldWriterPDFSuccessReceiveOnly() {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         dto.setSend(null);
         Assertions.assertDoesNotThrow(() -> service.writerPDF(dto));
     }
 
     @Test
-    void shouldWriterPDFReceiveWithWildcardSuccess() throws ListBuilderException {
+    void shouldWriterPDFReceiveWithWildcardSuccess() {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         dto.getReceive().get(0).setThemeNumber(null);
         dto.getReceive().get(0).setThemeTitle("?");
@@ -75,7 +76,7 @@ class DiscursoWriterServiceImplTest {
     }
 
     @Test
-    void shouldWriterPDFSendWithWildcardSuccess() throws ListBuilderException {
+    void shouldWriterPDFSendWithWildcardSuccess() {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         dto.getSend().get(0).setThemeNumber(null);
         dto.getSend().get(0).setThemeTitle("?");
@@ -83,7 +84,7 @@ class DiscursoWriterServiceImplTest {
     }
 
     @Test
-    void shouldWriterPDFSuccessReceiveListSmaller() throws ListBuilderException {
+    void shouldWriterPDFSuccessReceiveListSmaller() {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         var newList = new ArrayList<>(dto.getReceive());
         newList.remove(0);
@@ -92,7 +93,7 @@ class DiscursoWriterServiceImplTest {
     }
 
     @Test
-    void shouldWriterPDFSuccessSendListSmaller() throws ListBuilderException {
+    void shouldWriterPDFSuccessSendListSmaller() {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         var newList = new ArrayList<>(dto.getSend());
         newList.remove(0);

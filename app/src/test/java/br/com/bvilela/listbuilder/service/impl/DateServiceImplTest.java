@@ -33,8 +33,8 @@ class DateServiceImplTest {
     }
 
     /** CreateItemDate */
-    private ItemDateDTO cid(int month, int day, String ex) {
-        return new ItemDateDTO(LocalDate.of(2022, month, day), ex);
+    private ItemDateDTO cid(int month, int day, String message) {
+        return new ItemDateDTO(LocalDate.of(2022, month, day), message);
     }
 
     /** CreateItemDate */
@@ -54,8 +54,8 @@ class DateServiceImplTest {
 
     private List<LocalDate> listLocalDate(int[][] matrix) {
         var list = new ArrayList<LocalDate>();
-        for (int i = 0; i < matrix.length; i++) {
-            list.add(LocalDate.of(2022, matrix[i][0], matrix[i][1]));
+        for (int[] ints : matrix) {
+            list.add(LocalDate.of(2022, ints[0], ints[1]));
         }
         return list;
     }

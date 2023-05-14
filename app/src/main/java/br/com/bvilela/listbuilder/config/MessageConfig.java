@@ -1,9 +1,10 @@
 package br.com.bvilela.listbuilder.config;
 
-public abstract class MessageConfig {
-	
-	private MessageConfig() {
-	}
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class MessageConfig {
 	
 	// Generic
 	public static final String MSG_ERROR_MIDWEEK_DAY_NOT_FOUND = "Dia da Reunião de Meio de Semana está VAZIO!";

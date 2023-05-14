@@ -48,7 +48,8 @@ class VidaCristaWriterServiceImplTest {
                 .filter(e -> e.getType() == VidaCristaExtractItemType.LABEL)
                 .findFirst()
                 .ifPresent(e -> e.setTitle("abc"));
-        var exception = Assertions.assertThrows(ListBuilderException.class, () -> service.writerPDF(list));
+        var exception =
+                Assertions.assertThrows(ListBuilderException.class, () -> service.writerPDF(list));
         var msg =
                 "Erro ao Gerar PDF - Erro: Erro ao obter Imagem da Label - Nenhuma Imagem encontrada para a Label";
         Assertions.assertEquals(msg, exception.getMessage());
@@ -62,7 +63,8 @@ class VidaCristaWriterServiceImplTest {
         newListItems.removeIf(e -> e.getType() == VidaCristaExtractItemType.READ_OF_WEEK);
         list.get(0).setItems(newListItems);
 
-        var exception = Assertions.assertThrows(ListBuilderException.class, () -> service.writerPDF(list));
+        var exception =
+                Assertions.assertThrows(ListBuilderException.class, () -> service.writerPDF(list));
         var msg = "Erro ao Gerar PDF - Erro: Erro ao Obter Leitura da Semana";
         Assertions.assertEquals(msg, exception.getMessage());
     }

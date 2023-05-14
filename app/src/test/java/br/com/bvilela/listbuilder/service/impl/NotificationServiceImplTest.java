@@ -206,7 +206,8 @@ class NotificationServiceImplTest {
                 Assertions.assertThrows(
                         ListBuilderException.class, () -> service.vidaCrista(dtoVidaCrista));
         Assertions.assertEquals(
-                "Defina a propriedade 'notif.christianlife.midweek.meeting.day'!", exception.getMessage());
+                "Defina a propriedade 'notif.christianlife.midweek.meeting.day'!",
+                exception.getMessage());
     }
 
     // *********************** UTILS *********************** \\

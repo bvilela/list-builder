@@ -9,6 +9,7 @@ import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
 import br.com.bvilela.listbuilder.enuns.DesignacaoEntityEnum;
 import br.com.bvilela.listbuilder.builder.FileInputDataLimpezaDtoBuilder;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,18 +50,18 @@ class GroupServiceImplTest {
     void shouldGenerateListGroupExceptionLastGroupInvalid()
             throws IllegalAccessException, ListBuilderException {
         var dto = FileInputDataLimpezaDtoBuilder.create().withLastGroupInvalid().build();
-        var ex =
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class,
                         () ->
                                 service.generateListGroupsLimpeza(
                                         dto, List.of(new ItemDateDTO(LocalDate.now())), 1));
-        Assertions.assertEquals(MessageConfig.LAST_GROUP_INVALID, ex.getMessage());
+        Assertions.assertEquals(MessageConfig.LAST_GROUP_INVALID, exception.getMessage());
     }
 
     @Test
-    void shouldGenerateListGroupLayout1Success()
-            throws IllegalAccessException, ListBuilderException {
+    @SneakyThrows
+    void shouldGenerateListGroupLayout1Success() {
         var dto = FileInputDataLimpezaDtoBuilder.create().withSuccess().build();
         dto.setLastDate("1");
         var list = service.generateListGroupsLimpeza(dto, listItemDate, 1);
@@ -74,8 +75,8 @@ class GroupServiceImplTest {
     }
 
     @Test
-    void shouldGenerateListGroupLayout2Success()
-            throws IllegalAccessException, ListBuilderException {
+    @SneakyThrows
+    void shouldGenerateListGroupLayout2Success() {
         var dto = FileInputDataLimpezaDtoBuilder.create().withSuccess().build();
         dto.setLastGroup(dto.getGroups().size());
         var list = service.generateListGroupsLimpeza(dto, listItemDate, 2);
@@ -88,26 +89,26 @@ class GroupServiceImplTest {
 
     // --------------------- PRESIDENT --------------------- \\
     @Test
-    void shouldgenerateListDesignacaoPresidentException()
-            throws IllegalAccessException, ListBuilderException {
-        var ex =
+    void shouldgenerateListDesignacaoPresidentException() {
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class,
                         () -> service.generateListPresident(null, null));
-        Assertions.assertTrue(ex.getMessage().contains(DesignacaoEntityEnum.PRESIDENT.getLabel()));
+        Assertions.assertTrue(
+                exception.getMessage().contains(DesignacaoEntityEnum.PRESIDENT.getLabel()));
     }
 
     @Test
-    void shouldgenerateListDesignacaoPresidentLastInvalidException()
-            throws IllegalAccessException, ListBuilderException {
+    void shouldgenerateListDesignacaoPresidentLastInvalidException() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         dto.getPresident().setLast("Invalid");
-        var ex =
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class,
                         () -> service.generateListPresident(dto, listLocalDate));
         Assertions.assertTrue(
-                ex.getMessage()
+                exception
+                        .getMessage()
                         .contains(
                                 String.format(
                                         MessageConfig.LAST_INVALID,
@@ -115,8 +116,8 @@ class GroupServiceImplTest {
     }
 
     @Test
-    void shouldgenerateListDesignacaoPresidentSuccess()
-            throws IllegalAccessException, ListBuilderException {
+    @SneakyThrows
+    void shouldgenerateListDesignacaoPresidentSuccess() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         var list = service.generateListPresident(dto, listLocalDate);
         validListGenerated(dto.getPresident(), list);
@@ -124,35 +125,34 @@ class GroupServiceImplTest {
 
     //	 --------------------- READER WATCHTOWER --------------------- \\
     @Test
-    void generateListDesignacaoReaderWatchtowerException()
-            throws IllegalAccessException, ListBuilderException {
-        var ex =
+    void generateListDesignacaoReaderWatchtowerException() {
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class,
                         () -> service.generateListReaderWatchtower(null, null));
         Assertions.assertTrue(
-                ex.getMessage().contains(DesignacaoEntityEnum.READER_WATCHTOWER.getLabel()));
+                exception.getMessage().contains(DesignacaoEntityEnum.READER_WATCHTOWER.getLabel()));
     }
 
     @Test
-    void shouldgenerateListDesignacaoReaderWatchtowerSuccess()
-            throws IllegalAccessException, ListBuilderException {
+    @SneakyThrows
+    void shouldgenerateListDesignacaoReaderWatchtowerSuccess() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         var list = service.generateListReaderWatchtower(dto, listLocalDate);
         validListGenerated(dto.getReader().getWatchtower(), list);
     }
 
     @Test
-    void shouldgenerateListDesignacaoReaderWatchtowerLastInvalidException()
-            throws IllegalAccessException, ListBuilderException {
+    void shouldgenerateListDesignacaoReaderWatchtowerLastInvalidException() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         dto.getReader().getWatchtower().setLast("Invalid");
-        var ex =
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class,
                         () -> service.generateListReaderWatchtower(dto, listLocalDate));
         Assertions.assertTrue(
-                ex.getMessage()
+                exception
+                        .getMessage()
                         .contains(
                                 String.format(
                                         MessageConfig.LAST_INVALID,
@@ -161,35 +161,34 @@ class GroupServiceImplTest {
 
     //	 --------------------- READER BIBLESTUDY --------------------- \\
     @Test
-    void generateListDesignacaoReaderBibleStudyException()
-            throws IllegalAccessException, ListBuilderException {
-        var ex =
+    void generateListDesignacaoReaderBibleStudyException() {
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class,
                         () -> service.generateListReaderBibleStudy(null, null));
         Assertions.assertTrue(
-                ex.getMessage().contains(DesignacaoEntityEnum.READER_BIBLESTUDY.getLabel()));
+                exception.getMessage().contains(DesignacaoEntityEnum.READER_BIBLESTUDY.getLabel()));
     }
 
     @Test
-    void shouldgenerateListDesignacaoReaderBibleStudySuccess()
-            throws IllegalAccessException, ListBuilderException {
+    @SneakyThrows
+    void shouldgenerateListDesignacaoReaderBibleStudySuccess() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         var list = service.generateListReaderBibleStudy(dto, listLocalDate);
         validListGenerated(dto.getReader().getBibleStudy(), list);
     }
 
     @Test
-    void shouldgenerateListDesignacaoReaderBibleStudyLastInvalidException()
-            throws IllegalAccessException, ListBuilderException {
+    void shouldgenerateListDesignacaoReaderBibleStudyLastInvalidException() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         dto.getReader().getBibleStudy().setLast("Invalid");
-        var ex =
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class,
                         () -> service.generateListReaderBibleStudy(dto, listLocalDate));
         Assertions.assertTrue(
-                ex.getMessage()
+                exception
+                        .getMessage()
                         .contains(
                                 String.format(
                                         MessageConfig.LAST_INVALID,
@@ -198,18 +197,18 @@ class GroupServiceImplTest {
 
     //	 --------------------- AUDIOVIDEO --------------------- \\
     @Test
-    void generateListDesignacaoAudioVideoException()
-            throws IllegalAccessException, ListBuilderException {
-        var ex =
+    void generateListDesignacaoAudioVideoException() {
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class,
                         () -> service.generateListAudioVideo(null, null));
-        Assertions.assertTrue(ex.getMessage().contains(DesignacaoEntityEnum.AUDIOVIDEO.getLabel()));
+        Assertions.assertTrue(
+                exception.getMessage().contains(DesignacaoEntityEnum.AUDIOVIDEO.getLabel()));
     }
 
     @Test
-    void shouldgenerateListDesignacaoAudioVideoSuccess()
-            throws IllegalAccessException, ListBuilderException {
+    @SneakyThrows
+    void shouldgenerateListDesignacaoAudioVideoSuccess() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         var list = service.generateListAudioVideo(dto, listLocalDate);
         Assertions.assertEquals(4, list.size());
@@ -236,16 +235,16 @@ class GroupServiceImplTest {
     }
 
     @Test
-    void shouldgenerateListDesignacaoAudioVideoLastInvalidException()
-            throws IllegalAccessException, ListBuilderException {
+    void shouldgenerateListDesignacaoAudioVideoLastInvalidException() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         dto.getAudioVideo().setLast("Invalid");
-        var ex =
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class,
                         () -> service.generateListAudioVideo(dto, listLocalDate));
         Assertions.assertTrue(
-                ex.getMessage()
+                exception
+                        .getMessage()
                         .contains(
                                 String.format(
                                         MessageConfig.LAST_INVALID,
@@ -254,18 +253,18 @@ class GroupServiceImplTest {
 
     //	 --------------------- INDICATOR --------------------- \\
     @Test
-    void generateListDesignacaoIndicatorException()
-            throws IllegalAccessException, ListBuilderException {
-        var ex =
+    void generateListDesignacaoIndicatorException() {
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class,
                         () -> service.generateListIndicator(null, null, null));
-        Assertions.assertTrue(ex.getMessage().contains(DesignacaoEntityEnum.INDICATOR.getLabel()));
+        Assertions.assertTrue(
+                exception.getMessage().contains(DesignacaoEntityEnum.INDICATOR.getLabel()));
     }
 
     @Test
-    void shouldgenerateListDesignacaoIndicatorSuccess()
-            throws IllegalAccessException, ListBuilderException {
+    @SneakyThrows
+    void shouldgenerateListDesignacaoIndicatorSuccess() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         var anotherList = List.of(DesignacaoWriterItemDtoBuilder.create().withRandomData().build());
         var list = service.generateListIndicator(dto, listLocalDate, anotherList);
@@ -274,18 +273,18 @@ class GroupServiceImplTest {
 
     //	 --------------------- MICROPHONE --------------------- \\
     @Test
-    void generateListDesignacaoMicrophoneException()
-            throws IllegalAccessException, ListBuilderException {
-        var ex =
+    void generateListDesignacaoMicrophoneException() {
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class,
                         () -> service.generateListMicrophone(null, null, null));
-        Assertions.assertTrue(ex.getMessage().contains(DesignacaoEntityEnum.MICROPHONE.getLabel()));
+        Assertions.assertTrue(
+                exception.getMessage().contains(DesignacaoEntityEnum.MICROPHONE.getLabel()));
     }
 
     @Test
-    void shouldgenerateListDesignacaoMicrophoneSuccess()
-            throws IllegalAccessException, ListBuilderException {
+    @SneakyThrows
+    void shouldgenerateListDesignacaoMicrophoneSuccess() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         var anotherList = List.of(DesignacaoWriterItemDtoBuilder.create().withRandomData().build());
         var list = service.generateListMicrophone(dto, listLocalDate, anotherList);

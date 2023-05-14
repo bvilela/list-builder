@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.utils.TestUtils;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -38,13 +39,13 @@ class DesignacaoWriterServiceImplTest {
     }
 
     @Test
-    void shouldWriterPDFSuccess() throws ListBuilderException {
+    void shouldWriterPDFSuccess() {
         DesignacaoWriterDTO dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
         Assertions.assertDoesNotThrow(() -> service.writerPDF(dto));
     }
 
     @Test
-    void shouldWriterPDFCongressoAssembleiaVisitaSuccess() throws ListBuilderException {
+    void shouldWriterPDFCongressoAssembleiaVisitaSuccess() {
         DesignacaoWriterDTO dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
         dto.getAudioVideo().get(0).setName("Teste 1 (congresso)");
         dto.getAudioVideo().get(1).setName("Teste 2 (assembleia)");
@@ -54,21 +55,23 @@ class DesignacaoWriterServiceImplTest {
     }
 
     @Test
-    void shouldWriterPDFException() throws ListBuilderException, IllegalAccessException {
+    @SneakyThrows
+    void shouldWriterPDFException() {
         FieldUtils.writeField(properties, "outputDir", null, true);
         DesignacaoWriterDTO dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
-        var ex = Assertions.assertThrows(ListBuilderException.class, () -> service.writerPDF(dto));
-        Assertions.assertTrue(ex.getMessage().contains("Erro ao Gerar PDF - Erro"));
+        var exception =
+                Assertions.assertThrows(ListBuilderException.class, () -> service.writerPDF(dto));
+        Assertions.assertTrue(exception.getMessage().contains("Erro ao Gerar PDF - Erro"));
     }
 
     @Test
-    void shouldWriterDocxSuccess() throws ListBuilderException {
+    void shouldWriterDocxSuccess() {
         DesignacaoWriterDTO dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
         Assertions.assertDoesNotThrow(() -> service.writerDocx(dto));
     }
 
     @Test
-    void shouldWriterDocxCongressoAssembleiaVisitaSuccess() throws ListBuilderException {
+    void shouldWriterDocxCongressoAssembleiaVisitaSuccess() {
         DesignacaoWriterDTO dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
         dto.getAudioVideo().get(0).setName("Teste 1 (congresso)");
         dto.getAudioVideo().get(1).setName("Teste 2 (assembleia)");
@@ -78,10 +81,12 @@ class DesignacaoWriterServiceImplTest {
     }
 
     @Test
-    void shouldWriterDocxException() throws ListBuilderException, IllegalAccessException {
+    @SneakyThrows
+    void shouldWriterDocxException() {
         FieldUtils.writeField(properties, "outputDir", null, true);
         DesignacaoWriterDTO dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
-        var ex = Assertions.assertThrows(ListBuilderException.class, () -> service.writerDocx(dto));
-        Assertions.assertTrue(ex.getMessage().contains("Erro ao Gerar Docx - Erro"));
+        var exception =
+                Assertions.assertThrows(ListBuilderException.class, () -> service.writerDocx(dto));
+        Assertions.assertTrue(exception.getMessage().contains("Erro ao Gerar Docx - Erro"));
     }
 }

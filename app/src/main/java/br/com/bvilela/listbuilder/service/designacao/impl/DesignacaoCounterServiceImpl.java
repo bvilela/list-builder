@@ -116,7 +116,7 @@ public class DesignacaoCounterServiceImpl implements DesignacaoCounterService {
 	}
 	
 	private String getTitleLine(String divider) {
-		var titleLine = StringUtils.center("Contagem Participações", (divider.length() - 2), " ");
+		var titleLine = StringUtils.center("Contagem Participações", divider.length() - 2, " ");
 		return String.format("|%s|", titleLine);
 	}
 	

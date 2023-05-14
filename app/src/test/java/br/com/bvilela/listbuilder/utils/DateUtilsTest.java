@@ -208,7 +208,7 @@ class DateUtilsTest {
     }
 
     @Test
-    void shouldValidDayOfWeek() throws ListBuilderException {
+    void shouldValidDayOfWeek() {
         Assertions.assertTrue(DateUtils.validDayOfWeek("segunda"));
         Assertions.assertTrue(DateUtils.validDayOfWeek("terça"));
         Assertions.assertTrue(DateUtils.validDayOfWeek("quarta"));
@@ -251,8 +251,7 @@ class DateUtilsTest {
 
     @Test
     void extractDateByDayOfWeekShouldTuesday() {
-        var listAllDates = listDateMock;
-        var listDates = DateUtils.extractDateByDayOfWeek(listAllDates, DayOfWeek.TUESDAY);
+        var listDates = DateUtils.extractDateByDayOfWeek(listDateMock, DayOfWeek.TUESDAY);
         var listDatesExpeted =
                 List.of(
                         LocalDate.of(2022, 1, 4),
@@ -264,8 +263,7 @@ class DateUtilsTest {
 
     @Test
     void extractDateByDayOfWeekShouldWednesday() {
-        var listAllDates = listDateMock;
-        var listDates = DateUtils.extractDateByDayOfWeek(listAllDates, DayOfWeek.WEDNESDAY);
+        var listDates = DateUtils.extractDateByDayOfWeek(listDateMock, DayOfWeek.WEDNESDAY);
         var listDatesExpeted =
                 List.of(
                         LocalDate.of(2022, 1, 5),
@@ -277,8 +275,7 @@ class DateUtilsTest {
 
     @Test
     void dextractDateByDayOfWeekShouldSaturday() {
-        var listAllDates = listDateMock;
-        var listDates = DateUtils.extractDateByDayOfWeek(listAllDates, DayOfWeek.SATURDAY);
+        var listDates = DateUtils.extractDateByDayOfWeek(listDateMock, DayOfWeek.SATURDAY);
         var listDatesExpeted =
                 List.of(
                         LocalDate.of(2022, 1, 1),
@@ -291,8 +288,7 @@ class DateUtilsTest {
 
     @Test
     void extractDateByDayOfWeekShouldFriday() {
-        var listAllDates = listDateMock;
-        var listDates = DateUtils.extractDateByDayOfWeek(listAllDates, DayOfWeekEnum.SEXTA);
+        var listDates = DateUtils.extractDateByDayOfWeek(listDateMock, DayOfWeekEnum.SEXTA);
         var listDatesExpeted =
                 List.of(
                         LocalDate.of(2022, 1, 7),
@@ -304,8 +300,7 @@ class DateUtilsTest {
 
     @Test
     void extractDateByDayOfWeekShouldSunday() {
-        var listAllDates = listDateMock;
-        var listDates = DateUtils.extractDateByDayOfWeek(listAllDates, DayOfWeekEnum.DOMINGO);
+        var listDates = DateUtils.extractDateByDayOfWeek(listDateMock, DayOfWeekEnum.DOMINGO);
         var listDatesExpeted =
                 List.of(
                         LocalDate.of(2022, 1, 2),

@@ -14,6 +14,7 @@ import br.com.bvilela.listbuilder.service.designacao.DesignacaoCounterService;
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoListDtoBuilder;
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoReaderDtoBuilder;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +45,7 @@ class DesignacaoGenerateServiceImplTest
 
     @Mock private DesignacaoCounterService counterService;
 
-    private DesignacaoGenerateServiceImplTest() throws ListBuilderException {
+    public DesignacaoGenerateServiceImplTest() throws ListBuilderException {
         super(ListTypeEnum.DESIGNACAO, FileInputDataDesignacaoDtoBuilder.create().withRandomData());
     }
 
@@ -117,7 +118,7 @@ class DesignacaoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListExceptionLastDateInvalid() throws IllegalAccessException {
+    void shouldGenerateListExceptionLastDateInvalid() {
         var dto = builder.withLastDate("01-20-2021").build();
         writeFileInputFromDto(dto);
         var expectedMessageError =
@@ -130,28 +131,27 @@ class DesignacaoGenerateServiceImplTest
 
     // *************************** MIDWEEK - INICIO *************************** \\
     @Test
-    void shouldGenerateListExceptionMidweekNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionMidweekNull() {
         validateGenerateListExceptionMidweek(null);
     }
 
     @Test
-    void shouldGenerateListExceptionMidweekEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionMidweekEmpty() {
         validateGenerateListExceptionMidweek("");
     }
 
     @Test
-    void shouldGenerateListExceptionMidweekBlank() throws IllegalAccessException {
+    void shouldGenerateListExceptionMidweekBlank() {
         validateGenerateListExceptionMidweek(" ");
     }
 
-    private void validateGenerateListExceptionMidweek(String dayMidweek)
-            throws IllegalAccessException {
+    private void validateGenerateListExceptionMidweek(String dayMidweek) {
         writeFileInputFromDto(builder.withMeetingDayMidweek(dayMidweek).build());
         validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
     }
 
     @Test
-    void shouldGenerateListExceptionMidweekInvalid() throws IllegalAccessException {
+    void shouldGenerateListExceptionMidweekInvalid() {
         var dto = builder.withMeetingDayMidweek("ABC").build();
         writeFileInputFromDto(dto);
         var expectedMessageError =
@@ -164,28 +164,27 @@ class DesignacaoGenerateServiceImplTest
 
     // *************************** WEEKEND - INICIO *************************** \\
     @Test
-    void shouldGenerateListExceptionWeekendNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionWeekendNull() {
         validateGenerateListExceptionWeekend(null);
     }
 
     @Test
-    void shouldGenerateListExceptionWeekendEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionWeekendEmpty() {
         validateGenerateListExceptionWeekend("");
     }
 
     @Test
-    void shouldGenerateListExceptionWeekendBlank() throws IllegalAccessException {
+    void shouldGenerateListExceptionWeekendBlank() {
         validateGenerateListExceptionWeekend(" ");
     }
 
-    private void validateGenerateListExceptionWeekend(String dayWeekend)
-            throws IllegalAccessException {
+    private void validateGenerateListExceptionWeekend(String dayWeekend) {
         writeFileInputFromDto(builder.withMeetingDayWeekend(dayWeekend).build());
         validateListBuilderException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
     }
 
     @Test
-    void shouldGenerateListExceptionWeekendInvalid() throws IllegalAccessException {
+    void shouldGenerateListExceptionWeekendInvalid() {
         var dto = builder.withMeetingDayWeekend("ABC").build();
         writeFileInputFromDto(dto);
         var expectedMessageError =
@@ -198,29 +197,29 @@ class DesignacaoGenerateServiceImplTest
 
     // *************************** INDICATOR - INICIO *************************** \\
     @Test
-    void shouldGenerateListExceptionIndicatorNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionIndicatorNull() {
         validateGenerateListExceptionIndicator(null, MessageConfig.INDICATOR_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionIndicatorEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionIndicatorEmpty() {
         validateGenerateListExceptionIndicator(List.of(), MessageConfig.INDICATOR_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionIndicatorElementEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionIndicatorElementEmpty() {
         validateGenerateListExceptionIndicator(
                 List.of(""), MessageConfig.INDICATOR_ELEMENT_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionIndicatorElementBlank() throws IllegalAccessException {
+    void shouldGenerateListExceptionIndicatorElementBlank() {
         validateGenerateListExceptionIndicator(
                 List.of(" "), MessageConfig.INDICATOR_ELEMENT_REQUIRED);
     }
 
     private void validateGenerateListExceptionIndicator(
-            List<String> indicator, String expectedMessageError) throws IllegalAccessException {
+            List<String> indicator, String expectedMessageError) {
         var dto = builder.withIndicator(indicator).build();
         writeFileInputFromDto(dto);
         validateListBuilderException(expectedMessageError);
@@ -231,29 +230,29 @@ class DesignacaoGenerateServiceImplTest
     // *************************** MICROPHONE - INICIO ***************************
     // \\
     @Test
-    void shouldGenerateListExceptionMicrophoneNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionMicrophoneNull() {
         validateGenerateListExceptionMicrophone(null, MessageConfig.MICROPHONE_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionMicrophoneEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionMicrophoneEmpty() {
         validateGenerateListExceptionMicrophone(List.of(), MessageConfig.MICROPHONE_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionMicrophoneElementEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionMicrophoneElementEmpty() {
         validateGenerateListExceptionMicrophone(
                 List.of(""), MessageConfig.MICROPHONE_ELEMENT_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionMicrophoneElementBlank() throws IllegalAccessException {
+    void shouldGenerateListExceptionMicrophoneElementBlank() {
         validateGenerateListExceptionMicrophone(
                 List.of(" "), MessageConfig.MICROPHONE_ELEMENT_REQUIRED);
     }
 
     private void validateGenerateListExceptionMicrophone(
-            List<String> microphone, String expectedMessageError) throws IllegalAccessException {
+            List<String> microphone, String expectedMessageError) {
         var dto = builder.withMicrophone(microphone).build();
         writeFileInputFromDto(dto);
         validateListBuilderException(expectedMessageError);
@@ -263,28 +262,27 @@ class DesignacaoGenerateServiceImplTest
 
     // *************************** PRESIDENT - INICIO *************************** \\
     @Test
-    void shouldGenerateListExceptionPresidentNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionPresidentNull() {
         writeFileInputFromDto(builder.withPresident(null).build());
         validateListBuilderException(MessageConfig.PRESIDENT_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionPresidentLastNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionPresidentLastNull() {
         validateGenerateListPresidentLastException(null);
     }
 
     @Test
-    void shouldGenerateListExceptionPresidentLastEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionPresidentLastEmpty() {
         validateGenerateListPresidentLastException("");
     }
 
     @Test
-    void shouldGenerateListExceptionPresidentLastBlank() throws IllegalAccessException {
+    void shouldGenerateListExceptionPresidentLastBlank() {
         validateGenerateListPresidentLastException(" ");
     }
 
-    private void validateGenerateListPresidentLastException(String last)
-            throws IllegalAccessException {
+    private void validateGenerateListPresidentLastException(String last) {
         var presidentDto =
                 FileInputDataDesignacaoListDtoBuilder.create()
                         .withRandomData()
@@ -295,17 +293,16 @@ class DesignacaoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListExceptionPresidentListNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionPresidentListNull() {
         validateGenerateListPresidentListException(null);
     }
 
     @Test
-    void shouldGenerateListExceptionPresidentListEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionPresidentListEmpty() {
         validateGenerateListPresidentListException(List.of());
     }
 
-    private void validateGenerateListPresidentListException(List<String> list)
-            throws IllegalAccessException {
+    private void validateGenerateListPresidentListException(List<String> list) {
         var presidentDto =
                 FileInputDataDesignacaoListDtoBuilder.create()
                         .withRandomData()
@@ -316,19 +313,16 @@ class DesignacaoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListExceptionPresidentListElementEmpty() throws IllegalAccessException {
-        baseGenerateListExceptionPresidentListElementException(
-                "data-designacao-president-list-element-empty.json", List.of(""));
+    void shouldGenerateListExceptionPresidentListElementEmpty() {
+        baseGenerateListExceptionPresidentListElementException(List.of(""));
     }
 
     @Test
-    void shouldGenerateListExceptionPresidentListElementBlank() throws IllegalAccessException {
-        baseGenerateListExceptionPresidentListElementException(
-                "data-designacao-president-list-element-blank.json", List.of(" "));
+    void shouldGenerateListExceptionPresidentListElementBlank() {
+        baseGenerateListExceptionPresidentListElementException(List.of(" "));
     }
 
-    private void baseGenerateListExceptionPresidentListElementException(
-            String fileName, List<String> list) throws IllegalAccessException {
+    private void baseGenerateListExceptionPresidentListElementException(List<String> list) {
         var presidentDto =
                 FileInputDataDesignacaoListDtoBuilder.create()
                         .withRandomData()
@@ -342,28 +336,27 @@ class DesignacaoGenerateServiceImplTest
     // *************************** AUDIOVIDEO - INICIO ***************************
     // \\
     @Test
-    void shouldGenerateListExceptionAudioVideoNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionAudioVideoNull() {
         writeFileInputFromDto(builder.withAudioVideo(null).build());
         validateListBuilderException(MessageConfig.AUDIOVIDEO_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionAudioVideoLastNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionAudioVideoLastNull() {
         validateGenerateListAudioVideoLastException(null);
     }
 
     @Test
-    void shouldGenerateListExceptionAudioVideoLastEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionAudioVideoLastEmpty() {
         validateGenerateListAudioVideoLastException("");
     }
 
     @Test
-    void shouldGenerateListExceptionAudioVideoLastBlank() throws IllegalAccessException {
+    void shouldGenerateListExceptionAudioVideoLastBlank() {
         validateGenerateListAudioVideoLastException(" ");
     }
 
-    private void validateGenerateListAudioVideoLastException(String last)
-            throws IllegalAccessException {
+    private void validateGenerateListAudioVideoLastException(String last) {
         var audioVideo =
                 FileInputDataDesignacaoListDtoBuilder.create()
                         .withRandomData()
@@ -374,17 +367,16 @@ class DesignacaoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListExceptionAudioVideoListNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionAudioVideoListNull() {
         validateGenerateListAudioVideoListException(null);
     }
 
     @Test
-    void shouldGenerateListExceptionAudioVideoListEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionAudioVideoListEmpty() {
         validateGenerateListAudioVideoListException(List.of());
     }
 
-    private void validateGenerateListAudioVideoListException(List<String> list)
-            throws IllegalAccessException {
+    private void validateGenerateListAudioVideoListException(List<String> list) {
         var audioVideo =
                 FileInputDataDesignacaoListDtoBuilder.create()
                         .withRandomData()
@@ -395,17 +387,16 @@ class DesignacaoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListExceptionAudioVideoListElementEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionAudioVideoListElementEmpty() {
         validateGenerateListAudioVideoListElementException(List.of(""));
     }
 
     @Test
-    void shouldGenerateListExceptionAudioVideoListElementBlank() throws IllegalAccessException {
+    void shouldGenerateListExceptionAudioVideoListElementBlank() {
         validateGenerateListAudioVideoListElementException(List.of(" "));
     }
 
-    private void validateGenerateListAudioVideoListElementException(List<String> list)
-            throws IllegalAccessException {
+    private void validateGenerateListAudioVideoListElementException(List<String> list) {
         var audioVideo =
                 FileInputDataDesignacaoListDtoBuilder.create()
                         .withRandomData()
@@ -418,13 +409,13 @@ class DesignacaoGenerateServiceImplTest
 
     // *************************** READER - INICIO *************************** \\
     @Test
-    void shouldGenerateListExceptionReaderNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionReaderNull() {
         writeFileInputFromDto(builder.withReader(null).build());
         validateListBuilderException(MessageConfig.READER_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionReaderWatchtowerNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionReaderWatchtowerNull() {
         var readerDto =
                 FileInputDataDesignacaoReaderDtoBuilder.create()
                         .withRandomData()
@@ -437,7 +428,7 @@ class DesignacaoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListExceptionReaderBibleStudyNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionReaderBibleStudyNull() {
         var readerDto =
                 FileInputDataDesignacaoReaderDtoBuilder.create()
                         .withRandomData()
@@ -450,22 +441,24 @@ class DesignacaoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListExceptionReaderWatchtowerLastNull() throws IllegalAccessException {
+    @SneakyThrows
+    void shouldGenerateListExceptionReaderWatchtowerLastNull() {
         validateGenerateListReaderWatchtowerLastException(null);
     }
 
     @Test
-    void shouldGenerateListExceptionReaderWatchtowerLastEmpty() throws IllegalAccessException {
+    @SneakyThrows
+    void shouldGenerateListExceptionReaderWatchtowerLastEmpty() {
         validateGenerateListReaderWatchtowerLastException("");
     }
 
     @Test
-    void shouldGenerateListExceptionReaderWatchtowerLastBlank() throws IllegalAccessException {
+    @SneakyThrows
+    void shouldGenerateListExceptionReaderWatchtowerLastBlank() {
         validateGenerateListReaderWatchtowerLastException(" ");
     }
 
-    private void validateGenerateListReaderWatchtowerLastException(String last)
-            throws IllegalAccessException {
+    private void validateGenerateListReaderWatchtowerLastException(String last) {
         var readerDto = FileInputDataDesignacaoReaderDtoBuilder.create().withRandomData().build();
         readerDto.setWatchtower(
                 FileInputDataDesignacaoListDtoBuilder.create()
@@ -478,7 +471,7 @@ class DesignacaoGenerateServiceImplTest
     // *************************** READER - FIM *************************** \\
 
     @Test
-    void shouldGenerateListDatesEmptyException() throws IllegalAccessException {
+    void shouldGenerateListDatesEmptyException() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         Mockito.when(
                         dateService.generateListDatesDesignacao(
@@ -488,8 +481,8 @@ class DesignacaoGenerateServiceImplTest
         validateListBuilderException(MessageConfig.LIST_DATE_EMPTY);
     }
 
-    private void validateListBuilderException(String expectedMessageError)
-            throws IllegalAccessException {
-        BaseGenerateServiceTest.testUtils.validateException(() -> service.generateList(), expectedMessageError);
+    private void validateListBuilderException(String expectedMessageError) {
+        BaseGenerateServiceTest.testUtils.validateException(
+                () -> service.generateList(), expectedMessageError);
     }
 }
