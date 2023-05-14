@@ -127,14 +127,14 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
 		return numberOfColumns;
 	}
 
-	private void addItem(List<FileInputDataDiscursoItemDTO> list, PdfPTable table, int i) {
+	private void addItem(List<FileInputDataDiscursoItemDTO> list, PdfPTable table, int index) {
 		if (AppUtils.listIsNullOrEmpty(list)) {
 			addBlankRow(table, 20);
 			return;
 		}			
 		
-		if (i < list.size()) {
-			addItem(table, list.get(i));
+		if (index < list.size()) {
+			addItem(table, list.get(index));
 		} else {
 			addBlankCell(table);
 		}

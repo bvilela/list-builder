@@ -80,8 +80,8 @@ public final class AppUtils {
     /**
      * Convert millimeters in Points
      */
-    public static float getPointsFromMM(int mm) {
-        return mm * ONE_MM_IN_POINT;
+    public static float getPointsFromMM(int millimeter) {
+        return millimeter * ONE_MM_IN_POINT;
     }
 
     /**

@@ -259,24 +259,24 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
 
 	private void addItemSongAndPrayer(List<VidaCristaExtractWeekItemDTO> list, Elements elements,
 			VidaCristaExtractItemType type) {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder stringBuilder = new StringBuilder();
 		for (Element e : elements) {
-			sb.append(sanitizerText(e.html()));
-			sb.append(" ");
+			stringBuilder.append(sanitizerText(e.html()));
+			stringBuilder.append(" ");
 		}
-		sb.setLength(sb.toString().length() - 1);
-		addItem(list, sb.toString(), type);
+		stringBuilder.setLength(stringBuilder.toString().length() - 1);
+		addItem(list, stringBuilder.toString(), type);
 	}
 
 	private void addItem(List<VidaCristaExtractWeekItemDTO> list, Elements elements, VidaCristaExtractItemType type) {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder stringBuilder = new StringBuilder();
 		for (Element e : elements) {
-			sb.append(sanitizerText(e.html()));
+			stringBuilder.append(sanitizerText(e.html()));
 		}
-		if (sb.toString().charAt(sb.toString().length() - 1) == ':') {
-			sb.setLength(sb.toString().length() - 1);
+		if (stringBuilder.toString().charAt(stringBuilder.toString().length() - 1) == ':') {
+			stringBuilder.setLength(stringBuilder.toString().length() - 1);
 		}
-		addItem(list, adjustQuotes(sb.toString()), type);
+		addItem(list, adjustQuotes(stringBuilder.toString()), type);
 	}
 
 	private void addItem(List<VidaCristaExtractWeekItemDTO> list, Element element, VidaCristaExtractItemType type) {

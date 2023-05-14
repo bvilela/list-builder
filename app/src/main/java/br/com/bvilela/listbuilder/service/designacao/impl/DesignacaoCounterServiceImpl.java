@@ -186,7 +186,7 @@ public class DesignacaoCounterServiceImpl implements DesignacaoCounterService {
 	
 	public Map<String, Long> mergeMap(Map<String, Long> map1, Map<String, Long> map2) {
 		Map<String, Long> mergedMap = new HashMap<>();
-		var map2Aux = new HashMap<String, Long>(map2);
+		var map2Aux = new HashMap<>(map2);
 		map1.forEach((key, value) -> {
 			var valueMap2 = map2Aux.remove(key);
 			var safeValueMap2 = Objects.isNull(valueMap2) ? 0 : valueMap2; 

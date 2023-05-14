@@ -33,7 +33,7 @@
     <rule ref="category/java/bestpractices.xml/OneDeclarationPerLine"/>
     <rule ref="category/java/bestpractices.xml/PositionLiteralsFirstInCaseInsensitiveComparisons"/>
     <rule ref="category/java/bestpractices.xml/PositionLiteralsFirstInComparisons"/>
-    <rule ref="category/java/bestpractices.xml/PreserveStackTrace"/>
+    <!-- <rule ref="category/java/bestpractices.xml/PreserveStackTrace"/> -->
     <rule ref="category/java/bestpractices.xml/SwitchStmtsShouldHaveDefault"/>
     <rule ref="category/java/bestpractices.xml/SystemPrintln" />
     <rule ref="category/java/bestpractices.xml/UnusedFormalParameter"/>
@@ -70,7 +70,11 @@
     </rule>
     <rule ref="category/java/codestyle.xml/ShortClassName"/>
     <rule ref="category/java/codestyle.xml/ShortMethodName"/>
-    <rule ref="category/java/codestyle.xml/ShortVariable"/>
+    <rule ref="category/java/codestyle.xml/ShortVariable">
+        <properties>
+            <property name="minimum" value="2" />
+        </properties>
+    </rule>
 
     <!-- OTHER -->
     <rule ref="category/java/codestyle.xml/AvoidUsingNativeCode" />

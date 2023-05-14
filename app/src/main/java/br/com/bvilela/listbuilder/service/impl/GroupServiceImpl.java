@@ -99,7 +99,7 @@ public class GroupServiceImpl implements GroupService {
 			for (DesignacaoWriterItemDTO item : list) {
 				final String lastHelperFinal = lastHelper;
 				var listPossibleNames = dto.getAudioVideo().getList().stream()
-						.filter(e -> (!e.equals(item.getName()) && !e.equals(lastHelperFinal))).toList();
+						.filter(e -> !e.equals(item.getName()) && !e.equals(lastHelperFinal)).toList();
 				var helper = listPossibleNames.get(rand.nextInt(listPossibleNames.size()));
 				lastHelper = helper;
 				item.setName(item.getName().concat(" e ").concat(helper));	
@@ -180,8 +180,8 @@ public class GroupServiceImpl implements GroupService {
 		return listWriterItems;
 	}
 	
-	private ListBuilderException newListBuilderException(DesignacaoEntityEnum entity, Exception e) {
-		return new ListBuilderException("%s: %s", entity.getLabel(), e.getMessage());
+	private ListBuilderException newListBuilderException(DesignacaoEntityEnum entity, Exception exception) {
+		return new ListBuilderException("%s: %s", entity.getLabel(), exception.getMessage());
 	}
 	
 }
