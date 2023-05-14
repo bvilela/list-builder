@@ -6,13 +6,13 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
+import br.com.bvilela.lib.utils.GsonUtils;
 import br.com.bvilela.listbuilder.dto.discurso.DiscursoAllThemesDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
 
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import com.bvilela.utils.GsonUtils;
 
 import lombok.Getter;
 
@@ -49,10 +49,6 @@ public class TestUtils {
 
 	public void writeFileInputFromDto(Object dto) {
 		this.writeFileInputFromDto(this.listType.getInputFileName(), GsonUtils.getGson().toJson(dto));
-	}
-
-	public void writeFileInputFromDto(String fileName, Object dto) {
-		this.writeFileInputFromDto(fileName, GsonUtils.getGson().toJson(dto));
 	}
 
 	public void writeFileInputDiscursoAllThemes(DiscursoAllThemesDTO dto) {

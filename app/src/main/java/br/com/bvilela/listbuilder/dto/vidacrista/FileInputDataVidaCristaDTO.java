@@ -7,9 +7,9 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
+import br.com.bvilela.lib.utils.annotation.gson.NotSerialized;
+import br.com.bvilela.lib.utils.annotation.javax.ValidParseDate;
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import com.bvilela.utils.annotation.gson.NotSerialized;
-import com.bvilela.utils.annotation.javax.ValidParseDate;
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;

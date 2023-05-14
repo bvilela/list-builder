@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.NotBlank;
 
-import com.bvilela.utils.annotation.gson.NotSerialized;
-import com.bvilela.utils.annotation.javax.ValidParseDate;
+import br.com.bvilela.lib.utils.annotation.gson.NotSerialized;
+import br.com.bvilela.lib.utils.annotation.javax.ValidParseDate;
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
@@ -19,7 +19,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class FileInputDataDiscursoItemDTO {
 	
-	@ValidParseDate(message = "Data inválida: '${validatedValue}' não é uma data válida", 
+	@ValidParseDate(message = "Data inválida: '${validatedValue}' não é uma data válida",
 			pattern = "dd-MM-yyyy", parse = true, messageRequired = "Campo 'Data' é obrigatório!")
 	@SerializedName("data")
 	private String date;

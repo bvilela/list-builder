@@ -11,12 +11,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 
+import br.com.bvilela.lib.utils.GsonUtils;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ClassPathResource;
 
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import com.bvilela.utils.GsonUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;

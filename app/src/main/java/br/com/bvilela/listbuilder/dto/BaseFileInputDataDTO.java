@@ -2,8 +2,8 @@ package br.com.bvilela.listbuilder.dto;
 
 import javax.validation.constraints.NotBlank;
 
+import br.com.bvilela.lib.utils.annotation.javax.ValidParseDate;
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import com.bvilela.utils.annotation.javax.ValidParseDate;
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
@@ -15,7 +15,7 @@ import lombok.ToString;
 @Setter
 public abstract class BaseFileInputDataDTO {
 	
-	@ValidParseDate(message = "Última Data da Lista Anterior inválida: '${validatedValue}' não é uma data válida", 
+	@ValidParseDate(message = "Última Data da Lista Anterior inválida: '${validatedValue}' não é uma data válida",
 			pattern = "dd-MM-yyyy", parse = false, messageRequired = MessageConfig.LAST_DATE_REQUIRED)
 	@SerializedName("ultimaData")
 	private String lastDate;

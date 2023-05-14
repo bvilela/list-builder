@@ -4,12 +4,12 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.validation.ConstraintViolation;
 
+import br.com.bvilela.lib.utils.ValidationUtils;
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoListDTO;
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoReaderDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import br.com.bvilela.listbuilder.utils.DateUtils;
-import com.bvilela.utils.ValidationUtils;
 
 public final class GenericValidator {
 
