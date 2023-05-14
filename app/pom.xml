@@ -29,6 +29,7 @@
 		<maven.compile.encoding>${encoding}</maven.compile.encoding>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<pmd.plugin.version>3.20.0</pmd.plugin.version>
 	</properties>
 
 	<dependencies>
@@ -126,6 +127,28 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>${pmd.plugin.version}</version>
+				<configuration>
+					<failOnViolation>true</failOnViolation>
+					<printFailingErrors>true</printFailingErrors>
+					<linkXRef>false</linkXRef>
+					<includeTests>true</includeTests>
+					<sourceEncoding>${encoding}</sourceEncoding>
+					<rulesets>
+						<ruleset>pmd-ruleset.xml</ruleset>
+					</rulesets>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>com.theoryinpractise</groupId>
 				<artifactId>googleformatter-maven-plugin</artifactId>
 				<version>1.7.5</version>
@@ -151,6 +174,16 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>${pmd.plugin.version}</version>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<!-- https://docs.github.com/en/actions/guides/publishing-java-packages-with-maven 
 		https://maven.apache.org/pom.html#distribution-management -->

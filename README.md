@@ -36,3 +36,9 @@ Application read data from JSON file, process and generate a PDF file.
 * Analyze SonarCloud (branch)
 * Publish on GitHub Packages (tags)
 
+
+## :heavy_check_mark: Check PMD rules locally
+To check PMD rules in your machine, run follow command in `app` dir:
+```
+mvn pmd:check
+```
