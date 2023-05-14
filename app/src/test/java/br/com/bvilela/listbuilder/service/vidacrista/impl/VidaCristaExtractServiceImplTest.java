@@ -124,71 +124,71 @@ class VidaCristaExtractServiceImplTest {
                 "/pt/biblioteca/jw-apostila-do-mes/maio-junho-2022-mwb/Programa%C3%A7%C3%A3o-da-semana-de-2-8-de-maio-de-2022-na-Apostila-da-Reuni%C3%A3o-Vida-e-Minist%C3%A9rio/",
                 week.getLink());
         Assertions.assertEquals(18, week.getItems().size());
-        int i = 0;
+        int index = 0;
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.PRESIDENT,
                 "Presidente da Reunião");
         checkWeekItem(
-                week.getItems().get(i++), VidaCristaExtractItemType.READ_OF_WEEK, "1 SAMUEL 27-29");
+                week.getItems().get(index++), VidaCristaExtractItemType.READ_OF_WEEK, "1 SAMUEL 27-29");
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.WITH_PARTICIPANTS,
                 "Cântico 71 e oração");
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.NO_PARTICIPANTS,
                 "Comentários iniciais");
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.LABEL,
                 "TESOUROS DA PALAVRA DE DEUS");
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.WITH_PARTICIPANTS,
                 "\"A estratégia de guerra de Davi\"");
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.WITH_PARTICIPANTS,
                 "Joias espirituais");
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.WITH_PARTICIPANTS,
                 "Leitura da Bíblia");
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.LABEL,
                 "FAÇA SEU MELHOR NO MINISTÉRIO");
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.WITH_PARTICIPANTS,
                 "Vídeo da primeira conversa");
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.WITH_PARTICIPANTS,
                 "Primeira conversa — designação 1");
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.WITH_PARTICIPANTS,
                 "Primeira conversa — designação 2");
         checkWeekItem(
-                week.getItems().get(i++), VidaCristaExtractItemType.LABEL, "NOSSA VIDA CRISTÃ");
+                week.getItems().get(index++), VidaCristaExtractItemType.LABEL, "NOSSA VIDA CRISTÃ");
         checkWeekItem(
-                week.getItems().get(i++), VidaCristaExtractItemType.NO_PARTICIPANTS, "Cântico 129");
+                week.getItems().get(index++), VidaCristaExtractItemType.NO_PARTICIPANTS, "Cântico 129");
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.WITH_PARTICIPANTS,
                 "Firmes apesar de oposição");
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.WITH_PARTICIPANTS,
                 "Estudo bíblico de congregação");
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.NO_PARTICIPANTS,
                 "Comentários finais");
         checkWeekItem(
-                week.getItems().get(i++),
+                week.getItems().get(index++),
                 VidaCristaExtractItemType.WITH_PARTICIPANTS,
                 "Cântico 94 e oração");
     }
@@ -196,19 +196,19 @@ class VidaCristaExtractServiceImplTest {
     @Test
     void shouldExtractWeeksBySiteAnotherSite() throws ListBuilderException, IOException {
         var url = "https://www.google.com.br";
-        var ex =
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class, () -> service.extractWeeksBySite(url));
-        Assertions.assertEquals("Erro ao ler Cabeçalho do site", ex.getMessage());
+        Assertions.assertEquals("Erro ao ler Cabeçalho do site", exception.getMessage());
     }
 
     @Test
     void shouldExtractMonthsAndConvertToDatesException() {
-        var ex =
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class,
                         () -> service.extractMonthsAndConvertToDates("abc", 2022));
-        Assertions.assertEquals("Erro ao extrair os meses da label abc", ex.getMessage());
+        Assertions.assertEquals("Erro ao extrair os meses da label abc", exception.getMessage());
     }
 
     @Test

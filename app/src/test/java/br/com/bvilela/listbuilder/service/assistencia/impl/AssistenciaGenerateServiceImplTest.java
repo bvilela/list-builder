@@ -207,7 +207,6 @@ class AssistenciaGenerateServiceImplTest
 
     private void validateListBuilderException(String expectedMessageError)
             throws IllegalAccessException {
-        testUtils.validateException(
-                ListBuilderException.class, () -> service.generateList(), expectedMessageError);
+        testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 }

@@ -26,11 +26,7 @@ class DateUtilsTest {
     private static final String NOV = "novembro";
     private static final String DEZ = "dezembro";
 
-    private static List<LocalDate> LIST_DATE_MOCK;
-
-    public DateUtilsTest() {
-        LIST_DATE_MOCK = generateListDateMock();
-    }
+    private final List<LocalDate> listDateMock = generateListDateMock();
 
     private List<LocalDate> generateListDateMock() {
         var list = new ArrayList<LocalDate>();
@@ -255,7 +251,7 @@ class DateUtilsTest {
 
     @Test
     void extractDateByDayOfWeekShouldTuesday() {
-        var listAllDates = LIST_DATE_MOCK;
+        var listAllDates = listDateMock;
         var listDates = DateUtils.extractDateByDayOfWeek(listAllDates, DayOfWeek.TUESDAY);
         var listDatesExpeted =
                 List.of(
@@ -268,7 +264,7 @@ class DateUtilsTest {
 
     @Test
     void extractDateByDayOfWeekShouldWednesday() {
-        var listAllDates = LIST_DATE_MOCK;
+        var listAllDates = listDateMock;
         var listDates = DateUtils.extractDateByDayOfWeek(listAllDates, DayOfWeek.WEDNESDAY);
         var listDatesExpeted =
                 List.of(
@@ -281,7 +277,7 @@ class DateUtilsTest {
 
     @Test
     void dextractDateByDayOfWeekShouldSaturday() {
-        var listAllDates = LIST_DATE_MOCK;
+        var listAllDates = listDateMock;
         var listDates = DateUtils.extractDateByDayOfWeek(listAllDates, DayOfWeek.SATURDAY);
         var listDatesExpeted =
                 List.of(
@@ -295,7 +291,7 @@ class DateUtilsTest {
 
     @Test
     void extractDateByDayOfWeekShouldFriday() {
-        var listAllDates = LIST_DATE_MOCK;
+        var listAllDates = listDateMock;
         var listDates = DateUtils.extractDateByDayOfWeek(listAllDates, DayOfWeekEnum.SEXTA);
         var listDatesExpeted =
                 List.of(
@@ -308,7 +304,7 @@ class DateUtilsTest {
 
     @Test
     void extractDateByDayOfWeekShouldSunday() {
-        var listAllDates = LIST_DATE_MOCK;
+        var listAllDates = listDateMock;
         var listDates = DateUtils.extractDateByDayOfWeek(listAllDates, DayOfWeekEnum.DOMINGO);
         var listDatesExpeted =
                 List.of(

@@ -135,7 +135,6 @@
 					<printFailingErrors>true</printFailingErrors>
 					<linkXRef>false</linkXRef>
 					<includeTests>true</includeTests>
-					<sourceEncoding>${encoding}</sourceEncoding>
 					<rulesets>
 						<ruleset>pmd-ruleset.xml</ruleset>
 					</rulesets>

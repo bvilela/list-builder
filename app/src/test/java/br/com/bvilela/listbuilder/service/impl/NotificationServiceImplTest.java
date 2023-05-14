@@ -188,12 +188,12 @@ class NotificationServiceImplTest {
         var name = dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
         setNotifName(name);
         setnotifChristianlifeMidweekMeetingDay("teste");
-        var ex =
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class, () -> service.vidaCrista(dtoVidaCrista));
         Assertions.assertEquals(
                 "Propriedade 'notif.christianlife.midweek.meeting.day' não é um Dia da Semana Válido!",
-                ex.getMessage());
+                exception.getMessage());
     }
 
     @Test
@@ -202,11 +202,11 @@ class NotificationServiceImplTest {
         dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
         var name = dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
         setNotifName(name);
-        var ex =
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class, () -> service.vidaCrista(dtoVidaCrista));
         Assertions.assertEquals(
-                "Defina a propriedade 'notif.christianlife.midweek.meeting.day'!", ex.getMessage());
+                "Defina a propriedade 'notif.christianlife.midweek.meeting.day'!", exception.getMessage());
     }
 
     // *********************** UTILS *********************** \\

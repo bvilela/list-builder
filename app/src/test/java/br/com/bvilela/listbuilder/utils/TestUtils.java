@@ -62,8 +62,7 @@ public class TestUtils {
         try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
             fileWriter.write(content);
             fileWriter.flush();
-        } catch (IOException e) {
-            // do nothing
+        } catch (IOException ignored) {
         }
     }
 
@@ -72,13 +71,11 @@ public class TestUtils {
                 .forEach(File::delete);
     }
 
-    public <T> void validateException(
-            Class<T> expectedType, Executable executable, String expectedMessageError)
-            throws IllegalAccessException {
-        var ex = Assertions.assertThrows(ListBuilderException.class, executable);
+    public <T> void validateException(Executable executable, String expectedMessageError) {
+        var exception = Assertions.assertThrows(ListBuilderException.class, executable);
         String expectedMessage =
                 String.format("Erro ao gerar lista '%s': %s", this.listType, expectedMessageError);
-        Assertions.assertEquals(expectedMessage, ex.getMessage());
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
 
     public static void cleanResourceDir() {

@@ -305,10 +305,10 @@ class LimpezaGenerateServiceImplTest
         var addToList = Map.of("aa-04-2022", "Após a Celebração");
         writeFileInputFromDto(builder.withSuccess().withAddToList(addToList).build());
         FieldUtils.writeField(properties, "layoutLimpeza", 2, true);
-        var ex = Assertions.assertThrows(ListBuilderException.class, () -> service.generateList());
+        var exception = Assertions.assertThrows(ListBuilderException.class, () -> service.generateList());
         assertEquals(
                 "Erro ao gerar lista 'LIMPEZA': Valor 'aa-04-2022' não é uma data válida",
-                ex.getMessage());
+                exception.getMessage());
     }
 
     @Test
@@ -317,10 +317,10 @@ class LimpezaGenerateServiceImplTest
         var removeToList = List.of("12-04-aaaaa");
         writeFileInputFromDto(builder.withSuccess().withRemoveFromList(removeToList).build());
         FieldUtils.writeField(properties, "layoutLimpeza", 2, true);
-        var ex = Assertions.assertThrows(ListBuilderException.class, () -> service.generateList());
+        var exception = Assertions.assertThrows(ListBuilderException.class, () -> service.generateList());
         assertEquals(
                 "Erro ao gerar lista 'LIMPEZA': Valor '12-04-aaaaa' não é uma data válida",
-                ex.getMessage());
+                exception.getMessage());
     }
 
     @Test
@@ -393,9 +393,7 @@ class LimpezaGenerateServiceImplTest
         assertEquals("Terça - Após a Reunião", ret);
     }
 
-    private void validateListBuilderException(String expectedMessageError)
-            throws IllegalAccessException {
-        BaseGenerateServiceTest.testUtils.validateException(
-                ListBuilderException.class, () -> service.generateList(), expectedMessageError);
+    private void validateListBuilderException(String expectedMessageError) {
+        BaseGenerateServiceTest.testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 }

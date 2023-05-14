@@ -29,10 +29,10 @@ class OtherTest {
 
     @Test
     void sholdDayWeekEnumListBuilderException() {
-        var ex =
+        var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class, () -> DayOfWeekEnum.getByDayOfWeek(null));
         Assertions.assertEquals(
-                "Nenhum Dia da Semana encontrado para o valor: null", ex.getMessage());
+                "Nenhum Dia da Semana encontrado para o valor: null", exception.getMessage());
     }
 }

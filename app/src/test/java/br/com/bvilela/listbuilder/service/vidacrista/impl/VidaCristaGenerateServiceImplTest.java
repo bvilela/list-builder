@@ -354,10 +354,8 @@ class VidaCristaGenerateServiceImplTest
         Assertions.assertNotNull(originalWeekItems.get(7));
     }
 
-    private void validateListBuilderException(String expectedMessageError)
-            throws IllegalAccessException {
-        BaseGenerateServiceTest.testUtils.validateException(
-                ListBuilderException.class, () -> service.generateList(), expectedMessageError);
+    private void validateListBuilderException(String expectedMessageError) {
+        BaseGenerateServiceTest.testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 
     private List<VidaCristaExtractWeekItemDTO> cloneListWithoutReference(

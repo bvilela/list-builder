@@ -490,7 +490,6 @@ class DesignacaoGenerateServiceImplTest
 
     private void validateListBuilderException(String expectedMessageError)
             throws IllegalAccessException {
-        BaseGenerateServiceTest.testUtils.validateException(
-                ListBuilderException.class, () -> service.generateList(), expectedMessageError);
+        BaseGenerateServiceTest.testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 }
