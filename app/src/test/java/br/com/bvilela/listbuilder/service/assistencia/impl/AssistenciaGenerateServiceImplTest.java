@@ -11,10 +11,15 @@ import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.assistencia.AssistenciaWriterService;
 import br.com.bvilela.listbuilder.builder.FileInputDataAssistenciaDtoBuilder;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.*;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -44,7 +49,8 @@ class AssistenciaGenerateServiceImplTest
     }
 
     @BeforeEach
-    public void setup() throws IllegalAccessException {
+    @SneakyThrows
+    public void setup() {
         MockitoAnnotations.openMocks(this);
         FieldUtils.writeField(properties, "inputDir", testUtils.getResourceDirectory(), true);
         service =
@@ -68,36 +74,28 @@ class AssistenciaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListInvalidFilePathException() throws IllegalAccessException {
+    void shouldGenerateListInvalidFilePathException() {
         validateListBuilderException("Erro ao ler arquivo - Arquivo não encontrado");
     }
 
     @Test
-    void shouldGenerateListFileSintaxeException() throws IllegalAccessException {
+    void shouldGenerateListFileSintaxeException() {
         testUtils.writeFileInputSyntaxError();
         validateListBuilderException("Erro ao ler arquivo - Arquivo não é um JSON válido");
     }
 
-    @Test
-    void shouldGenerateListExceptionLastDateNull() throws IllegalAccessException {
-        writeFileInputFromDto(builder.withLastDateNull().build());
+    @DisplayName("Generate List Exception - Last Date Required")
+    @ParameterizedTest(name = "Last Date is \"{0}\"")
+    @NullAndEmptySource
+    @ValueSource(strings = {" "})
+    @SneakyThrows
+    void shouldGenerateListExceptionLastDate(String lastDate) {
+        writeFileInputFromDto(builder.withSuccess().withLastDate(lastDate).build());
         validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionLastDateEmpty() throws IllegalAccessException {
-        writeFileInputFromDto(builder.withLastDateEmpty().build());
-        validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
-    }
-
-    @Test
-    void shouldGenerateListExceptionLastDateBlank() throws IllegalAccessException {
-        writeFileInputFromDto(builder.withLastDateBlank().build());
-        validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
-    }
-
-    @Test
-    void shouldGenerateListExceptionLastDateInvalid() throws IllegalAccessException {
+    void shouldGenerateListExceptionLastDateInvalid() {
         var dto = builder.withLastDateInvalid().build();
         writeFileInputFromDto(dto);
         var expectedMessageError =
@@ -107,26 +105,19 @@ class AssistenciaGenerateServiceImplTest
         validateListBuilderException(expectedMessageError);
     }
 
-    @Test
-    void shouldGenerateListExceptionMidweekNull() throws IllegalAccessException {
-        writeFileInputFromDto(builder.withMidweekNull().build());
+    @DisplayName("Generate List Exception - Midweek Required")
+    @ParameterizedTest(name = "Midweek is \"{0}\"")
+    @NullAndEmptySource
+    @ValueSource(strings = {" "})
+    @SneakyThrows
+    void shouldGenerateListExceptionMidweek(String meetingDayMidweek) {
+        writeFileInputFromDto(
+                builder.withSuccess().withMeetingDayMidweek(meetingDayMidweek).build());
         validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
     }
 
     @Test
-    void shouldGenerateListExceptionMidweekEmpty() throws IllegalAccessException {
-        writeFileInputFromDto(builder.withMidweekEmpty().build());
-        validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
-    }
-
-    @Test
-    void shouldGenerateListExceptionMidweekBlank() throws IllegalAccessException {
-        writeFileInputFromDto(builder.withMidweekBlank().build());
-        validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
-    }
-
-    @Test
-    void shouldGenerateListExceptionMidweekInvalid() throws IllegalAccessException {
+    void shouldGenerateListExceptionMidweekInvalid() {
         var dto = builder.withMidweekInvalid().build();
         writeFileInputFromDto(dto);
         var expectedMessageError =
@@ -136,26 +127,19 @@ class AssistenciaGenerateServiceImplTest
         validateListBuilderException(expectedMessageError);
     }
 
-    @Test
-    void shouldGenerateListExceptionWeekendNull() throws IllegalAccessException {
-        writeFileInputFromDto(builder.withWeekendNull().build());
+    @DisplayName("Generate List Exception - Weekend Required")
+    @ParameterizedTest(name = "Weekend is \"{0}\"")
+    @NullAndEmptySource
+    @ValueSource(strings = {" "})
+    @SneakyThrows
+    void shouldGenerateListExceptionWeekend(String meetingDayWeekend) {
+        writeFileInputFromDto(
+                builder.withSuccess().withMeetingDayWeekend(meetingDayWeekend).build());
         validateListBuilderException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
     }
 
     @Test
-    void shouldGenerateListExceptionWeekendEmpty() throws IllegalAccessException {
-        writeFileInputFromDto(builder.withWeekendEmpty().build());
-        validateListBuilderException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
-    }
-
-    @Test
-    void shouldGenerateListExceptionWeekendBlank() throws IllegalAccessException {
-        writeFileInputFromDto(builder.withWeekendBlank().build());
-        validateListBuilderException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
-    }
-
-    @Test
-    void shouldGenerateListExceptionWeekendInvalid() throws IllegalAccessException {
+    void shouldGenerateListExceptionWeekendInvalid() {
         var dto = builder.withWeekendInvalid().build();
         writeFileInputFromDto(dto);
         var expectedMessageError =
@@ -166,7 +150,7 @@ class AssistenciaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListExceptionGeneratedListIsEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionGeneratedListIsEmpty() {
         writeFileInputFromDto(builder.withSuccess().build());
         Mockito.when(
                         dateService.generateListDatesAssistencia(
@@ -205,8 +189,7 @@ class AssistenciaGenerateServiceImplTest
         return LocalDate.of(2022, month, day);
     }
 
-    private void validateListBuilderException(String expectedMessageError)
-            throws IllegalAccessException {
+    private void validateListBuilderException(String expectedMessageError) {
         testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 }

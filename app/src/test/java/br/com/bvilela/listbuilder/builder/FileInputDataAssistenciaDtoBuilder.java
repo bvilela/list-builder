@@ -20,48 +20,12 @@ public class FileInputDataAssistenciaDtoBuilder {
         return target;
     }
 
-    public FileInputDataAssistenciaDtoBuilder withLastDateNull() {
-        return baseLastDate(null);
-    }
-
-    public FileInputDataAssistenciaDtoBuilder withLastDateEmpty() {
-        return baseLastDate("");
-    }
-
-    public FileInputDataAssistenciaDtoBuilder withLastDateBlank() {
-        return baseLastDate(" ");
-    }
-
     public FileInputDataAssistenciaDtoBuilder withLastDateInvalid() {
         return baseLastDate("01-13-2022");
     }
 
-    public FileInputDataAssistenciaDtoBuilder withMidweekNull() {
-        return baseMidweekDay(null);
-    }
-
-    public FileInputDataAssistenciaDtoBuilder withMidweekEmpty() {
-        return baseMidweekDay("");
-    }
-
-    public FileInputDataAssistenciaDtoBuilder withMidweekBlank() {
-        return baseMidweekDay(" ");
-    }
-
     public FileInputDataAssistenciaDtoBuilder withMidweekInvalid() {
         return baseMidweekDay("tercaaa");
-    }
-
-    public FileInputDataAssistenciaDtoBuilder withWeekendNull() {
-        return baseWeekendDay(null);
-    }
-
-    public FileInputDataAssistenciaDtoBuilder withWeekendEmpty() {
-        return baseWeekendDay("");
-    }
-
-    public FileInputDataAssistenciaDtoBuilder withWeekendBlank() {
-        return baseWeekendDay(" ");
     }
 
     public FileInputDataAssistenciaDtoBuilder withWeekendInvalid() {
@@ -92,17 +56,17 @@ public class FileInputDataAssistenciaDtoBuilder {
         return this;
     }
 
-    private FileInputDataAssistenciaDtoBuilder withLastDate(String lastDate) {
+    public FileInputDataAssistenciaDtoBuilder withLastDate(String lastDate) {
         this.target.setLastDate(lastDate);
         return this;
     }
 
-    private FileInputDataAssistenciaDtoBuilder withMeetingDayMidweek(String meetingDayMidweek) {
+    public FileInputDataAssistenciaDtoBuilder withMeetingDayMidweek(String meetingDayMidweek) {
         this.target.setMeetingDayMidweek(meetingDayMidweek);
         return this;
     }
 
-    private FileInputDataAssistenciaDtoBuilder withMeetingDayWeekend(String meetingDayWeekend) {
+    public FileInputDataAssistenciaDtoBuilder withMeetingDayWeekend(String meetingDayWeekend) {
         this.target.setMeetingDayWeekend(meetingDayWeekend);
         return this;
     }

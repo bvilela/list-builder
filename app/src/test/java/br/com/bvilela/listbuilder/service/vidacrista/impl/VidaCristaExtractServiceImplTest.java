@@ -3,77 +3,72 @@ package br.com.bvilela.listbuilder.service.vidacrista.impl;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Stream;
 
 class VidaCristaExtractServiceImplTest {
 
     @InjectMocks private VidaCristaExtractServiceImpl service;
 
     @BeforeEach
-    public void setup() throws IllegalAccessException {
+    public void setup() {
         MockitoAnnotations.openMocks(this);
         service = new VidaCristaExtractServiceImpl();
     }
 
-    @Test
-    void shouldGetUrlMeetingWorkbook() {
-        var url = service.getUrlMeetingWorkbook(LocalDate.of(2021, 12, 27));
-        Assertions.assertEquals(
-                "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/janeiro-fevereiro-2022-mwb/",
-                url);
+    @DisplayName("Get URL Meeting Workbook from URL Success")
+    @ParameterizedTest(name = "Date is \"{0}\"")
+    @MethodSource("shouldGetUrlMeetingWorkbookParameters")
+    @SneakyThrows
+    void shouldGetUrlMeetingWorkbook(LocalDate localDate, String expectedURL) {
+        var url = service.getUrlMeetingWorkbook(localDate);
+        Assertions.assertEquals(expectedURL, url);
     }
 
-    @Test
-    void shouldGetUrlMeetingWorkbookCase2() {
-        var url = service.getUrlMeetingWorkbook(LocalDate.of(2022, 1, 31));
-        Assertions.assertEquals(
-                "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/janeiro-fevereiro-2022-mwb/",
-                url);
+    private static Stream<Arguments> shouldGetUrlMeetingWorkbookParameters() {
+        return Stream.of(
+                Arguments.of(
+                        LocalDate.of(2021, 12, 27),
+                        "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/janeiro-fevereiro-2022-mwb/"),
+                Arguments.of(
+                        LocalDate.of(2022, 1, 31),
+                        "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/janeiro-fevereiro-2022-mwb/"),
+                Arguments.of(
+                        LocalDate.of(2022, 4, 25),
+                        "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/maio-junho-2022-mwb/"),
+                Arguments.of(
+                        LocalDate.of(2022, 5, 30),
+                        "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/maio-junho-2022-mwb/"),
+                Arguments.of(
+                        LocalDate.of(2022, 12, 31),
+                        "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/janeiro-fevereiro-2023-mwb/"));
     }
 
-    @Test
-    void shouldGetUrlMeetingWorkbookCase3() {
-        var url = service.getUrlMeetingWorkbook(LocalDate.of(2022, 4, 25));
-        Assertions.assertEquals(
-                "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/maio-junho-2022-mwb/", url);
+    @DisplayName("Sanitizer Text")
+    @ParameterizedTest(name = "Source Text is \"{1}\"")
+    @MethodSource("shouldSanitizerTextParameters")
+    @SneakyThrows
+    void shouldSanitizerText(String target, String source) {
+        baseSanitizerText(target, source);
     }
 
-    @Test
-    void shouldGetUrlMeetingWorkbookCase4() {
-        var url = service.getUrlMeetingWorkbook(LocalDate.of(2022, 5, 30));
-        Assertions.assertEquals(
-                "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/maio-junho-2022-mwb/", url);
-    }
-
-    @Test
-    void shouldGetUrlMeetingWorkbookCase5() {
-        var url = service.getUrlMeetingWorkbook(LocalDate.of(2022, 12, 31));
-        Assertions.assertEquals(
-                "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/janeiro-fevereiro-2023-mwb/",
-                url);
-    }
-
-    @Test
-    void shouldSanitizerTextCase1() {
-        baseSanitizerText("2-8 de maio", "2-8&nbsp;de maio");
-    }
-
-    @Test
-    void shouldSanitizerTextCase2() {
-        baseSanitizerText("'text1'", "‘text1’");
-    }
-
-    @Test
-    void shouldSanitizerTextCase3() {
-        baseSanitizerText("chunk1 chunk2!", "chunk1 <em>chunk2!</em>");
+    private static Stream<Arguments> shouldSanitizerTextParameters() {
+        return Stream.of(
+                Arguments.of("2-8 de maio", "2-8&nbsp;de maio"),
+                Arguments.of("'text1'", "‘text1’"),
+                Arguments.of("chunk1 chunk2!", "chunk1 <em>chunk2!</em>"));
     }
 
     @Test
@@ -112,7 +107,8 @@ class VidaCristaExtractServiceImplTest {
     }
 
     @Test
-    void shouldExtractWeeksBySite() throws ListBuilderException, IOException {
+    @SneakyThrows
+    void shouldExtractWeeksBySite() {
         var url = "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/maio-junho-2022-mwb/";
         var list = service.extractWeeksBySite(url);
         Assertions.assertDoesNotThrow(() -> service.extractWeekItemsBySite(list));
@@ -198,7 +194,7 @@ class VidaCristaExtractServiceImplTest {
     }
 
     @Test
-    void shouldExtractWeeksBySiteAnotherSite() throws ListBuilderException, IOException {
+    void shouldExtractWeeksBySiteAnotherSite() {
         var url = "https://www.google.com.br";
         var exception =
                 Assertions.assertThrows(
@@ -216,21 +212,23 @@ class VidaCristaExtractServiceImplTest {
     }
 
     @Test
-    void shouldExtractMonthsAndConvertToDatesOneMonthSuccess() throws ListBuilderException {
+    @SneakyThrows
+    void shouldExtractMonthsAndConvertToDatesOneMonthSuccess() {
         var list = service.extractMonthsAndConvertToDates("5-11 de setembro", 2022);
         Assertions.assertEquals(List.of(LocalDate.of(2022, 9, 5), LocalDate.of(2022, 9, 11)), list);
     }
 
     @Test
-    void shouldExtractMonthsAndConvertToDatesTwoMonthsSuccess() throws ListBuilderException {
+    @SneakyThrows
+    void shouldExtractMonthsAndConvertToDatesTwoMonthsSuccess() {
         var list = service.extractMonthsAndConvertToDates("26 de setembro-2 de outubro", 2022);
         Assertions.assertEquals(
                 List.of(LocalDate.of(2022, 9, 26), LocalDate.of(2022, 10, 2)), list);
     }
 
     @Test
-    void shouldExtractMonthsAndConvertToDatesTwoMonthsTwoYearCase1Success()
-            throws ListBuilderException {
+    @SneakyThrows
+    void shouldExtractMonthsAndConvertToDatesTwoMonthsTwoYearCase1Success() {
         var list =
                 service.extractMonthsAndConvertToDates(
                         "26 de dezembro de 2022–1.º de janeiro de 2023", 2022);
@@ -239,8 +237,8 @@ class VidaCristaExtractServiceImplTest {
     }
 
     @Test
-    void shouldExtractMonthsAndConvertToDatesTwoMonthsTwoYearCase2Success()
-            throws ListBuilderException {
+    @SneakyThrows
+    void shouldExtractMonthsAndConvertToDatesTwoMonthsTwoYearCase2Success() {
         var list =
                 service.extractMonthsAndConvertToDates(
                         "26 de dezembro de 2022-1.º de janeiro de 2023", 2022);
