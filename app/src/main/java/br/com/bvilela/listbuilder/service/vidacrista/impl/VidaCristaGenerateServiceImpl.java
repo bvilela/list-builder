@@ -74,7 +74,7 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
 		}
 	}
 
-	private ArrayList<VidaCristaExtractWeekDTO> adjustListByLastDate(List<VidaCristaExtractWeekDTO> listWeeks,
+	private List<VidaCristaExtractWeekDTO> adjustListByLastDate(List<VidaCristaExtractWeekDTO> listWeeks,
 			FileInputDataVidaCristaDTO dto) {
 		var lastDate = dto.getLastDateConverted();
 		var mapRemove = dto.getRemoveWeekFromListConverted();

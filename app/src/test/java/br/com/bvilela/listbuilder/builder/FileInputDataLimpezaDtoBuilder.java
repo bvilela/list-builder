@@ -20,7 +20,7 @@ public class FileInputDataLimpezaDtoBuilder {
                     7, "Group 7 (Person28, Person29, Person30, Person31, Person32)",
                     8, "Group 8 (Person33, Person34, Person35, Person36)");
 
-    private FileInputDataLimpezaDTO target;
+    private final FileInputDataLimpezaDTO target;
 
     public FileInputDataLimpezaDtoBuilder() {
         this.target = new FileInputDataLimpezaDTO();
@@ -142,29 +142,24 @@ public class FileInputDataLimpezaDtoBuilder {
         return this;
     }
 
-    private FileInputDataLimpezaDtoBuilder withMeetingDayMidweek(String meetingDayMidweek) {
+    private void withMeetingDayMidweek(String meetingDayMidweek) {
         this.target.setMeetingDayMidweek(meetingDayMidweek);
-        return this;
     }
 
-    private FileInputDataLimpezaDtoBuilder withMeetingDayWeekend(String meetingDayWeekend) {
+    private void withMeetingDayWeekend(String meetingDayWeekend) {
         this.target.setMeetingDayWeekend(meetingDayWeekend);
-        return this;
     }
 
-    private FileInputDataLimpezaDtoBuilder withGroups(Map<Integer, String> groups) {
+    private void withGroups(Map<Integer, String> groups) {
         this.target.setGroups(groups);
-        return this;
     }
 
-    private FileInputDataLimpezaDtoBuilder withHeaderMessage(String headerMessage) {
+    private void withHeaderMessage(String headerMessage) {
         this.target.setHeaderMessage(headerMessage);
-        return this;
     }
 
-    private FileInputDataLimpezaDtoBuilder withFooterMessage(String footerMessage) {
+    private void withFooterMessage(String footerMessage) {
         this.target.setFooterMessage(footerMessage);
-        return this;
     }
 
     public FileInputDataLimpezaDtoBuilder withRemoveFromList(List<String> removeFromList) {

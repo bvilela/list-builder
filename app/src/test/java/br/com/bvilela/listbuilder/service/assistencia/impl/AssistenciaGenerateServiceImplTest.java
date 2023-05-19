@@ -44,7 +44,7 @@ class AssistenciaGenerateServiceImplTest
 
     @Mock private NotificationService notificationService;
 
-    private AssistenciaGenerateServiceImplTest() throws ListBuilderException {
+    public AssistenciaGenerateServiceImplTest() throws ListBuilderException {
         super(ListTypeEnum.ASSISTENCIA, FileInputDataAssistenciaDtoBuilder.create());
     }
 

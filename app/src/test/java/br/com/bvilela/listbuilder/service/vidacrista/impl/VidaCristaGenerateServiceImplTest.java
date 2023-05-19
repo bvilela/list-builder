@@ -54,7 +54,7 @@ class VidaCristaGenerateServiceImplTest
         FieldUtils.writeField(
                 properties,
                 "inputDir",
-                BaseGenerateServiceTest.testUtils.getResourceDirectory(),
+                this.testUtils.getResourceDirectory(),
                 true);
         service =
                 new VidaCristaGenerateServiceImpl(
@@ -68,7 +68,7 @@ class VidaCristaGenerateServiceImplTest
 
     @Test
     void shouldGetExecutionMode() {
-        assertEquals(BaseGenerateServiceTest.testUtils.getListType(), service.getListType());
+        assertEquals(this.testUtils.getListType(), service.getListType());
     }
 
     @Test
@@ -83,7 +83,7 @@ class VidaCristaGenerateServiceImplTest
 
     @Test
     void shouldGenerateListFileSyntaxException() throws IllegalAccessException {
-        BaseGenerateServiceTest.testUtils.writeFileInputSyntaxError();
+        this.testUtils.writeFileInputSyntaxError();
         validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
     }
 
@@ -355,7 +355,7 @@ class VidaCristaGenerateServiceImplTest
     }
 
     private void validateListBuilderException(String expectedMessageError) {
-        BaseGenerateServiceTest.testUtils.validateException(
+        this.testUtils.validateException(
                 () -> service.generateList(), expectedMessageError);
     }
 

@@ -8,7 +8,7 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 
 public abstract class BaseGenerateServiceTest<T, B> {
 
-    protected static TestUtils testUtils;
+    protected TestUtils testUtils;
     protected B builder;
 
     public BaseGenerateServiceTest(ListTypeEnum listType, B builder) throws ListBuilderException {

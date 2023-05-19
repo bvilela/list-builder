@@ -1,21 +1,26 @@
 package br.com.bvilela.listbuilder.service.limpeza.impl;
 
+import br.com.bvilela.listbuilder.builder.FileInputDataLimpezaDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
+import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
 import br.com.bvilela.listbuilder.dto.ItemDateDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
-import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
-import br.com.bvilela.listbuilder.builder.FileInputDataLimpezaDtoBuilder;
-import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.service.impl.DateServiceImpl;
 import br.com.bvilela.listbuilder.service.impl.GroupServiceImpl;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.*;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -56,7 +61,7 @@ class LimpezaGenerateServiceImplTest
         FieldUtils.writeField(
                 properties,
                 "inputDir",
-                BaseGenerateServiceTest.testUtils.getResourceDirectory(),
+                this.testUtils.getResourceDirectory(),
                 true);
         service =
                 new LimpezaGenerateServiceImpl(
@@ -70,7 +75,7 @@ class LimpezaGenerateServiceImplTest
 
     @Test
     void shouldGetExecutionMode() {
-        assertEquals(BaseGenerateServiceTest.testUtils.getListType(), service.getListType());
+        assertEquals(this.testUtils.getListType(), service.getListType());
     }
 
     @Test
@@ -79,36 +84,36 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListInvalidFilePathException() throws IllegalAccessException {
+    void shouldGenerateListInvalidFilePathException() {
         validateListBuilderException("Erro ao ler arquivo - Arquivo não encontrado");
     }
 
     @Test
-    void shouldGenerateListFileSintaxeException() throws IllegalAccessException {
-        BaseGenerateServiceTest.testUtils.writeFileInputSyntaxError();
+    void shouldGenerateListFileSintaxeException() {
+        this.testUtils.writeFileInputSyntaxError();
         validateListBuilderException("Erro ao ler arquivo - Arquivo não é um JSON válido");
     }
 
     @Test
-    void shouldGenerateListExceptionLastDateNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionLastDateNull() {
         writeFileInputFromDto(builder.withLastDateNull().build());
         validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionLastDateEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionLastDateEmpty() {
         writeFileInputFromDto(builder.withLastDateEmpty().build());
         validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionLastDateBlank() throws IllegalAccessException {
+    void shouldGenerateListExceptionLastDateBlank() {
         writeFileInputFromDto(builder.withLastDateBlank().build());
         validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionLastDateInvalid() throws IllegalAccessException {
+    void shouldGenerateListExceptionLastDateInvalid() {
         var dto = builder.withLastDateInvalid().build();
         writeFileInputFromDto(dto);
         var expectedMessageError =
@@ -119,37 +124,39 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListExceptionGroupsNull() throws IllegalAccessException {
+    // TODO: refactory
+    void shouldGenerateListExceptionGroupsNull() {
         writeFileInputFromDto(builder.withGroupsNull().build());
         validateListBuilderException("Grupos está vazio!");
     }
 
     @Test
-    void shouldGenerateListExceptionLastGroupNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionLastGroupNull() {
         writeFileInputFromDto(builder.withLastGroupNull().build());
         validateListBuilderException("Último grupo não informado!");
     }
 
     @Test
-    void shouldGenerateListExceptionMidweekNull() throws IllegalAccessException {
+    //TODO: refactory
+    void shouldGenerateListExceptionMidweekNull() {
         writeFileInputFromDto(builder.withMidweekNull().build());
         validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
     }
 
     @Test
-    void shouldGenerateListExceptionMidweekEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionMidweekEmpty() {
         writeFileInputFromDto(builder.withMidweekEmpty().build());
         validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
     }
 
     @Test
-    void shouldGenerateListExceptionMidweekBlank() throws IllegalAccessException {
+    void shouldGenerateListExceptionMidweekBlank() {
         writeFileInputFromDto(builder.withMidweekBlank().build());
         validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
     }
 
     @Test
-    void shouldGenerateListExceptionMidweekInvalid() throws IllegalAccessException {
+    void shouldGenerateListExceptionMidweekInvalid() {
         var dto = builder.withMidweekInvalid().build();
         writeFileInputFromDto(dto);
         var expectedMessageError =
@@ -160,25 +167,25 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListExceptionWeekendNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionWeekendNull() {
         writeFileInputFromDto(builder.withWeekendNull().build());
         validateListBuilderException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
     }
 
     @Test
-    void shouldGenerateListExceptionWeekendEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionWeekendEmpty() {
         writeFileInputFromDto(builder.withWeekendEmpty().build());
         validateListBuilderException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
     }
 
     @Test
-    void shouldGenerateListExceptionWeekendBlank() throws IllegalAccessException {
+    void shouldGenerateListExceptionWeekendBlank() {
         writeFileInputFromDto(builder.withWeekendBlank().build());
         validateListBuilderException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
     }
 
     @Test
-    void shouldGenerateListExceptionWeekendInvalid() throws IllegalAccessException {
+    void shouldGenerateListExceptionWeekendInvalid() {
         var dto = builder.withWeekendInvalid().build();
         writeFileInputFromDto(dto);
         var expectedMessageError =
@@ -189,7 +196,7 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListExceptionGeneratedListIsEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionGeneratedListIsEmpty() {
         writeFileInputFromDto(builder.withSuccess().build());
         Mockito.when(
                         dateService.generateListDatesLimpeza(
@@ -200,7 +207,8 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListLayout1Success() throws IllegalAccessException, ListBuilderException {
+    @SneakyThrows
+    void shouldGenerateListLayout1Success() {
         var expectedList =
                 List.of(
                         new ItemDateDTO(LocalDate.of(2022, 4, 2)),
@@ -229,8 +237,8 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListLayout2SuccessCase1()
-            throws IllegalAccessException, ListBuilderException {
+    @SneakyThrows
+    void shouldGenerateListLayout2SuccessCase1() {
         // @formatter:off
         var expectedList =
                 List.of(
@@ -269,8 +277,8 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListLayout2SuccessWithAddRemoveToList()
-            throws IllegalAccessException, ListBuilderException {
+    @SneakyThrows
+    void shouldGenerateListLayout2SuccessWithAddRemoveToList() {
         // @formatter:off
         var expectedList =
                 List.of(
@@ -313,8 +321,8 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListLayout2SuccessWithRemoveToListException()
-            throws IllegalAccessException, ListBuilderException {
+    @SneakyThrows
+    void shouldGenerateListLayout2SuccessWithRemoveToListException() {
         var removeToList = List.of("12-04-aaaaa");
         writeFileInputFromDto(builder.withSuccess().withRemoveFromList(removeToList).build());
         FieldUtils.writeField(properties, "layoutLimpeza", 2, true);
@@ -326,77 +334,61 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGetLabelNoExceptionAndNoLabel() throws ListBuilderException {
-        var dto = new ItemDateDTO(LocalDate.of(2022, 03, 01));
+    @SneakyThrows
+    void shouldGetLabelNoExceptionAndNoLabel() {
+        var dto = new ItemDateDTO(LocalDate.of(2022, 3, 1));
+        var ret = service.getLabel(dto, false);
+        assertEquals("Terça", ret);
+    }
+
+    @DisplayName("Get Label Exception And No Label")
+    @ParameterizedTest(name = "Label Exception is \"{0}\"")
+    @NullAndEmptySource
+    @ValueSource(strings = {" "})
+    @SneakyThrows
+    void shouldGetLabelExceptionAndNoLabel(String messageException) {
+        var dto = new ItemDateDTO(LocalDate.of(2022, 3, 1), messageException);
         var ret = service.getLabel(dto, false);
         assertEquals("Terça", ret);
     }
 
     @Test
-    void shouldGetLabelExceptionNullAndNoLabel() throws ListBuilderException {
-        baseGetLabelExceptionAndNoLabel(null);
-    }
-
-    @Test
-    void shouldGetLabelExceptionEmptyAndNoLabel() throws ListBuilderException {
-        baseGetLabelExceptionAndNoLabel("");
-    }
-
-    @Test
-    void shouldGetLabelExceptionBlankAndNoLabel() throws ListBuilderException {
-        baseGetLabelExceptionAndNoLabel(" ");
-    }
-
-    void baseGetLabelExceptionAndNoLabel(String messageException) throws ListBuilderException {
-        var dto = new ItemDateDTO(LocalDate.of(2022, 03, 01), messageException);
+    @SneakyThrows
+    void shouldGetLabelExceptionMessageBlankAndNoLabel() {
+        var dto = new ItemDateDTO(LocalDate.of(2022, 3, 1), "myMessage");
         var ret = service.getLabel(dto, false);
         assertEquals("Terça", ret);
     }
 
     @Test
-    void shouldGetLabelExceptionMessageBlankAndNoLabel() throws ListBuilderException {
-        var dto = new ItemDateDTO(LocalDate.of(2022, 03, 01), "myMessage");
-        var ret = service.getLabel(dto, false);
-        assertEquals("Terça", ret);
+    @SneakyThrows
+    void shouldGetLabelNoExceptionAndAndLabel() {
+        var dto = new ItemDateDTO(LocalDate.of(2022, 3, 1));
+        var ret = service.getLabel(dto, true);
+        assertEquals("Terça - Após a Reunião", ret);
     }
 
-    @Test
-    void shouldGetLabelNoExceptionAndAndLabel() throws ListBuilderException {
-        var dto = new ItemDateDTO(LocalDate.of(2022, 03, 01));
+    @DisplayName("Get Label Exception And Label")
+    @ParameterizedTest(name = "Label Exception is \"{0}\"")
+    @NullAndEmptySource
+    @ValueSource(strings = {" "})
+    @SneakyThrows
+    void shouldGetLabelExceptionNullAndLabel(String messageException) {
+        var dto = new ItemDateDTO(LocalDate.of(2022, 3, 1), messageException);
         var ret = service.getLabel(dto, true);
         assertEquals("Terça - Após a Reunião", ret);
     }
 
     @Test
-    void shouldGetLabelExceptionNullAndLabel() throws ListBuilderException {
-        baseGetLabelExceptionAndLabel(null);
-    }
-
-    @Test
-    void shouldGetLabelExceptionEmptyAndLabel() throws ListBuilderException {
-        baseGetLabelExceptionAndLabel("");
-    }
-
-    @Test
-    void shouldGetLabelExceptionBlankAndLabel() throws ListBuilderException {
-        baseGetLabelExceptionAndLabel(" ");
-    }
-
-    @Test
-    void shouldGetLabelExceptionMessageBlankAndLabel() throws ListBuilderException {
-        var dto = new ItemDateDTO(LocalDate.of(2022, 03, 01), "myMessage");
+    @SneakyThrows
+    void shouldGetLabelExceptionMessageBlankAndLabel() {
+        var dto = new ItemDateDTO(LocalDate.of(2022, 3, 1), "myMessage");
         var ret = service.getLabel(dto, true);
         assertEquals("Terça - myMessage", ret);
     }
 
-    void baseGetLabelExceptionAndLabel(String messageException) throws ListBuilderException {
-        var dto = new ItemDateDTO(LocalDate.of(2022, 03, 01), messageException);
-        var ret = service.getLabel(dto, true);
-        assertEquals("Terça - Após a Reunião", ret);
-    }
-
     private void validateListBuilderException(String expectedMessageError) {
-        BaseGenerateServiceTest.testUtils.validateException(
+        this.testUtils.validateException(
                 () -> service.generateList(), expectedMessageError);
     }
 }

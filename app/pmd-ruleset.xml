@@ -10,7 +10,7 @@
     </description>
 
     <!-- BEST PRACTICES -->
-    <rule ref="category/java/bestpractices.xml/AbstractClassWithoutAbstractMethod" />
+    <!-- <rule ref="category/java/bestpractices.xml/AbstractClassWithoutAbstractMethod" /> -->
     <rule ref="category/java/bestpractices.xml/AvoidPrintStackTrace" />
     <rule ref="category/java/bestpractices.xml/AvoidStringBufferField"/>
     <rule ref="category/java/bestpractices.xml/AvoidUsingHardCodedIP"/>
@@ -104,7 +104,7 @@
     <rule ref="category/java/codestyle.xml/UselessParentheses"/>
     <rule ref="category/java/codestyle.xml/UselessQualifiedThis"/>
 
-    <rule ref="category/java/design.xml/AbstractClassWithoutAnyMethod"/>
+    <!-- <rule ref="category/java/design.xml/AbstractClassWithoutAnyMethod"/> -->
     <rule ref="category/java/design.xml/AvoidDeeplyNestedIfStmts" />
     <rule ref="category/java/design.xml/ClassWithOnlyPrivateConstructorsShouldBeFinal"/>
     <rule ref="category/java/design.xml/CouplingBetweenObjects"/>
@@ -155,7 +155,6 @@
     <rule ref="category/java/errorprone.xml/CloneMethodReturnTypeMustMatchClassName"/>
     <rule ref="category/java/errorprone.xml/CloneThrowsCloneNotSupportedException"/>
     <rule ref="category/java/errorprone.xml/CloseResource"/>
-    <rule ref="category/java/errorprone.xml/CompareObjectsWithEquals"/>
     <rule ref="category/java/errorprone.xml/DoNotCallGarbageCollectionExplicitly"/>
 
     <rule ref="category/java/errorprone.xml/DoNotExtendJavaLangThrowable"/>

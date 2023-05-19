@@ -1,16 +1,13 @@
 package br.com.bvilela.listbuilder.service.discurso.impl;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import br.com.bvilela.listbuilder.builder.DiscursoAllThemesDtoBuilder;
+import br.com.bvilela.listbuilder.builder.FileInputDataDiscursoDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.discurso.FileInputDataDiscursoDTO;
+import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
+import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
-import br.com.bvilela.listbuilder.builder.DiscursoAllThemesDtoBuilder;
-import br.com.bvilela.listbuilder.builder.FileInputDataDiscursoDtoBuilder;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +16,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootApplication
 class DiscursoGenerateServiceImplTest
@@ -45,14 +41,14 @@ class DiscursoGenerateServiceImplTest
         FieldUtils.writeField(
                 properties,
                 "inputDir",
-                BaseGenerateServiceTest.testUtils.getResourceDirectory(),
+                this.testUtils.getResourceDirectory(),
                 true);
         service = new DiscursoGenerateServiceImpl(properties, writerService);
         createFileThemes();
     }
 
     private void createFileThemes() {
-        BaseGenerateServiceTest.testUtils.writeFileInputDiscursoAllThemes(
+        this.testUtils.writeFileInputDiscursoAllThemes(
                 DiscursoAllThemesDtoBuilder.create().withRandomData().build());
     }
 
@@ -63,7 +59,7 @@ class DiscursoGenerateServiceImplTest
 
     @Test
     void shouldGetExecutionMode() {
-        assertEquals(BaseGenerateServiceTest.testUtils.getListType(), service.getListType());
+        assertEquals(this.testUtils.getListType(), service.getListType());
     }
 
     @Test
@@ -72,31 +68,31 @@ class DiscursoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListFileAllThemesInvalidPathFileException() throws IllegalAccessException {
+    void shouldGenerateListFileAllThemesInvalidPathFileException() {
         createFileInputDataOK();
-        BaseGenerateServiceTest.testUtils.cleanDirectory();
+        this.testUtils.cleanDirectory();
         validateListBuilderException(MessageConfig.FILE_NOT_FOUND);
     }
 
     @Test
-    void shouldGenerateListFileAllThemesSintaxeException() throws IllegalAccessException {
+    void shouldGenerateListFileAllThemesSintaxeException() {
         createFileInputDataOK();
-        BaseGenerateServiceTest.testUtils.writeFileInputDiscursoAllThemesSyntaxError();
+        this.testUtils.writeFileInputDiscursoAllThemesSyntaxError();
         validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
     }
 
     @Test
-    void shouldGenerateListFileAllThemesNullException() throws IllegalAccessException {
+    void shouldGenerateListFileAllThemesNullException() {
         createFileInputDataOK();
-        BaseGenerateServiceTest.testUtils.writeFileInputDiscursoAllThemes(
+        this.testUtils.writeFileInputDiscursoAllThemes(
                 DiscursoAllThemesDtoBuilder.create().withNullData().build());
         validateListBuilderException(MessageConfig.THEMES_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListFileAllThemesEmptyException() throws IllegalAccessException {
+    void shouldGenerateListFileAllThemesEmptyException() {
         createFileInputDataOK();
-        BaseGenerateServiceTest.testUtils.writeFileInputDiscursoAllThemes(
+        this.testUtils.writeFileInputDiscursoAllThemes(
                 DiscursoAllThemesDtoBuilder.create().withEmptyData().build());
         validateListBuilderException(MessageConfig.THEMES_REQUIRED);
     }
@@ -106,18 +102,18 @@ class DiscursoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListFileInputInvalidPathException() throws IllegalAccessException {
+    void shouldGenerateListFileInputInvalidPathException() {
         validateListBuilderException(MessageConfig.FILE_NOT_FOUND);
     }
 
     @Test
-    void shouldGenerateListFileInputSintaxeException() throws IllegalAccessException {
-        BaseGenerateServiceTest.testUtils.writeFileInputSyntaxError();
+    void shouldGenerateListFileInputSintaxeException() {
+        this.testUtils.writeFileInputSyntaxError();
         validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
     }
 
     @Test
-    void shouldGenerateListFileInputThemeNumberTitleNullException() throws IllegalAccessException {
+    void shouldGenerateListFileInputThemeNumberTitleNullException() {
         final String themeNumber = null;
         final String themeTitle = null;
         final String expectedMessageError = MSG_MISSING_THEME_NUMBER_TITLE;
@@ -125,7 +121,7 @@ class DiscursoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListFileInputThemeNumberTitleBlankException() throws IllegalAccessException {
+    void shouldGenerateListFileInputThemeNumberTitleBlankException() {
         final String themeNumber = " ";
         final String themeTitle = " ";
         final String expectedMessageError = MSG_MISSING_THEME_NUMBER_TITLE;
@@ -133,8 +129,7 @@ class DiscursoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListFileInputThemeNumberInvalidTitleNullException()
-            throws IllegalAccessException {
+    void shouldGenerateListFileInputThemeNumberInvalidTitleNullException() {
         final String themeNumber = "ABC";
         final String themeTitle = " ";
         final String expectedMessageError =
@@ -143,7 +138,7 @@ class DiscursoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListFileInputThemeNumberNotFoundException() throws IllegalAccessException {
+    void shouldGenerateListFileInputThemeNumberNotFoundException() {
         final String themeNumber = "1234";
         final String themeTitle = null;
         final String expectedMessageError = "Nenhum tema encontrada para o Número: 1234";
@@ -151,8 +146,7 @@ class DiscursoGenerateServiceImplTest
     }
 
     private void validateFileInputThemeNumberTitleException(
-            String themeNumber, String themeTitle, String expectedMessageError)
-            throws IllegalAccessException {
+            String themeNumber, String themeTitle, String expectedMessageError) {
         var dto = builder.build();
         dto.getReceive().get(0).setThemeNumber(themeNumber);
         dto.getReceive().get(0).setThemeTitle(themeTitle);
@@ -161,14 +155,14 @@ class DiscursoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListFileInputSendAndReceiveNull() throws IllegalAccessException {
+    void shouldGenerateListFileInputSendAndReceiveNull() {
         writeFileInputFromDto(builder.withRandomData().withReceive(null).withSend(null).build());
         validateListBuilderException(MessageConfig.LIST_SEND_REVEICE_NULL);
     }
 
     @Test
-    void shouldGenerateListSendReceiveSuccessByThemeNumberWithThemeTitleNull()
-            throws IllegalAccessException {
+    //TODO: refactory
+    void shouldGenerateListSendReceiveSuccessByThemeNumberWithThemeTitleNull() {
         var dto = builder.build();
         dto.getReceive().get(0).setThemeNumber("1");
         dto.getReceive().get(0).setThemeTitle(null);
@@ -176,8 +170,7 @@ class DiscursoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListReceiveSuccessByThemeNumberWithThemeTitleNull()
-            throws IllegalAccessException {
+    void shouldGenerateListReceiveSuccessByThemeNumberWithThemeTitleNull() {
         var dto = builder.build();
         dto.setSend(null);
         dto.getReceive().get(0).setThemeNumber("1");
@@ -186,8 +179,8 @@ class DiscursoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListSendSuccessByThemeNumberWithThemeTitleNull()
-            throws IllegalAccessException {
+    //TODO: refactory
+    void shouldGenerateListSendSuccessByThemeNumberWithThemeTitleNull() {
         var dto = builder.build();
         dto.setReceive(null);
         dto.getSend().get(0).setThemeNumber("1");
@@ -196,8 +189,7 @@ class DiscursoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListFileInputSuccessByThemeNumberWithThemeTitleEmpty()
-            throws IllegalAccessException {
+    void shouldGenerateListFileInputSuccessByThemeNumberWithThemeTitleEmpty() {
         var dto = builder.build();
         dto.getReceive().get(0).setThemeNumber("1");
         dto.getReceive().get(0).setThemeTitle("");
@@ -205,7 +197,7 @@ class DiscursoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListFileInputSuccessByThemeTitle() throws IllegalAccessException {
+    void shouldGenerateListFileInputSuccessByThemeTitle() {
         var dto = builder.build();
         dto.getReceive().get(0).setThemeNumber(null);
         assertNotNull(dto.getReceive().get(0).getThemeTitle());
@@ -213,14 +205,13 @@ class DiscursoGenerateServiceImplTest
         assertFalse(dto.getReceive().get(0).toString().isBlank());
     }
 
-    void validateGenerateListSuccess(FileInputDataDiscursoDTO dto) throws IllegalAccessException {
+    void validateGenerateListSuccess(FileInputDataDiscursoDTO dto) {
         writeFileInputFromDto(dto);
         assertDoesNotThrow(() -> service.generateList());
     }
 
-    private void validateListBuilderException(String expectedMessageError)
-            throws IllegalAccessException {
-        BaseGenerateServiceTest.testUtils.validateException(
+    private void validateListBuilderException(String expectedMessageError) {
+        this.testUtils.validateException(
                 () -> service.generateList(), expectedMessageError);
     }
 }

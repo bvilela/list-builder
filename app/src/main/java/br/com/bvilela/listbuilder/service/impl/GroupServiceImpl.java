@@ -43,7 +43,7 @@ public class GroupServiceImpl implements GroupService {
 		var listGeneratedGroups = new ArrayList<String>();
 		var indexGroup = dto.getLastGroup();
 		for (int i = 0; i < numberOfDates; i++) {
-			if (indexGroup == mapGroups.size()) {
+			if (indexGroup.equals(mapGroups.size())) {
 				indexGroup = 1;
 			} else {
 				indexGroup++;
