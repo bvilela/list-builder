@@ -8,6 +8,16 @@
     <description>
         My custom PMD Rules
     </description>
+	
+	<!-- Excluse Files: Rule TooManyMethods -->
+	<exclude-pattern>.*/br.com.bvilela.listbuilder.builder.FileInputDataLimpezaDtoBuilder.*</exclude-pattern>
+	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.designacao.impl.DesignacaoGenerateServiceImplTest.*</exclude-pattern>
+	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.discurso.impl.DiscursoGenerateServiceImplTest.*</exclude-pattern>
+	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.impl.GroupServiceImplTest.*</exclude-pattern>
+	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.limpeza.impl.LimpezaGenerateServiceImplTest.*</exclude-pattern>
+	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.vidacrista.impl.VidaCristaExtractServiceImplTest.*</exclude-pattern>
+	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.vidacrista.impl.VidaCristaGenerateServiceImplTest.*</exclude-pattern>
+	<exclude-pattern>.*/br.com.bvilela.listbuilder.utils.DateUtilsTest.*</exclude-pattern>
 
     <!-- BEST PRACTICES -->
     <!-- <rule ref="category/java/bestpractices.xml/AbstractClassWithoutAbstractMethod" /> -->

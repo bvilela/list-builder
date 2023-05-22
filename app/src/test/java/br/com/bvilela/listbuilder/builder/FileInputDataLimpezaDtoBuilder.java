@@ -34,18 +34,6 @@ public class FileInputDataLimpezaDtoBuilder {
         return target;
     }
 
-    public FileInputDataLimpezaDtoBuilder withLastDateNull() {
-        return baseLastDate(null);
-    }
-
-    public FileInputDataLimpezaDtoBuilder withLastDateEmpty() {
-        return baseLastDate("");
-    }
-
-    public FileInputDataLimpezaDtoBuilder withLastDateBlank() {
-        return baseLastDate(" ");
-    }
-
     public FileInputDataLimpezaDtoBuilder withLastDateInvalid() {
         return baseLastDate("01-13-2022");
     }
@@ -61,19 +49,6 @@ public class FileInputDataLimpezaDtoBuilder {
     public FileInputDataLimpezaDtoBuilder withGroupsNull() {
         return base(LAST_DATE_DEFAULT, 8, "terça", "sábado", null);
     }
-
-    public FileInputDataLimpezaDtoBuilder withMidweekNull() {
-        return baseMidweekDay(null);
-    }
-
-    public FileInputDataLimpezaDtoBuilder withMidweekEmpty() {
-        return baseMidweekDay("");
-    }
-
-    public FileInputDataLimpezaDtoBuilder withMidweekBlank() {
-        return baseMidweekDay(" ");
-    }
-
     public FileInputDataLimpezaDtoBuilder withMidweekInvalid() {
         return baseMidweekDay("tercaaa");
     }
@@ -132,7 +107,7 @@ public class FileInputDataLimpezaDtoBuilder {
         return this;
     }
 
-    private FileInputDataLimpezaDtoBuilder withLastDate(String lastDate) {
+    public FileInputDataLimpezaDtoBuilder withLastDate(String lastDate) {
         this.target.setLastDate(lastDate);
         return this;
     }
@@ -142,8 +117,9 @@ public class FileInputDataLimpezaDtoBuilder {
         return this;
     }
 
-    private void withMeetingDayMidweek(String meetingDayMidweek) {
+    public FileInputDataLimpezaDtoBuilder withMeetingDayMidweek(String meetingDayMidweek) {
         this.target.setMeetingDayMidweek(meetingDayMidweek);
+        return this;
     }
 
     private void withMeetingDayWeekend(String meetingDayWeekend) {

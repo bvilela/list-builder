@@ -94,21 +94,13 @@ class LimpezaGenerateServiceImplTest
         validateListBuilderException("Erro ao ler arquivo - Arquivo não é um JSON válido");
     }
 
-    @Test
-    void shouldGenerateListExceptionLastDateNull() {
-        writeFileInputFromDto(builder.withLastDateNull().build());
-        validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
-    }
-
-    @Test
-    void shouldGenerateListExceptionLastDateEmpty() {
-        writeFileInputFromDto(builder.withLastDateEmpty().build());
-        validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
-    }
-
-    @Test
-    void shouldGenerateListExceptionLastDateBlank() {
-        writeFileInputFromDto(builder.withLastDateBlank().build());
+    @DisplayName("Generate List Exception - Last Date Required")
+    @ParameterizedTest(name = "Last Date is \"{0}\"")
+    @NullAndEmptySource
+    @ValueSource(strings = " ")
+    @SneakyThrows
+    void generateListExceptionLastDateRequired(String lastDate) {
+        writeFileInputFromDto(builder.withSuccess().withLastDate(lastDate).build());
         validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
     }
 
@@ -124,7 +116,6 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    // TODO: refactory
     void shouldGenerateListExceptionGroupsNull() {
         writeFileInputFromDto(builder.withGroupsNull().build());
         validateListBuilderException("Grupos está vazio!");
@@ -136,22 +127,13 @@ class LimpezaGenerateServiceImplTest
         validateListBuilderException("Último grupo não informado!");
     }
 
-    @Test
-    //TODO: refactory
-    void shouldGenerateListExceptionMidweekNull() {
-        writeFileInputFromDto(builder.withMidweekNull().build());
-        validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
-    }
-
-    @Test
-    void shouldGenerateListExceptionMidweekEmpty() {
-        writeFileInputFromDto(builder.withMidweekEmpty().build());
-        validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
-    }
-
-    @Test
-    void shouldGenerateListExceptionMidweekBlank() {
-        writeFileInputFromDto(builder.withMidweekBlank().build());
+    @DisplayName("Generate List Exception - Midweek Day Required")
+    @ParameterizedTest(name = "Last Date is \"{0}\"")
+    @NullAndEmptySource
+    @ValueSource(strings = " ")
+    @SneakyThrows
+    void generateListExceptionMidweekDayRequired(String midweekDay) {
+        writeFileInputFromDto(builder.withSuccess().withMeetingDayMidweek(midweekDay).build());
         validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
     }
 

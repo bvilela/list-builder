@@ -10,7 +10,10 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -161,7 +164,6 @@ class DiscursoGenerateServiceImplTest
     }
 
     @Test
-    //TODO: refactory
     void shouldGenerateListSendReceiveSuccessByThemeNumberWithThemeTitleNull() {
         var dto = builder.build();
         dto.getReceive().get(0).setThemeNumber("1");
@@ -178,13 +180,14 @@ class DiscursoGenerateServiceImplTest
         validateGenerateListSuccess(dto);
     }
 
-    @Test
-    //TODO: refactory
-    void shouldGenerateListSendSuccessByThemeNumberWithThemeTitleNull() {
+    @DisplayName("Generate List Send Success - ThemeNumber NotNull and ThemeTitle Not Filled")
+    @ParameterizedTest(name = "ThemeTitle is \"{0}\"")
+    @NullAndEmptySource
+    void shouldGenerateListSendSuccessThemeNumberNotNullThemeTitleNotFilled(String themeTitle) {
         var dto = builder.build();
         dto.setReceive(null);
         dto.getSend().get(0).setThemeNumber("1");
-        dto.getSend().get(0).setThemeTitle(null);
+        dto.getSend().get(0).setThemeTitle(themeTitle);
         validateGenerateListSuccess(dto);
     }
 
