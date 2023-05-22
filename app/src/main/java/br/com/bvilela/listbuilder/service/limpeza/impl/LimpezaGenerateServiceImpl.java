@@ -16,6 +16,7 @@ import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.service.limpeza.LimpezaWriterService;
 import br.com.bvilela.listbuilder.validator.LimpezaValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -66,8 +67,9 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
 		}
 	}
 
+	@SneakyThrows
 	private FinalListLimpezaDTO generateFinalList(List<ItemDateDTO> listDates, List<String> listGroups,
-                                                  int layout) throws ListBuilderException {
+                                                  int layout) {
 
 		if (listDates.isEmpty()) {
 			throw new ListBuilderException("Lista de Datas e/ou Lista de Grupos VAZIA!");
@@ -79,8 +81,8 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
 		return generateFinalListLayout1(listDates, listGroups);
 	}
 
-	private FinalListLimpezaDTO generateFinalListLayout1(List<ItemDateDTO> listDates, List<String> listGroups)
-			throws ListBuilderException {
+	@SneakyThrows
+	private FinalListLimpezaDTO generateFinalListLayout1(List<ItemDateDTO> listDates, List<String> listGroups) {
 		var list = new ArrayList<FinalListLimpezaItemDTO>();
 
 		for (int i = 0; i < listDates.size(); i++) {
@@ -92,8 +94,8 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
 		return FinalListLimpezaDTO.builder().items(list).build();
 	}
 
-	private FinalListLimpezaDTO generateFinalListLayout2(List<ItemDateDTO> listDates, List<String> listGroups)
-			throws ListBuilderException {
+	@SneakyThrows
+	private FinalListLimpezaDTO generateFinalListLayout2(List<ItemDateDTO> listDates, List<String> listGroups) {
 
 		var list = new ArrayList<FinalListLimpezaItemLayout2DTO>();
 
@@ -114,12 +116,10 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
 				label2 = getLabel(dates.get(1), true);
 			}
 
-			// @formatter:off
 			var item = FinalListLimpezaItemLayout2DTO.builder()
 					.withGroup(listGroups.get(i))
 					.withDate1(date1).withLabel1(label1)
 					.withDate2(date2).withLabel2(label2).build();
-			// @formatter:on
 
 			list.add(item);
 		}

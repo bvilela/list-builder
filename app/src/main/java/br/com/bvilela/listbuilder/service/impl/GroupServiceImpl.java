@@ -16,6 +16,7 @@ import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
 import br.com.bvilela.listbuilder.enuns.DesignacaoEntityEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.GroupService;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -111,8 +112,9 @@ public class GroupServiceImpl implements GroupService {
 	}
 	
 	@Override
+	@SneakyThrows
 	public List<DesignacaoWriterItemDTO> generateListIndicator(FileInputDataDesignacaoDTO dto,
-			List<LocalDate> listDatesAll, List<DesignacaoWriterItemDTO> anotherLists) throws ListBuilderException {
+			List<LocalDate> listDatesAll, List<DesignacaoWriterItemDTO> anotherLists) {
 
 		var entity = DesignacaoEntityEnum.INDICATOR;
 		try {
@@ -125,8 +127,9 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
+	@SneakyThrows
 	public List<DesignacaoWriterItemDTO> generateListMicrophone(FileInputDataDesignacaoDTO dto,
-			List<LocalDate> listDatesAll, List<DesignacaoWriterItemDTO> anotherLists) throws ListBuilderException {
+			List<LocalDate> listDatesAll, List<DesignacaoWriterItemDTO> anotherLists) {
 		
 		var entity = DesignacaoEntityEnum.MICROPHONE;
 		try {
@@ -138,8 +141,9 @@ public class GroupServiceImpl implements GroupService {
 		}
 	}
 
+	@SneakyThrows
 	private List<DesignacaoWriterItemDTO> generateSequenceListDesignacao(FileInputDataDesignacaoListDTO dto,
-                                                                         List<LocalDate> listDates, DesignacaoEntityEnum entity) throws ListBuilderException {
+                                                                         List<LocalDate> listDates, DesignacaoEntityEnum entity) {
 
 		var indexLast = dto.getList().indexOf(dto.getLast());
 		if (indexLast < 0) {

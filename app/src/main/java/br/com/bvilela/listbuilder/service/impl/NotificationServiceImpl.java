@@ -65,8 +65,8 @@ public class NotificationServiceImpl implements NotificationService {
 		
 		checkNotifName();
 		
-		List<CalendarEvent> listNotification = null;
-		LocalDate lastDate = null;
+		List<CalendarEvent> listNotification;
+		LocalDate lastDate;
 		
 		if (idLayout == 2) {
 			listNotification = createEventsLimpezaLayout2(limpezaDto);
@@ -218,14 +218,12 @@ public class NotificationServiceImpl implements NotificationService {
 	private CalendarEvent doNextList(ListTypeEnum executionModeEnum, LocalDate lastDateList) {
 		var dateEvent = lastDateList.minusDays(7);
 		var listName = StringUtils.capitalize(executionModeEnum.toString());
-		// @formatter:off
 		return CalendarEvent.builder()
 				.setSummary(listName.concat(" Fazer Lista"))
 				.setDescription(String.format("Fazer a próxima lista de %s. Atual termina em: %s", listName, DateUtils.format(lastDateList)))
 				.setDateTimeStart(LocalDateTime.of(dateEvent, LocalTime.of(18, 0, 0)))
 				.setDateTimeEnd(LocalDateTime.of(dateEvent, LocalTime.of(18, 30, 0))).setColor(ColorEnum.GRAFITE)
 				.build();
-		// @formatter:on
 	}
 	
 	private List<CalendarEvent> createEventsLimpezaLayout1(FinalListLimpezaDTO limpezaDto) {

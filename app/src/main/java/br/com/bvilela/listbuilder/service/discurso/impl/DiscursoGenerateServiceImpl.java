@@ -13,6 +13,7 @@ import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.discurso.DiscursoWriterService;
 import br.com.bvilela.listbuilder.validator.DiscursoValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
@@ -60,8 +61,9 @@ public class DiscursoGenerateServiceImpl implements BaseGenerateService {
 		}
 	}
 
+	@SneakyThrows
 	private static void setThemesByNumberAndConvertDate(List<FileInputDataDiscursoItemDTO> list, String message,
-                                                        DiscursoAllThemesDTO allThemesDto) throws ListBuilderException {
+                                                        DiscursoAllThemesDTO allThemesDto)  {
 		
 		log.info("{} - Obtendo Títulos dos Discursos pelo número do tema", message);
 		

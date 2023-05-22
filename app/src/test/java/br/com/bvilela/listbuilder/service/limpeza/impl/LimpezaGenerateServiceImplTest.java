@@ -217,7 +217,6 @@ class LimpezaGenerateServiceImplTest
     @Test
     @SneakyThrows
     void shouldGenerateListLayout2SuccessCase1() {
-        // @formatter:off
         var expectedList =
                 List.of(
                         new ItemDateDTO(1, LocalDate.of(2022, 4, 1)),
@@ -237,7 +236,6 @@ class LimpezaGenerateServiceImplTest
                         new ItemDateDTO(8, LocalDate.of(2022, 4, 26)),
                         new ItemDateDTO(9, LocalDate.of(2022, 4, 29)),
                         new ItemDateDTO(9, LocalDate.of(2022, 4, 30)));
-        // @formatter:on
         writeFileInputFromDto(builder.withSuccess().build());
         Mockito.when(
                         dateService.generateListDatesLimpeza(
@@ -257,12 +255,10 @@ class LimpezaGenerateServiceImplTest
     @Test
     @SneakyThrows
     void shouldGenerateListLayout2SuccessWithAddRemoveToList() {
-        // @formatter:off
         var expectedList =
                 List.of(
                         new ItemDateDTO(1, LocalDate.of(2022, 4, 1)),
                         new ItemDateDTO(1, LocalDate.of(2022, 4, 2)));
-        // @formatter:on
         var addToList = Map.of("15-04-2022", "Após a Celebração");
         var removeToList = List.of("12-04-2022");
         writeFileInputFromDto(

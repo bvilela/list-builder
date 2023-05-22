@@ -62,7 +62,6 @@ class DateServiceImplTest {
 
     @Test
     void validGenerateListDatesCase1() {
-        // @formatter:off
         var expected =
                 List.of(
                         cid(4, 2),
@@ -74,7 +73,6 @@ class DateServiceImplTest {
                         cid(4, 23),
                         cid(4, 26),
                         cid(4, 30));
-        // @formatter:on
         var fileInputData = new FileInputDataLimpezaDTO();
         fileInputData.setLastDate("29-03-2022");
         fileInputData.setMeetingDayMidweek("terca");
@@ -88,7 +86,6 @@ class DateServiceImplTest {
 
     @Test
     void validGenerateListDatesCase2() {
-        // @formatter:off
         var expected =
                 List.of(
                         cid(4, 2),
@@ -100,7 +97,6 @@ class DateServiceImplTest {
                         cid(4, 23),
                         cid(4, 26),
                         cid(4, 30));
-        // @formatter:on
         var fileInputData = new FileInputDataLimpezaDTO();
         fileInputData.setLastDate("29-03-2022");
         fileInputData.setMeetingDayMidweek("terca");
@@ -115,7 +111,6 @@ class DateServiceImplTest {
 
     @Test
     void validGenerateListDatesTwoDateCase1() {
-        // @formatter:off
         var expected = new ArrayList<ItemDateDTO>();
         expected.addAll(cid(1, 4, 1, 4, 2));
         expected.addAll(cid(2, 4, 4, 4, 5));
@@ -126,7 +121,6 @@ class DateServiceImplTest {
         expected.addAll(cid(7, 4, 22, 4, 23));
         expected.addAll(cid(8, 4, 25, 4, 26));
         expected.addAll(cid(9, 4, 29, 4, 30));
-        // @formatter:on
         var fileInputData = new FileInputDataLimpezaDTO();
         fileInputData.setLastDate("29-03-2022");
         fileInputData.setMeetingDayMidweek("terca");
@@ -140,7 +134,6 @@ class DateServiceImplTest {
 
     @Test
     void validGenerateListDatesAssistenciaMidMonth() {
-        // @formatter:off
         var matrix =
                 new int[][] {
                     {6, 11}, {6, 14}, {6, 18}, {6, 21},
@@ -150,7 +143,6 @@ class DateServiceImplTest {
                 };
         var expected = listLocalDate(matrix);
 
-        // @formatter:on
         var fileInputData = new FileInputDataAssistenciaDTO();
         fileInputData.setLastDate("07-06-2022");
         fileInputData.setMeetingDayMidweek("terca");
@@ -162,7 +154,6 @@ class DateServiceImplTest {
 
     @Test
     void validGenerateListDatesAssistenciaInitMonth() {
-        // @formatter:off
         var matrix =
                 new int[][] {
                     {4, 2}, {4, 5}, {4, 9}, {4, 12},
@@ -173,7 +164,6 @@ class DateServiceImplTest {
                 };
         var expected = listLocalDate(matrix);
 
-        // @formatter:on
         var fileInputData = new FileInputDataAssistenciaDTO();
         fileInputData.setLastDate("29-03-2022");
         fileInputData.setMeetingDayMidweek("terca");
@@ -187,7 +177,6 @@ class DateServiceImplTest {
 
     @Test
     void validGenerateListDatesDesignacaoCase1() {
-        // @formatter:off
         var matrix =
                 new int[][] {
                     {11, 1}, {11, 5}, {11, 8}, {11, 12},
@@ -196,7 +185,6 @@ class DateServiceImplTest {
                 };
         var expected = listLocalDate(matrix);
 
-        // @formatter:on
         var fileInputData = new FileInputDataAssistenciaDTO();
         fileInputData.setLastDate("29-10-2022");
         fileInputData.setMeetingDayMidweek("terca");
@@ -210,7 +198,6 @@ class DateServiceImplTest {
 
     @Test
     void validGenerateListDatesDesignacaoCase2() {
-        // @formatter:off
         var matrix =
                 new int[][] {
                     {11, 2}, {11, 6}, {11, 9}, {11, 13},
@@ -219,7 +206,6 @@ class DateServiceImplTest {
                 };
         var expected = listLocalDate(matrix);
 
-        // @formatter:on
         var fileInputData = new FileInputDataAssistenciaDTO();
         fileInputData.setLastDate("29-10-2022");
         fileInputData.setMeetingDayMidweek("quarta");
@@ -231,7 +217,6 @@ class DateServiceImplTest {
 
     @Test
     void validGenerateListDatesDesignacaoCase3() {
-        // @formatter:off
         var matrix =
                 new int[][] {
                     {10, 5}, {10, 9}, {10, 12}, {10, 16},
@@ -239,7 +224,6 @@ class DateServiceImplTest {
                 };
         var expected = listLocalDate(matrix);
 
-        // @formatter:on
         var fileInputData = new FileInputDataAssistenciaDTO();
         fileInputData.setLastDate("02-10-2022");
         fileInputData.setMeetingDayMidweek("quarta");

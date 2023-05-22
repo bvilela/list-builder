@@ -161,7 +161,6 @@ class AssistenciaGenerateServiceImplTest
 
     @Test
     void shouldGenerateListSuccess() {
-        // @formatter:off
         var expectedList =
                 List.of(
                         cld(4, 2),
@@ -175,7 +174,6 @@ class AssistenciaGenerateServiceImplTest
                         cld(4, 26),
                         cld(4, 19),
                         cld(4, 30));
-        // @formatter:on
         writeFileInputFromDto(builder.withSuccess().build());
         Mockito.when(
                         dateService.generateListDatesAssistencia(

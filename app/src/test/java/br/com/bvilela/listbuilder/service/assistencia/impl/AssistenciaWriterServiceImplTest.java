@@ -39,7 +39,6 @@ class AssistenciaWriterServiceImplTest {
 
     @Test
     void shouldWriterPDFSuccess() throws ListBuilderException {
-        // @formatter:off
         var list =
                 List.of(
                         cld(4, 2),
@@ -53,7 +52,6 @@ class AssistenciaWriterServiceImplTest {
                         cld(4, 26),
                         cld(4, 19),
                         cld(4, 30));
-        // @formatter:on
         Assertions.assertDoesNotThrow(() -> service.writerPDF(list));
     }
 

@@ -16,6 +16,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ClassPathResource;
@@ -53,8 +54,8 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		}
 	}
 
-	private void writerDocument(List<VidaCristaExtractWeekDTO> listWeeks, Path path)
-			throws DocumentException, ListBuilderException, IOException {
+	@SneakyThrows
+	private void writerDocument(List<VidaCristaExtractWeekDTO> listWeeks, Path path) {
 		
 		try (var outputStream = new FileOutputStream(path.toString())) {
 			Document document = pdfUtils.getDocument(LIST_TYPE);
@@ -100,14 +101,16 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		}
 	}
 
-	private PdfPTable addNewPage(Document document) throws DocumentException, ListBuilderException {
+	@SneakyThrows
+	private PdfPTable addNewPage(Document document) {
 		var pageMg = LIST_TYPE.getPageMg();
 		document.setMargins(pageMg.getLeft(), pageMg.getRight(), pageMg.getTop() - AppUtils.getPointsFromMM(3), pageMg.getBottom());
 		document.newPage();
 		return addHeaderAndTable(document);
 	}
 
-	private void printContentWeek(VidaCristaExtractWeekDTO week, PdfPTable columnTable) throws ListBuilderException {
+	@SneakyThrows
+	private void printContentWeek(VidaCristaExtractWeekDTO week, PdfPTable columnTable) {
 		if (week.isSkip()) {
 			var paragraph1 = pdfUtils.createParagraphBold16(" ");
 			var paragraph2 = pdfUtils.createParagraphBold16(week.getSkipMessage());
@@ -170,7 +173,8 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		columnTable.addCell(cell);
 	}
 
-	private PdfPTable addHeaderAndTable(Document document) throws ListBuilderException, DocumentException {
+	@SneakyThrows
+	private PdfPTable addHeaderAndTable(Document document) {
 		pdfUtils.addImageHeader(document, LIST_TYPE);
 
 		var columnWidth = document.getPageSize().getWidth() / 2;

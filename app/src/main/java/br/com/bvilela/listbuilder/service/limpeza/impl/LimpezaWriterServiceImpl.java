@@ -16,6 +16,7 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
@@ -71,7 +72,8 @@ public class LimpezaWriterServiceImpl implements LimpezaWriterService {
         }
 	}
 	
-	private void addImageMonth(Document document, LocalDate date) throws ListBuilderException {
+	@SneakyThrows
+	private void addImageMonth(Document document, LocalDate date) {
 		try {
 			var month = String.format("%02d", date.getMonthValue());
 			var imageMonthName = String.format("month_%s.jpg", month);
@@ -82,7 +84,8 @@ public class LimpezaWriterServiceImpl implements LimpezaWriterService {
 		}
 	}
 
-	private void bodyLayout1(FinalListLimpezaDTO dto, Document document) throws DocumentException {
+	@SneakyThrows
+	private void bodyLayout1(FinalListLimpezaDTO dto, Document document) {
 		for (FinalListLimpezaItemDTO item : dto.getItems()) {
 			
 			var paragraphGroup = pdfUtils.createParagraphBold13Normal13("Grupo: ", item.getGroup());
@@ -96,7 +99,8 @@ public class LimpezaWriterServiceImpl implements LimpezaWriterService {
 		}
 	}
 	
-	private void bodyLayout2(FinalListLimpezaDTO dto, Document document) throws DocumentException {
+	@SneakyThrows
+	private void bodyLayout2(FinalListLimpezaDTO dto, Document document) {
 		for (FinalListLimpezaItemLayout2DTO item : dto.getItemsLayout2()) {
 			
 			var paragraphGroup = pdfUtils.createParagraphBold13Normal13("Grupo: ", item.getGroup());
@@ -121,8 +125,9 @@ public class LimpezaWriterServiceImpl implements LimpezaWriterService {
 	private String getDateDayOfWeekLabel(LocalDate date, String label) {
 		return String.format("%s (%s)", DateUtils.format(date), label);
 	}
-	
-	private void addHeaderMessage(Document document, String headerMessage) throws ListBuilderException {
+
+	@SneakyThrows
+	private void addHeaderMessage(Document document, String headerMessage) {
 		try {
 			if (Objects.nonNull(headerMessage) && !headerMessage.isBlank()) {
 				var paragraph = pdfUtils.createParagraphBold14(headerMessage);
@@ -136,7 +141,8 @@ public class LimpezaWriterServiceImpl implements LimpezaWriterService {
 	}
 
 	
-	private void addFooterMessage(Document document, String footerMessage) throws ListBuilderException {
+	@SneakyThrows
+	private void addFooterMessage(Document document, String footerMessage) {
 		try {
 			if (Objects.nonNull(footerMessage) && !footerMessage.isBlank()) {
 				document.add(pdfUtils.createParagraphBold12(footerMessage));
