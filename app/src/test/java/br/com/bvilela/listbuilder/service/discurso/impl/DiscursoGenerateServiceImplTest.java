@@ -41,11 +41,7 @@ class DiscursoGenerateServiceImplTest
     @BeforeEach
     public void setup() throws IllegalAccessException {
         MockitoAnnotations.openMocks(this);
-        FieldUtils.writeField(
-                properties,
-                "inputDir",
-                this.testUtils.getResourceDirectory(),
-                true);
+        FieldUtils.writeField(properties, "inputDir", this.testUtils.getResourceDirectory(), true);
         service = new DiscursoGenerateServiceImpl(properties, writerService);
         createFileThemes();
     }
@@ -214,7 +210,6 @@ class DiscursoGenerateServiceImplTest
     }
 
     private void validateListBuilderException(String expectedMessageError) {
-        this.testUtils.validateException(
-                () -> service.generateList(), expectedMessageError);
+        this.testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 }

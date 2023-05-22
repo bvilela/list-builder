@@ -49,6 +49,7 @@ public class FileInputDataLimpezaDtoBuilder {
     public FileInputDataLimpezaDtoBuilder withGroupsNull() {
         return base(LAST_DATE_DEFAULT, 8, "terça", "sábado", null);
     }
+
     public FileInputDataLimpezaDtoBuilder withMidweekInvalid() {
         return baseMidweekDay("tercaaa");
     }

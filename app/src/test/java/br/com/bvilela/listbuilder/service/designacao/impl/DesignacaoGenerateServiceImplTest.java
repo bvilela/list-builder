@@ -52,11 +52,7 @@ class DesignacaoGenerateServiceImplTest
     @BeforeEach
     public void setup() throws IllegalAccessException {
         MockitoAnnotations.openMocks(this);
-        FieldUtils.writeField(
-                properties,
-                "inputDir",
-                this.testUtils.getResourceDirectory(),
-                true);
+        FieldUtils.writeField(properties, "inputDir", this.testUtils.getResourceDirectory(), true);
         service =
                 new DesignacaoGenerateServiceImpl(
                         properties,
@@ -482,7 +478,6 @@ class DesignacaoGenerateServiceImplTest
     }
 
     private void validateListBuilderException(String expectedMessageError) {
-        this.testUtils.validateException(
-                () -> service.generateList(), expectedMessageError);
+        this.testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 }

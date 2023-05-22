@@ -51,11 +51,7 @@ class VidaCristaGenerateServiceImplTest
     @BeforeEach
     public void setup() throws IllegalAccessException {
         MockitoAnnotations.openMocks(this);
-        FieldUtils.writeField(
-                properties,
-                "inputDir",
-                this.testUtils.getResourceDirectory(),
-                true);
+        FieldUtils.writeField(properties, "inputDir", this.testUtils.getResourceDirectory(), true);
         service =
                 new VidaCristaGenerateServiceImpl(
                         properties, extractService, writerService, notificationService);
@@ -355,8 +351,7 @@ class VidaCristaGenerateServiceImplTest
     }
 
     private void validateListBuilderException(String expectedMessageError) {
-        this.testUtils.validateException(
-                () -> service.generateList(), expectedMessageError);
+        this.testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 
     private List<VidaCristaExtractWeekItemDTO> cloneListWithoutReference(

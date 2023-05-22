@@ -58,11 +58,7 @@ class LimpezaGenerateServiceImplTest
     @BeforeEach
     void setupBeforeEach() throws IllegalAccessException {
         MockitoAnnotations.openMocks(this);
-        FieldUtils.writeField(
-                properties,
-                "inputDir",
-                this.testUtils.getResourceDirectory(),
-                true);
+        FieldUtils.writeField(properties, "inputDir", this.testUtils.getResourceDirectory(), true);
         service =
                 new LimpezaGenerateServiceImpl(
                         properties, writerService, dateService, groupService, notificationService);
@@ -370,7 +366,6 @@ class LimpezaGenerateServiceImplTest
     }
 
     private void validateListBuilderException(String expectedMessageError) {
-        this.testUtils.validateException(
-                () -> service.generateList(), expectedMessageError);
+        this.testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 }
