@@ -1,17 +1,23 @@
 package br.com.bvilela.listbuilder.service.vidacrista.impl;
 
 import br.com.bvilela.listbuilder.config.AppProperties;
-import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaWriterService;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaWriterService;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import br.com.bvilela.listbuilder.utils.DateUtils;
 import br.com.bvilela.listbuilder.utils.FileUtils;
 import br.com.bvilela.listbuilder.utils.impl.PDFWriterUtilsImpl;
-import com.itextpdf.text.*;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
