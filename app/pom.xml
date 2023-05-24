@@ -157,7 +157,7 @@
 						<configuration>
 							<includeStale>false</includeStale>
 							<style>AOSP</style>
-							<formatMain>true</formatMain>
+							<formatMain>false</formatMain>
 							<formatTest>true</formatTest>
 							<filterModified>false</filterModified>
 							<skip>false</skip>
