@@ -1,13 +1,11 @@
 package br.com.bvilela.listbuilder.builder;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.apache.commons.lang3.RandomStringUtils;
-
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import java.time.LocalDate;
+import java.util.List;
+import org.apache.commons.lang3.RandomStringUtils;
 
 public class VidaCristaExtractWeekDtoBuilder {
 

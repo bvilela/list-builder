@@ -6,7 +6,7 @@ import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundExce
 
 public interface OrchestratorService {
 
-	BaseGenerateService validateAndGetServiceByListType()
-			throws InvalidListTypeException, RequiredListTypeException, ServiceListTypeNotFoundException;
-
+    BaseGenerateService validateAndGetServiceByListType()
+            throws InvalidListTypeException, RequiredListTypeException,
+                    ServiceListTypeNotFoundException;
 }

@@ -1,9 +1,8 @@
 package br.com.bvilela.listbuilder.builder;
 
-import java.time.LocalDate;
-
 import br.com.bvilela.listbuilder.dto.discurso.FileInputDataDiscursoItemDTO;
 import br.com.bvilela.listbuilder.utils.DateUtils;
+import java.time.LocalDate;
 import org.apache.commons.lang3.RandomStringUtils;
 
 public class FileInputDataDiscursoItemDtoBuilder {

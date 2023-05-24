@@ -13,29 +13,28 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ApplicationServiceImpl implements ApplicationService {
 
-	private final ApplicationContext context;
-	private final OrchestratorService orchestratorService;
+    private final ApplicationContext context;
+    private final OrchestratorService orchestratorService;
 
-	@Override
-	public void runApplication() {
-		try {
-			executeApplication();
+    @Override
+    public void runApplication() {
+        try {
+            executeApplication();
 
-		} catch (Exception e) {
-			log.error("Aplicação Finalizada com Erro!", e);
-			SpringApplication.exit(context, () -> -1);
-		}
-	}
+        } catch (Exception e) {
+            log.error("Aplicação Finalizada com Erro!", e);
+            SpringApplication.exit(context, () -> -1);
+        }
+    }
 
-	private void executeApplication() throws Exception {
-		log.info("Aplicação Iniciada...");
+    private void executeApplication() throws Exception {
+        log.info("Aplicação Iniciada...");
 
-		var service = orchestratorService.validateAndGetServiceByListType();
-		service.generateList();
+        var service = orchestratorService.validateAndGetServiceByListType();
+        service.generateList();
 
-		log.info("Aplicação Finalizada com Sucesso!");
+        log.info("Aplicação Finalizada com Sucesso!");
 
-		SpringApplication.exit(context, () -> 0);
-	}
-
+        SpringApplication.exit(context, () -> 0);
+    }
 }

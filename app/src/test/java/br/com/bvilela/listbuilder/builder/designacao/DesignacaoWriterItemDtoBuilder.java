@@ -1,10 +1,8 @@
 package br.com.bvilela.listbuilder.builder.designacao;
 
-import java.time.LocalDate;
-
-import org.apache.commons.lang3.RandomStringUtils;
-
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
+import java.time.LocalDate;
+import org.apache.commons.lang3.RandomStringUtils;
 
 public class DesignacaoWriterItemDtoBuilder {
 

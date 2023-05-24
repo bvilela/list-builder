@@ -1,12 +1,10 @@
 package br.com.bvilela.listbuilder.builder.designacao;
 
-import java.util.List;
-
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoListDTO;
-import org.apache.commons.lang3.RandomStringUtils;
-
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoReaderDTO;
+import java.util.List;
+import org.apache.commons.lang3.RandomStringUtils;
 
 public class FileInputDataDesignacaoDtoBuilder {
 

@@ -2,10 +2,9 @@ package br.com.bvilela.listbuilder.utils;
 
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import java.time.DayOfWeek;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.time.DayOfWeek;
 
 class OtherTest {
 

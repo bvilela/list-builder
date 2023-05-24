@@ -1,14 +1,13 @@
 package br.com.bvilela.listbuilder.utils;
 
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 class DateUtilsTest {
 

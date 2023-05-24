@@ -3,6 +3,9 @@ package br.com.bvilela.listbuilder.service.vidacrista.impl;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,10 +16,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Stream;
 
 class VidaCristaExtractServiceImplTest {
 

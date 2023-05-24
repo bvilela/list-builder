@@ -1,13 +1,13 @@
 package br.com.bvilela.listbuilder.service.vidacrista.impl;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import br.com.bvilela.listbuilder.builder.FileInputDataVidaCristaDtoBuilder;
 import br.com.bvilela.listbuilder.builder.FileInputDataVidaCristaRenameItemDtoBuilder;
 import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekDtoBuilder;
 import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekItemDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaExtractService;
-import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaWriterService;
 import br.com.bvilela.listbuilder.dto.vidacrista.FileInputDataVidaCristaDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
@@ -15,6 +15,10 @@ import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.NotificationService;
+import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaExtractService;
+import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaWriterService;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,11 +26,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class VidaCristaGenerateServiceImplTest
         extends BaseGenerateServiceTest<

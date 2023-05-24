@@ -1,19 +1,17 @@
 package br.com.bvilela.listbuilder.service.designacao.impl;
 
+import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
+import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
 
 @SpringBootApplication
 class DesignacaoCounterServiceImplTest {

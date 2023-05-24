@@ -1,11 +1,11 @@
 package br.com.bvilela.listbuilder.service.assistencia.impl;
 
+import br.com.bvilela.listbuilder.config.AppProperties;
+import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import br.com.bvilela.listbuilder.utils.TestUtils;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
-
-import br.com.bvilela.listbuilder.config.AppProperties;
-import br.com.bvilela.listbuilder.utils.TestUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
 
 @SpringBootApplication
 class AssistenciaWriterServiceImplTest {

@@ -4,6 +4,5 @@ import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 
 public interface DesignacaoCounterService {
 
-	StringBuilder countNumberActiviesByName(DesignacaoWriterDTO dto);
-
+    StringBuilder countNumberActiviesByName(DesignacaoWriterDTO dto);
 }

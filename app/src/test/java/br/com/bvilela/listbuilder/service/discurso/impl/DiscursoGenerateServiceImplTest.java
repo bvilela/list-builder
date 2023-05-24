@@ -1,5 +1,7 @@
 package br.com.bvilela.listbuilder.service.discurso.impl;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import br.com.bvilela.listbuilder.builder.DiscursoAllThemesDtoBuilder;
 import br.com.bvilela.listbuilder.builder.FileInputDataDiscursoDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
@@ -18,8 +20,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootApplication
 class DiscursoGenerateServiceImplTest

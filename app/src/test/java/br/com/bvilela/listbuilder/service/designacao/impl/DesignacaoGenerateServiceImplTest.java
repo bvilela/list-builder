@@ -2,30 +2,28 @@ package br.com.bvilela.listbuilder.service.designacao.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.List;
-
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoDtoBuilder;
-import br.com.bvilela.listbuilder.config.AppProperties;
-import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
-import br.com.bvilela.listbuilder.service.DateService;
-import br.com.bvilela.listbuilder.service.GroupService;
-import br.com.bvilela.listbuilder.service.designacao.DesignacaoCounterService;
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoListDtoBuilder;
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoReaderDtoBuilder;
+import br.com.bvilela.listbuilder.config.AppProperties;
+import br.com.bvilela.listbuilder.config.MessageConfig;
+import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
+import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
+import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
+import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
+import br.com.bvilela.listbuilder.service.DateService;
+import br.com.bvilela.listbuilder.service.GroupService;
+import br.com.bvilela.listbuilder.service.NotificationService;
+import br.com.bvilela.listbuilder.service.designacao.DesignacaoCounterService;
+import br.com.bvilela.listbuilder.service.designacao.DesignacaoWriterService;
+import java.util.List;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-
-import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
-import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import br.com.bvilela.listbuilder.service.NotificationService;
-import br.com.bvilela.listbuilder.service.designacao.DesignacaoWriterService;
 
 class DesignacaoGenerateServiceImplTest
         extends BaseGenerateServiceTest<

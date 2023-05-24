@@ -1,10 +1,9 @@
 package br.com.bvilela.listbuilder.utils;
 
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
+import java.time.LocalDate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
 
 class FileUtilsTest {
 

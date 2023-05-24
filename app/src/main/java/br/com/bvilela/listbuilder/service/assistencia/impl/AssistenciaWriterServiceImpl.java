@@ -17,14 +17,13 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +32,7 @@ public class AssistenciaWriterServiceImpl implements AssistenciaWriterService {
     private final AppProperties properties;
 
     private static final ListTypeEnum LIST_TYPE = ListTypeEnum.ASSISTENCIA;
-    private final String[] header = new String[]{"Dia", "Data", "Assistência"};
+    private final String[] header = new String[] {"Dia", "Data", "Assistência"};
     private final Font fontDefault = new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD);
     private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
 
@@ -41,7 +40,9 @@ public class AssistenciaWriterServiceImpl implements AssistenciaWriterService {
     public void writerPDF(List<LocalDate> listDates) throws ListBuilderException {
         FileUtils.createDirectories(properties.getOutputDir());
 
-        String fileName = FileUtils.generateOutputFileNamePDF(LIST_TYPE, listDates.get(0), listDates.get(listDates.size() - 1));
+        String fileName =
+                FileUtils.generateOutputFileNamePDF(
+                        LIST_TYPE, listDates.get(0), listDates.get(listDates.size() - 1));
         Path path = Paths.get(properties.getOutputDir(), fileName);
 
         try (var outputStream = new FileOutputStream(path.toString())) {
@@ -53,7 +54,7 @@ public class AssistenciaWriterServiceImpl implements AssistenciaWriterService {
 
             pdfUtils.addImageHeader(document, LIST_TYPE);
 
-            float[] columnsWidth = new float[]{155, 155, 200};
+            float[] columnsWidth = new float[] {155, 155, 200};
 
             PdfPTable table = new PdfPTable(columnsWidth.length);
             table.setTotalWidth(columnsWidth);
@@ -83,7 +84,6 @@ public class AssistenciaWriterServiceImpl implements AssistenciaWriterService {
         } catch (Exception e) {
             throw new ListBuilderException("Erro ao Gerar PDF - Erro: %s", e.getMessage());
         }
-
     }
 
     private void addDateLabel(PdfPTable table, LocalDate date) {
@@ -137,5 +137,4 @@ public class AssistenciaWriterServiceImpl implements AssistenciaWriterService {
             table.addCell(cell);
         }
     }
-
 }

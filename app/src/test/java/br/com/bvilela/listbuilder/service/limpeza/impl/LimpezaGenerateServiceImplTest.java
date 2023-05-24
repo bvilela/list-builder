@@ -1,5 +1,7 @@
 package br.com.bvilela.listbuilder.service.limpeza.impl;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import br.com.bvilela.listbuilder.builder.FileInputDataLimpezaDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
@@ -12,6 +14,9 @@ import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.service.impl.DateServiceImpl;
 import br.com.bvilela.listbuilder.service.impl.GroupServiceImpl;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
@@ -23,12 +28,6 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.*;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootApplication
 class LimpezaGenerateServiceImplTest

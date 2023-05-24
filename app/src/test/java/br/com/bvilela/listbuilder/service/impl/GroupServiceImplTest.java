@@ -1,5 +1,6 @@
 package br.com.bvilela.listbuilder.service.impl;
 
+import br.com.bvilela.listbuilder.builder.FileInputDataLimpezaDtoBuilder;
 import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterItemDtoBuilder;
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoDtoBuilder;
 import br.com.bvilela.listbuilder.config.MessageConfig;
@@ -7,8 +8,9 @@ import br.com.bvilela.listbuilder.dto.ItemDateDTO;
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoListDTO;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
 import br.com.bvilela.listbuilder.enuns.DesignacaoEntityEnum;
-import br.com.bvilela.listbuilder.builder.FileInputDataLimpezaDtoBuilder;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,9 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @SpringBootApplication
 class GroupServiceImplTest {

@@ -1,33 +1,36 @@
 package br.com.bvilela.listbuilder.validator;
 
-import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
 import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
+import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.AppUtils;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public final class LimpezaValidator {
 
-	private LimpezaValidator() {}
-	
-	public static DateServiceInputDTO validAndConvertData(FileInputDataLimpezaDTO dto) throws ListBuilderException {
-		log.info("Validando dados de entrada");
+    private LimpezaValidator() {}
 
-		GenericValidator.validateDto(dto);
+    public static DateServiceInputDTO validAndConvertData(FileInputDataLimpezaDTO dto)
+            throws ListBuilderException {
+        log.info("Validando dados de entrada");
 
-		dto.setMeetingDayMidweek(GenericValidator.validMeetingDay(dto.getMeetingDayMidweek(), "Meio de Semana"));
-		dto.setMeetingDayWeekend(GenericValidator.validMeetingDay(dto.getMeetingDayWeekend(), "Fim de Semana"));
+        GenericValidator.validateDto(dto);
 
-		var listRemoveConverted = AppUtils.validAndConvertListDates(dto.getRemoveFromList(), "Remover da Lista", log);
-		var mapDatesConverted = AppUtils.validAndConvertMapDates(dto.getAddToList(), "Adicionar na Lista", log);
+        dto.setMeetingDayMidweek(
+                GenericValidator.validMeetingDay(dto.getMeetingDayMidweek(), "Meio de Semana"));
+        dto.setMeetingDayWeekend(
+                GenericValidator.validMeetingDay(dto.getMeetingDayWeekend(), "Fim de Semana"));
 
-		var dateServiceDto = new DateServiceInputDTO(dto, listRemoveConverted, mapDatesConverted);
+        var listRemoveConverted =
+                AppUtils.validAndConvertListDates(dto.getRemoveFromList(), "Remover da Lista", log);
+        var mapDatesConverted =
+                AppUtils.validAndConvertMapDates(dto.getAddToList(), "Adicionar na Lista", log);
 
-		log.info("Dados de entrada validados com sucesso!");
+        var dateServiceDto = new DateServiceInputDTO(dto, listRemoveConverted, mapDatesConverted);
 
-		return dateServiceDto;
-	}
+        log.info("Dados de entrada validados com sucesso!");
 
+        return dateServiceDto;
+    }
 }

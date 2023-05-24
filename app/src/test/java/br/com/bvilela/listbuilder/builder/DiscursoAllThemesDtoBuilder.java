@@ -1,8 +1,7 @@
 package br.com.bvilela.listbuilder.builder;
 
-import java.util.Map;
-
 import br.com.bvilela.listbuilder.dto.discurso.DiscursoAllThemesDTO;
+import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 
 public class DiscursoAllThemesDtoBuilder {

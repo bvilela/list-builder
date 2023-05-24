@@ -1,21 +1,18 @@
 package br.com.bvilela.listbuilder.utils;
 
+import br.com.bvilela.lib.utils.GsonUtils;
+import br.com.bvilela.listbuilder.dto.discurso.DiscursoAllThemesDTO;
+import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
+import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Arrays;
-
-import br.com.bvilela.lib.utils.GsonUtils;
-import br.com.bvilela.listbuilder.dto.discurso.DiscursoAllThemesDTO;
+import lombok.Getter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
-
-import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
-
-import lombok.Getter;
 
 public class TestUtils {
 

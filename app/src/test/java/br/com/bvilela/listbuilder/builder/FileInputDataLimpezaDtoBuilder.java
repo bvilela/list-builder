@@ -1,9 +1,8 @@
 package br.com.bvilela.listbuilder.builder;
 
+import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
 import java.util.List;
 import java.util.Map;
-
-import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
 
 public class FileInputDataLimpezaDtoBuilder {
 

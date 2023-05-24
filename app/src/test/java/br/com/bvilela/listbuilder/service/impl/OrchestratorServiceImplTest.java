@@ -7,6 +7,8 @@ import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundExce
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.assistencia.impl.AssistenciaGenerateServiceImpl;
 import br.com.bvilela.listbuilder.service.limpeza.impl.LimpezaGenerateServiceImpl;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
@@ -17,9 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @SpringBootApplication
 class OrchestratorServiceImplTest {

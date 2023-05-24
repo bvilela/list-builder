@@ -1,9 +1,8 @@
 package br.com.bvilela.listbuilder.builder;
 
-import java.util.List;
-
 import br.com.bvilela.listbuilder.dto.discurso.FileInputDataDiscursoDTO;
 import br.com.bvilela.listbuilder.dto.discurso.FileInputDataDiscursoItemDTO;
+import java.util.List;
 
 public class FileInputDataDiscursoDtoBuilder {
 

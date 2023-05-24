@@ -11,21 +11,23 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DesignacaoValidator {
 
-	public static void validAndConvertData(FileInputDataDesignacaoDTO dto) throws ListBuilderException {
-		log.info("Validando Dados de Entrada!");
-		
-		GenericValidator.validateParseSubItemsDto(dto);
-		
-		dto.setMeetingDayMidweek(GenericValidator.validMeetingDay(dto.getMeetingDayMidweek(), "Meio de Semana"));
-		dto.setMeetingDayWeekend(GenericValidator.validMeetingDay(dto.getMeetingDayWeekend(), "Fim de Semana"));
-		
-		log.info("Dados de Entrada Validados com Sucesso!");
-	}
+    public static void validAndConvertData(FileInputDataDesignacaoDTO dto)
+            throws ListBuilderException {
+        log.info("Validando Dados de Entrada!");
 
-	public static void checkDtoWriter(DesignacaoWriterDTO dtoWriter) throws ListBuilderException {
-		log.info("Verificando dados para gerar PDF");
-		GenericValidator.validateDto(dtoWriter);
-		log.info("Dados verificados com sucesso!");
-	}
-	
+        GenericValidator.validateParseSubItemsDto(dto);
+
+        dto.setMeetingDayMidweek(
+                GenericValidator.validMeetingDay(dto.getMeetingDayMidweek(), "Meio de Semana"));
+        dto.setMeetingDayWeekend(
+                GenericValidator.validMeetingDay(dto.getMeetingDayWeekend(), "Fim de Semana"));
+
+        log.info("Dados de Entrada Validados com Sucesso!");
+    }
+
+    public static void checkDtoWriter(DesignacaoWriterDTO dtoWriter) throws ListBuilderException {
+        log.info("Verificando dados para gerar PDF");
+        GenericValidator.validateDto(dtoWriter);
+        log.info("Dados verificados com sucesso!");
+    }
 }

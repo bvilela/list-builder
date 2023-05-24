@@ -1,10 +1,9 @@
 package br.com.bvilela.listbuilder.service;
 
-import br.com.bvilela.listbuilder.utils.TestUtils;
-import org.junit.jupiter.api.AfterEach;
-
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import br.com.bvilela.listbuilder.utils.TestUtils;
+import org.junit.jupiter.api.AfterEach;
 
 public abstract class BaseGenerateServiceTest<T, B> {
 

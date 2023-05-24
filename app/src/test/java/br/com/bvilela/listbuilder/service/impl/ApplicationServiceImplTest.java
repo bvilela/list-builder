@@ -3,6 +3,7 @@ package br.com.bvilela.listbuilder.service.impl;
 import br.com.bvilela.listbuilder.exception.listtype.InvalidListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.RequiredListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundException;
+import br.com.bvilela.listbuilder.service.OrchestratorService;
 import br.com.bvilela.listbuilder.service.limpeza.impl.LimpezaGenerateServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +14,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-
-import br.com.bvilela.listbuilder.service.OrchestratorService;
 
 @SpringBootApplication
 class ApplicationServiceImplTest {

@@ -1,10 +1,9 @@
 package br.com.bvilela.listbuilder.builder.designacao;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DesignacaoWriterDtoBuilder {
 

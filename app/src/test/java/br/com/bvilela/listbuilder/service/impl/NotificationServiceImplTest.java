@@ -7,6 +7,9 @@ import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,10 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 class NotificationServiceImplTest {
