@@ -9,6 +9,7 @@ import br.com.bvilela.listbuilder.utils.TestUtils;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -26,7 +27,8 @@ class VidaCristaWriterServiceImplTest {
     @InjectMocks private AppProperties properties;
 
     @BeforeEach
-    void setupBeforeEach() throws IllegalAccessException {
+    @SneakyThrows
+    void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
         FieldUtils.writeField(properties, "outputDir", pathOutput, true);
@@ -39,7 +41,7 @@ class VidaCristaWriterServiceImplTest {
     }
 
     @Test
-    void shouldWriterExceptionNotFoundImage() throws ListBuilderException {
+    void shouldWriterExceptionNotFoundImage() {
         List<VidaCristaExtractWeekDTO> list =
                 List.of(VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
 
@@ -55,7 +57,7 @@ class VidaCristaWriterServiceImplTest {
     }
 
     @Test
-    void shouldWriterExceptionNotFoundReadOfWeek() throws ListBuilderException {
+    void shouldWriterExceptionNotFoundReadOfWeek() {
         List<VidaCristaExtractWeekDTO> list =
                 List.of(VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
         var newListItems = new ArrayList<>(list.get(0).getItems());
@@ -69,7 +71,7 @@ class VidaCristaWriterServiceImplTest {
     }
 
     @Test
-    void shouldWriterPDFOneMonthSuccess() throws ListBuilderException {
+    void shouldWriterPDFOneMonthSuccess() {
         List<VidaCristaExtractWeekDTO> list =
                 List.of(
                         VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
@@ -80,7 +82,7 @@ class VidaCristaWriterServiceImplTest {
     }
 
     @Test
-    void shouldWriterPDFOneMonthSuccessWithSkip1Week() throws ListBuilderException {
+    void shouldWriterPDFOneMonthSuccessWithSkip1Week() {
         List<VidaCristaExtractWeekDTO> list =
                 List.of(
                         VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
@@ -94,7 +96,7 @@ class VidaCristaWriterServiceImplTest {
     }
 
     @Test
-    void shouldWriterPDFTwoMonthsSuccess() throws ListBuilderException {
+    void shouldWriterPDFTwoMonthsSuccess() {
         List<VidaCristaExtractWeekDTO> list =
                 List.of(
                         VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
@@ -106,70 +108,69 @@ class VidaCristaWriterServiceImplTest {
     }
 
     @Test
-    void shouldGetImageByLabelTreasuresWordGodCase1() throws ListBuilderException {
+    void shouldGetImageByLabelTreasuresWordGodCase1() {
         baseGetImageByLabelTreasuresWordGod("TESOUROS DA PALAVRA");
     }
 
     @Test
-    void shouldGetImageByLabelTreasuresWordGodCase2() throws ListBuilderException {
+    void shouldGetImageByLabelTreasuresWordGodCase2() {
         baseGetImageByLabelTreasuresWordGod("tesouros da palavra");
     }
 
     @Test
-    void shouldGetImageByLabelTreasuresWordGodCase3() throws ListBuilderException {
+    void shouldGetImageByLabelTreasuresWordGodCase3() {
         baseGetImageByLabelTreasuresWordGod("Tesouros DA PalaVRa");
     }
 
-    private void baseGetImageByLabelTreasuresWordGod(String label) throws ListBuilderException {
+    private void baseGetImageByLabelTreasuresWordGod(String label) {
         baseGetImageByLabel(label, "treasures-word-god.jpg");
     }
 
     @Test
-    void shouldGetImageByLabelMakeYourBetterCase1() throws ListBuilderException {
+    void shouldGetImageByLabelMakeYourBetterCase1() {
         baseGetImageByLabelMakeYourBetter("FAçA SEU MELHOR");
     }
 
     @Test
-    void shouldGetImageByLabelMakeYourBetterCase2() throws ListBuilderException {
+    void shouldGetImageByLabelMakeYourBetterCase2() {
         baseGetImageByLabelMakeYourBetter("faça seu melhor");
     }
 
     @Test
-    void shouldGetImageByLabelMakeYourBetterCase3() throws ListBuilderException {
+    void shouldGetImageByLabelMakeYourBetterCase3() {
         baseGetImageByLabelMakeYourBetter("Faça seU MElhOr");
     }
 
-    private void baseGetImageByLabelMakeYourBetter(String label) throws ListBuilderException {
+    private void baseGetImageByLabelMakeYourBetter(String label) {
         baseGetImageByLabel(label, "make-your-better.jpg");
     }
 
     @Test
-    void shouldGetImageByLabelChristianLifeCase1() throws ListBuilderException {
+    void shouldGetImageByLabelChristianLifeCase1() {
         baseGetImageByLabelChristianLife("NOSSA VIDA CRISTÃ");
     }
 
     @Test
-    void shouldGetImageByLabelChristianLifeCase2() throws ListBuilderException {
+    void shouldGetImageByLabelChristianLifeCase2() {
         baseGetImageByLabelChristianLife("nossa vida cristã");
     }
 
     @Test
-    void shouldGetImageByLabelChristianLifeCase3() throws ListBuilderException {
+    void shouldGetImageByLabelChristianLifeCase3() {
         baseGetImageByLabelChristianLife("nossa VIda CRistã");
     }
 
-    private void baseGetImageByLabelChristianLife(String label) throws ListBuilderException {
+    private void baseGetImageByLabelChristianLife(String label) {
         baseGetImageByLabel(label, "christian-life.jpg");
     }
 
-    private void baseGetImageByLabel(String label, String imageNameExpeted)
-            throws ListBuilderException {
+    private void baseGetImageByLabel(String label, String imageNameExpeted) {
         var imageName = service.getImageNameByLabel(label);
         Assertions.assertEquals(imageNameExpeted, imageName);
     }
 
     @Test
-    void shouldGetImageByLabelException() throws ListBuilderException {
+    void shouldGetImageByLabelException() {
         var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class, () -> service.getImageNameByLabel("invalid"));

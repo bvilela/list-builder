@@ -23,6 +23,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,7 +38,8 @@ public class AssistenciaWriterServiceImpl implements AssistenciaWriterService {
     private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
 
     @Override
-    public void writerPDF(List<LocalDate> listDates) throws ListBuilderException {
+    @SneakyThrows
+    public void writerPDF(List<LocalDate> listDates) {
         FileUtils.createDirectories(properties.getOutputDir());
 
         String fileName =
@@ -100,7 +102,7 @@ public class AssistenciaWriterServiceImpl implements AssistenciaWriterService {
         table.addCell(cell);
     }
 
-    private void addDayOfWeekLabel(PdfPTable table, LocalDate date) throws ListBuilderException {
+    private void addDayOfWeekLabel(PdfPTable table, LocalDate date) {
         var phrase = new Phrase();
         phrase.setFont(fontDefault);
         phrase.add(DayOfWeekEnum.getByDayOfWeek(date.getDayOfWeek()).getName());

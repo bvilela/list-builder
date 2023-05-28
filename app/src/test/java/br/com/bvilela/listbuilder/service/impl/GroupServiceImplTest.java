@@ -11,7 +11,6 @@ import br.com.bvilela.listbuilder.enuns.DesignacaoEntityEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import java.time.LocalDate;
 import java.util.List;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,15 +38,14 @@ class GroupServiceImplTest {
                     LocalDate.now().plusDays(1));
 
     @BeforeEach
-    void setupBeforeEach() throws IllegalAccessException {
+    void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
         service = new GroupServiceImpl();
     }
 
     // --------------------- LIMPEZA --------------------- \\
     @Test
-    void shouldGenerateListGroupExceptionLastGroupInvalid()
-            throws IllegalAccessException, ListBuilderException {
+    void shouldGenerateListGroupExceptionLastGroupInvalid() {
         var dto = FileInputDataLimpezaDtoBuilder.create().withLastGroupInvalid().build();
         var exception =
                 Assertions.assertThrows(
@@ -59,7 +57,6 @@ class GroupServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldGenerateListGroupLayout1Success() {
         var dto = FileInputDataLimpezaDtoBuilder.create().withSuccess().build();
         dto.setLastDate("1");
@@ -74,7 +71,6 @@ class GroupServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldGenerateListGroupLayout2Success() {
         var dto = FileInputDataLimpezaDtoBuilder.create().withSuccess().build();
         dto.setLastGroup(dto.getGroups().size());
@@ -115,7 +111,6 @@ class GroupServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldgenerateListDesignacaoPresidentSuccess() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         var list = service.generateListPresident(dto, listLocalDate);
@@ -134,7 +129,6 @@ class GroupServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldgenerateListDesignacaoReaderWatchtowerSuccess() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         var list = service.generateListReaderWatchtower(dto, listLocalDate);
@@ -170,7 +164,6 @@ class GroupServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldgenerateListDesignacaoReaderBibleStudySuccess() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         var list = service.generateListReaderBibleStudy(dto, listLocalDate);
@@ -206,7 +199,6 @@ class GroupServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldgenerateListDesignacaoAudioVideoSuccess() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         var list = service.generateListAudioVideo(dto, listLocalDate);
@@ -262,7 +254,6 @@ class GroupServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldgenerateListDesignacaoIndicatorSuccess() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         var anotherList = List.of(DesignacaoWriterItemDtoBuilder.create().withRandomData().build());
@@ -282,7 +273,6 @@ class GroupServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldgenerateListDesignacaoMicrophoneSuccess() {
         var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
         var anotherList = List.of(DesignacaoWriterItemDtoBuilder.create().withRandomData().build());

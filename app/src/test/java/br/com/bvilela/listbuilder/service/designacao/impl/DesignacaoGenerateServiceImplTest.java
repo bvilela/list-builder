@@ -10,7 +10,6 @@ import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.GroupService;
@@ -23,7 +22,11 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 class DesignacaoGenerateServiceImplTest
         extends BaseGenerateServiceTest<
@@ -43,12 +46,13 @@ class DesignacaoGenerateServiceImplTest
 
     @Mock private DesignacaoCounterService counterService;
 
-    public DesignacaoGenerateServiceImplTest() throws ListBuilderException {
+    public DesignacaoGenerateServiceImplTest() {
         super(ListTypeEnum.DESIGNACAO, FileInputDataDesignacaoDtoBuilder.create().withRandomData());
     }
 
     @BeforeEach
-    public void setup() throws IllegalAccessException {
+    @SneakyThrows
+    public void setup() {
         MockitoAnnotations.openMocks(this);
         FieldUtils.writeField(properties, "inputDir", this.testUtils.getResourceDirectory(), true);
         service =
@@ -77,34 +81,33 @@ class DesignacaoGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListFileNotFoundException() throws IllegalAccessException {
+    void shouldGenerateListFileNotFoundException() {
         validateListBuilderException(MessageConfig.FILE_NOT_FOUND);
     }
 
     @Test
-    void shouldGenerateListFileSyntaxException() throws IllegalAccessException {
+    void shouldGenerateListFileSyntaxException() {
         this.testUtils.writeFileInputSyntaxError();
         validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
     }
 
     // *************************** LASTDATE - INICIO *************************** \\
     @Test
-    void shouldGenerateListExceptionLastDateNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionLastDateNull() {
         validateGenerateListExceptionLastDate(null);
     }
 
     @Test
-    void shouldGenerateListExceptionLastDateEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionLastDateEmpty() {
         validateGenerateListExceptionLastDate("");
     }
 
     @Test
-    void shouldGenerateListExceptionLastDateBlank() throws IllegalAccessException {
+    void shouldGenerateListExceptionLastDateBlank() {
         validateGenerateListExceptionLastDate(" ");
     }
 
-    private void validateGenerateListExceptionLastDate(String lastDate)
-            throws IllegalAccessException {
+    private void validateGenerateListExceptionLastDate(String lastDate) {
         var dto = builder.withLastDate(lastDate).build();
         writeFileInputFromDto(dto);
         validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);

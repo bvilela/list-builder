@@ -50,12 +50,13 @@ class LimpezaGenerateServiceImplTest
 
     @Mock private NotificationService notificationService;
 
-    public LimpezaGenerateServiceImplTest() throws ListBuilderException {
+    public LimpezaGenerateServiceImplTest() {
         super(ListTypeEnum.LIMPEZA, FileInputDataLimpezaDtoBuilder.create());
     }
 
     @BeforeEach
-    void setupBeforeEach() throws IllegalAccessException {
+    @SneakyThrows
+    void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
         FieldUtils.writeField(properties, "inputDir", this.testUtils.getResourceDirectory(), true);
         service =
@@ -281,8 +282,8 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListLayout2SuccessWithAddToListException()
-            throws IllegalAccessException, ListBuilderException {
+    @SneakyThrows
+    void shouldGenerateListLayout2SuccessWithAddToListException() {
         var addToList = Map.of("aa-04-2022", "Após a Celebração");
         writeFileInputFromDto(builder.withSuccess().withAddToList(addToList).build());
         FieldUtils.writeField(properties, "layoutLimpeza", 2, true);
@@ -307,7 +308,6 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    @SneakyThrows
     void shouldGetLabelNoExceptionAndNoLabel() {
         var dto = new ItemDateDTO(LocalDate.of(2022, 3, 1));
         var ret = service.getLabel(dto, false);
@@ -318,7 +318,6 @@ class LimpezaGenerateServiceImplTest
     @ParameterizedTest(name = "Label Exception is \"{0}\"")
     @NullAndEmptySource
     @ValueSource(strings = {" "})
-    @SneakyThrows
     void shouldGetLabelExceptionAndNoLabel(String messageException) {
         var dto = new ItemDateDTO(LocalDate.of(2022, 3, 1), messageException);
         var ret = service.getLabel(dto, false);
@@ -326,7 +325,6 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    @SneakyThrows
     void shouldGetLabelExceptionMessageBlankAndNoLabel() {
         var dto = new ItemDateDTO(LocalDate.of(2022, 3, 1), "myMessage");
         var ret = service.getLabel(dto, false);
@@ -334,7 +332,6 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    @SneakyThrows
     void shouldGetLabelNoExceptionAndAndLabel() {
         var dto = new ItemDateDTO(LocalDate.of(2022, 3, 1));
         var ret = service.getLabel(dto, true);
@@ -345,7 +342,6 @@ class LimpezaGenerateServiceImplTest
     @ParameterizedTest(name = "Label Exception is \"{0}\"")
     @NullAndEmptySource
     @ValueSource(strings = {" "})
-    @SneakyThrows
     void shouldGetLabelExceptionNullAndLabel(String messageException) {
         var dto = new ItemDateDTO(LocalDate.of(2022, 3, 1), messageException);
         var ret = service.getLabel(dto, true);
@@ -353,7 +349,6 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    @SneakyThrows
     void shouldGetLabelExceptionMessageBlankAndLabel() {
         var dto = new ItemDateDTO(LocalDate.of(2022, 3, 1), "myMessage");
         var ret = service.getLabel(dto, true);

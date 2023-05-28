@@ -12,7 +12,6 @@ import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaExtractService;
 import br.com.bvilela.listbuilder.utils.DateUtils;
-import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -56,8 +55,8 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
     }
 
     @Override
-    public List<VidaCristaExtractWeekDTO> extractWeeksBySite(String url)
-            throws IOException, ListBuilderException {
+    @SneakyThrows
+    public List<VidaCristaExtractWeekDTO> extractWeeksBySite(String url) {
         log.info("Sanitizando URL");
         url = sanitizeUrl(url);
         log.info("Extraindo Dados da URL: {}", url);
@@ -104,7 +103,8 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
         return url.replace("março", "marco");
     }
 
-    private void checkEmpty(Elements elements, String msg) throws ListBuilderException {
+    @SneakyThrows
+    private void checkEmpty(Elements elements, String msg) {
         if (CollectionUtils.isEmpty(elements)) {
             throw new ListBuilderException(msg);
         }
@@ -134,8 +134,8 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
         return Integer.valueOf(year);
     }
 
-    public List<LocalDate> extractMonthsAndConvertToDates(String label, int year)
-            throws ListBuilderException {
+    @SneakyThrows
+    public List<LocalDate> extractMonthsAndConvertToDates(String label, int year) {
         var splitted = label.split(" de ");
 
         // Ex: 21-27 de novembro
@@ -205,7 +205,8 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
         }
     }
 
-    private List<VidaCristaExtractWeekItemDTO> readWeekItemsFromUrl(String url) throws IOException {
+    @SneakyThrows
+    private List<VidaCristaExtractWeekItemDTO> readWeekItemsFromUrl(String url) {
         var list = new ArrayList<VidaCristaExtractWeekItemDTO>();
 
         url = "https://www.jw.org".concat(url);

@@ -8,7 +8,6 @@ import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
 import br.com.bvilela.listbuilder.dto.assistencia.FileInputDataAssistenciaDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.NotificationService;
@@ -24,7 +23,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.*;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
@@ -42,7 +45,7 @@ class AssistenciaGenerateServiceImplTest
 
     @Mock private NotificationService notificationService;
 
-    public AssistenciaGenerateServiceImplTest() throws ListBuilderException {
+    public AssistenciaGenerateServiceImplTest() {
         super(ListTypeEnum.ASSISTENCIA, FileInputDataAssistenciaDtoBuilder.create());
     }
 

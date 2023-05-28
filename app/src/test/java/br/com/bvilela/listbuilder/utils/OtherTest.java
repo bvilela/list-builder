@@ -3,13 +3,15 @@ package br.com.bvilela.listbuilder.utils;
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import java.time.DayOfWeek;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class OtherTest {
 
     @Test
-    void sholdDayWeekEnumValid() throws ListBuilderException {
+    @SneakyThrows
+    void sholdDayWeekEnumValid() {
         Assertions.assertEquals(
                 DayOfWeekEnum.SEGUNDA, DayOfWeekEnum.getByDayOfWeek(DayOfWeek.MONDAY));
         Assertions.assertEquals(

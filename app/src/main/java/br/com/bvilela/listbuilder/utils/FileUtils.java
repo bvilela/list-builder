@@ -29,7 +29,8 @@ public final class FileUtils {
     private static final String PDF_EXTENSION = ".pdf";
     private static final String DOCX_EXTENSION = ".docx";
 
-    public static void createDirectories(String path) throws ListBuilderException {
+    @SneakyThrows
+    public static void createDirectories(String path) {
         try {
             Files.createDirectories(Paths.get(path));
         } catch (Exception e) {
@@ -38,8 +39,8 @@ public final class FileUtils {
         }
     }
 
-    public static <T> T readInputFile(Path pathInputFile, Class<T> clazz)
-            throws ListBuilderException {
+    @SneakyThrows
+    public static <T> T readInputFile(Path pathInputFile, Class<T> clazz) {
 
         log.info("Inciando Leitura do Arquivo '{}'", pathInputFile.toString());
 

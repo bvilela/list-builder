@@ -12,7 +12,7 @@ public interface BaseGenerateService {
 
     ListTypeEnum getListType();
 
-    void generateList() throws ListBuilderException;
+    void generateList();
 
     default void logInit(Logger log) {
         log.info("Iniciando Geração Lista: '{}'", getListType());
@@ -27,8 +27,7 @@ public interface BaseGenerateService {
                 "Erro ao gerar lista '%s': %s", getListType(), exception.getMessage());
     }
 
-    default <T> T getFileInputDataDTO(AppProperties appProperties, Class<T> clazz)
-            throws ListBuilderException {
+    default <T> T getFileInputDataDTO(AppProperties appProperties, Class<T> clazz) {
         Path pathInputFile =
                 Paths.get(appProperties.getInputDir(), getListType().getInputFileName());
         return FileUtils.readInputFile(pathInputFile, clazz);

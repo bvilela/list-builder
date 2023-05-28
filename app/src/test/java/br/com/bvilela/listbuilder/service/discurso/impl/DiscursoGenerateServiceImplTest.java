@@ -8,8 +8,8 @@ import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.discurso.FileInputDataDiscursoDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,12 +34,13 @@ class DiscursoGenerateServiceImplTest
     private static final String MSG_MISSING_THEME_NUMBER_TITLE =
             "Data: 05-06-2022 - Informe o Número do Tema ou Título!";
 
-    public DiscursoGenerateServiceImplTest() throws ListBuilderException {
+    public DiscursoGenerateServiceImplTest() {
         super(ListTypeEnum.DISCURSO, FileInputDataDiscursoDtoBuilder.create().withRandomData());
     }
 
     @BeforeEach
-    public void setup() throws IllegalAccessException {
+    @SneakyThrows
+    public void setup() {
         MockitoAnnotations.openMocks(this);
         FieldUtils.writeField(properties, "inputDir", this.testUtils.getResourceDirectory(), true);
         service = new DiscursoGenerateServiceImpl(properties, writerService);

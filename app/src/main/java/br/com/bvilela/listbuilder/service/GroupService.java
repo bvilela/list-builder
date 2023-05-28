@@ -4,41 +4,33 @@ import br.com.bvilela.listbuilder.dto.ItemDateDTO;
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import java.time.LocalDate;
 import java.util.List;
 
 public interface GroupService {
 
     List<String> generateListGroupsLimpeza(
-            FileInputDataLimpezaDTO dto, List<ItemDateDTO> listDates, int layout)
-            throws ListBuilderException;
+            FileInputDataLimpezaDTO dto, List<ItemDateDTO> listDates, int layout);
 
     List<DesignacaoWriterItemDTO> generateListPresident(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesWeekend)
-            throws ListBuilderException;
+            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesWeekend);
 
     List<DesignacaoWriterItemDTO> generateListReaderWatchtower(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesWeekend)
-            throws ListBuilderException;
+            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesWeekend);
 
     List<DesignacaoWriterItemDTO> generateListReaderBibleStudy(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesMidweek)
-            throws ListBuilderException;
+            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesMidweek);
 
     List<DesignacaoWriterItemDTO> generateListAudioVideo(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesAll)
-            throws ListBuilderException;
+            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesAll);
 
     List<DesignacaoWriterItemDTO> generateListIndicator(
             FileInputDataDesignacaoDTO dto,
             List<LocalDate> listDatesAll,
-            List<DesignacaoWriterItemDTO> anotherLists)
-            throws ListBuilderException;
+            List<DesignacaoWriterItemDTO> anotherLists);
 
     List<DesignacaoWriterItemDTO> generateListMicrophone(
             FileInputDataDesignacaoDTO dto,
             List<LocalDate> listDatesAll,
-            List<DesignacaoWriterItemDTO> anotherLists)
-            throws ListBuilderException;
+            List<DesignacaoWriterItemDTO> anotherLists);
 }

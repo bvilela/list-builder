@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,8 @@ public class DesignacaoGenerateServiceImpl implements BaseGenerateService {
     }
 
     @Override
-    public void generateList() throws ListBuilderException {
+    @SneakyThrows
+    public void generateList() {
         try {
             logInit(log);
 
@@ -116,10 +118,10 @@ public class DesignacaoGenerateServiceImpl implements BaseGenerateService {
         }
     }
 
+    @SneakyThrows
     private void adjustListReadersByPresident(
             List<DesignacaoWriterItemDTO> listReaderWatchtower,
-            List<DesignacaoWriterItemDTO> listPresident)
-            throws ListBuilderException {
+            List<DesignacaoWriterItemDTO> listPresident) {
 
         final String logMessage = "Lista Leitores A Sentinela baseada na lista de Presidentes";
         try {
@@ -151,11 +153,11 @@ public class DesignacaoGenerateServiceImpl implements BaseGenerateService {
         }
     }
 
+    @SneakyThrows
     private void adjustListAudioVideoByReaders(
             List<DesignacaoWriterItemDTO> listAudioVideo,
             List<DesignacaoWriterItemDTO> listReaderWatchtower,
-            List<DesignacaoWriterItemDTO> listReaderBibleStudy)
-            throws ListBuilderException {
+            List<DesignacaoWriterItemDTO> listReaderBibleStudy) {
 
         final String logMessage = "Lista Lista AudioVideo baseada na lista de Leitores";
         try {

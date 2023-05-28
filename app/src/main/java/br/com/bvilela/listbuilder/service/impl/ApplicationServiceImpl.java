@@ -3,6 +3,7 @@ package br.com.bvilela.listbuilder.service.impl;
 import br.com.bvilela.listbuilder.service.ApplicationService;
 import br.com.bvilela.listbuilder.service.OrchestratorService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
@@ -17,17 +18,18 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final OrchestratorService orchestratorService;
 
     @Override
+    @SneakyThrows
     public void runApplication() {
         try {
             executeApplication();
-
         } catch (Exception e) {
             log.error("Aplicação Finalizada com Erro!", e);
             SpringApplication.exit(context, () -> -1);
         }
     }
 
-    private void executeApplication() throws Exception {
+    @SneakyThrows
+    private void executeApplication() {
         log.info("Aplicação Iniciada...");
 
         var service = orchestratorService.validateAndGetServiceByListType();

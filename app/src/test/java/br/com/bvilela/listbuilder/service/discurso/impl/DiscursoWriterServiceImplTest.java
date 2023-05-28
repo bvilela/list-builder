@@ -7,6 +7,7 @@ import br.com.bvilela.listbuilder.utils.TestUtils;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +25,8 @@ class DiscursoWriterServiceImplTest {
     @InjectMocks private AppProperties properties;
 
     @BeforeEach
-    void setupBeforeEach() throws IllegalAccessException {
+    @SneakyThrows
+    void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
         FieldUtils.writeField(properties, "outputDir", pathOutput, true);

@@ -8,6 +8,7 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import java.util.List;
 import java.util.Objects;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -15,14 +16,14 @@ public final class DiscursoValidator {
 
     private DiscursoValidator() {}
 
-    public static void validAllThemesFile(DiscursoAllThemesDTO dto) throws ListBuilderException {
+    public static void validAllThemesFile(DiscursoAllThemesDTO dto) {
         log.info("Arquivos de Temas - Validando Dados de Entrada!");
         GenericValidator.validateDto(dto);
         log.info("Arquivos de Temas - Validado com Sucesso!");
     }
 
-    public static void validFileInputData(FileInputDataDiscursoDTO dto)
-            throws ListBuilderException {
+    @SneakyThrows
+    public static void validFileInputData(FileInputDataDiscursoDTO dto) {
         log.info("Validando Dados de Entrada!");
 
         GenericValidator.validateDto(dto);
@@ -38,8 +39,7 @@ public final class DiscursoValidator {
         log.info("Dados de Entrada Validados com Sucesso!");
     }
 
-    private static void validItem(List<FileInputDataDiscursoItemDTO> list, String message)
-            throws ListBuilderException {
+    private static void validItem(List<FileInputDataDiscursoItemDTO> list, String message) {
         log.info("{} - Validando", message);
 
         if (AppUtils.listIsNullOrEmpty(list)) {
@@ -55,7 +55,8 @@ public final class DiscursoValidator {
         log.info("{} - Validada com Sucesso!", message);
     }
 
-    private static void validTheme(FileInputDataDiscursoItemDTO item) throws ListBuilderException {
+    @SneakyThrows
+    private static void validTheme(FileInputDataDiscursoItemDTO item) {
         var themeNumberMissing =
                 Objects.isNull(item.getThemeNumber()) || item.getThemeNumber().isBlank();
         var themeTitleMissing =

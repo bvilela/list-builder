@@ -12,13 +12,13 @@ import br.com.bvilela.listbuilder.dto.vidacrista.FileInputDataVidaCristaDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaExtractService;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaWriterService;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,14 +41,15 @@ class VidaCristaGenerateServiceImplTest
 
     @Mock private NotificationService notificationService;
 
-    public VidaCristaGenerateServiceImplTest() throws ListBuilderException {
+    public VidaCristaGenerateServiceImplTest() {
         super(
                 ListTypeEnum.VIDA_CRISTA,
                 FileInputDataVidaCristaDtoBuilder.create().withRandomData());
     }
 
     @BeforeEach
-    public void setup() throws IllegalAccessException {
+    @SneakyThrows
+    public void setup() {
         MockitoAnnotations.openMocks(this);
         FieldUtils.writeField(properties, "inputDir", this.testUtils.getResourceDirectory(), true);
         service =
@@ -72,56 +73,53 @@ class VidaCristaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListFileNotFoundException() throws IllegalAccessException {
+    void shouldGenerateListFileNotFoundException() {
         validateListBuilderException(MessageConfig.FILE_NOT_FOUND);
     }
 
     @Test
-    void shouldGenerateListFileSyntaxException() throws IllegalAccessException {
+    void shouldGenerateListFileSyntaxException() {
         this.testUtils.writeFileInputSyntaxError();
         validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
     }
 
     @Test
-    void shouldGenerateListExceptionLastDateNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionLastDateNull() {
         validateGenerateListLastDateException(null);
     }
 
     @Test
-    void shouldGenerateListExceptionLastDateEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionLastDateEmpty() {
         validateGenerateListLastDateException("");
     }
 
     @Test
-    void shouldGenerateListExceptionLastDateBlank() throws IllegalAccessException {
+    void shouldGenerateListExceptionLastDateBlank() {
         validateGenerateListLastDateException(" ");
     }
 
-    private void validateGenerateListLastDateException(String lastDate)
-            throws IllegalAccessException {
+    private void validateGenerateListLastDateException(String lastDate) {
         writeFileInputFromDto(builder.withLastDate(lastDate).build());
         validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionParticipantsNull() throws IllegalAccessException {
+    void shouldGenerateListExceptionParticipantsNull() {
         validateGenerateListParticipantsException(null);
     }
 
     @Test
-    void shouldGenerateListExceptionParticipantsEmpty() throws IllegalAccessException {
+    void shouldGenerateListExceptionParticipantsEmpty() {
         validateGenerateListParticipantsException(List.of());
     }
 
-    private void validateGenerateListParticipantsException(List<List<String>> participants)
-            throws IllegalAccessException {
+    private void validateGenerateListParticipantsException(List<List<String>> participants) {
         writeFileInputFromDto(builder.withParticipants(participants).build());
         validateListBuilderException(MessageConfig.PARTICIPANTS_REQUIRED);
     }
 
     @Test
-    void shouldGenerateListExceptionNumberWeeksExtractDiffNumberWeekInputDto()
-            throws IllegalAccessException {
+    void shouldGenerateListExceptionNumberWeeksExtractDiffNumberWeekInputDto() {
         writeFileInputFromDto(builder.build());
         var expectedMessageError =
                 "Quantidade de semanas extraída do site é diferente da quantidade de semanas com participantes";
@@ -129,7 +127,7 @@ class VidaCristaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListRenameItemsExceptionWeekIndexNull() throws IllegalAccessException {
+    void shouldGenerateListRenameItemsExceptionWeekIndexNull() {
         var renameItem =
                 FileInputDataVidaCristaRenameItemDtoBuilder.create()
                         .withData(null, "original Title", null)
@@ -141,25 +139,21 @@ class VidaCristaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListRenameItemsExceptionWeekOriginalNameNull()
-            throws IllegalAccessException {
+    void shouldGenerateListRenameItemsExceptionWeekOriginalNameNull() {
         baseGenerateListRenameItemsExceptionWeekOriginalName(null);
     }
 
     @Test
-    void shouldGenerateListRenameItemsExceptionWeekOriginalNameEmpty()
-            throws IllegalAccessException {
+    void shouldGenerateListRenameItemsExceptionWeekOriginalNameEmpty() {
         baseGenerateListRenameItemsExceptionWeekOriginalName("");
     }
 
     @Test
-    void shouldGenerateListRenameItemsExceptionWeekOriginalNameBlank()
-            throws IllegalAccessException {
+    void shouldGenerateListRenameItemsExceptionWeekOriginalNameBlank() {
         baseGenerateListRenameItemsExceptionWeekOriginalName(" ");
     }
 
-    private void baseGenerateListRenameItemsExceptionWeekOriginalName(String originalName)
-            throws IllegalAccessException {
+    private void baseGenerateListRenameItemsExceptionWeekOriginalName(String originalName) {
         var renameItem =
                 FileInputDataVidaCristaRenameItemDtoBuilder.create()
                         .withData(1, originalName, "new Title")

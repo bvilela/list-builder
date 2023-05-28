@@ -55,8 +55,9 @@ public final class AppUtils {
         return listDate;
     }
 
+    @SneakyThrows
     public static <T> Map<LocalDate, T> validAndConvertMapDates(
-            Map<String, T> map, String msg, Logger log) throws ListBuilderException {
+            Map<String, T> map, String msg, Logger log) {
         Map<LocalDate, T> mapDate = null;
 
         if (Objects.nonNull(map)) {

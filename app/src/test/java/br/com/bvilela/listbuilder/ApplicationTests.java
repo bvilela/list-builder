@@ -15,7 +15,7 @@ class ApplicationTests {
     @Mock private ApplicationServiceImpl service;
 
     @BeforeEach
-    public void setup() throws IllegalAccessException {
+    public void setup() {
         MockitoAnnotations.openMocks(this);
         application = new Application(service);
     }

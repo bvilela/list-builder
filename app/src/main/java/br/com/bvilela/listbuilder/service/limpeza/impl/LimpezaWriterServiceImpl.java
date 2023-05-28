@@ -34,10 +34,10 @@ public class LimpezaWriterServiceImpl implements LimpezaWriterService {
 
     private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
 
+    @SneakyThrows
     @Override
     public Path writerPDF(
-            FinalListLimpezaDTO dto, String footerMessage, String headerMessage, int layout)
-            throws ListBuilderException {
+            FinalListLimpezaDTO dto, String footerMessage, String headerMessage, int layout) {
 
         FileUtils.createDirectories(properties.getOutputDir());
 

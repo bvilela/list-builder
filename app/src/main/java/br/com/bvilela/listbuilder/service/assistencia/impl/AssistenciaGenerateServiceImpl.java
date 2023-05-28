@@ -11,6 +11,7 @@ import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.service.assistencia.AssistenciaWriterService;
 import br.com.bvilela.listbuilder.validator.AssistenciaValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,8 @@ public class AssistenciaGenerateServiceImpl implements BaseGenerateService {
     }
 
     @Override
-    public void generateList() throws ListBuilderException {
+    @SneakyThrows
+    public void generateList() {
         try {
             logInit(log);
 

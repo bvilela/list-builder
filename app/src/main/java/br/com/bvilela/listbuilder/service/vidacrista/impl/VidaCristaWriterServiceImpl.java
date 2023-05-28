@@ -45,7 +45,8 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 	private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
 
 	@Override
-	public Path writerPDF(List<VidaCristaExtractWeekDTO> listWeeks) throws ListBuilderException {
+	@SneakyThrows
+	public Path writerPDF(List<VidaCristaExtractWeekDTO> listWeeks) {
 		try {
 			FileUtils.createDirectories(properties.getOutputDir());
 			String fileName = FileUtils.generateOutputFileNamePDF(LIST_TYPE, listWeeks.get(0).getDate1());
@@ -153,7 +154,8 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		columnTable.addCell(cell);
 	}
 
-	private void addItemLabel(PdfPTable columnTable, VidaCristaExtractWeekItemDTO item) throws ListBuilderException {
+	@SneakyThrows
+	private void addItemLabel(PdfPTable columnTable, VidaCristaExtractWeekItemDTO item) {
 		var imgName = getImageNameByLabel(item.getTitle());
 		var cell = pdfUtils.addImageSubHeader(LIST_TYPE, imgName);
 		cell.setPaddingTop(15);
@@ -191,7 +193,8 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		return table;
 	}
 
-	private void addCellWeekHeader(PdfPTable table, VidaCristaExtractWeekDTO week) throws ListBuilderException {
+	@SneakyThrows
+	private void addCellWeekHeader(PdfPTable table, VidaCristaExtractWeekDTO week) {
 		var text = getWeekHeaderLabel(week);
 		PdfPCell cell = new PdfPCell(pdfUtils.createParagraphBold12(text));
 		cell.setBorder(Rectangle.BOTTOM);
@@ -202,7 +205,8 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		table.addCell(cell);
 	}
 
-	private String getWeekHeaderLabel(VidaCristaExtractWeekDTO week) throws ListBuilderException {
+	@SneakyThrows
+	private String getWeekHeaderLabel(VidaCristaExtractWeekDTO week) {
 		var date1 = week.getDate1();
 		var date2 = week.getDate2();
 		var readOfWeek = getReadOfWeek(week);
@@ -216,7 +220,8 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		return label.toUpperCase();
 	}
 
-	private String getReadOfWeek(VidaCristaExtractWeekDTO week) throws ListBuilderException {
+	@SneakyThrows
+	private String getReadOfWeek(VidaCristaExtractWeekDTO week) {
 		var readOfWeek = week.getItems().stream().filter(e -> e.getType() == VidaCristaExtractItemType.READ_OF_WEEK)
 				.toList();
 
@@ -231,7 +236,8 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		return date.getDayOfMonth() + " DE " + DateUtils.getNameMonthShort(date);
 	}
 
-	private void addImageColumnDivider(Document document) throws ListBuilderException {
+	@SneakyThrows
+	private void addImageColumnDivider(Document document) {
 		try {
 			Path path = Paths.get("images", LIST_TYPE.toString().toLowerCase(), "divider.jpg");
 
@@ -247,8 +253,9 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 					e.getMessage());
 		}
 	}
-	
-	public String getImageNameByLabel(String label) throws ListBuilderException {
+
+	@SneakyThrows
+	public String getImageNameByLabel(String label) {
 		label = label.toUpperCase();
 		if (label.contains("TESOUROS DA PALAVRA")) {
 			return "treasures-word-god.jpg";

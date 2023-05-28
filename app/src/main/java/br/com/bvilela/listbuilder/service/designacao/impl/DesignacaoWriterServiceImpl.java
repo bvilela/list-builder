@@ -14,7 +14,6 @@ import br.com.bvilela.listbuilder.utils.FileUtils;
 import br.com.bvilela.listbuilder.utils.impl.DocxWriterUtilsImpl;
 import br.com.bvilela.listbuilder.utils.impl.PDFWriterUtilsImpl;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
@@ -22,13 +21,13 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
@@ -50,7 +49,8 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
     private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
 
     @Override
-    public Path writerPDF(DesignacaoWriterDTO dto) throws ListBuilderException {
+    @SneakyThrows
+    public Path writerPDF(DesignacaoWriterDTO dto) {
         try {
             FileUtils.createDirectories(properties.getOutputDir());
             String fileName =
@@ -67,8 +67,8 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
         }
     }
 
-    private void writerPDFDocument(DesignacaoWriterDTO dto, Path path)
-            throws IOException, DocumentException, ListBuilderException {
+    @SneakyThrows
+    private void writerPDFDocument(DesignacaoWriterDTO dto, Path path) {
 
         try (var outputStream = new FileOutputStream(path.toString())) {
             Document document = pdfUtils.getDocument(LIST_TYPE);
@@ -87,35 +87,32 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
         }
     }
 
-    private void writeSectionsLine1(PdfPTable table, DesignacaoWriterDTO dto)
-            throws ListBuilderException, DocumentException {
+    private void writeSectionsLine1(PdfPTable table, DesignacaoWriterDTO dto) {
         List<DesignacaoWriterItemDTO> listReader = getAllReaders(dto);
         final int marginTop = 0;
         writeSection(table, listReader, "reader", BREAK_LINE_DEFAULT, marginTop);
         writeSection(table, dto.getAudioVideo(), "audioVideo", BREAK_LINE_DEFAULT, marginTop);
     }
 
-    private void writeSectionsLine2(PdfPTable table, DesignacaoWriterDTO dto)
-            throws ListBuilderException, DocumentException {
+    private void writeSectionsLine2(PdfPTable table, DesignacaoWriterDTO dto) {
         final int marginTop = 15;
         writeSection(table, dto.getMicrophone(), "microphone", BREAK_LINE_DEFAULT, marginTop);
         writeSection(table, dto.getIndicator(), "indicator", BREAK_LINE_DEFAULT, marginTop);
     }
 
-    private void writeSectionsLine3(PdfPTable table, DesignacaoWriterDTO dto)
-            throws ListBuilderException, DocumentException {
+    private void writeSectionsLine3(PdfPTable table, DesignacaoWriterDTO dto) {
         final int marginTop = 15;
         writeSection(table, dto.getPresident(), "president", BREAK_LINE_PRESIDENT, marginTop);
         table.addCell(pdfUtils.newCellNoBorder(new Paragraph("")));
     }
 
+    @SneakyThrows
     private void writeSection(
             PdfPTable table,
             List<DesignacaoWriterItemDTO> list,
             String section,
             int breakLine,
-            int paddingTop)
-            throws ListBuilderException, DocumentException {
+            int paddingTop) {
         PdfPTable columnTable = new PdfPTable(1);
         addSubHeader(columnTable, section, paddingTop);
 
@@ -166,14 +163,12 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
         table.addCell(columnCell);
     }
 
-    private PdfPTable addHeaderAndTableMaster(Document document)
-            throws ListBuilderException, DocumentException {
+    private PdfPTable addHeaderAndTableMaster(Document document) {
         pdfUtils.addImageHeader(document, LIST_TYPE);
         return pdfUtils.getTable(document, 2, LIST_TYPE);
     }
 
-    private void addSubHeader(PdfPTable table, String section, int paddingTop)
-            throws ListBuilderException {
+    private void addSubHeader(PdfPTable table, String section, int paddingTop) {
         var imageName = String.format("%s.jpg", section);
 
         var cell = pdfUtils.addImageSubHeader(LIST_TYPE, imageName);
@@ -205,7 +200,8 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
     }
 
     @Override
-    public Path writerDocx(DesignacaoWriterDTO dto) throws ListBuilderException {
+    @SneakyThrows
+    public Path writerDocx(DesignacaoWriterDTO dto) {
         try {
             FileUtils.createDirectories(properties.getOutputDir());
             String fileName =
@@ -222,8 +218,8 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
         }
     }
 
-    private void writeDocxDocument(DesignacaoWriterDTO dto, Path path)
-            throws IOException, ListBuilderException {
+    @SneakyThrows
+    private void writeDocxDocument(DesignacaoWriterDTO dto, Path path) {
         try (XWPFDocument doc = docxUtils.getDocument(LIST_TYPE)) {
 
             docxUtils.addImageHeader(doc, LIST_TYPE);
@@ -273,8 +269,7 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
             XWPFTable table,
             List<DesignacaoWriterItemDTO> list,
             int columnIndex,
-            int indexRowGeneral)
-            throws ListBuilderException {
+            int indexRowGeneral) {
         int countLines = 0;
         for (DesignacaoWriterItemDTO item : list) {
             XWPFTableRow row =
@@ -302,8 +297,7 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
         return indexRowGeneral;
     }
 
-    private void docxAddImageSubHeader(XWPFTableCell cell, String imgName)
-            throws ListBuilderException {
+    private void docxAddImageSubHeader(XWPFTableCell cell, String imgName) {
         var paragraph = cell.getParagraphs().get(0);
         paragraph.setSpacingBefore(AppUtils.getSizePointTimesTwenty(12));
         paragraph.setSpacingAfter(AppUtils.getSizePointTimesTwenty(6));

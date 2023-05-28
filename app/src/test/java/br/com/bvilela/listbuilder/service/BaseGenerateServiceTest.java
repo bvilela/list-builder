@@ -1,8 +1,8 @@
 package br.com.bvilela.listbuilder.service;
 
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.TestUtils;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 
 public abstract class BaseGenerateServiceTest<T, B> {
@@ -10,7 +10,8 @@ public abstract class BaseGenerateServiceTest<T, B> {
     protected TestUtils testUtils;
     protected B builder;
 
-    public BaseGenerateServiceTest(ListTypeEnum listType, B builder) throws ListBuilderException {
+    @SneakyThrows
+    public BaseGenerateServiceTest(ListTypeEnum listType, B builder) {
         testUtils = new TestUtils(listType);
         testUtils.createDirectory();
         this.builder = builder;

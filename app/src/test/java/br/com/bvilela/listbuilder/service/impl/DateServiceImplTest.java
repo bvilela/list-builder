@@ -21,7 +21,7 @@ class DateServiceImplTest {
     @InjectMocks private DateServiceImpl service;
 
     @BeforeEach
-    public void setup() throws IllegalAccessException {
+    public void setup() {
         MockitoAnnotations.openMocks(this);
         service = new DateServiceImpl();
     }

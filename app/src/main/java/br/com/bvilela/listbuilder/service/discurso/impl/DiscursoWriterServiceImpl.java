@@ -11,7 +11,6 @@ import br.com.bvilela.listbuilder.utils.DateUtils;
 import br.com.bvilela.listbuilder.utils.FileUtils;
 import br.com.bvilela.listbuilder.utils.impl.PDFWriterUtilsImpl;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
@@ -19,13 +18,13 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +42,8 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
     private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
 
     @Override
-    public Path writerPDF(FileInputDataDiscursoDTO dto) throws ListBuilderException {
+    @SneakyThrows
+    public Path writerPDF(FileInputDataDiscursoDTO dto) {
         try {
 
             log.info("Iniciando Geração da lista em PDF");
@@ -69,8 +69,8 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
         return dto.getSend().get(0).getDateConverted();
     }
 
-    private void writerDocument(FileInputDataDiscursoDTO dto, Path path)
-            throws DocumentException, ListBuilderException, IOException {
+    @SneakyThrows
+    private void writerDocument(FileInputDataDiscursoDTO dto, Path path) {
 
         try (var outputStream = new FileOutputStream(path.toString())) {
             Document document = pdfUtils.getDocument(LIST_TYPE);
@@ -102,8 +102,8 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
         }
     }
 
-    private void addReceiveSendHeaders(FileInputDataDiscursoDTO dto, PdfPTable table)
-            throws ListBuilderException {
+    @SneakyThrows
+    private void addReceiveSendHeaders(FileInputDataDiscursoDTO dto, PdfPTable table) {
         var receiveNonEmpty = !AppUtils.listIsNullOrEmpty(dto.getReceive());
         var sendNonEmpty = !AppUtils.listIsNullOrEmpty(dto.getSend());
 
@@ -154,7 +154,8 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
         return Math.max(dto.getReceive().size(), dto.getSend().size());
     }
 
-    private PdfPCell createCellSubHeader(String subHeader) throws ListBuilderException {
+    @SneakyThrows
+    private PdfPCell createCellSubHeader(String subHeader) {
         if (Objects.isNull(subHeader)
                 || subHeader.isBlank()
                 || !List.of(SEND, RECEIVE).contains(subHeader)) {

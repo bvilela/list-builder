@@ -2,7 +2,6 @@ package br.com.bvilela.listbuilder.validator;
 
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DesignacaoValidator {
 
-    public static void validAndConvertData(FileInputDataDesignacaoDTO dto)
-            throws ListBuilderException {
+    public static void validAndConvertData(FileInputDataDesignacaoDTO dto) {
         log.info("Validando Dados de Entrada!");
 
         GenericValidator.validateParseSubItemsDto(dto);
@@ -25,7 +23,7 @@ public final class DesignacaoValidator {
         log.info("Dados de Entrada Validados com Sucesso!");
     }
 
-    public static void checkDtoWriter(DesignacaoWriterDTO dtoWriter) throws ListBuilderException {
+    public static void checkDtoWriter(DesignacaoWriterDTO dtoWriter) {
         log.info("Verificando dados para gerar PDF");
         GenericValidator.validateDto(dtoWriter);
         log.info("Dados verificados com sucesso!");

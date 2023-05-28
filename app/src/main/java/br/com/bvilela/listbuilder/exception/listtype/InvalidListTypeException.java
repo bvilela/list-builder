@@ -1,11 +1,12 @@
 package br.com.bvilela.listbuilder.exception.listtype;
 
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
+import java.io.Serial;
 import java.util.Arrays;
 
 public class InvalidListTypeException extends Exception {
 
-    private static final long serialVersionUID = 2653958924425254811L;
+    @Serial private static final long serialVersionUID = 2653958924425254811L;
 
     public InvalidListTypeException() {
         super(

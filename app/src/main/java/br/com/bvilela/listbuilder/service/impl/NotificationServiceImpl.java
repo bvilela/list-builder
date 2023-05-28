@@ -205,13 +205,15 @@ public class NotificationServiceImpl implements NotificationService {
         calendarService.createEvents(calendarEventList);
     }
 
-    private void checkNotifName() throws ListBuilderException {
+    @SneakyThrows
+    private void checkNotifName() {
         if (Objects.isNull(notifName)) {
             throw new ListBuilderException("Defina a propriedade 'notif.name'!");
         }
     }
 
-    private DayOfWeekEnum checkMidweekMeetingDay() throws ListBuilderException {
+    @SneakyThrows
+    private DayOfWeekEnum checkMidweekMeetingDay() {
         if (Objects.isNull(notifChristianlifeMidweekMeetingDay)) {
             throw new ListBuilderException(
                     "Defina a propriedade 'notif.christianlife.midweek.meeting.day'!");

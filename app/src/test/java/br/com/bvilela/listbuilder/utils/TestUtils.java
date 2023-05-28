@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
 
@@ -33,7 +34,8 @@ public class TestUtils {
                 .getAbsolutePath();
     }
 
-    public void createDirectory() throws ListBuilderException {
+    @SneakyThrows
+    public void createDirectory() {
         FileUtils.createDirectories(this.resourceDirectory);
     }
 

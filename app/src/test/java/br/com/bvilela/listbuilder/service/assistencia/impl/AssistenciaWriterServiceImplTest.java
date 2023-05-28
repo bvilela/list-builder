@@ -1,11 +1,11 @@
 package br.com.bvilela.listbuilder.service.assistencia.impl;
 
 import br.com.bvilela.listbuilder.config.AppProperties;
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.TestUtils;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +23,8 @@ class AssistenciaWriterServiceImplTest {
     @InjectMocks private AppProperties properties;
 
     @BeforeEach
-    void setupBeforeEach() throws IllegalAccessException {
+    @SneakyThrows
+    void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
         FieldUtils.writeField(properties, "outputDir", pathOutput, true);
@@ -36,7 +37,7 @@ class AssistenciaWriterServiceImplTest {
     }
 
     @Test
-    void shouldWriterPDFSuccess() throws ListBuilderException {
+    void shouldWriterPDFSuccess() {
         var list =
                 List.of(
                         cld(4, 2),

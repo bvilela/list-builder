@@ -43,7 +43,8 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
     }
 
     @Override
-    public void generateList() throws ListBuilderException {
+    @SneakyThrows
+    public void generateList() {
         try {
             logInit(log);
 
@@ -143,7 +144,8 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
         return FinalListLimpezaDTO.builder().itemsLayout2(list).build();
     }
 
-    public String getLabel(ItemDateDTO item, boolean showLabelMessage) throws ListBuilderException {
+    @SneakyThrows
+    public String getLabel(ItemDateDTO item, boolean showLabelMessage) {
         var dayWeekEnum = DayOfWeekEnum.getByDayOfWeek(item.getDate().getDayOfWeek());
 
         if (showLabelMessage) {

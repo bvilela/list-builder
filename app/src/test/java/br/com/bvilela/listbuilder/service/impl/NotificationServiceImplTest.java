@@ -10,6 +10,7 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +56,7 @@ class NotificationServiceImplTest {
             List.of(VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
 
     @BeforeEach
-    void setupBeforeEach() throws IllegalAccessException {
+    void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
         service = new NotificationServiceImpl(calendarService);
     }
@@ -67,7 +68,7 @@ class NotificationServiceImplTest {
     }
 
     @Test
-    void shouldAssitenciaNotifActiveTrue() throws IllegalAccessException {
+    void shouldAssitenciaNotifActiveTrue() {
         setNotifActive();
         Assertions.assertDoesNotThrow(() -> service.assistencia(dtoAssistencia));
     }
@@ -79,28 +80,28 @@ class NotificationServiceImplTest {
     }
 
     @Test
-    void shouldLimpezaNotifActiveTrueNotifNameNull() throws IllegalAccessException {
+    void shouldLimpezaNotifActiveTrueNotifNameNull() {
         setNotifActive();
         Assertions.assertThrows(
                 ListBuilderException.class, () -> service.limpeza(dtoLimpeza, LAYOUT2));
     }
 
     @Test
-    void shouldAssistenciaNotifActiveTrueWithoutNotifPersonSuccess() throws IllegalAccessException {
+    void shouldAssistenciaNotifActiveTrueWithoutNotifPersonSuccess() {
         setNotifActive();
         setNotifName("xpto");
         Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LAYOUT2));
     }
 
     @Test
-    void shouldAssistenciaNotifActiveTrueNotifPersonSuccess() throws IllegalAccessException {
+    void shouldAssistenciaNotifActiveTrueNotifPersonSuccess() {
         setNotifActive();
         setNotifName("P1");
         Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LAYOUT2));
     }
 
     @Test
-    void shouldAssistenciaNotifActiveTrueNotifPersonLayout1Success() throws IllegalAccessException {
+    void shouldAssistenciaNotifActiveTrueNotifPersonLayout1Success() {
         var item = new FinalListLimpezaItemDTO(LocalDate.of(2022, 06, 10), "Label", "P1, P2, P3");
         final FinalListLimpezaDTO dtoLimpezaLayout1 =
                 FinalListLimpezaDTO.builder().items(List.of(item)).build();
@@ -110,7 +111,7 @@ class NotificationServiceImplTest {
     }
 
     @Test
-    void shouldVidaCristaNotifActiveGroupNull() throws IllegalAccessException {
+    void shouldVidaCristaNotifActiveGroupNull() {
         setNotifActive();
         setnotifChristianlifeMidweekMeetingDay("terca");
         var item = dtoLimpeza.getItemsLayout2().get(0);
@@ -131,8 +132,8 @@ class NotificationServiceImplTest {
     }
 
     @Test
-    void shouldAssistenciaNotifActiveTrueNotifPersonPreMeetingSuccess()
-            throws IllegalAccessException {
+    @SneakyThrows
+    void shouldAssistenciaNotifActiveTrueNotifPersonPreMeetingSuccess() {
         setNotifActive();
         setNotifName("P1");
         FieldUtils.writeField(service, "notifCleaningPreMeeting", true, true);
@@ -148,14 +149,14 @@ class NotificationServiceImplTest {
     }
 
     @Test
-    void shouldVidaCristaNotifActiveTrueNotifNameNull() throws IllegalAccessException {
+    void shouldVidaCristaNotifActiveTrueNotifNameNull() {
         setNotifActive();
         Assertions.assertThrows(
                 ListBuilderException.class, () -> service.vidaCrista(dtoVidaCrista));
     }
 
     @Test
-    void shouldVidaCristaNotifActiveTrueWithoutNotifSuccess() throws IllegalAccessException {
+    void shouldVidaCristaNotifActiveTrueWithoutNotifSuccess() {
         setNotifActive();
         setnotifChristianlifeMidweekMeetingDay("terca");
         setNotifName("P1");
@@ -163,7 +164,7 @@ class NotificationServiceImplTest {
     }
 
     @Test
-    void shouldVidaCristaNotifActiveTrueNotifSuccess() throws IllegalAccessException {
+    void shouldVidaCristaNotifActiveTrueNotifSuccess() {
         setNotifActive();
         setnotifChristianlifeMidweekMeetingDay("terca");
         var name = dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
@@ -172,7 +173,7 @@ class NotificationServiceImplTest {
     }
 
     @Test
-    void shouldVidaCristaNotifActiveTrueButNameItemNull() throws IllegalAccessException {
+    void shouldVidaCristaNotifActiveTrueButNameItemNull() {
         setNotifActive();
         setnotifChristianlifeMidweekMeetingDay("terca");
         dtoVidaCrista.get(0).getItems().get(0).setParticipants(null);
@@ -181,7 +182,7 @@ class NotificationServiceImplTest {
     }
 
     @Test
-    void shouldVidaCristaMidweekMeetingDayNullException() throws IllegalAccessException {
+    void shouldVidaCristaMidweekMeetingDayNullException() {
         setNotifActive();
         dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
         var name = dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
@@ -196,7 +197,7 @@ class NotificationServiceImplTest {
     }
 
     @Test
-    void shouldVidaCristaMidweekMeetingDayInvalidException() throws IllegalAccessException {
+    void shouldVidaCristaMidweekMeetingDayInvalidException() {
         setNotifActive();
         dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
         var name = dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
@@ -210,16 +211,18 @@ class NotificationServiceImplTest {
     }
 
     // *********************** UTILS *********************** \\
-    private void setNotifActive() throws IllegalAccessException {
+    @SneakyThrows
+    private void setNotifActive() {
         FieldUtils.writeField(service, "notifActive", true, true);
     }
 
-    private void setnotifChristianlifeMidweekMeetingDay(String value)
-            throws IllegalAccessException {
+    @SneakyThrows
+    private void setnotifChristianlifeMidweekMeetingDay(String value) {
         FieldUtils.writeField(service, "notifChristianlifeMidweekMeetingDay", value, true);
     }
 
-    private void setNotifName(String name) throws IllegalAccessException {
+    @SneakyThrows
+    private void setNotifName(String name) {
         FieldUtils.writeField(service, "notifName", name, true);
     }
 }

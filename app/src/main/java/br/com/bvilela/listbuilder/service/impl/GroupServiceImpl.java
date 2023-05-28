@@ -22,9 +22,9 @@ import org.springframework.stereotype.Service;
 public class GroupServiceImpl implements GroupService {
 
     @Override
+    @SneakyThrows
     public List<String> generateListGroupsLimpeza(
-            FileInputDataLimpezaDTO dto, List<ItemDateDTO> listDates, int layout)
-            throws ListBuilderException {
+            FileInputDataLimpezaDTO dto, List<ItemDateDTO> listDates, int layout) {
         if (layout == 2) {
             var newList =
                     listDates.stream().collect(Collectors.groupingBy(ItemDateDTO::getOrdinal));
@@ -34,8 +34,8 @@ public class GroupServiceImpl implements GroupService {
         }
     }
 
-    private List<String> generateListGroupsBase(FileInputDataLimpezaDTO dto, int numberOfDates)
-            throws ListBuilderException {
+    @SneakyThrows
+    private List<String> generateListGroupsBase(FileInputDataLimpezaDTO dto, int numberOfDates) {
 
         var mapGroups = dto.getGroups();
         if (Objects.isNull(mapGroups.get(dto.getLastGroup()))) {
@@ -56,9 +56,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @SneakyThrows
     public List<DesignacaoWriterItemDTO> generateListPresident(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesWeekend)
-            throws ListBuilderException {
+            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesWeekend) {
         var entity = DesignacaoEntityEnum.PRESIDENT;
         try {
             return generateSequenceListDesignacao(dto.getPresident(), listDatesWeekend, entity);
@@ -68,9 +68,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @SneakyThrows
     public List<DesignacaoWriterItemDTO> generateListReaderWatchtower(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesWeekend)
-            throws ListBuilderException {
+            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesWeekend) {
         var entity = DesignacaoEntityEnum.READER_WATCHTOWER;
         try {
             return generateSequenceListDesignacao(
@@ -81,9 +81,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @SneakyThrows
     public List<DesignacaoWriterItemDTO> generateListReaderBibleStudy(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesMidweek)
-            throws ListBuilderException {
+            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesMidweek) {
         var entity = DesignacaoEntityEnum.READER_BIBLESTUDY;
         try {
             return generateSequenceListDesignacao(
@@ -94,9 +94,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @SneakyThrows
     public List<DesignacaoWriterItemDTO> generateListAudioVideo(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesAll)
-            throws ListBuilderException {
+            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesAll) {
 
         var entity = DesignacaoEntityEnum.AUDIOVIDEO;
         try {

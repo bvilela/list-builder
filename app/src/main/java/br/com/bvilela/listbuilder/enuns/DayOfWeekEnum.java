@@ -3,6 +3,7 @@ package br.com.bvilela.listbuilder.enuns;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import java.time.DayOfWeek;
 import lombok.Getter;
+import lombok.SneakyThrows;
 
 @Getter
 public enum DayOfWeekEnum {
@@ -22,7 +23,8 @@ public enum DayOfWeekEnum {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public static DayOfWeekEnum getByDayOfWeek(DayOfWeek dayOfWeek) throws ListBuilderException {
+    @SneakyThrows
+    public static DayOfWeekEnum getByDayOfWeek(DayOfWeek dayOfWeek) {
         for (DayOfWeekEnum dia : DayOfWeekEnum.values()) {
             if (dia.getDayOfWeek() == dayOfWeek) {
                 return dia;

@@ -1,5 +1,6 @@
 package br.com.bvilela.listbuilder.config;
 
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +17,8 @@ class AppPropertiesTest {
     @InjectMocks private AppProperties properties;
 
     @BeforeEach
-    public void setup() throws IllegalAccessException {
+    @SneakyThrows
+    public void setup() {
         MockitoAnnotations.openMocks(this);
         FieldUtils.writeField(properties, "inputDir", INPUT_DIR_VALUE, true);
         FieldUtils.writeField(properties, "outputDir", OUTPUT_DIR_VALUE, true);

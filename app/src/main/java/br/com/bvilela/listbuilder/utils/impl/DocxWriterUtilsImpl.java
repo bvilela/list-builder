@@ -13,8 +13,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
@@ -59,8 +59,8 @@ public final class DocxWriterUtilsImpl implements WriterUtils<XWPFDocument> {
     }
 
     @Override
-    public void addImageHeader(XWPFDocument document, ListTypeEnum listType)
-            throws ListBuilderException {
+    @SneakyThrows
+    public void addImageHeader(XWPFDocument document, ListTypeEnum listType) {
         try {
             var imgInputStream = FileUtils.getClassPathImageHeader(listType).getInputStream();
             File fileTmp = new File("file.tmp");
@@ -69,14 +69,14 @@ public final class DocxWriterUtilsImpl implements WriterUtils<XWPFDocument> {
             }
             addImage(document.createParagraph(), fileTmp.toString(), listType.getHeader());
 
-        } catch (InvalidFormatException | IOException e) {
+        } catch (IOException e) {
             throw new ListBuilderException(
                     "Erro ao adicionar Imagem do Cabeçalho. Erro: %s", e.getMessage());
         }
     }
 
-    public void addImageSubHeader(XWPFParagraph paragraph, ListTypeEnum listType, String imgName)
-            throws ListBuilderException {
+    @SneakyThrows
+    public void addImageSubHeader(XWPFParagraph paragraph, ListTypeEnum listType, String imgName) {
         try {
             var imgInputStream = FileUtils.getClassPathImage(listType, imgName).getInputStream();
             File fileTmp = new File("file.tmp");
@@ -85,14 +85,14 @@ public final class DocxWriterUtilsImpl implements WriterUtils<XWPFDocument> {
             }
             addImage(paragraph, fileTmp.toString(), listType.getSubHeader());
 
-        } catch (InvalidFormatException | IOException e) {
+        } catch (IOException e) {
             throw new ListBuilderException(
                     "Erro ao adicionar Imagem do Sub-Cabeçalho. Erro: %s", e.getMessage());
         }
     }
 
-    private void addImage(XWPFParagraph paragraph, String imgFile, SizeBase size)
-            throws IOException, InvalidFormatException {
+    @SneakyThrows
+    private void addImage(XWPFParagraph paragraph, String imgFile, SizeBase size) {
         paragraph.setAlignment(ParagraphAlignment.CENTER);
         XWPFRun run = paragraph.createRun();
         // add image

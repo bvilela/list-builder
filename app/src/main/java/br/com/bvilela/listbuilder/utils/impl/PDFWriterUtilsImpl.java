@@ -6,7 +6,6 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import br.com.bvilela.listbuilder.utils.FileUtils;
 import br.com.bvilela.listbuilder.utils.WriterUtils;
-import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -21,6 +20,8 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import lombok.SneakyThrows;
 
 public final class PDFWriterUtilsImpl implements WriterUtils<Document> {
 
@@ -94,8 +95,8 @@ public final class PDFWriterUtilsImpl implements WriterUtils<Document> {
     }
 
     @Override
-    public void addImageHeader(Document document, ListTypeEnum listType)
-            throws ListBuilderException {
+    @SneakyThrows
+    public void addImageHeader(Document document, ListTypeEnum listType) {
         try {
             var imageUrl = FileUtils.getClassPathImageHeader(listType).getURL();
             Image image = getImage(listType.getHeader(), imageUrl);
@@ -108,8 +109,8 @@ public final class PDFWriterUtilsImpl implements WriterUtils<Document> {
         }
     }
 
-    public PdfPCell addImageSubHeader(ListTypeEnum listType, String imgName)
-            throws ListBuilderException {
+    @SneakyThrows
+    public PdfPCell addImageSubHeader(ListTypeEnum listType, String imgName) {
         try {
             var imageUrl = FileUtils.getClassPathImage(listType, imgName).getURL();
             Image image = getImage(listType.getSubHeader(), imageUrl);
@@ -123,14 +124,14 @@ public final class PDFWriterUtilsImpl implements WriterUtils<Document> {
 
             return cell;
 
-        } catch (DocumentException | IOException e) {
+        } catch (IOException e) {
             throw new ListBuilderException(
                     "Erro ao adicionar Imagem do SubCabeçalho. Erro: %s", e.getMessage());
         }
     }
 
-    public void addImageSubHeader(Document document, ListTypeEnum listType, String imgName)
-            throws ListBuilderException {
+    @SneakyThrows
+    public void addImageSubHeader(Document document, ListTypeEnum listType, String imgName) {
         try {
             var imageUrl = FileUtils.getClassPathImage(listType, imgName).getURL();
             Image image = getImage(listType.getSubHeader(), imageUrl);
@@ -142,27 +143,25 @@ public final class PDFWriterUtilsImpl implements WriterUtils<Document> {
         }
     }
 
-    private Image getImage(SizeBase sizeBase, URL imageUrl)
-            throws BadElementException, IOException {
+    @SneakyThrows
+    private Image getImage(SizeBase sizeBase, URL imageUrl) {
         Image image = Image.getInstance(imageUrl);
         image.scaleAbsolute(sizeBase.getWidth(), sizeBase.getHeight());
         image.setAlignment(Image.MIDDLE);
         return image;
     }
 
-    public PdfPTable getTable(Document document, int numberColumns, ListTypeEnum listType)
-            throws DocumentException {
+    @SneakyThrows
+    public PdfPTable getTable(Document document, int numberColumns, ListTypeEnum listType) {
         float horizontalMarginsDiscount = AppUtils.getHorizontalMargins(listType);
         var columnWidth =
                 (document.getPageSize().getWidth() - horizontalMarginsDiscount) / numberColumns;
-        float[] columnsWidth = new float[numberColumns];
+        float[] columns = new float[numberColumns];
 
-        for (int i = 0; i < numberColumns; i++) {
-            columnsWidth[i] = columnWidth;
-        }
+        Arrays.fill(columns, columnWidth);
 
-        PdfPTable table = new PdfPTable(columnsWidth.length);
-        table.setTotalWidth(columnsWidth);
+        PdfPTable table = new PdfPTable(columns.length);
+        table.setTotalWidth(columns);
         table.setLockedWidth(true);
         return table;
     }

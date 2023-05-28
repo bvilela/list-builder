@@ -24,7 +24,8 @@ class DesignacaoWriterServiceImplTest {
     @InjectMocks private AppProperties properties;
 
     @BeforeEach
-    void setupBeforeEach() throws IllegalAccessException {
+    @SneakyThrows
+    void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
         FieldUtils.writeField(properties, "outputDir", pathOutput, true);

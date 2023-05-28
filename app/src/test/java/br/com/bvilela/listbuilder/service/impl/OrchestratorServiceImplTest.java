@@ -48,14 +48,14 @@ class OrchestratorServiceImplTest {
     }
 
     @Test
-    void executeListTypeEmptyShouldBeInvalid() throws IllegalAccessException {
+    void executeListTypeEmptyShouldBeInvalid() {
         setListType("");
         Assertions.assertThrows(
                 RequiredListTypeException.class, () -> service.validateAndGetServiceByListType());
     }
 
     @Test
-    void executeListTypeShouldBeInvalid() throws IllegalAccessException {
+    void executeListTypeShouldBeInvalid() {
         setListType("xpto");
         Assertions.assertThrows(
                 InvalidListTypeException.class, () -> service.validateAndGetServiceByListType());
@@ -64,7 +64,7 @@ class OrchestratorServiceImplTest {
     @Test
     @SneakyThrows
     void shouldExecuteServiceNotFound() {
-        setListType("DESIGNACAO");
+        setListType(ListTypeEnum.DESIGNACAO.toString());
         Assertions.assertThrows(
                 ServiceListTypeNotFoundException.class,
                 () -> service.validateAndGetServiceByListType());

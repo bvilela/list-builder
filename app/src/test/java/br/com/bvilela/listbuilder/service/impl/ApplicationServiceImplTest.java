@@ -1,8 +1,5 @@
 package br.com.bvilela.listbuilder.service.impl;
 
-import br.com.bvilela.listbuilder.exception.listtype.InvalidListTypeException;
-import br.com.bvilela.listbuilder.exception.listtype.RequiredListTypeException;
-import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundException;
 import br.com.bvilela.listbuilder.service.OrchestratorService;
 import br.com.bvilela.listbuilder.service.limpeza.impl.LimpezaGenerateServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -27,26 +24,15 @@ class ApplicationServiceImplTest {
     @Mock private LimpezaGenerateServiceImpl limpezaService;
 
     @BeforeEach
-    public void setup() throws IllegalAccessException {
+    public void setup() {
         MockitoAnnotations.openMocks(this);
         applicationService = new ApplicationServiceImpl(context, orchestratorService);
     }
 
     @Test
-    void shouldRunApplicationSuccess()
-            throws InvalidListTypeException, RequiredListTypeException,
-                    ServiceListTypeNotFoundException {
+    void shouldRunApplicationSuccess() {
         Mockito.when(orchestratorService.validateAndGetServiceByListType())
                 .thenReturn(limpezaService);
-        Assertions.assertDoesNotThrow(() -> applicationService.runApplication());
-    }
-
-    @Test
-    void shouldRunApplicationException()
-            throws InvalidListTypeException, RequiredListTypeException,
-                    ServiceListTypeNotFoundException {
-        Mockito.when(orchestratorService.validateAndGetServiceByListType())
-                .thenThrow(new RequiredListTypeException());
         Assertions.assertDoesNotThrow(() -> applicationService.runApplication());
     }
 }

@@ -1,7 +1,6 @@
 package br.com.bvilela.listbuilder.service.impl;
 
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.exception.listtype.InvalidListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.RequiredListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
@@ -9,6 +8,7 @@ import br.com.bvilela.listbuilder.service.OrchestratorService;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,23 +24,21 @@ public class OrchestratorServiceImpl implements OrchestratorService {
     private final Map<String, BaseGenerateService> generateServiceStrategyMap;
 
     @Override
-    public BaseGenerateService validateAndGetServiceByListType()
-            throws RequiredListTypeException, InvalidListTypeException,
-                    ServiceListTypeNotFoundException {
+    public BaseGenerateService validateAndGetServiceByListType() {
         var validListType = validateListType();
         return getServiceByListType(validListType);
     }
 
-    private ListTypeEnum validateListType()
-            throws InvalidListTypeException, RequiredListTypeException {
+    @SneakyThrows
+    private ListTypeEnum validateListType() {
         if (AppUtils.valueIsNullOrBlank(listType)) {
             throw new RequiredListTypeException();
         }
         return ListTypeEnum.getByName(listType);
     }
 
-    private BaseGenerateService getServiceByListType(ListTypeEnum listType)
-            throws ServiceListTypeNotFoundException {
+    @SneakyThrows
+    private BaseGenerateService getServiceByListType(ListTypeEnum listType) {
         log.info("Verificando qual Service utilizar...");
 
         var strategy = generateServiceStrategyMap.get(listType.toString());

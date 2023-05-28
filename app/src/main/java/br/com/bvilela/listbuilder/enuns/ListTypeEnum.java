@@ -5,6 +5,7 @@ import br.com.bvilela.listbuilder.config.SizeBase;
 import br.com.bvilela.listbuilder.config.SizeConfig;
 import br.com.bvilela.listbuilder.exception.listtype.InvalidListTypeException;
 import lombok.Getter;
+import lombok.SneakyThrows;
 
 @Getter
 public enum ListTypeEnum {
@@ -35,7 +36,8 @@ public enum ListTypeEnum {
         }
     }
 
-    public static ListTypeEnum getByName(String name) throws InvalidListTypeException {
+    @SneakyThrows
+    public static ListTypeEnum getByName(String name) {
         try {
             return ListTypeEnum.valueOf(name.toUpperCase());
 

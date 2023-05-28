@@ -104,9 +104,9 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
         return newListWeeks;
     }
 
+    @SneakyThrows
     private void populateExtractListWithParticipants(
-            List<VidaCristaExtractWeekDTO> listWeeks, List<List<String>> listParticipants)
-            throws ListBuilderException {
+            List<VidaCristaExtractWeekDTO> listWeeks, List<List<String>> listParticipants) {
 
         if (listWeeks.size() != listParticipants.size()) {
             throw new ListBuilderException(

@@ -35,7 +35,8 @@ public class DiscursoGenerateServiceImpl implements BaseGenerateService {
     }
 
     @Override
-    public void generateList() throws ListBuilderException {
+    @SneakyThrows
+    public void generateList() {
         try {
             logInit(log);
 
@@ -81,9 +82,9 @@ public class DiscursoGenerateServiceImpl implements BaseGenerateService {
         log.info("Temas obtidos com sucesso!");
     }
 
+    @SneakyThrows
     private static void setThemeTitleByThemeNumber(
-            DiscursoAllThemesDTO allThemesDto, FileInputDataDiscursoItemDTO item)
-            throws ListBuilderException {
+            DiscursoAllThemesDTO allThemesDto, FileInputDataDiscursoItemDTO item) {
         var themeTitleMissing =
                 Objects.isNull(item.getThemeTitle()) || item.getThemeTitle().isEmpty();
         if (Objects.nonNull(item.getThemeNumber()) && themeTitleMissing) {
