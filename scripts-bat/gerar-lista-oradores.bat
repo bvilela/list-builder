@@ -7,7 +7,7 @@ chcp 65001
 set caminhoOrigem="arquivos\saida\Discurso_"
 set caminhoDestino="[YOUR-PATH]"
 set lista="DISCURSO"
-set opcoesExtra= "--convert.pdf.to.image=false"
+set opcoesExtra= ""
 
 :: Chamando Programa
 call gerar-lista-base.bat %caminhoOrigem% %caminhoDestino% %lista% %opcoesExtra%

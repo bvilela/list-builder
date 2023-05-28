@@ -25,15 +25,36 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven # Memorizar dependências
+
+    - name: Check PMD
+      uses: pmd/pmd-github-action@v1
+      id: pmd
+      with:
+        version: '6.53.0'
+        sourcePath: 'app/src/main/java'
+        rulesets: 'app/pmd-ruleset.xml'
+        analyzeModifiedFilesOnly: false
+
+    - name: No Violation of PMD Rules
+      if: steps.pmd.outputs.violations == 0
+      run: |
+        echo "No violation of the PMD Rules. Congratulations! :)"         
+
+    - name: Validating Violations of PMD Rules
+      if: steps.pmd.outputs.violations != 0
+      run: |
+        echo "Number of Violations: ${{ steps.pmd.outputs.violations }} - (Must be Zero!!!)"
+        echo "Check previous step for more details!!!"
+        exit 1
         
     - name: Build with Maven
-      run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -B package --file pom.xml -DskipTests
+      run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -B package --file app/pom.xml -DskipTests
       env:
         USER_NAME: ${{ secrets.USER_NAME }}
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}      
       
     - name: Run Unit Test
-      run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml test --file pom.xml 
+      run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml test --file app/pom.xml 
       env:
         USER_NAME: ${{ secrets.USER_NAME }}
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}      
@@ -56,4 +77,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=bvilela_list-builder
+      run: |
+        echo "Change directory..."
+        cd app 
+        mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=bvilela_list-builder

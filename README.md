@@ -29,9 +29,16 @@ Application read data from JSON file, process and generate a PDF file.
 * [Java Util Validation Lib](https://github.com/bvilela/java-util-validation-lib) (Personal library with useful validations)
 * [Google Calendar Util Lib](https://github.com/bvilela/google-calendar-util-lib) (Personal library with useful services for Google Calendar API)
 * Static Code Analysis: SonarCloud
+* [fmt-maven-plugin](https://github.com/spotify/fmt-maven-plugin)
 
 ### GitHub Action
 * Build and Test Java with Maven (branch)
 * Analyze SonarCloud (branch)
 * Publish on GitHub Packages (tags)
 
+
+## :heavy_check_mark: Check PMD rules locally
+To check PMD rules in your machine, run follow command in `app` dir:
+```
+mvn pmd:check
+```

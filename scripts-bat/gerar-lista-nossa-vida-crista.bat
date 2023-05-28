@@ -5,7 +5,7 @@ chcp 65001
 set caminhoOrigem="arquivos\saida\Vida_crista_"
 set caminhoDestino="[YOUR-PATH]"
 set lista="VIDA_CRISTA"
-set opcoesExtra="--convert.pdf.to.image=false --notif.active=true"
+set opcoesExtra="--notif.active=true"
 
 :: Chamando Programa
 call gerar-lista-base.bat %caminhoOrigem% %caminhoDestino% %lista% %opcoesExtra%
