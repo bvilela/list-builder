@@ -1,8 +1,10 @@
 package br.com.bvilela.listbuilder.enuns;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public enum DesignacaoEntityEnum {
     PRESIDENT("Presidente"),
     READER_WATCHTOWER("Leitor de A Sentinela"),
@@ -13,7 +15,4 @@ public enum DesignacaoEntityEnum {
 
     private final String label;
 
-    DesignacaoEntityEnum(String label) {
-        this.label = label;
-    }
 }

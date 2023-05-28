@@ -3,9 +3,11 @@ package br.com.bvilela.listbuilder.enuns;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import java.time.DayOfWeek;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 @Getter
+@RequiredArgsConstructor
 public enum DayOfWeekEnum {
     SEGUNDA("Segunda", DayOfWeek.MONDAY),
     TERCA("Terça", DayOfWeek.TUESDAY),
@@ -17,11 +19,6 @@ public enum DayOfWeekEnum {
 
     private final String name;
     private final DayOfWeek dayOfWeek;
-
-    DayOfWeekEnum(String name, DayOfWeek dayOfWeek) {
-        this.name = name;
-        this.dayOfWeek = dayOfWeek;
-    }
 
     @SneakyThrows
     public static DayOfWeekEnum getByDayOfWeek(DayOfWeek dayOfWeek) {

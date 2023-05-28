@@ -129,14 +129,18 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 			columnTable.addCell(cell2);
 		} else {
 			for (VidaCristaExtractWeekItemDTO item : week.getItems()) {
-				switch (item.getType()) {
-					case PRESIDENT -> addItemPresident(columnTable, item);
-					case NO_PARTICIPANTS -> addItemTitle(columnTable, item);
-					case WITH_PARTICIPANTS -> addItemWithParticipants(columnTable, item);
-					case LABEL -> addItemLabel(columnTable, item);
-					default -> log.info("Nenhuma ação para o tipo {}", item.getType());
-				}
+				addItemByItemType(columnTable, item);
 			}	
+		}
+	}
+
+	private void addItemByItemType(PdfPTable columnTable, VidaCristaExtractWeekItemDTO item) {
+		switch (item.getType()) {
+			case PRESIDENT -> addItemPresident(columnTable, item);
+			case NO_PARTICIPANTS -> addItemTitle(columnTable, item);
+			case WITH_PARTICIPANTS -> addItemWithParticipants(columnTable, item);
+			case LABEL -> addItemLabel(columnTable, item);
+			default -> log.info("Nenhuma ação para o tipo {}", item.getType());
 		}
 	}
 

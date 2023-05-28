@@ -1,7 +1,9 @@
 package br.com.bvilela.listbuilder.enuns;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public enum VidaCristaExtractItemType {
     READ_OF_WEEK(false),
     PRESIDENT(true),
@@ -11,7 +13,4 @@ public enum VidaCristaExtractItemType {
 
     @Getter private final boolean hasParticipants;
 
-    VidaCristaExtractItemType(boolean hasParticipants) {
-        this.hasParticipants = hasParticipants;
-    }
 }
