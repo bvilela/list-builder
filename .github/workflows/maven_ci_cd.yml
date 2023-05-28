@@ -30,7 +30,7 @@ jobs:
       uses: pmd/pmd-github-action@v1
       id: pmd
       with:
-        version: '6.40.0'
+        version: '6.53.0'
         sourcePath: 'app/src/main/java'
         rulesets: 'app/pmd-ruleset.xml'
         analyzeModifiedFilesOnly: false
