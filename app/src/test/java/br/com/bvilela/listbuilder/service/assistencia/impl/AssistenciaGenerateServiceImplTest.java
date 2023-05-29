@@ -89,7 +89,6 @@ class AssistenciaGenerateServiceImplTest
     @ParameterizedTest(name = "Last Date is \"{0}\"")
     @NullAndEmptySource
     @ValueSource(strings = {" "})
-    @SneakyThrows
     void shouldGenerateListExceptionLastDate(String lastDate) {
         writeFileInputFromDto(builder.withSuccess().withLastDate(lastDate).build());
         validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);

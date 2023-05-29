@@ -1,6 +1,11 @@
 package br.com.bvilela.listbuilder.service.vidacrista.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import br.com.bvilela.listbuilder.builder.FileInputDataVidaCristaDtoBuilder;
 import br.com.bvilela.listbuilder.builder.FileInputDataVidaCristaRenameItemDtoBuilder;
@@ -9,6 +14,7 @@ import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekItemDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.vidacrista.FileInputDataVidaCristaDTO;
+import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
@@ -16,13 +22,22 @@ import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaExtractService;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaWriterService;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -59,7 +74,7 @@ class VidaCristaGenerateServiceImplTest
 
     @Test
     void shouldModoExecutionNotNull() {
-        Assertions.assertNotNull(service.getListType());
+        assertNotNull(service.getListType());
     }
 
     @Test
@@ -138,22 +153,11 @@ class VidaCristaGenerateServiceImplTest
         validateListBuilderException(expectedMessageError);
     }
 
-    @Test
-    void shouldGenerateListRenameItemsExceptionWeekOriginalNameNull() {
-        baseGenerateListRenameItemsExceptionWeekOriginalName(null);
-    }
-
-    @Test
-    void shouldGenerateListRenameItemsExceptionWeekOriginalNameEmpty() {
-        baseGenerateListRenameItemsExceptionWeekOriginalName("");
-    }
-
-    @Test
-    void shouldGenerateListRenameItemsExceptionWeekOriginalNameBlank() {
-        baseGenerateListRenameItemsExceptionWeekOriginalName(" ");
-    }
-
-    private void baseGenerateListRenameItemsExceptionWeekOriginalName(String originalName) {
+    @DisplayName("Generate List - Rename Items Exception: Week OriginalName Not Filled")
+    @ParameterizedTest(name = "Week OriginalName is \"{0}\"")
+    @NullAndEmptySource
+    @ValueSource(strings = " ")
+    void shouldGenerateListRenameItemsExceptionWeekOriginalNameNotFilled(String originalName) {
         var renameItem =
                 FileInputDataVidaCristaRenameItemDtoBuilder.create()
                         .withData(1, originalName, "new Title")
@@ -173,7 +177,7 @@ class VidaCristaGenerateServiceImplTest
                         .withData(1, "Title 1", "Title 1 renamed")
                         .build();
         service.processRenameOrRemoveItem(weekItemDto, itemRename, listItemWeekToRemove);
-        Assertions.assertTrue(listItemWeekToRemove.isEmpty());
+        assertTrue(listItemWeekToRemove.isEmpty());
         assertEquals("Title 1 renamed", weekItemDto.getTitle());
     }
 
@@ -245,7 +249,7 @@ class VidaCristaGenerateServiceImplTest
                                 .withData(weekIndex + 1, "ABC", "Title Renamed")
                                 .build());
         service.checkRenameItemFromWeek(week, listRenameItems, weekIndex);
-        Assertions.assertTrue(
+        assertTrue(
                 week.getItems().stream()
                         .filter(e -> e.getTitle().equalsIgnoreCase("Title Renamed"))
                         .toList()
@@ -338,9 +342,59 @@ class VidaCristaGenerateServiceImplTest
         assertEquals(originalWeekItems.get(3), week.getItems().get(3));
         assertEquals(originalWeekItems.get(4), week.getItems().get(4));
         assertEquals(originalWeekItems.get(5), week.getItems().get(5));
-        Assertions.assertNotEquals(originalWeekItems.get(6), week.getItems().get(6));
+        assertNotEquals(originalWeekItems.get(6), week.getItems().get(6));
         assertEquals("Title Renamed", week.getItems().get(6).getTitle());
-        Assertions.assertNotNull(originalWeekItems.get(7));
+        assertNotNull(originalWeekItems.get(7));
+    }
+
+    @DisplayName("Remove Weeks If Necessary By Input DTO")
+    @ParameterizedTest(name = "MapRemove is \"{0}\"")
+    @MethodSource("removeWeeksIfNecessaryByInputDtoParameter")
+    void removeWeeksIfNecessaryByInputDTO(
+            Map<LocalDate, String> mapRemove, boolean isSkip, String skipMessage) {
+        List<VidaCristaExtractWeekDTO> weeks =
+                List.of(
+                        VidaCristaExtractWeekDtoBuilder.create()
+                                .withRandomData()
+                                .withDate1(LocalDate.of(2023, 6, 5))
+                                .withDate2(LocalDate.of(2023, 6, 11))
+                                .build(),
+                        VidaCristaExtractWeekDtoBuilder.create()
+                                .withRandomData()
+                                .withDate1(LocalDate.of(2023, 6, 12))
+                                .withDate2(LocalDate.of(2023, 6, 18))
+                                .build(),
+                        VidaCristaExtractWeekDtoBuilder.create()
+                                .withRandomData()
+                                .withDate1(LocalDate.of(2023, 6, 19))
+                                .withDate2(LocalDate.of(2023, 6, 25))
+                                .build(),
+                        VidaCristaExtractWeekDtoBuilder.create()
+                                .withRandomData()
+                                .withDate1(LocalDate.of(2023, 6, 26))
+                                .withDate2(LocalDate.of(2023, 7, 2))
+                                .build());
+        service.removeWeeksIfNecessaryByInputDTO(weeks, mapRemove);
+        assertFalse(weeks.get(0).isSkip());
+        assertNull(weeks.get(0).getSkipMessage());
+        assertFalse(weeks.get(1).isSkip());
+        assertNull(weeks.get(1).getSkipMessage());
+        assertFalse(weeks.get(2).isSkip());
+        assertNull(weeks.get(2).getSkipMessage());
+        assertEquals(isSkip, weeks.get(3).isSkip());
+        assertEquals(skipMessage, weeks.get(3).getSkipMessage());
+    }
+
+    private static Stream<Arguments> removeWeeksIfNecessaryByInputDtoParameter() {
+        var argumentsMatch =
+                Arguments.of(Map.of(LocalDate.of(2023, 6, 28), "Congresso"), true, "Congresso");
+        var argumentsNoRemove = Arguments.of(null, false, null);
+        var argumentsAfterWeeks =
+                Arguments.of(Map.of(LocalDate.of(2023, 8, 28), "Congresso"), false, null);
+        var argumentsBeforeWeeks =
+                Arguments.of(Map.of(LocalDate.of(2023, 1, 1), "Congresso"), false, null);
+        return Stream.of(
+                argumentsMatch, argumentsNoRemove, argumentsAfterWeeks, argumentsBeforeWeeks);
     }
 
     private void validateListBuilderException(String expectedMessageError) {

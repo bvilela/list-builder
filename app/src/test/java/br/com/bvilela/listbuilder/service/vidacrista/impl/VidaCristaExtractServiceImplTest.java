@@ -58,7 +58,6 @@ class VidaCristaExtractServiceImplTest {
     @DisplayName("Sanitizer Text")
     @ParameterizedTest(name = "Source Text is \"{1}\"")
     @MethodSource("shouldSanitizerTextParameters")
-    @SneakyThrows
     void shouldSanitizerText(String target, String source) {
         baseSanitizerText(target, source);
     }

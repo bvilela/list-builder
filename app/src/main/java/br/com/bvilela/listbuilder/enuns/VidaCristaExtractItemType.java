@@ -12,5 +12,4 @@ public enum VidaCristaExtractItemType {
     WITH_PARTICIPANTS(true);
 
     @Getter private final boolean hasParticipants;
-
 }

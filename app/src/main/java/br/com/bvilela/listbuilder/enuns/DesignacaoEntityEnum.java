@@ -14,5 +14,4 @@ public enum DesignacaoEntityEnum {
     MICROPHONE("Microfone");
 
     private final String label;
-
 }

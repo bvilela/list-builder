@@ -23,6 +23,10 @@ public class VidaCristaExtractWeekDtoBuilder {
         return target;
     }
 
+    public VidaCristaExtractWeekDtoBuilder withRandomData() {
+        return base(null, null);
+    }
+
     public VidaCristaExtractWeekDtoBuilder withRandomDataOneMonth() {
         return base(LocalDate.of(2022, 6, 6), LocalDate.of(2022, 6, 12));
     }
@@ -75,12 +79,12 @@ public class VidaCristaExtractWeekDtoBuilder {
         return this;
     }
 
-    private VidaCristaExtractWeekDtoBuilder withDate1(LocalDate date) {
+    public VidaCristaExtractWeekDtoBuilder withDate1(LocalDate date) {
         this.target.setDate1(date);
         return this;
     }
 
-    private VidaCristaExtractWeekDtoBuilder withDate2(LocalDate date) {
+    public VidaCristaExtractWeekDtoBuilder withDate2(LocalDate date) {
         this.target.setDate2(date);
         return this;
     }

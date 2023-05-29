@@ -73,10 +73,9 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
         }
     }
 
-    private List<VidaCristaExtractWeekDTO> adjustListByLastDate(
+    public List<VidaCristaExtractWeekDTO> adjustListByLastDate(
             List<VidaCristaExtractWeekDTO> listWeeks, FileInputDataVidaCristaDTO dto) {
         var lastDate = dto.getLastDateConverted();
-        var mapRemove = dto.getRemoveWeekFromListConverted();
 
         var nextMonth = DateUtils.nextDayOfWeek(lastDate, DayOfWeek.MONDAY).plusMonths(1);
         nextMonth = nextMonth.withDayOfMonth(1);
@@ -87,21 +86,29 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
             }
         }
 
-        for (VidaCristaExtractWeekDTO week : newListWeeks) {
-            if (Objects.nonNull(mapRemove)) {
-                for (Entry<LocalDate, String> remove : mapRemove.entrySet()) {
-                    if (week.getDate1().compareTo(remove.getKey()) <= 0
-                            && week.getDate2().compareTo(remove.getKey()) >= 0) {
-                        week.setSkip(true);
-                        week.setSkipMessage(remove.getValue());
-                    }
-                }
-            }
-        }
+        var mapRemove = dto.getRemoveWeekFromListConverted();
+        removeWeeksIfNecessaryByInputDTO(newListWeeks, mapRemove);
 
         var dates = newListWeeks.stream().map(VidaCristaExtractWeekDTO::getLabelDate).toList();
         log.info("Datas: {}", dates);
         return newListWeeks;
+    }
+
+    public void removeWeeksIfNecessaryByInputDTO(
+            List<VidaCristaExtractWeekDTO> listWeeks, Map<LocalDate, String> mapRemove) {
+        if (mapRemove == null) {
+            return;
+        }
+
+        for (VidaCristaExtractWeekDTO week : listWeeks) {
+            for (Entry<LocalDate, String> entry : mapRemove.entrySet()) {
+                if (week.getDate1().isBefore(entry.getKey())
+                        && week.getDate2().isAfter(entry.getKey())) {
+                    week.setSkip(true);
+                    week.setSkipMessage(entry.getValue());
+                }
+            }
+        }
     }
 
     @SneakyThrows
