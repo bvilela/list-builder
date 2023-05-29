@@ -90,8 +90,8 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
                     VidaCristaExtractWeekDTO.builder()
                             .link(link)
                             .labelDate(labelDate)
-                            .date1(listDate.get(0))
-                            .date2(listDate.get(1))
+                            .initialDate(listDate.get(0))
+                            .endDate(listDate.get(1))
                             .build();
             list.add(dto);
         }

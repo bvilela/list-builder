@@ -113,7 +113,7 @@ public class NotificationServiceImpl implements NotificationService {
                             .filter(item -> groupContainsName(item.getParticipants()))
                             .toList();
             if (!list.isEmpty()) {
-                var recordItem = new NotifVidaCrista(list, week.getDate1());
+                var recordItem = new NotifVidaCrista(list, week.getInitialDate());
                 eventsToNotif.add(recordItem);
             }
         }
@@ -123,7 +123,7 @@ public class NotificationServiceImpl implements NotificationService {
         }
 
         var lastWeek = listWeeks.get(listWeeks.size() - 1);
-        CalendarEvent nextList = doNextList(ListTypeEnum.VIDA_CRISTA, lastWeek.getDate1());
+        CalendarEvent nextList = doNextList(ListTypeEnum.VIDA_CRISTA, lastWeek.getInitialDate());
         calendarService.createEvent(nextList);
     }
 

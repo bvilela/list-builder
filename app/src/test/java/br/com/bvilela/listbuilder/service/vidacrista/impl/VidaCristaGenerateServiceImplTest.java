@@ -356,23 +356,23 @@ class VidaCristaGenerateServiceImplTest
                 List.of(
                         VidaCristaExtractWeekDtoBuilder.create()
                                 .withRandomData()
-                                .withDate1(LocalDate.of(2023, 6, 5))
-                                .withDate2(LocalDate.of(2023, 6, 11))
+                                .withInitialDate(LocalDate.of(2023, 6, 5))
+                                .withEndDate(LocalDate.of(2023, 6, 11))
                                 .build(),
                         VidaCristaExtractWeekDtoBuilder.create()
                                 .withRandomData()
-                                .withDate1(LocalDate.of(2023, 6, 12))
-                                .withDate2(LocalDate.of(2023, 6, 18))
+                                .withInitialDate(LocalDate.of(2023, 6, 12))
+                                .withEndDate(LocalDate.of(2023, 6, 18))
                                 .build(),
                         VidaCristaExtractWeekDtoBuilder.create()
                                 .withRandomData()
-                                .withDate1(LocalDate.of(2023, 6, 19))
-                                .withDate2(LocalDate.of(2023, 6, 25))
+                                .withInitialDate(LocalDate.of(2023, 6, 19))
+                                .withEndDate(LocalDate.of(2023, 6, 25))
                                 .build(),
                         VidaCristaExtractWeekDtoBuilder.create()
                                 .withRandomData()
-                                .withDate1(LocalDate.of(2023, 6, 26))
-                                .withDate2(LocalDate.of(2023, 7, 2))
+                                .withInitialDate(LocalDate.of(2023, 6, 26))
+                                .withEndDate(LocalDate.of(2023, 7, 2))
                                 .build());
         service.removeWeeksIfNecessaryByInputDTO(weeks, mapRemove);
         assertFalse(weeks.get(0).isSkip());
@@ -386,15 +386,24 @@ class VidaCristaGenerateServiceImplTest
     }
 
     private static Stream<Arguments> removeWeeksIfNecessaryByInputDtoParameter() {
-        var argumentsMatch =
+        var argumentsMatchDateRemoveMidWeek =
                 Arguments.of(Map.of(LocalDate.of(2023, 6, 28), "Congresso"), true, "Congresso");
+        var argumentsMatchDateRemoveInitWeek =
+                Arguments.of(Map.of(LocalDate.of(2023, 6, 26), "Congresso"), true, "Congresso");
+        var argumentsMatchDateRemoveEndWeek =
+                Arguments.of(Map.of(LocalDate.of(2023, 7, 2), "Congresso"), true, "Congresso");
         var argumentsNoRemove = Arguments.of(null, false, null);
         var argumentsAfterWeeks =
                 Arguments.of(Map.of(LocalDate.of(2023, 8, 28), "Congresso"), false, null);
         var argumentsBeforeWeeks =
                 Arguments.of(Map.of(LocalDate.of(2023, 1, 1), "Congresso"), false, null);
         return Stream.of(
-                argumentsMatch, argumentsNoRemove, argumentsAfterWeeks, argumentsBeforeWeeks);
+                argumentsMatchDateRemoveMidWeek,
+                argumentsMatchDateRemoveInitWeek,
+                argumentsMatchDateRemoveEndWeek,
+                argumentsNoRemove,
+                argumentsAfterWeeks,
+                argumentsBeforeWeeks);
     }
 
     private void validateListBuilderException(String expectedMessageError) {

@@ -81,7 +81,8 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
         nextMonth = nextMonth.withDayOfMonth(1);
         var newListWeeks = new ArrayList<VidaCristaExtractWeekDTO>();
         for (VidaCristaExtractWeekDTO item : listWeeks) {
-            if (item.getDate1().isAfter(lastDate) && item.getDate1().isBefore(nextMonth)) {
+            if (item.getInitialDate().isAfter(lastDate)
+                    && item.getInitialDate().isBefore(nextMonth)) {
                 newListWeeks.add(item);
             }
         }
@@ -102,8 +103,9 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
 
         for (VidaCristaExtractWeekDTO week : listWeeks) {
             for (Entry<LocalDate, String> entry : mapRemove.entrySet()) {
-                if (week.getDate1().isBefore(entry.getKey())
-                        && week.getDate2().isAfter(entry.getKey())) {
+                var dateToRemove = entry.getKey();
+                if (!dateToRemove.isBefore(week.getInitialDate())
+                        && !dateToRemove.isAfter(week.getEndDate())) {
                     week.setSkip(true);
                     week.setSkipMessage(entry.getValue());
                 }

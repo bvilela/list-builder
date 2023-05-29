@@ -49,7 +49,7 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 	public Path writerPDF(List<VidaCristaExtractWeekDTO> listWeeks) {
 		try {
 			FileUtils.createDirectories(properties.getOutputDir());
-			String fileName = FileUtils.generateOutputFileNamePDF(LIST_TYPE, listWeeks.get(0).getDate1());
+			String fileName = FileUtils.generateOutputFileNamePDF(LIST_TYPE, listWeeks.get(0).getInitialDate());
 			Path path = Paths.get(properties.getOutputDir(), fileName);
 
 			writerDocument(listWeeks, path);
@@ -211,16 +211,16 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 
 	@SneakyThrows
 	private String getWeekHeaderLabel(VidaCristaExtractWeekDTO week) {
-		var date1 = week.getDate1();
-		var date2 = week.getDate2();
+		var initialDate = week.getInitialDate();
+		var endDate = week.getEndDate();
 		var readOfWeek = getReadOfWeek(week);
 
-		if (date1.getMonthValue() == date2.getMonthValue()) {
-			var label = date1.getDayOfMonth() + " - " + date2.getDayOfMonth() + " DE "
-					+ DateUtils.getNameMonthFull(date1) + " – " + readOfWeek;
+		if (initialDate.getMonthValue() == endDate.getMonthValue()) {
+			var label = initialDate.getDayOfMonth() + " - " + endDate.getDayOfMonth() + " DE "
+					+ DateUtils.getNameMonthFull(initialDate) + " – " + readOfWeek;
 			return label.toUpperCase();
 		}
-		var label = dayOfMonthLabel(date1) + " - " + dayOfMonthLabel(date2) + " – " + readOfWeek;
+		var label = dayOfMonthLabel(initialDate) + " - " + dayOfMonthLabel(endDate) + " – " + readOfWeek;
 		return label.toUpperCase();
 	}
 

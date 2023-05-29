@@ -22,9 +22,9 @@ public class VidaCristaExtractWeekDTO {
 
     @ToString.Exclude private String labelDate;
 
-    private LocalDate date1;
+    private LocalDate initialDate;
 
-    private LocalDate date2;
+    private LocalDate endDate;
 
     private List<VidaCristaExtractWeekItemDTO> items;
 

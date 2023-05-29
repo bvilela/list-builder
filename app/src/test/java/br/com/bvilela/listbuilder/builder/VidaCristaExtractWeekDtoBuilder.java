@@ -38,8 +38,8 @@ public class VidaCristaExtractWeekDtoBuilder {
     private VidaCristaExtractWeekDtoBuilder base(LocalDate date1, LocalDate date2) {
         this.withLink(RandomStringUtils.randomAlphabetic(30));
         this.withLabelDate(RandomStringUtils.randomAlphabetic(15));
-        this.withDate1(date1);
-        this.withDate2(date2);
+        this.withInitialDate(date1);
+        this.withEndDate(date2);
         this.withItems(
                 List.of(
                         VidaCristaExtractWeekItemDtoBuilder.create()
@@ -79,13 +79,13 @@ public class VidaCristaExtractWeekDtoBuilder {
         return this;
     }
 
-    public VidaCristaExtractWeekDtoBuilder withDate1(LocalDate date) {
-        this.target.setDate1(date);
+    public VidaCristaExtractWeekDtoBuilder withInitialDate(LocalDate date) {
+        this.target.setInitialDate(date);
         return this;
     }
 
-    public VidaCristaExtractWeekDtoBuilder withDate2(LocalDate date) {
-        this.target.setDate2(date);
+    public VidaCristaExtractWeekDtoBuilder withEndDate(LocalDate date) {
+        this.target.setEndDate(date);
         return this;
     }
 

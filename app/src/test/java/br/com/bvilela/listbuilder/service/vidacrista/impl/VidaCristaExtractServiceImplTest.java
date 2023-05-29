@@ -6,7 +6,6 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +29,6 @@ class VidaCristaExtractServiceImplTest {
     @DisplayName("Get URL Meeting Workbook from URL Success")
     @ParameterizedTest(name = "Date is \"{0}\"")
     @MethodSource("shouldGetUrlMeetingWorkbookParameters")
-    @SneakyThrows
     void shouldGetUrlMeetingWorkbook(LocalDate localDate, String expectedURL) {
         var url = service.getUrlMeetingWorkbook(localDate);
         Assertions.assertEquals(expectedURL, url);
@@ -105,15 +103,14 @@ class VidaCristaExtractServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldExtractWeeksBySite() {
         var url = "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/maio-junho-2022-mwb/";
         var list = service.extractWeeksBySite(url);
         Assertions.assertDoesNotThrow(() -> service.extractWeekItemsBySite(list));
         var week = list.get(0);
         Assertions.assertEquals("2-8 de maio", week.getLabelDate());
-        Assertions.assertEquals(LocalDate.of(2022, 5, 2), week.getDate1());
-        Assertions.assertEquals(LocalDate.of(2022, 5, 8), week.getDate2());
+        Assertions.assertEquals(LocalDate.of(2022, 5, 2), week.getInitialDate());
+        Assertions.assertEquals(LocalDate.of(2022, 5, 8), week.getEndDate());
         Assertions.assertEquals(
                 "/pt/biblioteca/jw-apostila-do-mes/maio-junho-2022-mwb/Programa%C3%A7%C3%A3o-da-semana-de-2-8-de-maio-de-2022-na-Apostila-da-Reuni%C3%A3o-Vida-e-Minist%C3%A9rio/",
                 week.getLink());
@@ -210,14 +207,12 @@ class VidaCristaExtractServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldExtractMonthsAndConvertToDatesOneMonthSuccess() {
         var list = service.extractMonthsAndConvertToDates("5-11 de setembro", 2022);
         Assertions.assertEquals(List.of(LocalDate.of(2022, 9, 5), LocalDate.of(2022, 9, 11)), list);
     }
 
     @Test
-    @SneakyThrows
     void shouldExtractMonthsAndConvertToDatesTwoMonthsSuccess() {
         var list = service.extractMonthsAndConvertToDates("26 de setembro-2 de outubro", 2022);
         Assertions.assertEquals(
@@ -225,7 +220,6 @@ class VidaCristaExtractServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldExtractMonthsAndConvertToDatesTwoMonthsTwoYearCase1Success() {
         var list =
                 service.extractMonthsAndConvertToDates(
@@ -235,7 +229,6 @@ class VidaCristaExtractServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldExtractMonthsAndConvertToDatesTwoMonthsTwoYearCase2Success() {
         var list =
                 service.extractMonthsAndConvertToDates(
