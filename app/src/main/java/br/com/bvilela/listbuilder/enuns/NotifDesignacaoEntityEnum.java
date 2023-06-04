@@ -6,12 +6,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum NotifDesignacaoEntityEnum {
-
     READER("Leitor"),
     AUDIO_VIDEO("AudioVideo"),
     PRESIDENT("Presidente");
 
-    @Getter
-    private final String name;
-
+    @Getter private final String name;
 }

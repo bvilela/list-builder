@@ -10,8 +10,8 @@ import br.com.bvilela.listbuilder.dto.assistencia.FileInputDataAssistenciaDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.DateService;
-import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.service.assistencia.AssistenciaWriterService;
+import br.com.bvilela.listbuilder.service.notification.NotifyService;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.SneakyThrows;
@@ -43,7 +43,7 @@ class AssistenciaGenerateServiceImplTest
 
     @Mock private AssistenciaWriterService writerService;
 
-    @Mock private NotificationService notificationService;
+    @Mock private NotifyService notificationService;
 
     public AssistenciaGenerateServiceImplTest() {
         super(ListTypeEnum.ASSISTENCIA, FileInputDataAssistenciaDtoBuilder.create());

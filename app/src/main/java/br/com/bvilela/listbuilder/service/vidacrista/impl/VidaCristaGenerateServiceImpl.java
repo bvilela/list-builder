@@ -9,7 +9,7 @@ import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
-import br.com.bvilela.listbuilder.service.NotificationService;
+import br.com.bvilela.listbuilder.service.notification.NotifyService;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaExtractService;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaWriterService;
 import br.com.bvilela.listbuilder.utils.DateUtils;
@@ -33,7 +33,7 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
     private final AppProperties properties;
     private final VidaCristaExtractService extractService;
     private final VidaCristaWriterService writerService;
-    private final NotificationService notificationService;
+    private final NotifyService notificationService;
 
     @Override
     public ListTypeEnum getListType() {

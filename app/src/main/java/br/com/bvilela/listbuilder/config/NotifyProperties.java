@@ -1,14 +1,13 @@
 package br.com.bvilela.listbuilder.config;
 
+import java.util.List;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Getter
 @Component
-public class NotifProperties {
+public class NotifyProperties {
 
     @Value("${notif.active:false}")
     private boolean notifActive;
@@ -24,5 +23,4 @@ public class NotifProperties {
 
     @Value("${notif.christianlife.midweek.meeting.day:#{null}}")
     private String notifChristianlifeMidweekMeetingDay;
-
 }

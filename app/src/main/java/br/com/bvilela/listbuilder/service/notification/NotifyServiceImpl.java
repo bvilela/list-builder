@@ -1,51 +1,46 @@
-package br.com.bvilela.listbuilder.service.impl;
+package br.com.bvilela.listbuilder.service.notification;
 
 import br.com.bvilela.lib.enuns.ColorEnum;
 import br.com.bvilela.lib.model.CalendarEvent;
 import br.com.bvilela.lib.service.GoogleCalendarCreateService;
-import br.com.bvilela.listbuilder.config.NotifProperties;
+import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
-import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
-import br.com.bvilela.listbuilder.enuns.DesignacaoEntityEnum;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.enuns.NotifDesignacaoEntityEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import br.com.bvilela.listbuilder.utils.DateUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class NotificationServiceImpl implements NotificationService {
+public class NotifyServiceImpl implements NotifyService {
 
-    private final NotifProperties properties;
+    private final NotifyProperties properties;
+
+    private final NotifyDesignationService notifyDesignationService;
 
     private final GoogleCalendarCreateService calendarService;
 
     private record NotifVidaCrista(List<VidaCristaExtractWeekItemDTO> listItems, LocalDate date) {}
 
-    private boolean notifInactive() {
+    private boolean notifyInactive() {
         return !properties.isNotifActive();
     }
 
@@ -53,7 +48,9 @@ public class NotificationServiceImpl implements NotificationService {
     @SneakyThrows
     public void limpeza(FinalListLimpezaDTO limpezaDto, int idLayout) {
 
-        if (notifInactive()) return;
+        if (notifyInactive()) {
+            return;
+        }
 
         checkNotifName();
 
@@ -81,7 +78,9 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @SneakyThrows
     public void assistencia(List<LocalDate> list) {
-        if (notifInactive()) return;
+        if (notifyInactive()) {
+            return;
+        }
 
         var lastDate = list.get(list.size() - 1);
         CalendarEvent nextList = doNextList(ListTypeEnum.ASSISTENCIA, lastDate);
@@ -91,7 +90,9 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @SneakyThrows
     public void vidaCrista(List<VidaCristaExtractWeekDTO> listWeeks) {
-        if (notifInactive()) return;
+        if (notifyInactive()) {
+            return;
+        }
 
         checkNotifName();
 
@@ -101,7 +102,11 @@ public class NotificationServiceImpl implements NotificationService {
         for (VidaCristaExtractWeekDTO week : listWeeks) {
             var list =
                     week.getItems().stream()
-                            .filter(item -> groupContainsName(item.getParticipants()))
+                            .filter(
+                                    item ->
+                                            NotifyUtils.containsName(
+                                                    item.getParticipants(),
+                                                    properties.getNotifName()))
                             .toList();
             if (!list.isEmpty()) {
                 var recordItem = new NotifVidaCrista(list, week.getInitialDate());
@@ -120,64 +125,24 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void designacao(DesignacaoWriterDTO dto) {
-        if (notifInactive()) return;
-
-        List<CalendarEvent> calendarEventList = new ArrayList<>();
-
-        if (notifDesignationTypeActive(NotifDesignacaoEntityEnum.PRESIDENT)) {
-            var president =
-                    dto.getPresident().stream().filter(i -> groupContainsName(i.getName())).toList();
-            createEventsDesignacao(
-                    president, DesignacaoEntityEnum.PRESIDENT.getLabel(), calendarEventList);
+        if (notifyInactive()) {
+            return;
         }
 
-        if (notifDesignationTypeActive(NotifDesignacaoEntityEnum.READER)) {
-            var readers =
-                    Stream.concat(
-                                    dto.getReaderWatchtower().stream(),
-                                    dto.getReaderBibleStudy().stream())
-                            .filter(i -> groupContainsName(i.getName()))
-                            .toList();
-            createEventsDesignacao(readers, "Leitura", calendarEventList);
-        }
-
-        if (notifDesignationTypeActive(NotifDesignacaoEntityEnum.AUDIO_VIDEO)) {
-            var audioVideo =
-                    dto.getAudioVideo().stream()
-                            .filter(i -> groupContainsName(i.getName().split(" e ")[0]))
-                            .toList();
-            createEventsDesignacao(audioVideo, "Som", calendarEventList);
-        }
+        var presidentEvents = notifyDesignationService.getNotifyPresident(dto);
+        var readerEvents = notifyDesignationService.getNotifyReader(dto);
+        var audioVideoEvents = notifyDesignationService.getNotifyAudioVideo(dto);
 
         var lastDate = dto.getPresident().get(dto.getPresident().size() - 1).getDate();
-        CalendarEvent nextList = doNextList(ListTypeEnum.DESIGNACAO, lastDate);
-        calendarEventList.add(nextList);
+        CalendarEvent nextListEvent = doNextList(ListTypeEnum.DESIGNACAO, lastDate);
 
-        calendarService.createEvents(calendarEventList);
-    }
+        List<CalendarEvent> eventList = new ArrayList<>();
+        eventList.addAll(presidentEvents);
+        eventList.addAll(readerEvents);
+        eventList.addAll(audioVideoEvents);
+        eventList.add(nextListEvent);
 
-    private boolean notifDesignationTypeActive(NotifDesignacaoEntityEnum type) {
-        return !properties.getNotifDesignationTypeActive().contains(type.getName());
-    }
-
-    private void createEventsDesignacao(
-            List<DesignacaoWriterItemDTO> list,
-            String sumary,
-            List<CalendarEvent> calendarEventList) {
-        if (!list.isEmpty()) {
-            for (DesignacaoWriterItemDTO item : list) {
-                var event =
-                        CalendarEvent.builder()
-                                .setSummary(sumary)
-                                .setDateTimeStart(
-                                        LocalDateTime.of(item.getDate(), LocalTime.of(19, 30, 0)))
-                                .setDateTimeEnd(
-                                        LocalDateTime.of(item.getDate(), LocalTime.of(21, 30, 0)))
-                                .setColor(ColorEnum.TOMATE)
-                                .build();
-                calendarEventList.add(event);
-            }
-        }
+        calendarService.createEvents(eventList);
     }
 
     private void createAndSendEventsVidaCrista(
@@ -217,7 +182,8 @@ public class NotificationServiceImpl implements NotificationService {
                     "Defina a propriedade 'notif.christianlife.midweek.meeting.day'!");
         }
 
-        var meetingDay = AppUtils.removeAccents(properties.getNotifChristianlifeMidweekMeetingDay());
+        var meetingDay =
+                AppUtils.removeAccents(properties.getNotifChristianlifeMidweekMeetingDay());
         DayOfWeekEnum meetingDayEnum;
         try {
             meetingDayEnum = DayOfWeekEnum.valueOf(meetingDay.toUpperCase());
@@ -227,20 +193,6 @@ public class NotificationServiceImpl implements NotificationService {
         }
 
         return meetingDayEnum;
-    }
-
-    private boolean groupContainsName(List<String> list) {
-        if (Objects.isNull(list)) {
-            return false;
-        }
-        return list.stream().anyMatch(e -> e.toLowerCase().contains(properties.getNotifName().toLowerCase()));
-    }
-
-    private boolean groupContainsName(String list) {
-        if (Objects.isNull(list)) {
-            return false;
-        }
-        return list.toLowerCase().contains(properties.getNotifName().toLowerCase());
     }
 
     private CalendarEvent doNextList(ListTypeEnum executionModeEnum, LocalDate lastDateList) {
@@ -263,7 +215,10 @@ public class NotificationServiceImpl implements NotificationService {
 
         var list =
                 limpezaDto.getItems().stream()
-                        .filter(e -> groupContainsName(e.getGroup()))
+                        .filter(
+                                e ->
+                                        NotifyUtils.containsName(
+                                                e.getGroup(), properties.getNotifName()))
                         .toList();
         for (FinalListLimpezaItemDTO item : list) {
 
@@ -286,7 +241,10 @@ public class NotificationServiceImpl implements NotificationService {
 
         var list =
                 limpezaDto.getItemsLayout2().stream()
-                        .filter(e -> groupContainsName(e.getGroup()))
+                        .filter(
+                                e ->
+                                        NotifyUtils.containsName(
+                                                e.getGroup(), properties.getNotifName()))
                         .toList();
         for (FinalListLimpezaItemLayout2DTO item : list) {
 

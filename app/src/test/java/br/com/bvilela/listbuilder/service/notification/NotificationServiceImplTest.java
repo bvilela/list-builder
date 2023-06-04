@@ -1,13 +1,16 @@
-package br.com.bvilela.listbuilder.service.impl;
+package br.com.bvilela.listbuilder.service.notification;
 
 import br.com.bvilela.lib.service.GoogleCalendarCreateService;
 import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekDtoBuilder;
-import br.com.bvilela.listbuilder.config.NotifProperties;
+import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
@@ -18,16 +21,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 @SpringBootApplication
 class NotificationServiceImplTest {
 
-    @InjectMocks private NotificationServiceImpl service;
+    @InjectMocks private NotifyServiceImpl service;
 
-    @InjectMocks private NotifProperties notifProperties;
+    @InjectMocks private NotifyProperties notifProperties;
+
+    @Mock private NotifyDesignationService notifyDesignationService;
 
     @Mock private GoogleCalendarCreateService calendarService;
 
@@ -62,9 +63,8 @@ class NotificationServiceImplTest {
     @BeforeEach
     void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
-        service = new NotificationServiceImpl(notifProperties, calendarService);
+        service = new NotifyServiceImpl(notifProperties, notifyDesignationService, calendarService);
     }
-
 
     // *********************** ASSISTENCIA *********************** \\
     @Test
@@ -77,7 +77,6 @@ class NotificationServiceImplTest {
         setNotifActive();
         Assertions.assertDoesNotThrow(() -> service.assistencia(dtoAssistencia));
     }
-
 
     // *********************** LIMPEZA *********************** \\
     @Test
@@ -146,7 +145,6 @@ class NotificationServiceImplTest {
         Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
     }
 
-
     // *********************** VIDA CRISTA *********************** \\
     @Test
     void shouldVidaCristaNotifActiveFalse() {
@@ -214,7 +212,6 @@ class NotificationServiceImplTest {
                 "Defina a propriedade 'notif.christianlife.midweek.meeting.day'!",
                 exception.getMessage());
     }
-
 
     // *********************** UTILS *********************** \\
     @SneakyThrows

@@ -11,9 +11,9 @@ import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
-import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.service.impl.DateServiceImpl;
 import br.com.bvilela.listbuilder.service.impl.GroupServiceImpl;
+import br.com.bvilela.listbuilder.service.notification.NotifyService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +48,7 @@ class LimpezaGenerateServiceImplTest
 
     @Mock private LimpezaWriterServiceImpl writerService;
 
-    @Mock private NotificationService notificationService;
+    @Mock private NotifyService notificationService;
 
     public LimpezaGenerateServiceImplTest() {
         super(ListTypeEnum.LIMPEZA, FileInputDataLimpezaDtoBuilder.create());
