@@ -15,7 +15,7 @@ public class NotifyProperties {
     @Value("${notif.name:#{null}}")
     private String notifName;
 
-    @Value("${notif.designation.type.active:#{null}}")
+    @Value("${notif.designation.type.active}")
     private List<String> notifDesignationTypeActive;
 
     @Value("${notif.cleaning.premeeting:false}")

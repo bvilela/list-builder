@@ -10,5 +10,5 @@ public enum NotifDesignacaoEntityEnum {
     AUDIO_VIDEO("AudioVideo"),
     PRESIDENT("Presidente");
 
-    @Getter private final String name;
+    @Getter private final String label;
 }

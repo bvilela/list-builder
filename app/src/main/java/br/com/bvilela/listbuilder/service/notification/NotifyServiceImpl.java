@@ -15,17 +15,18 @@ import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import br.com.bvilela.listbuilder.utils.DateUtils;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -34,7 +35,7 @@ public class NotifyServiceImpl implements NotifyService {
 
     private final NotifyProperties properties;
 
-    private final NotifyDesignationService notifyDesignationService;
+    private final NotifyDesignationServiceImpl notifyDesignationService;
 
     private final GoogleCalendarCreateService calendarService;
 
@@ -45,7 +46,6 @@ public class NotifyServiceImpl implements NotifyService {
     }
 
     @Override
-    @SneakyThrows
     public void limpeza(FinalListLimpezaDTO limpezaDto, int idLayout) {
 
         if (notifyInactive()) {
@@ -76,7 +76,6 @@ public class NotifyServiceImpl implements NotifyService {
     }
 
     @Override
-    @SneakyThrows
     public void assistencia(List<LocalDate> list) {
         if (notifyInactive()) {
             return;
@@ -88,7 +87,6 @@ public class NotifyServiceImpl implements NotifyService {
     }
 
     @Override
-    @SneakyThrows
     public void vidaCrista(List<VidaCristaExtractWeekDTO> listWeeks) {
         if (notifyInactive()) {
             return;

@@ -2,15 +2,14 @@ package br.com.bvilela.listbuilder.service.notification;
 
 import br.com.bvilela.lib.service.GoogleCalendarCreateService;
 import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekDtoBuilder;
+import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
 import br.com.bvilela.listbuilder.config.NotifyProperties;
+import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
@@ -18,17 +17,23 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
-class NotificationServiceImplTest {
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+
+class NotifyServiceImplTest {
 
     @InjectMocks private NotifyServiceImpl service;
 
     @InjectMocks private NotifyProperties notifProperties;
 
-    @Mock private NotifyDesignationService notifyDesignationService;
+    @Mock private NotifyDesignationServiceImpl notifyDesignationService;
 
     @Mock private GoogleCalendarCreateService calendarService;
 
@@ -211,6 +216,24 @@ class NotificationServiceImplTest {
         Assertions.assertEquals(
                 "Defina a propriedade 'notif.christianlife.midweek.meeting.day'!",
                 exception.getMessage());
+    }
+
+
+    // *********************** DESIGNACAO *********************** \\
+    @Test
+    void designationNotifyInactiveSuccess() {
+        Assertions.assertDoesNotThrow(
+                () -> service.designacao(DesignacaoWriterDtoBuilder.create().withRandomData().build()));
+    }
+
+    @Test
+    void designationNotifyActiveSuccess() {
+        setNotifActive();
+        Mockito.when(notifyDesignationService.getNotifyPresident(any(DesignacaoWriterDTO.class))).thenReturn(Collections.emptyList());
+        Mockito.when(notifyDesignationService.getNotifyReader(any(DesignacaoWriterDTO.class))).thenReturn(Collections.emptyList());
+        Mockito.when(notifyDesignationService.getNotifyAudioVideo(any(DesignacaoWriterDTO.class))).thenReturn(Collections.emptyList());
+        Assertions.assertDoesNotThrow(
+                () -> service.designacao(DesignacaoWriterDtoBuilder.create().withRandomData().build()));
     }
 
     // *********************** UTILS *********************** \\
