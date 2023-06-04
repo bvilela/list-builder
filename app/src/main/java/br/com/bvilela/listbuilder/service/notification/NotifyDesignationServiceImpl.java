@@ -37,7 +37,7 @@ public class NotifyDesignationServiceImpl implements NotifyDesignationService {
                         .filter(
                                 i ->
                                         NotifyUtils.containsName(
-                                                i.getName(), properties.getNotifName()))
+                                                i.getName(), properties.getNotifyName()))
                         .toList();
         return createDesignationEvents(president, DesignacaoEntityEnum.PRESIDENT.getLabel());
     }
@@ -57,7 +57,7 @@ public class NotifyDesignationServiceImpl implements NotifyDesignationService {
                         .filter(
                                 i ->
                                         NotifyUtils.containsName(
-                                                i.getName(), properties.getNotifName()))
+                                                i.getName(), properties.getNotifyName()))
                         .toList();
         return createDesignationEvents(readers, "Leitura");
     }
@@ -80,11 +80,11 @@ public class NotifyDesignationServiceImpl implements NotifyDesignationService {
 
     private boolean filterByFirstName(DesignacaoWriterItemDTO item) {
         String firstName = item.getName().split(" e ")[0];
-        return NotifyUtils.containsName(firstName, properties.getNotifName());
+        return NotifyUtils.containsName(firstName, properties.getNotifyName());
     }
 
     private boolean notifDesignationEntityInactive(NotifDesignacaoEntityEnum type) {
-        return !properties.getNotifDesignationTypeActive().contains(type.getLabel());
+        return !properties.getNotifyDesignationTypeActive().contains(type.getLabel());
     }
 
     private List<CalendarEvent> createDesignationEvents(

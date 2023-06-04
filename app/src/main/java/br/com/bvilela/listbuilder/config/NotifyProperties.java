@@ -1,7 +1,10 @@
 package br.com.bvilela.listbuilder.config;
 
 import java.util.List;
+
+import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -9,18 +12,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class NotifyProperties {
 
-    @Value("${notif.active:false}")
-    private boolean notifActive;
+    @Value("${notify.active:false}")
+    private boolean notifyActive;
 
-    @Value("${notif.name:#{null}}")
-    private String notifName;
+    @Value("${notify.name:#{null}}")
+    private String notifyName;
 
-    @Value("${notif.designation.type.active}")
-    private List<String> notifDesignationTypeActive;
+    @Value("${notify.designation.type.active}")
+    private List<String> notifyDesignationTypeActive;
 
-    @Value("${notif.cleaning.premeeting:false}")
-    private boolean notifCleaningPreMeeting;
+    @Value("${notify.cleaning.premeeting:false}")
+    private boolean notifyCleaningPreMeeting;
 
-    @Value("${notif.christianlife.midweek.meeting.day:#{null}}")
-    private String notifChristianlifeMidweekMeetingDay;
+    @Value("${notify.christianlife.midweek.meeting.day:#{null}}")
+    private String notifyChristianlifeMidweekMeetingDay;
+
+    @SneakyThrows
+    public void checkNotifyNameFilled() {
+        if (this.notifyName == null || this.notifyName.isBlank()) {
+            throw new ListBuilderException("Defina a propriedade 'notify.name'!");
+        }
+    }
 }

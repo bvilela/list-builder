@@ -1,5 +1,10 @@
 package br.com.bvilela.listbuilder.service.notification;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import br.com.bvilela.lib.service.GoogleCalendarCreateService;
 import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekDtoBuilder;
 import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
@@ -10,22 +15,22 @@ import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import lombok.SneakyThrows;
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
+import lombok.SneakyThrows;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 class NotifyServiceImplTest {
 
@@ -34,6 +39,8 @@ class NotifyServiceImplTest {
     @InjectMocks private NotifyProperties notifProperties;
 
     @Mock private NotifyDesignationServiceImpl notifyDesignationService;
+
+    @Mock private NotifyClearingServiceImpl notifyClearingService;
 
     @Mock private GoogleCalendarCreateService calendarService;
 
@@ -68,46 +75,47 @@ class NotifyServiceImplTest {
     @BeforeEach
     void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
-        service = new NotifyServiceImpl(notifProperties, notifyDesignationService, calendarService);
+        service = new NotifyServiceImpl(
+                notifProperties, notifyDesignationService, notifyClearingService, calendarService);
     }
 
     // *********************** ASSISTENCIA *********************** \\
     @Test
     void shouldAssitenciaNotifActiveFalse() {
-        Assertions.assertDoesNotThrow(() -> service.assistencia(dtoAssistencia));
+        assertDoesNotThrow(() -> service.assistencia(dtoAssistencia));
     }
 
     @Test
     void shouldAssitenciaNotifActiveTrue() {
-        setNotifActive();
-        Assertions.assertDoesNotThrow(() -> service.assistencia(dtoAssistencia));
+        setNotifyActive();
+        assertDoesNotThrow(() -> service.assistencia(dtoAssistencia));
     }
 
     // *********************** LIMPEZA *********************** \\
     @Test
     void shouldLimpezaNotifActiveFalse() {
-        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
+        assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
     }
 
     @Test
     void shouldLimpezaNotifActiveTrueNotifNameNull() {
-        setNotifActive();
+        setNotifyActive();
         Assertions.assertThrows(
                 ListBuilderException.class, () -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
     }
 
     @Test
     void shouldAssistenciaNotifActiveTrueWithoutNotifPersonSuccess() {
-        setNotifActive();
-        setNotifName("xpto");
-        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
+        setNotifyActive();
+        setNotifyName("xpto");
+        assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
     }
 
     @Test
     void shouldAssistenciaNotifActiveTrueNotifPersonSuccess() {
-        setNotifActive();
-        setNotifName("P1");
-        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
+        setNotifyActive();
+        setNotifyName("P1");
+        assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
     }
 
     @Test
@@ -115,15 +123,15 @@ class NotifyServiceImplTest {
         var item = new FinalListLimpezaItemDTO(LocalDate.of(2022, 6, 10), "Label", "P1, P2, P3");
         final FinalListLimpezaDTO dtoLimpezaLayout1 =
                 FinalListLimpezaDTO.builder().items(List.of(item)).build();
-        setNotifActive();
-        setNotifName("P1");
-        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpezaLayout1, LIMPEZA_LAYOUT1));
+        setNotifyActive();
+        setNotifyName("P1");
+        assertDoesNotThrow(() -> service.limpeza(dtoLimpezaLayout1, LIMPEZA_LAYOUT1));
     }
 
     @Test
-    void shouldVidaCristaNotifActiveGroupNull() {
-        setNotifActive();
-        setnotifChristianlifeMidweekMeetingDay("terca");
+    void shouldLimpezaNotifActiveGroupNull() {
+        setNotifyActive();
+        setNotifyChristianlifeMidweekMeetingDay("terca");
         var item = dtoLimpeza.getItemsLayout2().get(0);
         var newItem =
                 FinalListLimpezaItemLayout2DTO.builder()
@@ -137,17 +145,17 @@ class NotifyServiceImplTest {
                 new ArrayList<>(dtoLimpeza.getItemsLayout2());
         newList.add(newItem);
         var newDtoLimpeza = FinalListLimpezaDTO.builder().itemsLayout2(newList).build();
-        setNotifName("XPTO");
-        Assertions.assertDoesNotThrow(() -> service.limpeza(newDtoLimpeza, LIMPEZA_LAYOUT2));
+        setNotifyName("XPTO");
+        assertDoesNotThrow(() -> service.limpeza(newDtoLimpeza, LIMPEZA_LAYOUT2));
     }
 
     @Test
     @SneakyThrows
-    void shouldAssistenciaNotifActiveTrueNotifPersonPreMeetingSuccess() {
-        setNotifActive();
-        setNotifName("P1");
-        FieldUtils.writeField(notifProperties, "notifCleaningPreMeeting", true, true);
-        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
+    void shouldLimpezaNotifActiveTrueNotifPersonPreMeetingSuccess() {
+        setNotifyActive();
+        setNotifyName("P1");
+        FieldUtils.writeField(notifProperties, "notifyCleaningPreMeeting", true, true);
+        assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
     }
 
     // *********************** VIDA CRISTA *********************** \\
@@ -155,100 +163,114 @@ class NotifyServiceImplTest {
     void shouldVidaCristaNotifActiveFalse() {
         var list =
                 List.of(VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
-        Assertions.assertDoesNotThrow(() -> service.vidaCrista(list));
+        assertDoesNotThrow(() -> service.vidaCrista(list));
     }
 
     @Test
     void shouldVidaCristaNotifActiveTrueNotifNameNull() {
-        setNotifActive();
+        setNotifyActive();
         Assertions.assertThrows(
                 ListBuilderException.class, () -> service.vidaCrista(dtoVidaCrista));
     }
 
     @Test
     void shouldVidaCristaNotifActiveTrueWithoutNotifSuccess() {
-        setNotifActive();
-        setnotifChristianlifeMidweekMeetingDay("terca");
-        setNotifName("P1");
-        Assertions.assertDoesNotThrow(() -> service.vidaCrista(dtoVidaCrista));
+        setNotifyActive();
+        setNotifyChristianlifeMidweekMeetingDay("terca");
+        setNotifyName("P1");
+        assertDoesNotThrow(() -> service.vidaCrista(dtoVidaCrista));
     }
 
     @Test
     void shouldVidaCristaNotifActiveTrueNotifSuccess() {
-        setNotifActive();
-        setnotifChristianlifeMidweekMeetingDay("terca");
+        setNotifyActive();
+        setNotifyChristianlifeMidweekMeetingDay("terca");
         var name = dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
-        setNotifName(name);
-        Assertions.assertDoesNotThrow(() -> service.vidaCrista(dtoVidaCrista));
+        setNotifyName(name);
+        assertDoesNotThrow(() -> service.vidaCrista(dtoVidaCrista));
     }
 
     @Test
     void shouldVidaCristaNotifActiveTrueButNameItemNull() {
-        setNotifActive();
-        setnotifChristianlifeMidweekMeetingDay("terca");
+        setNotifyActive();
+        setNotifyChristianlifeMidweekMeetingDay("terca");
         dtoVidaCrista.get(0).getItems().get(0).setParticipants(null);
-        setNotifName("XPTO");
-        Assertions.assertDoesNotThrow(() -> service.vidaCrista(dtoVidaCrista));
+        setNotifyName("XPTO");
+        assertDoesNotThrow(() -> service.vidaCrista(dtoVidaCrista));
     }
 
     @Test
     void shouldVidaCristaMidweekMeetingDayNullException() {
-        setNotifActive();
+        setNotifyActive();
         var name = dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
-        setNotifName(name);
-        setnotifChristianlifeMidweekMeetingDay("teste");
+        setNotifyName(name);
+        setNotifyChristianlifeMidweekMeetingDay("teste");
         var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class, () -> service.vidaCrista(dtoVidaCrista));
         Assertions.assertEquals(
-                "Propriedade 'notif.christianlife.midweek.meeting.day' não é um Dia da Semana Válido!",
+                "Propriedade 'notify.christianlife.midweek.meeting.day' não é um Dia da Semana Válido!",
                 exception.getMessage());
     }
 
     @Test
     void shouldVidaCristaMidweekMeetingDayInvalidException() {
-        setNotifActive();
+        setNotifyActive();
         var name = dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
-        setNotifName(name);
+        setNotifyName(name);
         var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class, () -> service.vidaCrista(dtoVidaCrista));
         Assertions.assertEquals(
-                "Defina a propriedade 'notif.christianlife.midweek.meeting.day'!",
+                "Defina a propriedade 'notify.christianlife.midweek.meeting.day'!",
                 exception.getMessage());
     }
-
 
     // *********************** DESIGNACAO *********************** \\
     @Test
     void designationNotifyInactiveSuccess() {
-        Assertions.assertDoesNotThrow(
-                () -> service.designacao(DesignacaoWriterDtoBuilder.create().withRandomData().build()));
+        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        assertDoesNotThrow(() -> service.designacao(dto));
+    }
+
+    @DisplayName("Designation Notify Active but notifyName not defined")
+    @ParameterizedTest(name = "NotifyName is \"{0}\"")
+    @NullAndEmptySource
+    @ValueSource(strings = {" "})
+    void designationNotifyActiveException(String notifyName) {
+        setNotifyActive();
+        setNotifyName(notifyName);
+        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        assertThrows(ListBuilderException.class, () -> service.designacao(dto));
     }
 
     @Test
     void designationNotifyActiveSuccess() {
-        setNotifActive();
-        Mockito.when(notifyDesignationService.getNotifyPresident(any(DesignacaoWriterDTO.class))).thenReturn(Collections.emptyList());
-        Mockito.when(notifyDesignationService.getNotifyReader(any(DesignacaoWriterDTO.class))).thenReturn(Collections.emptyList());
-        Mockito.when(notifyDesignationService.getNotifyAudioVideo(any(DesignacaoWriterDTO.class))).thenReturn(Collections.emptyList());
-        Assertions.assertDoesNotThrow(
-                () -> service.designacao(DesignacaoWriterDtoBuilder.create().withRandomData().build()));
+        setNotifyActive();
+        setNotifyName("test");
+        when(notifyDesignationService.getNotifyPresident(any(DesignacaoWriterDTO.class)))
+                .thenReturn(Collections.emptyList());
+        when(notifyDesignationService.getNotifyReader(any(DesignacaoWriterDTO.class)))
+                .thenReturn(Collections.emptyList());
+        when(notifyDesignationService.getNotifyAudioVideo(any(DesignacaoWriterDTO.class)))
+                .thenReturn(Collections.emptyList());
+        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        assertDoesNotThrow(() -> service.designacao(dto));
     }
 
     // *********************** UTILS *********************** \\
     @SneakyThrows
-    private void setNotifActive() {
-        FieldUtils.writeField(notifProperties, "notifActive", true, true);
+    private void setNotifyActive() {
+        FieldUtils.writeField(notifProperties, "notifyActive", true, true);
     }
 
     @SneakyThrows
-    private void setnotifChristianlifeMidweekMeetingDay(String value) {
-        FieldUtils.writeField(notifProperties, "notifChristianlifeMidweekMeetingDay", value, true);
+    private void setNotifyChristianlifeMidweekMeetingDay(String value) {
+        FieldUtils.writeField(notifProperties, "notifyChristianlifeMidweekMeetingDay", value, true);
     }
 
     @SneakyThrows
-    private void setNotifName(String name) {
-        FieldUtils.writeField(notifProperties, "notifName", name, true);
+    private void setNotifyName(String name) {
+        FieldUtils.writeField(notifProperties, "notifyName", name, true);
     }
 }

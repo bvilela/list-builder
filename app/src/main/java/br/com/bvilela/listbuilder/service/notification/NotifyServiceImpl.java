@@ -6,8 +6,6 @@ import br.com.bvilela.lib.service.GoogleCalendarCreateService;
 import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
-import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemDTO;
-import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
@@ -15,18 +13,17 @@ import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import br.com.bvilela.listbuilder.utils.DateUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -37,42 +34,31 @@ public class NotifyServiceImpl implements NotifyService {
 
     private final NotifyDesignationServiceImpl notifyDesignationService;
 
+    private final NotifyClearingServiceImpl notifyClearingService;
+
     private final GoogleCalendarCreateService calendarService;
 
     private record NotifVidaCrista(List<VidaCristaExtractWeekItemDTO> listItems, LocalDate date) {}
 
     private boolean notifyInactive() {
-        return !properties.isNotifActive();
+        return !properties.isNotifyActive();
     }
 
     @Override
-    public void limpeza(FinalListLimpezaDTO limpezaDto, int idLayout) {
-
+    public void limpeza(FinalListLimpezaDTO limpezaDto, int layout) {
         if (notifyInactive()) {
             return;
         }
 
-        checkNotifName();
+        properties.checkNotifyNameFilled();
 
-        List<CalendarEvent> listNotification;
-        LocalDate lastDate;
+        var events = notifyClearingService.getNotifyClearing(limpezaDto, layout);
 
-        if (idLayout == 2) {
-            listNotification = createEventsLimpezaLayout2(limpezaDto);
-            lastDate =
-                    limpezaDto
-                            .getItemsLayout2()
-                            .get(limpezaDto.getItemsLayout2().size() - 1)
-                            .getDate2();
-        } else {
-            listNotification = createEventsLimpezaLayout1(limpezaDto);
-            lastDate = limpezaDto.getItems().get(limpezaDto.getItems().size() - 1).getDate();
-        }
+        var dateDoNextList = notifyClearingService.getDateDoNextListEvent(limpezaDto);
+        CalendarEvent nextListEvent = createDoNextListEvent(ListTypeEnum.LIMPEZA, dateDoNextList);
+        events.add(nextListEvent);
 
-        CalendarEvent nextList = doNextList(ListTypeEnum.LIMPEZA, lastDate);
-        listNotification.add(nextList);
-
-        calendarService.createEvents(listNotification);
+        calendarService.createEvents(events);
     }
 
     @Override
@@ -82,7 +68,7 @@ public class NotifyServiceImpl implements NotifyService {
         }
 
         var lastDate = list.get(list.size() - 1);
-        CalendarEvent nextList = doNextList(ListTypeEnum.ASSISTENCIA, lastDate);
+        CalendarEvent nextList = createDoNextListEvent(ListTypeEnum.ASSISTENCIA, lastDate);
         calendarService.createEvent(nextList);
     }
 
@@ -92,7 +78,7 @@ public class NotifyServiceImpl implements NotifyService {
             return;
         }
 
-        checkNotifName();
+        properties.checkNotifyNameFilled();
 
         var meetingDay = checkMidweekMeetingDay();
 
@@ -104,7 +90,7 @@ public class NotifyServiceImpl implements NotifyService {
                                     item ->
                                             NotifyUtils.containsName(
                                                     item.getParticipants(),
-                                                    properties.getNotifName()))
+                                                    properties.getNotifyName()))
                             .toList();
             if (!list.isEmpty()) {
                 var recordItem = new NotifVidaCrista(list, week.getInitialDate());
@@ -117,7 +103,8 @@ public class NotifyServiceImpl implements NotifyService {
         }
 
         var lastWeek = listWeeks.get(listWeeks.size() - 1);
-        CalendarEvent nextList = doNextList(ListTypeEnum.VIDA_CRISTA, lastWeek.getInitialDate());
+        CalendarEvent nextList =
+                createDoNextListEvent(ListTypeEnum.VIDA_CRISTA, lastWeek.getInitialDate());
         calendarService.createEvent(nextList);
     }
 
@@ -127,12 +114,14 @@ public class NotifyServiceImpl implements NotifyService {
             return;
         }
 
+        properties.checkNotifyNameFilled();
+
         var presidentEvents = notifyDesignationService.getNotifyPresident(dto);
         var readerEvents = notifyDesignationService.getNotifyReader(dto);
         var audioVideoEvents = notifyDesignationService.getNotifyAudioVideo(dto);
 
         var lastDate = dto.getPresident().get(dto.getPresident().size() - 1).getDate();
-        CalendarEvent nextListEvent = doNextList(ListTypeEnum.DESIGNACAO, lastDate);
+        CalendarEvent nextListEvent = createDoNextListEvent(ListTypeEnum.DESIGNACAO, lastDate);
 
         List<CalendarEvent> eventList = new ArrayList<>();
         eventList.addAll(presidentEvents);
@@ -167,33 +156,27 @@ public class NotifyServiceImpl implements NotifyService {
     }
 
     @SneakyThrows
-    private void checkNotifName() {
-        if (properties.getNotifName() == null) {
-            throw new ListBuilderException("Defina a propriedade 'notif.name'!");
-        }
-    }
-
-    @SneakyThrows
     private DayOfWeekEnum checkMidweekMeetingDay() {
-        if (properties.getNotifChristianlifeMidweekMeetingDay() == null) {
+        if (properties.getNotifyChristianlifeMidweekMeetingDay() == null) {
             throw new ListBuilderException(
-                    "Defina a propriedade 'notif.christianlife.midweek.meeting.day'!");
+                    "Defina a propriedade 'notify.christianlife.midweek.meeting.day'!");
         }
 
         var meetingDay =
-                AppUtils.removeAccents(properties.getNotifChristianlifeMidweekMeetingDay());
+                AppUtils.removeAccents(properties.getNotifyChristianlifeMidweekMeetingDay());
         DayOfWeekEnum meetingDayEnum;
         try {
             meetingDayEnum = DayOfWeekEnum.valueOf(meetingDay.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new ListBuilderException(
-                    "Propriedade 'notif.christianlife.midweek.meeting.day' não é um Dia da Semana Válido!");
+                    "Propriedade 'notify.christianlife.midweek.meeting.day' não é um Dia da Semana Válido!");
         }
 
         return meetingDayEnum;
     }
 
-    private CalendarEvent doNextList(ListTypeEnum executionModeEnum, LocalDate lastDateList) {
+    private CalendarEvent createDoNextListEvent(
+            ListTypeEnum executionModeEnum, LocalDate lastDateList) {
         var dateEvent = lastDateList.minusDays(7);
         var listName = StringUtils.capitalize(executionModeEnum.toString());
         return CalendarEvent.builder()
@@ -208,71 +191,4 @@ public class NotifyServiceImpl implements NotifyService {
                 .build();
     }
 
-    private List<CalendarEvent> createEventsLimpezaLayout1(FinalListLimpezaDTO limpezaDto) {
-        List<CalendarEvent> listNotification = new ArrayList<>();
-
-        var list =
-                limpezaDto.getItems().stream()
-                        .filter(
-                                e ->
-                                        NotifyUtils.containsName(
-                                                e.getGroup(), properties.getNotifName()))
-                        .toList();
-        for (FinalListLimpezaItemDTO item : list) {
-
-            CalendarEvent dto1 =
-                    CalendarEvent.builder()
-                            .setSummary("Limpeza Salão")
-                            .setDateTimeStart(
-                                    LocalDateTime.of(item.getDate(), LocalTime.of(17, 0, 0)))
-                            .setDateTimeEnd(
-                                    LocalDateTime.of(item.getDate(), LocalTime.of(18, 0, 0)))
-                            .setColor(ColorEnum.SALVIA)
-                            .build();
-            listNotification.add(dto1);
-        }
-        return listNotification;
-    }
-
-    private List<CalendarEvent> createEventsLimpezaLayout2(FinalListLimpezaDTO limpezaDto) {
-        List<CalendarEvent> listNotification = new ArrayList<>();
-
-        var list =
-                limpezaDto.getItemsLayout2().stream()
-                        .filter(
-                                e ->
-                                        NotifyUtils.containsName(
-                                                e.getGroup(), properties.getNotifName()))
-                        .toList();
-        for (FinalListLimpezaItemLayout2DTO item : list) {
-
-            if (properties.isNotifCleaningPreMeeting()) {
-                CalendarEvent dto1 =
-                        CalendarEvent.builder()
-                                .setSummary("Limpeza Pré-Reunião")
-                                .setDateTimeStart(
-                                        LocalDateTime.of(item.getDate1(), LocalTime.of(17, 0, 0)))
-                                .setDateTimeEnd(
-                                        LocalDateTime.of(item.getDate1(), LocalTime.of(18, 0, 0)))
-                                .setColor(ColorEnum.SALVIA)
-                                .build();
-                listNotification.add(dto1);
-            }
-
-            CalendarEvent dto2 =
-                    CalendarEvent.builder()
-                            .setSummary(
-                                    properties.isNotifCleaningPreMeeting()
-                                            ? "Limpeza Pós-Reunião"
-                                            : "Limpeza Salão")
-                            .setDateTimeStart(
-                                    LocalDateTime.of(item.getDate2(), LocalTime.of(21, 30, 0)))
-                            .setDateTimeEnd(
-                                    LocalDateTime.of(item.getDate2(), LocalTime.of(22, 0, 0)))
-                            .setColor(ColorEnum.SALVIA)
-                            .build();
-            listNotification.add(dto2);
-        }
-        return listNotification;
-    }
 }

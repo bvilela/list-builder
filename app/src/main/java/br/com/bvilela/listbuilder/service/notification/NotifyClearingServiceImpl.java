@@ -1,0 +1,110 @@
+package br.com.bvilela.listbuilder.service.notification;
+
+import br.com.bvilela.lib.enuns.ColorEnum;
+import br.com.bvilela.lib.model.CalendarEvent;
+import br.com.bvilela.listbuilder.config.NotifyProperties;
+import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
+import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemDTO;
+import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class NotifyClearingServiceImpl implements NotifyClearingService {
+
+    private final NotifyProperties properties;
+
+    @Override
+    public List<CalendarEvent> getNotifyClearing(FinalListLimpezaDTO limpezaDto, int layout) {
+        if (layout == 1) {
+            return createEventsLimpezaLayout1(limpezaDto);
+        }
+
+        return createEventsLimpezaLayout2(limpezaDto);
+    }
+
+
+    private List<CalendarEvent> createEventsLimpezaLayout1(FinalListLimpezaDTO limpezaDto) {
+        List<CalendarEvent> listNotification = new ArrayList<>();
+
+        var list =
+                limpezaDto.getItems().stream()
+                        .filter(
+                                e ->
+                                        NotifyUtils.containsName(
+                                                e.getGroup(), properties.getNotifyName()))
+                        .toList();
+        for (FinalListLimpezaItemDTO item : list) {
+
+            CalendarEvent dto1 =
+                    CalendarEvent.builder()
+                            .setSummary("Limpeza Salão")
+                            .setDateTimeStart(
+                                    LocalDateTime.of(item.getDate(), LocalTime.of(17, 0, 0)))
+                            .setDateTimeEnd(
+                                    LocalDateTime.of(item.getDate(), LocalTime.of(18, 0, 0)))
+                            .setColor(ColorEnum.SALVIA)
+                            .build();
+            listNotification.add(dto1);
+        }
+        return listNotification;
+    }
+
+    private List<CalendarEvent> createEventsLimpezaLayout2(FinalListLimpezaDTO limpezaDto) {
+        List<CalendarEvent> listNotification = new ArrayList<>();
+
+        var list =
+                limpezaDto.getItemsLayout2().stream()
+                        .filter(
+                                e ->
+                                        NotifyUtils.containsName(
+                                                e.getGroup(), properties.getNotifyName()))
+                        .toList();
+        for (FinalListLimpezaItemLayout2DTO item : list) {
+
+            if (properties.isNotifyCleaningPreMeeting()) {
+                CalendarEvent dto1 =
+                        CalendarEvent.builder()
+                                .setSummary("Limpeza Pré-Reunião")
+                                .setDateTimeStart(
+                                        LocalDateTime.of(item.getDate1(), LocalTime.of(17, 0, 0)))
+                                .setDateTimeEnd(
+                                        LocalDateTime.of(item.getDate1(), LocalTime.of(18, 0, 0)))
+                                .setColor(ColorEnum.SALVIA)
+                                .build();
+                listNotification.add(dto1);
+            }
+
+            CalendarEvent dto2 =
+                    CalendarEvent.builder()
+                            .setSummary(
+                                    properties.isNotifyCleaningPreMeeting()
+                                            ? "Limpeza Pós-Reunião"
+                                            : "Limpeza Salão")
+                            .setDateTimeStart(
+                                    LocalDateTime.of(item.getDate2(), LocalTime.of(21, 30, 0)))
+                            .setDateTimeEnd(
+                                    LocalDateTime.of(item.getDate2(), LocalTime.of(22, 0, 0)))
+                            .setColor(ColorEnum.SALVIA)
+                            .build();
+            listNotification.add(dto2);
+        }
+        return listNotification;
+    }
+
+    @Override
+    public LocalDate getDateDoNextListEvent(FinalListLimpezaDTO limpezaDto) {
+        return limpezaDto.getItemsLayout2().isEmpty() ?
+                limpezaDto.getItems().get(limpezaDto.getItems().size()-1).getDate() :
+                limpezaDto.getItemsLayout2().get(limpezaDto.getItemsLayout2().size()-1).getDate2();
+    }
+}
