@@ -2,14 +2,12 @@ package br.com.bvilela.listbuilder.service.impl;
 
 import br.com.bvilela.lib.service.GoogleCalendarCreateService;
 import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekDtoBuilder;
+import br.com.bvilela.listbuilder.config.NotifProperties;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
@@ -20,15 +18,21 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootApplication
 class NotificationServiceImplTest {
 
     @InjectMocks private NotificationServiceImpl service;
 
+    @InjectMocks private NotifProperties notifProperties;
+
     @Mock private GoogleCalendarCreateService calendarService;
 
-    private static final int LAYOUT1 = 1;
-    private static final int LAYOUT2 = 2;
+    private static final int LIMPEZA_LAYOUT1 = 1;
+    private static final int LIMPEZA_LAYOUT2 = 2;
 
     private final FinalListLimpezaDTO dtoLimpeza =
             FinalListLimpezaDTO.builder()
@@ -58,8 +62,9 @@ class NotificationServiceImplTest {
     @BeforeEach
     void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
-        service = new NotificationServiceImpl(calendarService);
+        service = new NotificationServiceImpl(notifProperties, calendarService);
     }
+
 
     // *********************** ASSISTENCIA *********************** \\
     @Test
@@ -73,41 +78,42 @@ class NotificationServiceImplTest {
         Assertions.assertDoesNotThrow(() -> service.assistencia(dtoAssistencia));
     }
 
+
     // *********************** LIMPEZA *********************** \\
     @Test
     void shouldLimpezaNotifActiveFalse() {
-        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LAYOUT2));
+        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
     }
 
     @Test
     void shouldLimpezaNotifActiveTrueNotifNameNull() {
         setNotifActive();
         Assertions.assertThrows(
-                ListBuilderException.class, () -> service.limpeza(dtoLimpeza, LAYOUT2));
+                ListBuilderException.class, () -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
     }
 
     @Test
     void shouldAssistenciaNotifActiveTrueWithoutNotifPersonSuccess() {
         setNotifActive();
         setNotifName("xpto");
-        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LAYOUT2));
+        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
     }
 
     @Test
     void shouldAssistenciaNotifActiveTrueNotifPersonSuccess() {
         setNotifActive();
         setNotifName("P1");
-        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LAYOUT2));
+        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
     }
 
     @Test
-    void shouldAssistenciaNotifActiveTrueNotifPersonLayout1Success() {
-        var item = new FinalListLimpezaItemDTO(LocalDate.of(2022, 06, 10), "Label", "P1, P2, P3");
+    void shouldLimpezaNotifActiveTrueNotifPersonLayout1Success() {
+        var item = new FinalListLimpezaItemDTO(LocalDate.of(2022, 6, 10), "Label", "P1, P2, P3");
         final FinalListLimpezaDTO dtoLimpezaLayout1 =
                 FinalListLimpezaDTO.builder().items(List.of(item)).build();
         setNotifActive();
         setNotifName("P1");
-        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpezaLayout1, LAYOUT1));
+        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpezaLayout1, LIMPEZA_LAYOUT1));
     }
 
     @Test
@@ -128,7 +134,7 @@ class NotificationServiceImplTest {
         newList.add(newItem);
         var newDtoLimpeza = FinalListLimpezaDTO.builder().itemsLayout2(newList).build();
         setNotifName("XPTO");
-        Assertions.assertDoesNotThrow(() -> service.limpeza(newDtoLimpeza, LAYOUT2));
+        Assertions.assertDoesNotThrow(() -> service.limpeza(newDtoLimpeza, LIMPEZA_LAYOUT2));
     }
 
     @Test
@@ -136,9 +142,10 @@ class NotificationServiceImplTest {
     void shouldAssistenciaNotifActiveTrueNotifPersonPreMeetingSuccess() {
         setNotifActive();
         setNotifName("P1");
-        FieldUtils.writeField(service, "notifCleaningPreMeeting", true, true);
-        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LAYOUT2));
+        FieldUtils.writeField(notifProperties, "notifCleaningPreMeeting", true, true);
+        Assertions.assertDoesNotThrow(() -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
     }
+
 
     // *********************** VIDA CRISTA *********************** \\
     @Test
@@ -184,7 +191,6 @@ class NotificationServiceImplTest {
     @Test
     void shouldVidaCristaMidweekMeetingDayNullException() {
         setNotifActive();
-        dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
         var name = dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
         setNotifName(name);
         setnotifChristianlifeMidweekMeetingDay("teste");
@@ -199,7 +205,6 @@ class NotificationServiceImplTest {
     @Test
     void shouldVidaCristaMidweekMeetingDayInvalidException() {
         setNotifActive();
-        dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
         var name = dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
         setNotifName(name);
         var exception =
@@ -210,19 +215,20 @@ class NotificationServiceImplTest {
                 exception.getMessage());
     }
 
+
     // *********************** UTILS *********************** \\
     @SneakyThrows
     private void setNotifActive() {
-        FieldUtils.writeField(service, "notifActive", true, true);
+        FieldUtils.writeField(notifProperties, "notifActive", true, true);
     }
 
     @SneakyThrows
     private void setnotifChristianlifeMidweekMeetingDay(String value) {
-        FieldUtils.writeField(service, "notifChristianlifeMidweekMeetingDay", value, true);
+        FieldUtils.writeField(notifProperties, "notifChristianlifeMidweekMeetingDay", value, true);
     }
 
     @SneakyThrows
     private void setNotifName(String name) {
-        FieldUtils.writeField(service, "notifName", name, true);
+        FieldUtils.writeField(notifProperties, "notifName", name, true);
     }
 }

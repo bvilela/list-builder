@@ -98,7 +98,7 @@ public class GroupServiceImpl implements GroupService {
     public List<DesignacaoWriterItemDTO> generateListAudioVideo(
             FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesAll) {
 
-        var entity = DesignacaoEntityEnum.AUDIOVIDEO;
+        var entity = DesignacaoEntityEnum.AUDIO_VIDEO;
         try {
             var list = generateSequenceListDesignacao(dto.getAudioVideo(), listDatesAll, entity);
 

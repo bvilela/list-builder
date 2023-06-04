@@ -3,6 +3,7 @@ package br.com.bvilela.listbuilder.service.impl;
 import br.com.bvilela.lib.enuns.ColorEnum;
 import br.com.bvilela.lib.model.CalendarEvent;
 import br.com.bvilela.lib.service.GoogleCalendarCreateService;
+import br.com.bvilela.listbuilder.config.NotifProperties;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
@@ -13,10 +14,17 @@ import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import br.com.bvilela.listbuilder.enuns.DesignacaoEntityEnum;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
+import br.com.bvilela.listbuilder.enuns.NotifDesignacaoEntityEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import br.com.bvilela.listbuilder.utils.DateUtils;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,41 +33,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
 
-    @Value("${notif.active}")
-    private boolean notifActive;
-
-    @Value("${notif.name:#{null}}")
-    private String notifName;
-
-    @Value("${notif.cleaning.premeeting:false}")
-    private boolean notifCleaningPreMeeting;
-
-    @Value("${notif.christianlife.midweek.meeting.day:#{null}}")
-    private String notifChristianlifeMidweekMeetingDay;
+    private final NotifProperties properties;
 
     private final GoogleCalendarCreateService calendarService;
 
     private record NotifVidaCrista(List<VidaCristaExtractWeekItemDTO> listItems, LocalDate date) {}
 
+    private boolean notifInactive() {
+        return !properties.isNotifActive();
+    }
+
     @Override
     @SneakyThrows
     public void limpeza(FinalListLimpezaDTO limpezaDto, int idLayout) {
 
-        if (!notifActive) {
-            return;
-        }
+        if (notifInactive()) return;
 
         checkNotifName();
 
@@ -87,9 +81,8 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @SneakyThrows
     public void assistencia(List<LocalDate> list) {
-        if (!notifActive) {
-            return;
-        }
+        if (notifInactive()) return;
+
         var lastDate = list.get(list.size() - 1);
         CalendarEvent nextList = doNextList(ListTypeEnum.ASSISTENCIA, lastDate);
         calendarService.createEvent(nextList);
@@ -98,9 +91,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @SneakyThrows
     public void vidaCrista(List<VidaCristaExtractWeekDTO> listWeeks) {
-        if (!notifActive) {
-            return;
-        }
+        if (notifInactive()) return;
 
         checkNotifName();
 
@@ -128,37 +119,45 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    @SneakyThrows
     public void designacao(DesignacaoWriterDTO dto) {
-
-        if (!notifActive) {
-            return;
-        }
-
-        var president =
-                dto.getPresident().stream().filter(i -> groupContainsName(i.getName())).toList();
-        var readers =
-                Stream.concat(
-                                dto.getReaderWatchtower().stream(),
-                                dto.getReaderBibleStudy().stream())
-                        .filter(i -> groupContainsName(i.getName()))
-                        .toList();
-        var auvioVideo =
-                dto.getAudioVideo().stream()
-                        .filter(i -> groupContainsName(i.getName().split(" e ")[0]))
-                        .toList();
+        if (notifInactive()) return;
 
         List<CalendarEvent> calendarEventList = new ArrayList<>();
-        createEventsDesignacao(
-                president, DesignacaoEntityEnum.PRESIDENT.getLabel(), calendarEventList);
-        createEventsDesignacao(readers, "Leitura", calendarEventList);
-        createEventsDesignacao(auvioVideo, "Som", calendarEventList);
+
+        if (notifDesignationTypeActive(NotifDesignacaoEntityEnum.PRESIDENT)) {
+            var president =
+                    dto.getPresident().stream().filter(i -> groupContainsName(i.getName())).toList();
+            createEventsDesignacao(
+                    president, DesignacaoEntityEnum.PRESIDENT.getLabel(), calendarEventList);
+        }
+
+        if (notifDesignationTypeActive(NotifDesignacaoEntityEnum.READER)) {
+            var readers =
+                    Stream.concat(
+                                    dto.getReaderWatchtower().stream(),
+                                    dto.getReaderBibleStudy().stream())
+                            .filter(i -> groupContainsName(i.getName()))
+                            .toList();
+            createEventsDesignacao(readers, "Leitura", calendarEventList);
+        }
+
+        if (notifDesignationTypeActive(NotifDesignacaoEntityEnum.AUDIO_VIDEO)) {
+            var audioVideo =
+                    dto.getAudioVideo().stream()
+                            .filter(i -> groupContainsName(i.getName().split(" e ")[0]))
+                            .toList();
+            createEventsDesignacao(audioVideo, "Som", calendarEventList);
+        }
 
         var lastDate = dto.getPresident().get(dto.getPresident().size() - 1).getDate();
         CalendarEvent nextList = doNextList(ListTypeEnum.DESIGNACAO, lastDate);
-
         calendarEventList.add(nextList);
+
         calendarService.createEvents(calendarEventList);
+    }
+
+    private boolean notifDesignationTypeActive(NotifDesignacaoEntityEnum type) {
+        return !properties.getNotifDesignationTypeActive().contains(type.getName());
     }
 
     private void createEventsDesignacao(
@@ -181,7 +180,6 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
 
-    @SneakyThrows
     private void createAndSendEventsVidaCrista(
             List<NotifVidaCrista> eventsToNotif, DayOfWeek dayOfWeek) {
         List<CalendarEvent> calendarEventList = new ArrayList<>();
@@ -207,20 +205,20 @@ public class NotificationServiceImpl implements NotificationService {
 
     @SneakyThrows
     private void checkNotifName() {
-        if (Objects.isNull(notifName)) {
+        if (properties.getNotifName() == null) {
             throw new ListBuilderException("Defina a propriedade 'notif.name'!");
         }
     }
 
     @SneakyThrows
     private DayOfWeekEnum checkMidweekMeetingDay() {
-        if (Objects.isNull(notifChristianlifeMidweekMeetingDay)) {
+        if (properties.getNotifChristianlifeMidweekMeetingDay() == null) {
             throw new ListBuilderException(
                     "Defina a propriedade 'notif.christianlife.midweek.meeting.day'!");
         }
 
-        var meetingDay = AppUtils.removeAccents(notifChristianlifeMidweekMeetingDay);
-        DayOfWeekEnum meetingDayEnum = null;
+        var meetingDay = AppUtils.removeAccents(properties.getNotifChristianlifeMidweekMeetingDay());
+        DayOfWeekEnum meetingDayEnum;
         try {
             meetingDayEnum = DayOfWeekEnum.valueOf(meetingDay.toUpperCase());
         } catch (IllegalArgumentException e) {
@@ -235,15 +233,14 @@ public class NotificationServiceImpl implements NotificationService {
         if (Objects.isNull(list)) {
             return false;
         }
-        return list.stream().filter(e -> e.toLowerCase().contains(notifName.toLowerCase())).count()
-                > 0;
+        return list.stream().anyMatch(e -> e.toLowerCase().contains(properties.getNotifName().toLowerCase()));
     }
 
     private boolean groupContainsName(String list) {
         if (Objects.isNull(list)) {
             return false;
         }
-        return list.toLowerCase().contains(notifName.toLowerCase());
+        return list.toLowerCase().contains(properties.getNotifName().toLowerCase());
     }
 
     private CalendarEvent doNextList(ListTypeEnum executionModeEnum, LocalDate lastDateList) {
@@ -274,7 +271,7 @@ public class NotificationServiceImpl implements NotificationService {
                     CalendarEvent.builder()
                             .setSummary("Limpeza Salão")
                             .setDateTimeStart(
-                                    LocalDateTime.of(item.getDate(), LocalTime.of(17, 00, 0)))
+                                    LocalDateTime.of(item.getDate(), LocalTime.of(17, 0, 0)))
                             .setDateTimeEnd(
                                     LocalDateTime.of(item.getDate(), LocalTime.of(18, 0, 0)))
                             .setColor(ColorEnum.SALVIA)
@@ -293,12 +290,12 @@ public class NotificationServiceImpl implements NotificationService {
                         .toList();
         for (FinalListLimpezaItemLayout2DTO item : list) {
 
-            if (notifCleaningPreMeeting) {
+            if (properties.isNotifCleaningPreMeeting()) {
                 CalendarEvent dto1 =
                         CalendarEvent.builder()
                                 .setSummary("Limpeza Pré-Reunião")
                                 .setDateTimeStart(
-                                        LocalDateTime.of(item.getDate1(), LocalTime.of(17, 00, 0)))
+                                        LocalDateTime.of(item.getDate1(), LocalTime.of(17, 0, 0)))
                                 .setDateTimeEnd(
                                         LocalDateTime.of(item.getDate1(), LocalTime.of(18, 0, 0)))
                                 .setColor(ColorEnum.SALVIA)
@@ -309,7 +306,7 @@ public class NotificationServiceImpl implements NotificationService {
             CalendarEvent dto2 =
                     CalendarEvent.builder()
                             .setSummary(
-                                    notifCleaningPreMeeting
+                                    properties.isNotifCleaningPreMeeting()
                                             ? "Limpeza Pós-Reunião"
                                             : "Limpeza Salão")
                             .setDateTimeStart(
