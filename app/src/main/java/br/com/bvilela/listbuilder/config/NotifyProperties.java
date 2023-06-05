@@ -1,8 +1,10 @@
 package br.com.bvilela.listbuilder.config;
 
-import java.util.List;
-
+import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import br.com.bvilela.listbuilder.utils.AppUtils;
+import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,13 +26,38 @@ public class NotifyProperties {
     @Value("${notify.cleaning.premeeting:false}")
     private boolean notifyCleaningPreMeeting;
 
-    @Value("${notify.christianlife.midweek.meeting.day:#{null}}")
-    private String notifyChristianlifeMidweekMeetingDay;
+    @Value("${notify.christianlife.meeting.day:#{null}}")
+    @Getter(AccessLevel.PRIVATE)
+    private String notifyChristianLifeMeetingDay;
+
+    public boolean notifyInactive() {
+        return !this.notifyActive;
+    }
 
     @SneakyThrows
     public void checkNotifyNameFilled() {
         if (this.notifyName == null || this.notifyName.isBlank()) {
             throw new ListBuilderException("Defina a propriedade 'notify.name'!");
         }
+    }
+
+    @SneakyThrows
+    public DayOfWeekEnum getChristianLifeMeetingDayEnum() {
+        if (this.notifyChristianLifeMeetingDay == null
+                || this.notifyChristianLifeMeetingDay.isBlank()) {
+            throw new ListBuilderException(
+                    "Defina a propriedade 'notify.christianlife.meeting.day'!");
+        }
+
+        var meetingDay = AppUtils.removeAccents(this.notifyChristianLifeMeetingDay);
+        DayOfWeekEnum meetingDayEnum;
+        try {
+            meetingDayEnum = DayOfWeekEnum.valueOf(meetingDay.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new ListBuilderException(
+                    "Propriedade 'notify.christianlife.midweek.meeting.day' não é um Dia da Semana Válido!");
+        }
+
+        return meetingDayEnum;
     }
 }

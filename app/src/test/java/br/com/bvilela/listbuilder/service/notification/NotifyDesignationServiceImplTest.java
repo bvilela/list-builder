@@ -32,7 +32,7 @@ class NotifyDesignationServiceImplTest {
     @Test
     void getNotifyPresidentInactive() {
         var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
-        var events = service.getNotifyPresident(dto);
+        var events = service.createPresidentEvents(dto);
         Assertions.assertTrue(CollectionUtils.isEmpty(events));
     }
 
@@ -41,7 +41,7 @@ class NotifyDesignationServiceImplTest {
         var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
         setNotifyName(dto.getPresident().get(0).getName());
         setNotifyDesignationTypeActive(List.of(NotifDesignacaoEntityEnum.PRESIDENT.getLabel()));
-        var events = service.getNotifyPresident(dto);
+        var events = service.createPresidentEvents(dto);
         Assertions.assertFalse(CollectionUtils.isEmpty(events));
     }
 
@@ -50,14 +50,14 @@ class NotifyDesignationServiceImplTest {
         var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
         setNotifyName("notFound");
         setNotifyDesignationTypeActive(List.of(NotifDesignacaoEntityEnum.PRESIDENT.getLabel()));
-        var events = service.getNotifyPresident(dto);
+        var events = service.createPresidentEvents(dto);
         Assertions.assertTrue(CollectionUtils.isEmpty(events));
     }
 
     @Test
     void getNotifyReaderInactive() {
         var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
-        var events = service.getNotifyReader(dto);
+        var events = service.createReaderEvents(dto);
         Assertions.assertTrue(CollectionUtils.isEmpty(events));
     }
 
@@ -66,7 +66,7 @@ class NotifyDesignationServiceImplTest {
         var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
         setNotifyName(dto.getReaderWatchtower().get(0).getName());
         setNotifyDesignationTypeActive(List.of(NotifDesignacaoEntityEnum.READER.getLabel()));
-        var events = service.getNotifyReader(dto);
+        var events = service.createReaderEvents(dto);
         Assertions.assertFalse(CollectionUtils.isEmpty(events));
     }
 
@@ -75,14 +75,14 @@ class NotifyDesignationServiceImplTest {
         var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
         setNotifyName("notFound");
         setNotifyDesignationTypeActive(List.of(NotifDesignacaoEntityEnum.READER.getLabel()));
-        var events = service.getNotifyReader(dto);
+        var events = service.createReaderEvents(dto);
         Assertions.assertTrue(CollectionUtils.isEmpty(events));
     }
 
     @Test
     void getNotifyAudioVideoInactive() {
         var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
-        var events = service.getNotifyAudioVideo(dto);
+        var events = service.createAudioVideoEvents(dto);
         Assertions.assertTrue(CollectionUtils.isEmpty(events));
     }
 
@@ -92,7 +92,7 @@ class NotifyDesignationServiceImplTest {
         var audioVideoFirstName = dto.getAudioVideo().get(0).getName().split(" e ")[0];
         setNotifyName(audioVideoFirstName);
         setNotifyDesignationTypeActive(List.of(NotifDesignacaoEntityEnum.AUDIO_VIDEO.getLabel()));
-        var events = service.getNotifyAudioVideo(dto);
+        var events = service.createAudioVideoEvents(dto);
         Assertions.assertFalse(CollectionUtils.isEmpty(events));
     }
 
@@ -101,7 +101,7 @@ class NotifyDesignationServiceImplTest {
         var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
         setNotifyName("notFound");
         setNotifyDesignationTypeActive(List.of(NotifDesignacaoEntityEnum.AUDIO_VIDEO.getLabel()));
-        var events = service.getNotifyAudioVideo(dto);
+        var events = service.createAudioVideoEvents(dto);
         Assertions.assertTrue(CollectionUtils.isEmpty(events));
     }
 

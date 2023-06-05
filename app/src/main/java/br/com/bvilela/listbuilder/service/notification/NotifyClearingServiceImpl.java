@@ -6,17 +6,15 @@ import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
+import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NotifyClearingServiceImpl implements NotifyClearingService {
@@ -24,14 +22,19 @@ public class NotifyClearingServiceImpl implements NotifyClearingService {
     private final NotifyProperties properties;
 
     @Override
-    public List<CalendarEvent> getNotifyClearing(FinalListLimpezaDTO limpezaDto, int layout) {
-        if (layout == 1) {
-            return createEventsLimpezaLayout1(limpezaDto);
+    public List<CalendarEvent> createEvents(FinalListLimpezaDTO dto, int layout) {
+        if (properties.notifyInactive()) {
+            return Collections.emptyList();
         }
 
-        return createEventsLimpezaLayout2(limpezaDto);
-    }
+        properties.checkNotifyNameFilled();
 
+        var events =
+                layout == 1 ? createEventsLimpezaLayout1(dto) : createEventsLimpezaLayout2(dto);
+        events.add(createDoNextListEvent(dto));
+
+        return events;
+    }
 
     private List<CalendarEvent> createEventsLimpezaLayout1(FinalListLimpezaDTO limpezaDto) {
         List<CalendarEvent> listNotification = new ArrayList<>();
@@ -101,10 +104,14 @@ public class NotifyClearingServiceImpl implements NotifyClearingService {
         return listNotification;
     }
 
-    @Override
-    public LocalDate getDateDoNextListEvent(FinalListLimpezaDTO limpezaDto) {
-        return limpezaDto.getItemsLayout2().isEmpty() ?
-                limpezaDto.getItems().get(limpezaDto.getItems().size()-1).getDate() :
-                limpezaDto.getItemsLayout2().get(limpezaDto.getItemsLayout2().size()-1).getDate2();
+    private CalendarEvent createDoNextListEvent(FinalListLimpezaDTO limpezaDto) {
+        var notifyDate =
+                limpezaDto.getItemsLayout2().isEmpty()
+                        ? limpezaDto.getItems().get(limpezaDto.getItems().size() - 1).getDate()
+                        : limpezaDto
+                                .getItemsLayout2()
+                                .get(limpezaDto.getItemsLayout2().size() - 1)
+                                .getDate2();
+        return NotifyUtils.createDoNextListEvent(ListTypeEnum.LIMPEZA, notifyDate);
     }
 }

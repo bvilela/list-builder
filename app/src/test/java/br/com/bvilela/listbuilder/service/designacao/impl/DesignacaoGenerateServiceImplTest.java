@@ -15,7 +15,7 @@ import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.GroupService;
 import br.com.bvilela.listbuilder.service.designacao.DesignacaoCounterService;
 import br.com.bvilela.listbuilder.service.designacao.DesignacaoWriterService;
-import br.com.bvilela.listbuilder.service.notification.NotifyService;
+import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -42,7 +42,7 @@ class DesignacaoGenerateServiceImplTest
 
     @Mock private DesignacaoWriterService writerService;
 
-    @Mock private NotifyService notificationService;
+    @Mock private SendNotificationService notificationService;
 
     @Mock private DesignacaoCounterService counterService;
 

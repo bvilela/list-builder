@@ -8,7 +8,7 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.assistencia.AssistenciaWriterService;
-import br.com.bvilela.listbuilder.service.notification.NotifyService;
+import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.validator.AssistenciaValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -23,7 +23,7 @@ public class AssistenciaGenerateServiceImpl implements BaseGenerateService {
     private final AppProperties properties;
     private final DateService dateService;
     private final AssistenciaWriterService writerService;
-    private final NotifyService notificationService;
+    private final SendNotificationService notificationService;
 
     @Override
     public ListTypeEnum getListType() {

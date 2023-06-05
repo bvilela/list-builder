@@ -13,7 +13,7 @@ import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.GroupService;
 import br.com.bvilela.listbuilder.service.designacao.DesignacaoCounterService;
 import br.com.bvilela.listbuilder.service.designacao.DesignacaoWriterService;
-import br.com.bvilela.listbuilder.service.notification.NotifyService;
+import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.utils.DateUtils;
 import br.com.bvilela.listbuilder.utils.FileUtils;
 import br.com.bvilela.listbuilder.validator.DesignacaoValidator;
@@ -38,7 +38,7 @@ public class DesignacaoGenerateServiceImpl implements BaseGenerateService {
     private final GroupService groupService;
     private final DesignacaoWriterService writerService;
     private final DesignacaoCounterService counterService;
-    private final NotifyService notificationService;
+    private final SendNotificationService notificationService;
 
     @Override
     public ListTypeEnum getListType() {

@@ -13,7 +13,7 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.impl.DateServiceImpl;
 import br.com.bvilela.listbuilder.service.impl.GroupServiceImpl;
-import br.com.bvilela.listbuilder.service.notification.NotifyService;
+import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +48,7 @@ class LimpezaGenerateServiceImplTest
 
     @Mock private LimpezaWriterServiceImpl writerService;
 
-    @Mock private NotifyService notificationService;
+    @Mock private SendNotificationService notificationService;
 
     public LimpezaGenerateServiceImplTest() {
         super(ListTypeEnum.LIMPEZA, FileInputDataLimpezaDtoBuilder.create());

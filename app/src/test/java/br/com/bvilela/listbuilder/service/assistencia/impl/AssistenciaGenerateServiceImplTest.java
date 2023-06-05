@@ -11,7 +11,7 @@ import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.assistencia.AssistenciaWriterService;
-import br.com.bvilela.listbuilder.service.notification.NotifyService;
+import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.SneakyThrows;
@@ -43,7 +43,7 @@ class AssistenciaGenerateServiceImplTest
 
     @Mock private AssistenciaWriterService writerService;
 
-    @Mock private NotifyService notificationService;
+    @Mock private SendNotificationService notificationService;
 
     public AssistenciaGenerateServiceImplTest() {
         super(ListTypeEnum.ASSISTENCIA, FileInputDataAssistenciaDtoBuilder.create());

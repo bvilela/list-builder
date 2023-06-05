@@ -19,7 +19,7 @@ import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
-import br.com.bvilela.listbuilder.service.notification.NotifyService;
+import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaExtractService;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaWriterService;
 import java.time.LocalDate;
@@ -54,7 +54,7 @@ class VidaCristaGenerateServiceImplTest
 
     @Mock private VidaCristaWriterService writerService;
 
-    @Mock private NotifyService notificationService;
+    @Mock private SendNotificationService notificationService;
 
     public VidaCristaGenerateServiceImplTest() {
         super(

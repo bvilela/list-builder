@@ -1,6 +1,7 @@
 package br.com.bvilela.listbuilder.service.notification;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -21,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,15 +32,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class NotifyServiceImplTest {
+class SendNotificationServiceImplTest {
 
-    @InjectMocks private NotifyServiceImpl service;
+    @InjectMocks private SendNotificationServiceImpl service;
 
-    @InjectMocks private NotifyProperties notifProperties;
+    @InjectMocks private NotifyProperties notifProperties; // TODO: remove
 
     @Mock private NotifyDesignationServiceImpl notifyDesignationService;
 
     @Mock private NotifyClearingServiceImpl notifyClearingService;
+
+    @Mock private NotifyAudienceServiceImpl notifyAudienceService;
+
+    @Mock private NotifyChristianLifeServiceImpl notifyChristianLifeService;
 
     @Mock private GoogleCalendarCreateService calendarService;
 
@@ -75,8 +79,13 @@ class NotifyServiceImplTest {
     @BeforeEach
     void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
-        service = new NotifyServiceImpl(
-                notifProperties, notifyDesignationService, notifyClearingService, calendarService);
+        service =
+                new SendNotificationServiceImpl(
+                        notifyDesignationService,
+                        notifyClearingService,
+                        notifyAudienceService,
+                        notifyChristianLifeService,
+                        calendarService);
     }
 
     // *********************** ASSISTENCIA *********************** \\
@@ -100,7 +109,7 @@ class NotifyServiceImplTest {
     @Test
     void shouldLimpezaNotifActiveTrueNotifNameNull() {
         setNotifyActive();
-        Assertions.assertThrows(
+        assertThrows(
                 ListBuilderException.class, () -> service.limpeza(dtoLimpeza, LIMPEZA_LAYOUT2));
     }
 
@@ -169,8 +178,7 @@ class NotifyServiceImplTest {
     @Test
     void shouldVidaCristaNotifActiveTrueNotifNameNull() {
         setNotifyActive();
-        Assertions.assertThrows(
-                ListBuilderException.class, () -> service.vidaCrista(dtoVidaCrista));
+        assertThrows(ListBuilderException.class, () -> service.vidaCrista(dtoVidaCrista));
     }
 
     @Test
@@ -206,9 +214,8 @@ class NotifyServiceImplTest {
         setNotifyName(name);
         setNotifyChristianlifeMidweekMeetingDay("teste");
         var exception =
-                Assertions.assertThrows(
-                        ListBuilderException.class, () -> service.vidaCrista(dtoVidaCrista));
-        Assertions.assertEquals(
+                assertThrows(ListBuilderException.class, () -> service.vidaCrista(dtoVidaCrista));
+        assertEquals(
                 "Propriedade 'notify.christianlife.midweek.meeting.day' não é um Dia da Semana Válido!",
                 exception.getMessage());
     }
@@ -219,9 +226,8 @@ class NotifyServiceImplTest {
         var name = dtoVidaCrista.get(0).getItems().get(0).getParticipants().get(0);
         setNotifyName(name);
         var exception =
-                Assertions.assertThrows(
-                        ListBuilderException.class, () -> service.vidaCrista(dtoVidaCrista));
-        Assertions.assertEquals(
+                assertThrows(ListBuilderException.class, () -> service.vidaCrista(dtoVidaCrista));
+        assertEquals(
                 "Defina a propriedade 'notify.christianlife.midweek.meeting.day'!",
                 exception.getMessage());
     }
@@ -248,11 +254,11 @@ class NotifyServiceImplTest {
     void designationNotifyActiveSuccess() {
         setNotifyActive();
         setNotifyName("test");
-        when(notifyDesignationService.getNotifyPresident(any(DesignacaoWriterDTO.class)))
+        when(notifyDesignationService.createPresidentEvents(any(DesignacaoWriterDTO.class)))
                 .thenReturn(Collections.emptyList());
-        when(notifyDesignationService.getNotifyReader(any(DesignacaoWriterDTO.class)))
+        when(notifyDesignationService.createReaderEvents(any(DesignacaoWriterDTO.class)))
                 .thenReturn(Collections.emptyList());
-        when(notifyDesignationService.getNotifyAudioVideo(any(DesignacaoWriterDTO.class)))
+        when(notifyDesignationService.createAudioVideoEvents(any(DesignacaoWriterDTO.class)))
                 .thenReturn(Collections.emptyList());
         var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
         assertDoesNotThrow(() -> service.designacao(dto));

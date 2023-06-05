@@ -6,6 +6,7 @@ import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
 import br.com.bvilela.listbuilder.enuns.DesignacaoEntityEnum;
+import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.enuns.NotifDesignacaoEntityEnum;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -25,8 +26,30 @@ public class NotifyDesignationServiceImpl implements NotifyDesignationService {
     private final NotifyProperties properties;
 
     @Override
-    public List<CalendarEvent> getNotifyPresident(DesignacaoWriterDTO dto) {
+    public List<CalendarEvent> createEvents(DesignacaoWriterDTO dto) {
+        if (properties.notifyInactive()) {
+            return Collections.emptyList();
+        }
+
+        properties.checkNotifyNameFilled();
+
+        var presidentEvents = createPresidentEvents(dto);
+        var readerEvents = createReaderEvents(dto);
+        var audioVideoEvents = createAudioVideoEvents(dto);
+        var nextListEvent = createDoNextListEvent(dto);
+
+        List<CalendarEvent> events = new ArrayList<>();
+        events.addAll(presidentEvents);
+        events.addAll(readerEvents);
+        events.addAll(audioVideoEvents);
+        events.add(nextListEvent);
+
+        return events;
+    }
+
+    public List<CalendarEvent> createPresidentEvents(DesignacaoWriterDTO dto) {
         var entity = NotifDesignacaoEntityEnum.PRESIDENT;
+
         if (notifDesignationEntityInactive(entity)) {
             logNotifyInative(entity);
             return Collections.emptyList();
@@ -42,9 +65,9 @@ public class NotifyDesignationServiceImpl implements NotifyDesignationService {
         return createDesignationEvents(president, DesignacaoEntityEnum.PRESIDENT.getLabel());
     }
 
-    @Override
-    public List<CalendarEvent> getNotifyReader(DesignacaoWriterDTO dto) {
+    public List<CalendarEvent> createReaderEvents(DesignacaoWriterDTO dto) {
         var entity = NotifDesignacaoEntityEnum.READER;
+
         if (notifDesignationEntityInactive(entity)) {
             logNotifyInative(entity);
             return Collections.emptyList();
@@ -62,9 +85,9 @@ public class NotifyDesignationServiceImpl implements NotifyDesignationService {
         return createDesignationEvents(readers, "Leitura");
     }
 
-    @Override
-    public List<CalendarEvent> getNotifyAudioVideo(DesignacaoWriterDTO dto) {
+    public List<CalendarEvent> createAudioVideoEvents(DesignacaoWriterDTO dto) {
         var entity = NotifDesignacaoEntityEnum.AUDIO_VIDEO;
+
         if (notifDesignationEntityInactive(entity)) {
             logNotifyInative(entity);
             return Collections.emptyList();
@@ -72,6 +95,11 @@ public class NotifyDesignationServiceImpl implements NotifyDesignationService {
 
         var audioVideo = dto.getAudioVideo().stream().filter(this::filterByFirstName).toList();
         return createDesignationEvents(audioVideo, "Som");
+    }
+
+    public CalendarEvent createDoNextListEvent(DesignacaoWriterDTO dto) {
+        var dateNotify = dto.getPresident().get(dto.getPresident().size() - 1).getDate();
+        return NotifyUtils.createDoNextListEvent(ListTypeEnum.DESIGNACAO, dateNotify);
     }
 
     private void logNotifyInative(NotifDesignacaoEntityEnum entity) {

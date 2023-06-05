@@ -13,7 +13,7 @@ import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.GroupService;
 import br.com.bvilela.listbuilder.service.limpeza.LimpezaWriterService;
-import br.com.bvilela.listbuilder.service.notification.NotifyService;
+import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.validator.LimpezaValidator;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
     private final LimpezaWriterService writerService;
     private final DateService dateService;
     private final GroupService groupService;
-    private final NotifyService notificationService;
+    private final SendNotificationService notificationService;
 
     @Override
     public ListTypeEnum getListType() {
