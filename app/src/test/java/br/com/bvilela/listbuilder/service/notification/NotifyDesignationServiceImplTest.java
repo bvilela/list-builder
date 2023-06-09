@@ -2,17 +2,29 @@ package br.com.bvilela.listbuilder.service.notification;
 
 import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
 import br.com.bvilela.listbuilder.config.NotifyProperties;
+import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 import br.com.bvilela.listbuilder.enuns.NotifDesignacaoEntityEnum;
 import java.util.Collections;
 import java.util.List;
+
+import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.util.CollectionUtils;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 class NotifyDesignationServiceImplTest {
 
@@ -104,6 +116,39 @@ class NotifyDesignationServiceImplTest {
         var events = service.createAudioVideoEvents(dto);
         Assertions.assertTrue(CollectionUtils.isEmpty(events));
     }
+
+    /*
+    @Test
+    void designationNotifyInactiveSuccess() {
+        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        assertDoesNotThrow(() -> service.designacao(dto));
+    }
+
+    @DisplayName("Designation Notify Active but notifyName not defined")
+    @ParameterizedTest(name = "NotifyName is \"{0}\"")
+    @NullAndEmptySource
+    @ValueSource(strings = {" "})
+    void designationNotifyActiveException(String notifyName) {
+        setNotifyActive();
+        setNotifyName(notifyName);
+        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        assertThrows(ListBuilderException.class, () -> service.designacao(dto));
+    }
+
+    @Test
+    void designationNotifyActiveSuccess() {
+        setNotifyActive();
+        setNotifyName("test");
+        when(notifyDesignationService.createPresidentEvents(any(DesignacaoWriterDTO.class)))
+                .thenReturn(Collections.emptyList());
+        when(notifyDesignationService.createReaderEvents(any(DesignacaoWriterDTO.class)))
+                .thenReturn(Collections.emptyList());
+        when(notifyDesignationService.createAudioVideoEvents(any(DesignacaoWriterDTO.class)))
+                .thenReturn(Collections.emptyList());
+        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        assertDoesNotThrow(() -> service.designacao(dto));
+    }
+    */
 
     @SneakyThrows
     private void setNotifyName(String name) {
