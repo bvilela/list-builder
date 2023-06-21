@@ -101,7 +101,7 @@ public final class PDFWriterUtilsImpl implements WriterUtils<Document> {
             var imageUrl = FileUtils.getClassPathImageHeader(listType).getURL();
             Image image = getImage(listType.getHeader(), imageUrl);
             document.add(image);
-            document.add(new Paragraph(" "));
+            // document.add(new Paragraph(" ")); // TODO: ver como afeta as outros listas
 
         } catch (DocumentException | IOException e) {
             throw new ListBuilderException(

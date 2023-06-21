@@ -16,4 +16,8 @@ public class AppProperties {
 
     @Value("${layout.limpeza}")
     private int layoutLimpeza;
+
+    @Value("${audience.layout:1}")
+    private int layoutAudience;
+
 }

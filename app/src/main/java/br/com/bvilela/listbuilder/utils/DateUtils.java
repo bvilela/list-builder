@@ -85,6 +85,10 @@ public final class DateUtils {
         return format(date, "dd 'de' MMMM");
     }
 
+    public static String formatMMMMyyyy(LocalDate date) {
+        return format(date, "MMMM 'de' yyyy");
+    }
+
     public static String getNameMonthPtByOrdinal(int ordinal) {
         var month = StringUtils.leftPad(String.valueOf(ordinal), 2, "0");
         var date = DateUtils.parse("01-" + month + "-2022");

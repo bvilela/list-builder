@@ -15,6 +15,8 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Slf4j
 @Service("ASSISTENCIA")
 @RequiredArgsConstructor
@@ -22,8 +24,8 @@ public class AudienceGenerateServiceImpl implements BaseGenerateService {
 
     private final AppProperties properties;
     private final DateService dateService;
-    private final AudienceWriterService writerService;
     private final SendNotificationService notificationService;
+    private final Map<String, AudienceWriterService> writerServiceMap;
 
     @Override
     public ListTypeEnum getListType() {
@@ -46,6 +48,7 @@ public class AudienceGenerateServiceImpl implements BaseGenerateService {
                 throw new ListBuilderException(MessageConfig.LIST_DATE_EMPTY);
             }
 
+            var writerService = writerServiceMap.get("LAYOUT_" + properties.getLayoutAudience());
             writerService.writerPDF(listDates);
 
             notificationService.assistencia(listDates);

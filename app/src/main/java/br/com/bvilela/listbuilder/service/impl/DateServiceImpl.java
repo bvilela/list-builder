@@ -42,7 +42,11 @@ public class DateServiceImpl implements DateService {
         var list2 =
                 generateListDates(
                         new DateServiceInputDTO(list.get(list.size() - 1).getDate(), dto));
+        var list3 =
+                generateListDates(
+                        new DateServiceInputDTO(list2.get(list2.size() - 1).getDate(), dto));  //TODO: remover
         list.addAll(list2);
+        list.addAll(list3); //TODO: remover
         return list.stream().map(ItemDateDTO::getDate).toList();
     }
 

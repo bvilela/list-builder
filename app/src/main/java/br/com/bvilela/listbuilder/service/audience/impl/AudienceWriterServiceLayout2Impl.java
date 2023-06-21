@@ -17,18 +17,21 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+
 import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.springframework.stereotype.Service;
 
-@Service
+@Service("LAYOUT_2")
 @RequiredArgsConstructor
-public class AudienceWriterServiceImpl implements AudienceWriterService {
+public class AudienceWriterServiceLayout2Impl implements AudienceWriterService {
 
     private final AppProperties properties;
 
@@ -56,28 +59,23 @@ public class AudienceWriterServiceImpl implements AudienceWriterService {
 
             pdfUtils.addImageHeader(document, LIST_TYPE);
 
-            float[] columnsWidth = new float[] {155, 155, 200};
+            PdfPTable table = createPdfPTable();
 
-            PdfPTable table = new PdfPTable(columnsWidth.length);
-            table.setTotalWidth(columnsWidth);
-            table.setLockedWidth(true);
-
-            int count = 0;
+            Month currentMonth = null;
             for (LocalDate date : listDates) {
-                if (count == 0) {
-                    setHeader(columnsWidth, table);
+
+                if (changeMonth(currentMonth, date)) {
+                    addBlankRow(table, 12);
+                    setMonthLabel(table, date);
+                    addBlankRow(table, 4);
+                    setTableHeader(table);
                     addBlankRow(table, 2);
+                    currentMonth = date.getMonth();
                 }
 
-                count++;
                 addDayOfWeekLabel(table, date);
                 addDateLabel(table, date);
-                table.addCell(new PdfPCell());
-
-                if (count == 2) {
-                    count = 0;
-                    addBlankRow(table, 10);
-                }
+                addBlankCell(table);
             }
 
             document.add(table);
@@ -88,24 +86,45 @@ public class AudienceWriterServiceImpl implements AudienceWriterService {
         }
     }
 
-    private void addDateLabel(PdfPTable table, LocalDate date) {
-        String formattedDate = DateUtils.formatDDMMM(date);
-        var phrase = new Phrase();
-        phrase.setFont(fontDefault);
-        phrase.add(formattedDate);
-        PdfPCell cell = new PdfPCell(phrase);
-        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+    private boolean changeMonth(Month currentMonth, LocalDate date) {
+        return !date.getMonth().equals(currentMonth);
+    }
+
+    @SneakyThrows
+    private static PdfPTable createPdfPTable() {
+        float[] columnsWidth = new float[] {155, 155, 200}; //160, 350
+        PdfPTable table = new PdfPTable(columnsWidth.length);
+        table.setTotalWidth(columnsWidth);
+        table.setLockedWidth(true);
+        return table;
+    }
+
+    private void setMonthLabel(PdfPTable table, LocalDate date) {
+        var formattedDate = StringUtils.capitalize(DateUtils.formatMMMMyyyy(date));
+        var paragraph = pdfUtils.createParagraphBold16(formattedDate);
+        PdfPCell cell = new PdfPCell(paragraph);
+        cell.setColspan(table.getNumberOfColumns());
+        cell.setBorder(Rectangle.NO_BORDER);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        cell.setPaddingTop(2);
-        cell.setPaddingBottom(4);
-        cell.setFixedHeight(20);
         table.addCell(cell);
     }
 
+    private void addDateLabel(PdfPTable table, LocalDate date) {
+        addLabel(table, DateUtils.formatDDMMM(date));
+    }
+
     private void addDayOfWeekLabel(PdfPTable table, LocalDate date) {
+        addLabel(table, DayOfWeekEnum.getByDayOfWeek(date.getDayOfWeek()).getName());
+    }
+
+    private void addBlankCell(PdfPTable table) {
+        table.addCell(new PdfPCell());
+    }
+
+    private void addLabel(PdfPTable table, String text) {
         var phrase = new Phrase();
         phrase.setFont(fontDefault);
-        phrase.add(DayOfWeekEnum.getByDayOfWeek(date.getDayOfWeek()).getName());
+        phrase.add(text);
         PdfPCell cell = new PdfPCell(phrase);
         cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -118,13 +137,13 @@ public class AudienceWriterServiceImpl implements AudienceWriterService {
     private void addBlankRow(PdfPTable table, float height) {
         PdfPCell blankRow = new PdfPCell(new Phrase("\n"));
         blankRow.setFixedHeight(height);
-        blankRow.setColspan(3);
+        blankRow.setColspan(table.getNumberOfColumns());
         blankRow.setBorder(Rectangle.NO_BORDER);
         table.addCell(blankRow);
     }
 
-    private void setHeader(float[] columnsWidth, PdfPTable table) {
-        for (int i = 0; i < columnsWidth.length; i++) {
+    private void setTableHeader(PdfPTable table) {
+        for (int i = 0; i < table.getNumberOfColumns(); i++) {
             var phrase = new Phrase();
             var font = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD, BaseColor.WHITE);
             phrase.setFont(font);
