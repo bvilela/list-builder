@@ -5,7 +5,7 @@ import br.com.bvilela.listbuilder.exception.listtype.InvalidListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.RequiredListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
-import br.com.bvilela.listbuilder.service.assistencia.impl.AssistenciaGenerateServiceImpl;
+import br.com.bvilela.listbuilder.service.audience.impl.AudienceGenerateServiceImpl;
 import br.com.bvilela.listbuilder.service.limpeza.impl.LimpezaGenerateServiceImpl;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,7 @@ class OrchestratorServiceImplTest {
 
     @Mock private LimpezaGenerateServiceImpl limpezaService;
 
-    @Mock private AssistenciaGenerateServiceImpl assistenciaService;
+    @Mock private AudienceGenerateServiceImpl assistenciaService;
 
     @BeforeEach
     public void setup() {

@@ -2,7 +2,7 @@ package br.com.bvilela.listbuilder.service.impl;
 
 import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
 import br.com.bvilela.listbuilder.dto.ItemDateDTO;
-import br.com.bvilela.listbuilder.dto.assistencia.FileInputDataAssistenciaDTO;
+import br.com.bvilela.listbuilder.dto.audience.FileInputDataAudienceDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -142,7 +142,7 @@ class DateServiceImplTest {
                 };
         var expected = listLocalDate(matrix);
 
-        var fileInputData = new FileInputDataAssistenciaDTO();
+        var fileInputData = new FileInputDataAudienceDTO();
         fileInputData.setLastDate("07-06-2022");
         fileInputData.setMeetingDayMidweek("terca");
         fileInputData.setMeetingDayWeekend("sabado");
@@ -163,7 +163,7 @@ class DateServiceImplTest {
                 };
         var expected = listLocalDate(matrix);
 
-        var fileInputData = new FileInputDataAssistenciaDTO();
+        var fileInputData = new FileInputDataAudienceDTO();
         fileInputData.setLastDate("29-03-2022");
         fileInputData.setMeetingDayMidweek("terca");
         fileInputData.setMeetingDayWeekend("sabado");
@@ -184,7 +184,7 @@ class DateServiceImplTest {
                 };
         var expected = listLocalDate(matrix);
 
-        var fileInputData = new FileInputDataAssistenciaDTO();
+        var fileInputData = new FileInputDataAudienceDTO();
         fileInputData.setLastDate("29-10-2022");
         fileInputData.setMeetingDayMidweek("terca");
         fileInputData.setMeetingDayWeekend("sabado");
@@ -205,7 +205,7 @@ class DateServiceImplTest {
                 };
         var expected = listLocalDate(matrix);
 
-        var fileInputData = new FileInputDataAssistenciaDTO();
+        var fileInputData = new FileInputDataAudienceDTO();
         fileInputData.setLastDate("29-10-2022");
         fileInputData.setMeetingDayMidweek("quarta");
         fileInputData.setMeetingDayWeekend("domingo");
@@ -223,7 +223,7 @@ class DateServiceImplTest {
                 };
         var expected = listLocalDate(matrix);
 
-        var fileInputData = new FileInputDataAssistenciaDTO();
+        var fileInputData = new FileInputDataAudienceDTO();
         fileInputData.setLastDate("02-10-2022");
         fileInputData.setMeetingDayMidweek("quarta");
         fileInputData.setMeetingDayWeekend("domingo");

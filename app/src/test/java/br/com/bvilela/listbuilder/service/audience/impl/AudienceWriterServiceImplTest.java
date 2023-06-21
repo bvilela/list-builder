@@ -1,4 +1,4 @@
-package br.com.bvilela.listbuilder.service.assistencia.impl;
+package br.com.bvilela.listbuilder.service.audience.impl;
 
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.utils.TestUtils;
@@ -16,9 +16,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-class AssistenciaWriterServiceImplTest {
+class AudienceWriterServiceImplTest {
 
-    @InjectMocks private AssistenciaWriterServiceImpl service;
+    @InjectMocks private AudienceWriterServiceImpl service;
 
     @InjectMocks private AppProperties properties;
 
@@ -28,7 +28,7 @@ class AssistenciaWriterServiceImplTest {
         MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
         FieldUtils.writeField(properties, "outputDir", pathOutput, true);
-        service = new AssistenciaWriterServiceImpl(properties);
+        service = new AudienceWriterServiceImpl(properties);
     }
 
     @AfterAll

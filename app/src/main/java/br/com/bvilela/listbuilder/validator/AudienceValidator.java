@@ -1,15 +1,15 @@
 package br.com.bvilela.listbuilder.validator;
 
 import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
-import br.com.bvilela.listbuilder.dto.assistencia.FileInputDataAssistenciaDTO;
+import br.com.bvilela.listbuilder.dto.audience.FileInputDataAudienceDTO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public final class AssistenciaValidator {
+public final class AudienceValidator {
 
-    private AssistenciaValidator() {}
+    private AudienceValidator() {}
 
-    public static DateServiceInputDTO validAndConvertData(FileInputDataAssistenciaDTO dto) {
+    public static DateServiceInputDTO validAndConvertData(FileInputDataAudienceDTO dto) {
         log.info("Validando dados de entrada");
 
         GenericValidator.validateDto(dto);

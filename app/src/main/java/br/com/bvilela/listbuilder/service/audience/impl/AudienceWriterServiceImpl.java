@@ -1,10 +1,10 @@
-package br.com.bvilela.listbuilder.service.assistencia.impl;
+package br.com.bvilela.listbuilder.service.audience.impl;
 
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import br.com.bvilela.listbuilder.service.assistencia.AssistenciaWriterService;
+import br.com.bvilela.listbuilder.service.audience.AudienceWriterService;
 import br.com.bvilela.listbuilder.utils.DateUtils;
 import br.com.bvilela.listbuilder.utils.FileUtils;
 import br.com.bvilela.listbuilder.utils.impl.PDFWriterUtilsImpl;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AssistenciaWriterServiceImpl implements AssistenciaWriterService {
+public class AudienceWriterServiceImpl implements AudienceWriterService {
 
     private final AppProperties properties;
 

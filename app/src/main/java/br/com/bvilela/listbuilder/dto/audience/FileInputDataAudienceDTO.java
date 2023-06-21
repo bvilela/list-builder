@@ -1,4 +1,4 @@
-package br.com.bvilela.listbuilder.dto.assistencia;
+package br.com.bvilela.listbuilder.dto.audience;
 
 import br.com.bvilela.listbuilder.dto.BaseFileInputDataDTO;
 import lombok.Getter;
@@ -10,4 +10,4 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-public class FileInputDataAssistenciaDTO extends BaseFileInputDataDTO {}
+public class FileInputDataAudienceDTO extends BaseFileInputDataDTO {}

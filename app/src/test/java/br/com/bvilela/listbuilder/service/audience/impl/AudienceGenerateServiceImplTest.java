@@ -1,16 +1,16 @@
-package br.com.bvilela.listbuilder.service.assistencia.impl;
+package br.com.bvilela.listbuilder.service.audience.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import br.com.bvilela.listbuilder.builder.FileInputDataAssistenciaDtoBuilder;
+import br.com.bvilela.listbuilder.builder.FileInputDataAudienceDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
-import br.com.bvilela.listbuilder.dto.assistencia.FileInputDataAssistenciaDTO;
+import br.com.bvilela.listbuilder.dto.audience.FileInputDataAudienceDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.DateService;
-import br.com.bvilela.listbuilder.service.assistencia.AssistenciaWriterService;
+import br.com.bvilela.listbuilder.service.audience.AudienceWriterService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import java.time.LocalDate;
 import java.util.List;
@@ -31,22 +31,22 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-class AssistenciaGenerateServiceImplTest
+class AudienceGenerateServiceImplTest
         extends BaseGenerateServiceTest<
-                FileInputDataAssistenciaDTO, FileInputDataAssistenciaDtoBuilder> {
+        FileInputDataAudienceDTO, FileInputDataAudienceDtoBuilder> {
 
-    @InjectMocks private AssistenciaGenerateServiceImpl service;
+    @InjectMocks private AudienceGenerateServiceImpl service;
 
     @InjectMocks private AppProperties properties;
 
     @Mock private DateService dateService;
 
-    @Mock private AssistenciaWriterService writerService;
+    @Mock private AudienceWriterService writerService;
 
     @Mock private SendNotificationService notificationService;
 
-    public AssistenciaGenerateServiceImplTest() {
-        super(ListTypeEnum.ASSISTENCIA, FileInputDataAssistenciaDtoBuilder.create());
+    public AudienceGenerateServiceImplTest() {
+        super(ListTypeEnum.ASSISTENCIA, FileInputDataAudienceDtoBuilder.create());
     }
 
     @BeforeEach
@@ -55,7 +55,7 @@ class AssistenciaGenerateServiceImplTest
         MockitoAnnotations.openMocks(this);
         FieldUtils.writeField(properties, "inputDir", testUtils.getResourceDirectory(), true);
         service =
-                new AssistenciaGenerateServiceImpl(
+                new AudienceGenerateServiceImpl(
                         properties, dateService, writerService, notificationService);
     }
 
