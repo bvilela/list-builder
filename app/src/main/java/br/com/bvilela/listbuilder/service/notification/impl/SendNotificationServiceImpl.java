@@ -1,4 +1,4 @@
-package br.com.bvilela.listbuilder.service.notification;
+package br.com.bvilela.listbuilder.service.notification.impl;
 
 import br.com.bvilela.lib.model.CalendarEvent;
 import br.com.bvilela.lib.service.GoogleCalendarCreateService;
@@ -7,6 +7,8 @@ import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import java.time.LocalDate;
 import java.util.List;
+
+import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

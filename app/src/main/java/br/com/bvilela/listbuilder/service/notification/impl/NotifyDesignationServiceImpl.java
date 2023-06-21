@@ -1,4 +1,4 @@
-package br.com.bvilela.listbuilder.service.notification;
+package br.com.bvilela.listbuilder.service.notification.impl;
 
 import br.com.bvilela.lib.enuns.ColorEnum;
 import br.com.bvilela.lib.model.CalendarEvent;
@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
+
+import br.com.bvilela.listbuilder.service.notification.NotifyDesignationService;
+import br.com.bvilela.listbuilder.service.notification.NotifyUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

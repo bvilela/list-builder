@@ -1,4 +1,4 @@
-package br.com.bvilela.listbuilder.service.notification;
+package br.com.bvilela.listbuilder.service.notification.impl;
 
 import br.com.bvilela.lib.enuns.ColorEnum;
 import br.com.bvilela.lib.model.CalendarEvent;
@@ -6,6 +6,8 @@ import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
+import br.com.bvilela.listbuilder.service.notification.NotifyChristianLifeService;
+import br.com.bvilela.listbuilder.service.notification.NotifyUtils;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import br.com.bvilela.listbuilder.utils.DateUtils;
 import java.time.DayOfWeek;
