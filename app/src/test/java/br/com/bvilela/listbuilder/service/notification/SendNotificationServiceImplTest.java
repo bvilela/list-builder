@@ -17,6 +17,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -26,7 +27,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -46,7 +46,7 @@ class SendNotificationServiceImplTest {
 
     @Mock private GoogleCalendarCreateService calendarService;
 
-    private static final CalendarEvent calendarEvent = CalendarEvent
+    private static final CalendarEvent CALENDAR_EVENT = CalendarEvent
             .builder()
             .setSummary("test")
             .setDateTimeStart(LocalDateTime.now())
@@ -91,18 +91,18 @@ class SendNotificationServiceImplTest {
     @ParameterizedTest(name = "Events is \"{0}\"")
     @NullAndEmptySource
     void clearingEventsNullEmpty(List<CalendarEvent> events) {
-        int CLEARING_LAYOUT1 = 1;
+        int clearingLayout1 = 1;
         when(notifyClearingService.createEvents(any(FinalListLimpezaDTO.class), any(Integer.class))).thenReturn(events);
-        service.limpeza(clearingDTO, CLEARING_LAYOUT1);
+        service.limpeza(clearingDTO, clearingLayout1);
         verify(calendarService, never()).createEvents(events);
     }
 
     @Test
     void clearingEventsNotNullEmpty() {
-        int CLEARING_LAYOUT2 = 2;
-        List<CalendarEvent> events = List.of(calendarEvent);
+        int clearingLayout2 = 2;
+        List<CalendarEvent> events = List.of(CALENDAR_EVENT);
         when(notifyClearingService.createEvents(any(FinalListLimpezaDTO.class), any(Integer.class))).thenReturn(events);
-        service.limpeza(clearingDTO, CLEARING_LAYOUT2);
+        service.limpeza(clearingDTO, clearingLayout2);
         verify(calendarService, times(1)).createEvents(events);
     }
 
@@ -111,7 +111,7 @@ class SendNotificationServiceImplTest {
     @Test
     void audienceEventsNull() {
         var dtoAssistencia = List.of(LocalDate.now());
-        when(notifyAudienceService.createEvent(anyList())).thenReturn(null);
+        when(notifyAudienceService.createEvent(ArgumentMatchers.anyList())).thenReturn(null);
         service.assistencia(dtoAssistencia);
         verify(calendarService, never()).createEvent(null);
     }
@@ -119,9 +119,9 @@ class SendNotificationServiceImplTest {
     @Test
     void audienceEventsNotNull() {
         var dtoAssistencia = List.of(LocalDate.now());
-        when(notifyAudienceService.createEvent(anyList())).thenReturn(calendarEvent);
+        when(notifyAudienceService.createEvent(ArgumentMatchers.anyList())).thenReturn(CALENDAR_EVENT);
         service.assistencia(dtoAssistencia);
-        verify(calendarService, times(1)).createEvent(calendarEvent);
+        verify(calendarService, times(1)).createEvent(CALENDAR_EVENT);
     }
 
 
@@ -132,7 +132,7 @@ class SendNotificationServiceImplTest {
     void christianLifeEventsNullEmpty(List<CalendarEvent> events) {
         var dtoVidaCrista =
                 List.of(VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
-        when(notifyChristianLifeService.createEvents(anyList())).thenReturn(events);
+        when(notifyChristianLifeService.createEvents(ArgumentMatchers.anyList())).thenReturn(events);
         service.vidaCrista(dtoVidaCrista);
         verify(calendarService, never()).createEvents(events);
     }
@@ -141,8 +141,8 @@ class SendNotificationServiceImplTest {
     void christianLifeEventsNotNullEmpty() {
         var dtoVidaCrista =
                 List.of(VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
-        List<CalendarEvent> events = List.of(calendarEvent);
-        when(notifyChristianLifeService.createEvents(anyList())).thenReturn(events);
+        List<CalendarEvent> events = List.of(CALENDAR_EVENT);
+        when(notifyChristianLifeService.createEvents(ArgumentMatchers.anyList())).thenReturn(events);
         service.vidaCrista(dtoVidaCrista);
         verify(calendarService, times(1)).createEvents(events);
     }
@@ -160,7 +160,7 @@ class SendNotificationServiceImplTest {
     @Test
     void designationEventsNotNull() {
         var designationDTO = DesignacaoWriterDtoBuilder.create().withRandomData().build();
-        List<CalendarEvent> events = List.of(calendarEvent);
+        List<CalendarEvent> events = List.of(CALENDAR_EVENT);
         when(notifyDesignationService.createEvents(any(DesignacaoWriterDTO.class))).thenReturn(events);
         service.designacao(designationDTO);
         verify(calendarService, times(1)).createEvents(events);

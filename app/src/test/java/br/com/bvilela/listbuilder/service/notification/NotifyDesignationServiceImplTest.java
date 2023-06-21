@@ -16,10 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.util.CollectionUtils;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-
 class NotifyDesignationServiceImplTest {
 
     @InjectMocks private NotifyDesignationServiceImpl service;
