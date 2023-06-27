@@ -18,7 +18,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 class AudienceWriterServiceImplTest {
 
-    @InjectMocks private AudienceWriterServiceLayout1Impl service;
+    @InjectMocks private AudienceWriterServiceLayoutFullImpl service;
 
     @InjectMocks private AppProperties properties;
 
@@ -28,7 +28,7 @@ class AudienceWriterServiceImplTest {
         MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
         FieldUtils.writeField(properties, "outputDir", pathOutput, true);
-        service = new AudienceWriterServiceLayout1Impl(properties);
+        service = new AudienceWriterServiceLayoutFullImpl(properties);
     }
 
     @AfterAll

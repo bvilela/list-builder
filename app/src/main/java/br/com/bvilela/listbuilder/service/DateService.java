@@ -9,7 +9,7 @@ public interface DateService {
 
     List<ItemDateDTO> generateListDatesLimpeza(DateServiceInputDTO dto, int layout);
 
-    List<LocalDate> generateListDatesAssistencia(DateServiceInputDTO dto);
+    List<LocalDate> generateAudienceListDates(DateServiceInputDTO dto, int numberOfMonths);
 
     List<LocalDate> generateListDatesDesignacao(DateServiceInputDTO dto);
 }

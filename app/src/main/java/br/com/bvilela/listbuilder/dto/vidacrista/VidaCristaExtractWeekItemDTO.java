@@ -1,6 +1,6 @@
 package br.com.bvilela.listbuilder.dto.vidacrista;
 
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,10 +16,10 @@ import lombok.ToString;
 public class VidaCristaExtractWeekItemDTO {
 
     private String title;
-    private VidaCristaExtractItemType type;
+    private VidaCristaExtractItemTypeEnum type;
     private List<String> participants;
 
-    public VidaCristaExtractWeekItemDTO(String title, VidaCristaExtractItemType type) {
+    public VidaCristaExtractWeekItemDTO(String title, VidaCristaExtractItemTypeEnum type) {
         this.title = title;
         this.type = type;
     }

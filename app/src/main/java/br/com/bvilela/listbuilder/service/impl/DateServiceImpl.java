@@ -16,8 +16,9 @@ import org.springframework.stereotype.Service;
 public class DateServiceImpl implements DateService {
 
     @Override
+
     public List<ItemDateDTO> generateListDatesLimpeza(DateServiceInputDTO dto, int layout) {
-        var list = generateListDates(dto);
+        var list = generateListDates(dto, 1);
 
         if (layout == 2) {
             List<ItemDateDTO> newList = new ArrayList<>();
@@ -37,22 +38,19 @@ public class DateServiceImpl implements DateService {
     }
 
     @Override
-    public List<LocalDate> generateListDatesAssistencia(DateServiceInputDTO dto) {
-        var list = generateListDates(dto);
+    public List<LocalDate> generateAudienceListDates(DateServiceInputDTO dto, int numberOfMonths) {
+        // var list = generateListDates(dto, numberOfMonths);
+        var list = generateListDates(dto, numberOfMonths);
         var list2 =
                 generateListDates(
-                        new DateServiceInputDTO(list.get(list.size() - 1).getDate(), dto));
-        var list3 =
-                generateListDates(
-                        new DateServiceInputDTO(list2.get(list2.size() - 1).getDate(), dto));  //TODO: remover
+                        new DateServiceInputDTO(list.get(list.size() - 1).getDate(), dto), 1);
         list.addAll(list2);
-        list.addAll(list3); //TODO: remover
         return list.stream().map(ItemDateDTO::getDate).toList();
     }
 
     @Override
     public List<LocalDate> generateListDatesDesignacao(DateServiceInputDTO dto) {
-        var listDates = generateListDates(dto);
+        var listDates = generateListDates(dto, 1);
         var lastDate = listDates.get(listDates.size() - 1).getDate();
         if (lastDate.getDayOfWeek() == dto.getMidweekDayWeekEnum().getDayOfWeek()) {
             var addDate =
@@ -62,7 +60,7 @@ public class DateServiceImpl implements DateService {
         return listDates.stream().map(ItemDateDTO::getDate).toList();
     }
 
-    private List<ItemDateDTO> generateListDates(DateServiceInputDTO dto) {
+    private List<ItemDateDTO> generateListDates(DateServiceInputDTO dto, int monthsToAdd) {
 
         List<LocalDate> listDatesAddOrdered = getDatesAddOrdered(dto);
 

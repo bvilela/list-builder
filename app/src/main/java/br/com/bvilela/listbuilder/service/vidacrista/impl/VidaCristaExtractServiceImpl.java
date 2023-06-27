@@ -1,14 +1,14 @@
 package br.com.bvilela.listbuilder.service.vidacrista.impl;
 
-import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType.LABEL;
-import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType.NO_PARTICIPANTS;
-import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType.PRESIDENT;
-import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType.READ_OF_WEEK;
-import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType.WITH_PARTICIPANTS;
+import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum.LABEL;
+import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum.NO_PARTICIPANTS;
+import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum.PRESIDENT;
+import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum.READ_OF_WEEK;
+import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS;
 
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaExtractService;
 import br.com.bvilela.listbuilder.utils.DateUtils;
@@ -254,7 +254,7 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
             var itemStrong = element.select("strong:first-child");
             var text = sanitizerText(itemStrong.html());
             if (text.contains("Cântico")) {
-                VidaCristaExtractItemType type = NO_PARTICIPANTS;
+                VidaCristaExtractItemTypeEnum type = NO_PARTICIPANTS;
                 var isPrayer = element.html().contains("e oração");
                 if (isPrayer) {
                     itemStrong = element.select(STRONG);
@@ -274,7 +274,7 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
     private void addItemSongAndPrayer(
             List<VidaCristaExtractWeekItemDTO> list,
             Elements elements,
-            VidaCristaExtractItemType type) {
+            VidaCristaExtractItemTypeEnum type) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Element e : elements) {
             stringBuilder.append(sanitizerText(e.html()));
@@ -287,7 +287,7 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
     private void addItem(
             List<VidaCristaExtractWeekItemDTO> list,
             Elements elements,
-            VidaCristaExtractItemType type) {
+            VidaCristaExtractItemTypeEnum type) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Element e : elements) {
             stringBuilder.append(sanitizerText(e.html()));
@@ -301,12 +301,12 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
     private void addItem(
             List<VidaCristaExtractWeekItemDTO> list,
             Element element,
-            VidaCristaExtractItemType type) {
+            VidaCristaExtractItemTypeEnum type) {
         addItem(list, sanitizerText(element.html()), type);
     }
 
     private void addItem(
-            List<VidaCristaExtractWeekItemDTO> list, String text, VidaCristaExtractItemType type) {
+            List<VidaCristaExtractWeekItemDTO> list, String text, VidaCristaExtractItemTypeEnum type) {
         list.add(new VidaCristaExtractWeekItemDTO(text, type));
     }
 

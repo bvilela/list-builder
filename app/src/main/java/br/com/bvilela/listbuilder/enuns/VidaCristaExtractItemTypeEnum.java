@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum VidaCristaExtractItemType {
+public enum VidaCristaExtractItemTypeEnum {
     READ_OF_WEEK(false),
     PRESIDENT(true),
     LABEL(false),

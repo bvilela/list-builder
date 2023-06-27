@@ -3,7 +3,7 @@ package br.com.bvilela.listbuilder.service.vidacrista.impl;
 import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.TestUtils;
 import java.nio.file.Paths;
@@ -46,7 +46,7 @@ class VidaCristaWriterServiceImplTest {
                 List.of(VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
 
         list.get(0).getItems().stream()
-                .filter(e -> e.getType() == VidaCristaExtractItemType.LABEL)
+                .filter(e -> e.getType() == VidaCristaExtractItemTypeEnum.LABEL)
                 .findFirst()
                 .ifPresent(e -> e.setTitle("abc"));
         var exception =
@@ -61,7 +61,7 @@ class VidaCristaWriterServiceImplTest {
         List<VidaCristaExtractWeekDTO> list =
                 List.of(VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
         var newListItems = new ArrayList<>(list.get(0).getItems());
-        newListItems.removeIf(e -> e.getType() == VidaCristaExtractItemType.READ_OF_WEEK);
+        newListItems.removeIf(e -> e.getType() == VidaCristaExtractItemTypeEnum.READ_OF_WEEK);
         list.get(0).setItems(newListItems);
 
         var exception =

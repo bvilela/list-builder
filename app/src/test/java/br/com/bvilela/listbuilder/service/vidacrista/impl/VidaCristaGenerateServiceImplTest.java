@@ -17,7 +17,7 @@ import br.com.bvilela.listbuilder.dto.vidacrista.FileInputDataVidaCristaDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaExtractService;
@@ -314,7 +314,7 @@ class VidaCristaGenerateServiceImplTest
         var auxList = new ArrayList<>(week.getItems());
         auxList.add(
                 VidaCristaExtractWeekItemDtoBuilder.create()
-                        .withRandomData(VidaCristaExtractItemType.WITH_PARTICIPANTS)
+                        .withRandomData(VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS)
                         .build());
         week.setItems(auxList);
         var initialWeekItemsSize = week.getItems().size();

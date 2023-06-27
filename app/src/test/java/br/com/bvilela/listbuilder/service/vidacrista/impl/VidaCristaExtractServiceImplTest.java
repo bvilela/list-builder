@@ -1,7 +1,7 @@
 package br.com.bvilela.listbuilder.service.vidacrista.impl;
 
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import java.time.LocalDate;
 import java.util.List;
@@ -118,73 +118,73 @@ class VidaCristaExtractServiceImplTest {
         int index = 0;
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.PRESIDENT,
+                VidaCristaExtractItemTypeEnum.PRESIDENT,
                 "Presidente da Reunião");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.READ_OF_WEEK,
+                VidaCristaExtractItemTypeEnum.READ_OF_WEEK,
                 "1 SAMUEL 27-29");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Cântico 71 e oração");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.NO_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.NO_PARTICIPANTS,
                 "Comentários iniciais");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.LABEL,
+                VidaCristaExtractItemTypeEnum.LABEL,
                 "TESOUROS DA PALAVRA DE DEUS");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "\"A estratégia de guerra de Davi\"");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Joias espirituais");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Leitura da Bíblia");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.LABEL,
+                VidaCristaExtractItemTypeEnum.LABEL,
                 "FAÇA SEU MELHOR NO MINISTÉRIO");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Vídeo da primeira conversa");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Primeira conversa — designação 1");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Primeira conversa — designação 2");
         checkWeekItem(
-                week.getItems().get(index++), VidaCristaExtractItemType.LABEL, "NOSSA VIDA CRISTÃ");
+                week.getItems().get(index++), VidaCristaExtractItemTypeEnum.LABEL, "NOSSA VIDA CRISTÃ");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.NO_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.NO_PARTICIPANTS,
                 "Cântico 129");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Firmes apesar de oposição");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Estudo bíblico de congregação");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.NO_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.NO_PARTICIPANTS,
                 "Comentários finais");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Cântico 94 e oração");
     }
 
@@ -264,7 +264,7 @@ class VidaCristaExtractServiceImplTest {
     }
 
     private void checkWeekItem(
-            VidaCristaExtractWeekItemDTO item, VidaCristaExtractItemType type, String title) {
+            VidaCristaExtractWeekItemDTO item, VidaCristaExtractItemTypeEnum type, String title) {
         Assertions.assertEquals(type, item.getType());
         Assertions.assertEquals(title, item.getTitle());
         Assertions.assertNull(item.getParticipants());

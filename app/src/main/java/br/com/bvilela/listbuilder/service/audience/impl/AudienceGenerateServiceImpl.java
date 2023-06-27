@@ -3,8 +3,10 @@ package br.com.bvilela.listbuilder.service.audience.impl;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.audience.FileInputDataAudienceDTO;
+import br.com.bvilela.listbuilder.enuns.AudienceWriterLayoutEnum;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import br.com.bvilela.listbuilder.exception.WriterLayoutInvalidTypeException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.audience.AudienceWriterService;
@@ -42,16 +44,18 @@ public class AudienceGenerateServiceImpl implements BaseGenerateService {
 
             var dateServiceInputDto = AudienceValidator.validAndConvertData(dto);
 
-            var listDates = dateService.generateListDatesAssistencia(dateServiceInputDto);
+            var layoutEnum = AudienceWriterLayoutEnum.getByLayout(properties.getLayoutAudience());
+
+            var listDates = dateService
+                    .generateAudienceListDates(dateServiceInputDto, layoutEnum.getNumberOfMonth());
 
             if (listDates.isEmpty()) {
                 throw new ListBuilderException(MessageConfig.LIST_DATE_EMPTY);
             }
 
-            var writerService = writerServiceMap.get("LAYOUT_" + properties.getLayoutAudience());
-            writerService.writerPDF(listDates);
+            writerServiceMap.get(layoutEnum.name()).writerPDF(listDates);
 
-            notificationService.assistencia(listDates);
+            notificationService.audience(listDates);
 
             logFinish(log);
 

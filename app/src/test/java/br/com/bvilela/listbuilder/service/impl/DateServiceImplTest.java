@@ -147,7 +147,7 @@ class DateServiceImplTest {
         fileInputData.setMeetingDayMidweek("terca");
         fileInputData.setMeetingDayWeekend("sabado");
         var input = new DateServiceInputDTO(fileInputData);
-        var dto = service.generateListDatesAssistencia(input);
+        var dto = service.generateAudienceListDates(input, 2);
         Assertions.assertEquals(expected, dto);
     }
 
@@ -168,7 +168,7 @@ class DateServiceImplTest {
         fileInputData.setMeetingDayMidweek("terca");
         fileInputData.setMeetingDayWeekend("sabado");
         var input = new DateServiceInputDTO(fileInputData);
-        var dto = service.generateListDatesAssistencia(input);
+        var dto = service.generateAudienceListDates(input, 2);
         Assertions.assertEquals(expected, dto);
         Assertions.assertNotNull(fileInputData.toString());
         Assertions.assertNotNull(input.toString());

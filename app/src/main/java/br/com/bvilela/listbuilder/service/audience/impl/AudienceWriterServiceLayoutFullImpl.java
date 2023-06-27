@@ -26,9 +26,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-@Service("LAYOUT_1")
+@Service("FULL")
 @RequiredArgsConstructor
-public class AudienceWriterServiceLayout1Impl implements AudienceWriterService {
+public class AudienceWriterServiceLayoutFullImpl implements AudienceWriterService {
 
     private final AppProperties properties;
 

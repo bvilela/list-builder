@@ -29,9 +29,9 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
-@Service("LAYOUT_2")
+@Service("COMPACT")
 @RequiredArgsConstructor
-public class AudienceWriterServiceLayout2Impl implements AudienceWriterService {
+public class AudienceWriterServiceLayoutCompactImpl implements AudienceWriterService {
 
     private final AppProperties properties;
 

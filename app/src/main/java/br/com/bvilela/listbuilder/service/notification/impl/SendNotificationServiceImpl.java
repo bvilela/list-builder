@@ -5,13 +5,13 @@ import br.com.bvilela.lib.service.GoogleCalendarCreateService;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
-import java.time.LocalDate;
-import java.util.List;
-
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,9 +34,9 @@ public class SendNotificationServiceImpl implements SendNotificationService {
     }
 
     @Override
-    public void assistencia(List<LocalDate> dates) {
+    public void audience(List<LocalDate> dates) {
         var nextListEvent = notifyAudienceService.createEvent(dates);
-        sendEventsNullSafe(nextListEvent);
+        sendEventNullSafe(nextListEvent);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class SendNotificationServiceImpl implements SendNotificationService {
         calendarService.createEvents(events);
     }
 
-    private void sendEventsNullSafe(CalendarEvent event) {
+    private void sendEventNullSafe(CalendarEvent event) {
         if (event == null) {
             return;
         }

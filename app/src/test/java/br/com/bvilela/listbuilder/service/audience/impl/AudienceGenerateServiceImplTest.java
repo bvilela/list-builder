@@ -1,19 +1,16 @@
 package br.com.bvilela.listbuilder.service.audience.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import br.com.bvilela.listbuilder.builder.FileInputDataAudienceDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
 import br.com.bvilela.listbuilder.dto.audience.FileInputDataAudienceDTO;
+import br.com.bvilela.listbuilder.enuns.AudienceWriterLayoutEnum;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.audience.AudienceWriterService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
-import java.time.LocalDate;
-import java.util.List;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
@@ -30,6 +27,13 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootApplication
 class AudienceGenerateServiceImplTest
         extends BaseGenerateServiceTest<
@@ -41,7 +45,9 @@ class AudienceGenerateServiceImplTest
 
     @Mock private DateService dateService;
 
-    @Mock private AudienceWriterService writerService;
+    @Mock private AudienceWriterServiceLayoutFullImpl writerServiceLayoutFull;
+
+    @Mock private AudienceWriterServiceLayoutCompactImpl writerServiceLayoutCompact;
 
     @Mock private SendNotificationService notificationService;
 
@@ -54,9 +60,13 @@ class AudienceGenerateServiceImplTest
     public void setup() {
         MockitoAnnotations.openMocks(this);
         FieldUtils.writeField(properties, "inputDir", testUtils.getResourceDirectory(), true);
+        FieldUtils.writeField(properties, "layoutAudience", AudienceWriterLayoutEnum.FULL.name(), true);
+        Map<String, AudienceWriterService> writerServiceMap = new HashMap<>();
+        writerServiceMap.put(AudienceWriterLayoutEnum.FULL.name(), writerServiceLayoutFull);
+        writerServiceMap.put(AudienceWriterLayoutEnum.COMPACT.name(), writerServiceLayoutCompact);
         service =
                 new AudienceGenerateServiceImpl(
-                        properties, dateService, writerService, notificationService);
+                        properties, dateService, notificationService, writerServiceMap);
     }
 
     @Test
@@ -153,8 +163,8 @@ class AudienceGenerateServiceImplTest
     void shouldGenerateListExceptionGeneratedListIsEmpty() {
         writeFileInputFromDto(builder.withSuccess().build());
         Mockito.when(
-                        dateService.generateListDatesAssistencia(
-                                ArgumentMatchers.any(DateServiceInputDTO.class)))
+                        dateService.generateAudienceListDates(
+                                ArgumentMatchers.any(DateServiceInputDTO.class), ArgumentMatchers.any(Integer.class)))
                 .thenReturn(List.of());
         validateListBuilderException(MessageConfig.LIST_DATE_EMPTY);
     }
@@ -176,8 +186,8 @@ class AudienceGenerateServiceImplTest
                         cld(4, 30));
         writeFileInputFromDto(builder.withSuccess().build());
         Mockito.when(
-                        dateService.generateListDatesAssistencia(
-                                ArgumentMatchers.any(DateServiceInputDTO.class)))
+                        dateService.generateAudienceListDates(
+                                ArgumentMatchers.any(DateServiceInputDTO.class), ArgumentMatchers.any(Integer.class)))
                 .thenReturn(expectedList);
         Assertions.assertDoesNotThrow(() -> service.generateList());
     }

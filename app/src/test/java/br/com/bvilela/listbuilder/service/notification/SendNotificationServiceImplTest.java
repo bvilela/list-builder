@@ -112,7 +112,7 @@ class SendNotificationServiceImplTest {
     void audienceEventsNull() {
         var dtoAssistencia = List.of(LocalDate.now());
         when(notifyAudienceService.createEvent(ArgumentMatchers.anyList())).thenReturn(null);
-        service.assistencia(dtoAssistencia);
+        service.audience(dtoAssistencia);
         verify(calendarService, never()).createEvent(null);
     }
 
@@ -120,7 +120,7 @@ class SendNotificationServiceImplTest {
     void audienceEventsNotNull() {
         var dtoAssistencia = List.of(LocalDate.now());
         when(notifyAudienceService.createEvent(ArgumentMatchers.anyList())).thenReturn(CALENDAR_EVENT);
-        service.assistencia(dtoAssistencia);
+        service.audience(dtoAssistencia);
         verify(calendarService, times(1)).createEvent(CALENDAR_EVENT);
     }
 

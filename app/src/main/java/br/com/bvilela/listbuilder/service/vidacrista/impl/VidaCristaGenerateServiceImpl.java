@@ -6,7 +6,7 @@ import br.com.bvilela.listbuilder.dto.vidacrista.FileInputDataVidaCristaRenameIt
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
@@ -187,7 +187,7 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
 
         var itemsCanRenamed =
                 week.getItems().stream()
-                        .filter(e -> e.getType() == VidaCristaExtractItemType.WITH_PARTICIPANTS)
+                        .filter(e -> e.getType() == VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS)
                         .toList();
 
         var listWeekItemToRemove = new ArrayList<VidaCristaExtractWeekItemDTO>();

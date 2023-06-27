@@ -2,7 +2,7 @@ package br.com.bvilela.listbuilder.builder;
 
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import java.time.LocalDate;
 import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -43,28 +43,28 @@ public class VidaCristaExtractWeekDtoBuilder {
         this.withItems(
                 List.of(
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemType.READ_OF_WEEK)
+                                .withRandomData(VidaCristaExtractItemTypeEnum.READ_OF_WEEK)
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemType.PRESIDENT)
+                                .withRandomData(VidaCristaExtractItemTypeEnum.PRESIDENT)
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemType.LABEL)
+                                .withRandomData(VidaCristaExtractItemTypeEnum.LABEL)
                                 .withTitle("TESOUROS DA PALAVRA")
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemType.LABEL)
+                                .withRandomData(VidaCristaExtractItemTypeEnum.LABEL)
                                 .withTitle("FAÇA SEU MELHOR")
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemType.LABEL)
+                                .withRandomData(VidaCristaExtractItemTypeEnum.LABEL)
                                 .withTitle("NOSSA VIDA CRISTÃ")
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemType.NO_PARTICIPANTS)
+                                .withRandomData(VidaCristaExtractItemTypeEnum.NO_PARTICIPANTS)
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemType.WITH_PARTICIPANTS)
+                                .withRandomData(VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS)
                                 .build()));
         return this;
     }

@@ -10,7 +10,7 @@ public interface SendNotificationService {
 
     void limpeza(FinalListLimpezaDTO dto, int idLayout);
 
-    void assistencia(List<LocalDate> dates);
+    void audience(List<LocalDate> dates);
 
     void vidaCrista(List<VidaCristaExtractWeekDTO> weeks);
 
