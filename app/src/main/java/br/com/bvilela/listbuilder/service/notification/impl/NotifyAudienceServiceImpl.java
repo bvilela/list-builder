@@ -3,11 +3,10 @@ package br.com.bvilela.listbuilder.service.notification.impl;
 import br.com.bvilela.lib.model.CalendarEvent;
 import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import java.time.LocalDate;
-import java.util.List;
-
 import br.com.bvilela.listbuilder.service.notification.NotifyAudienceService;
 import br.com.bvilela.listbuilder.service.notification.NotifyUtils;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

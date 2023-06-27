@@ -33,7 +33,7 @@ public class FileInputDataVidaCristaDtoBuilder {
                         RandomStringUtils.randomAlphabetic(15),
                         RandomStringUtils.randomAlphabetic(2),
                         RandomStringUtils.randomAlphabetic(15)));
-        this.withLastDate(DateUtils.format(LocalDate.now(), "dd-MM-yyyy"));
+        this.withLastDate(DateUtils.formatDDMMyyyy(LocalDate.now()));
         this.withParticipants(
                 List.of(
                         List.of(RandomStringUtils.randomAlphabetic(2)),

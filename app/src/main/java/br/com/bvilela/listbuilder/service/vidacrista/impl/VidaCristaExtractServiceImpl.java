@@ -144,7 +144,7 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
             var month = splitted[1];
             var day1 = StringUtils.leftPad(days.split("-")[0], 2, "0");
             var day2 = StringUtils.leftPad(days.split("-")[1], 2, "0");
-            var ordinalMonth = String.valueOf(DateUtils.getMonthOrdinalByNamePT(month));
+            var ordinalMonth = String.valueOf(DateUtils.getMonthByNamePT(month).getValue());
             ordinalMonth = StringUtils.leftPad(ordinalMonth, 2, "0");
             var date1 = formatDate(day1, ordinalMonth, year);
             var date2 = formatDate(day2, ordinalMonth, year);
@@ -159,8 +159,8 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
             var month1 = splitted[1].split(splitter)[0];
             var day2 = StringUtils.leftPad(splitted[1].split(splitter)[1], 2, "0");
             var month2 = splitted[2];
-            var ordinalMonth1 = String.valueOf(DateUtils.getMonthOrdinalByNamePT(month1));
-            var ordinalMonth2 = String.valueOf(DateUtils.getMonthOrdinalByNamePT(month2));
+            var ordinalMonth1 = String.valueOf(DateUtils.getMonthByNamePT(month1).getValue());
+            var ordinalMonth2 = String.valueOf(DateUtils.getMonthByNamePT(month2).getValue());
             ordinalMonth1 = StringUtils.leftPad(ordinalMonth1, 2, "0");
             ordinalMonth2 = StringUtils.leftPad(ordinalMonth2, 2, "0");
             var date1 = formatDate(day1, ordinalMonth1, year);
@@ -179,12 +179,12 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
             var day2 = StringUtils.leftPad(day2Original.replace(".º", ""), 2, "0");
             var month2 = splitted[3];
             var year2 = splitted[4];
-            var ordinalMonth1 = String.valueOf(DateUtils.getMonthOrdinalByNamePT(month1));
-            var ordinalMonth2 = String.valueOf(DateUtils.getMonthOrdinalByNamePT(month2));
+            var ordinalMonth1 = String.valueOf(DateUtils.getMonthByNamePT(month1).getValue());
+            var ordinalMonth2 = String.valueOf(DateUtils.getMonthByNamePT(month2).getValue());
             ordinalMonth1 = StringUtils.leftPad(ordinalMonth1, 2, "0");
             ordinalMonth2 = StringUtils.leftPad(ordinalMonth2, 2, "0");
-            var date1 = formatDate(day1, ordinalMonth1, Integer.valueOf(year1));
-            var date2 = formatDate(day2, ordinalMonth2, Integer.valueOf(year2));
+            var date1 = formatDate(day1, ordinalMonth1, Integer.parseInt(year1));
+            var date2 = formatDate(day2, ordinalMonth2, Integer.parseInt(year2));
 
             return List.of(DateUtils.parse(date1), DateUtils.parse(date2));
         }
@@ -306,7 +306,9 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
     }
 
     private void addItem(
-            List<VidaCristaExtractWeekItemDTO> list, String text, VidaCristaExtractItemTypeEnum type) {
+            List<VidaCristaExtractWeekItemDTO> list,
+            String text,
+            VidaCristaExtractItemTypeEnum type) {
         list.add(new VidaCristaExtractWeekItemDTO(text, type));
     }
 

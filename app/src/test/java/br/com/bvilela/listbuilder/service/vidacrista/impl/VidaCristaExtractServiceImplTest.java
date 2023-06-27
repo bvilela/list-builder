@@ -165,7 +165,9 @@ class VidaCristaExtractServiceImplTest {
                 VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Primeira conversa — designação 2");
         checkWeekItem(
-                week.getItems().get(index++), VidaCristaExtractItemTypeEnum.LABEL, "NOSSA VIDA CRISTÃ");
+                week.getItems().get(index++),
+                VidaCristaExtractItemTypeEnum.LABEL,
+                "NOSSA VIDA CRISTÃ");
         checkWeekItem(
                 week.getItems().get(index++),
                 VidaCristaExtractItemTypeEnum.NO_PARTICIPANTS,

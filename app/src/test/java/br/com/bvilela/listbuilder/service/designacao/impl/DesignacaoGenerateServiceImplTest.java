@@ -7,7 +7,6 @@ import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoList
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoReaderDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
@@ -22,10 +21,8 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 class DesignacaoGenerateServiceImplTest
@@ -466,17 +463,6 @@ class DesignacaoGenerateServiceImplTest
         validateListBuilderException("Leitor A Sentinela: ".concat(MessageConfig.LAST_REQUIRED));
     }
     // *************************** READER - FIM *************************** \\
-
-    @Test
-    void shouldGenerateListDatesEmptyException() {
-        var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
-        Mockito.when(
-                        dateService.generateListDatesDesignacao(
-                                ArgumentMatchers.any(DateServiceInputDTO.class)))
-                .thenReturn(List.of());
-        writeFileInputFromDto(dto);
-        validateListBuilderException(MessageConfig.LIST_DATE_EMPTY);
-    }
 
     private void validateListBuilderException(String expectedMessageError) {
         this.testUtils.validateException(() -> service.generateList(), expectedMessageError);

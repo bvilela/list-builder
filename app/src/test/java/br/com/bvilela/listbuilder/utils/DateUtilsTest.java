@@ -1,13 +1,20 @@
 package br.com.bvilela.listbuilder.utils;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class DateUtilsTest {
 
@@ -53,156 +60,129 @@ class DateUtilsTest {
 
     @Test
     void shouldGetNameMonthFull() {
-        Assertions.assertEquals(JAN, full(1));
-        Assertions.assertEquals(FEV, full(2));
-        Assertions.assertEquals(MAR, full(3));
-        Assertions.assertEquals(ABR, full(4));
-        Assertions.assertEquals(MAI, full(5));
-        Assertions.assertEquals(JUN, full(6));
-        Assertions.assertEquals(JUL, full(7));
-        Assertions.assertEquals(AGO, full(8));
-        Assertions.assertEquals(SET, full(9));
-        Assertions.assertEquals(OUT, full(10));
-        Assertions.assertEquals(NOV, full(11));
-        Assertions.assertEquals(DEZ, full(12));
+        assertEquals(JAN, full(1));
+        assertEquals(FEV, full(2));
+        assertEquals(MAR, full(3));
+        assertEquals(ABR, full(4));
+        assertEquals(MAI, full(5));
+        assertEquals(JUN, full(6));
+        assertEquals(JUL, full(7));
+        assertEquals(AGO, full(8));
+        assertEquals(SET, full(9));
+        assertEquals(OUT, full(10));
+        assertEquals(NOV, full(11));
+        assertEquals(DEZ, full(12));
     }
 
     @Test
     void shouldGetNameMonthFullCapitalize() {
-        Assertions.assertEquals("Janeiro", fullC(1));
-        Assertions.assertEquals("Fevereiro", fullC(2));
-        Assertions.assertEquals("Março", fullC(3));
-        Assertions.assertEquals("Abril", fullC(4));
-        Assertions.assertEquals("Maio", fullC(5));
-        Assertions.assertEquals("Junho", fullC(6));
-        Assertions.assertEquals("Julho", fullC(7));
-        Assertions.assertEquals("Agosto", fullC(8));
-        Assertions.assertEquals("Setembro", fullC(9));
-        Assertions.assertEquals("Outubro", fullC(10));
-        Assertions.assertEquals("Novembro", fullC(11));
-        Assertions.assertEquals("Dezembro", fullC(12));
+        assertEquals("Janeiro", fullC(1));
+        assertEquals("Fevereiro", fullC(2));
+        assertEquals("Março", fullC(3));
+        assertEquals("Abril", fullC(4));
+        assertEquals("Maio", fullC(5));
+        assertEquals("Junho", fullC(6));
+        assertEquals("Julho", fullC(7));
+        assertEquals("Agosto", fullC(8));
+        assertEquals("Setembro", fullC(9));
+        assertEquals("Outubro", fullC(10));
+        assertEquals("Novembro", fullC(11));
+        assertEquals("Dezembro", fullC(12));
     }
 
     @Test
     void shouldGetNameMonthShort() {
-        Assertions.assertEquals("jan.", shorter(1));
-        Assertions.assertEquals("fev.", shorter(2));
-        Assertions.assertEquals("mar.", shorter(3));
-        Assertions.assertEquals("abr.", shorter(4));
-        Assertions.assertEquals("mai.", shorter(5));
-        Assertions.assertEquals("jun.", shorter(6));
-        Assertions.assertEquals("jul.", shorter(7));
-        Assertions.assertEquals("ago.", shorter(8));
-        Assertions.assertEquals("set.", shorter(9));
-        Assertions.assertEquals("out.", shorter(10));
-        Assertions.assertEquals("nov.", shorter(11));
-        Assertions.assertEquals("dez.", shorter(12));
+        assertEquals("jan.", shorter(1));
+        assertEquals("fev.", shorter(2));
+        assertEquals("mar.", shorter(3));
+        assertEquals("abr.", shorter(4));
+        assertEquals("mai.", shorter(5));
+        assertEquals("jun.", shorter(6));
+        assertEquals("jul.", shorter(7));
+        assertEquals("ago.", shorter(8));
+        assertEquals("set.", shorter(9));
+        assertEquals("out.", shorter(10));
+        assertEquals("nov.", shorter(11));
+        assertEquals("dez.", shorter(12));
     }
 
     @Test
     void shouldGetNameMonthShortCapitalize() {
-        Assertions.assertEquals("Jan.", shorterC(1));
-        Assertions.assertEquals("Fev.", shorterC(2));
-        Assertions.assertEquals("Mar.", shorterC(3));
-        Assertions.assertEquals("Abr.", shorterC(4));
-        Assertions.assertEquals("Mai.", shorterC(5));
-        Assertions.assertEquals("Jun.", shorterC(6));
-        Assertions.assertEquals("Jul.", shorterC(7));
-        Assertions.assertEquals("Ago.", shorterC(8));
-        Assertions.assertEquals("Set.", shorterC(9));
-        Assertions.assertEquals("Out.", shorterC(10));
-        Assertions.assertEquals("Nov.", shorterC(11));
-        Assertions.assertEquals("Dez.", shorterC(12));
+        assertEquals("Jan.", shorterC(1));
+        assertEquals("Fev.", shorterC(2));
+        assertEquals("Mar.", shorterC(3));
+        assertEquals("Abr.", shorterC(4));
+        assertEquals("Mai.", shorterC(5));
+        assertEquals("Jun.", shorterC(6));
+        assertEquals("Jul.", shorterC(7));
+        assertEquals("Ago.", shorterC(8));
+        assertEquals("Set.", shorterC(9));
+        assertEquals("Out.", shorterC(10));
+        assertEquals("Nov.", shorterC(11));
+        assertEquals("Dez.", shorterC(12));
     }
 
     @Test
     void shouldNextDayOfWeek() {
-        Assertions.assertEquals(
-                LocalDate.of(2022, 06, 13),
-                DateUtils.nextDayOfWeek(LocalDate.of(2022, 06, 10), DayOfWeek.MONDAY));
-        Assertions.assertEquals(
-                LocalDate.of(2022, 06, 17),
-                DateUtils.nextDayOfWeek(LocalDate.of(2022, 06, 10), DayOfWeek.FRIDAY));
-        Assertions.assertEquals(
-                LocalDate.of(2022, 07, 05),
-                DateUtils.nextDayOfWeek(LocalDate.of(2022, 06, 30), DayOfWeek.TUESDAY));
+        assertEquals(
+                LocalDate.of(2022, 6, 13),
+                DateUtils.nextDayOfWeek(LocalDate.of(2022, 6, 10), DayOfWeek.MONDAY));
+        assertEquals(
+                LocalDate.of(2022, 6, 17),
+                DateUtils.nextDayOfWeek(LocalDate.of(2022, 6, 10), DayOfWeek.FRIDAY));
+        assertEquals(
+                LocalDate.of(2022, 7, 5),
+                DateUtils.nextDayOfWeek(LocalDate.of(2022, 6, 30), DayOfWeek.TUESDAY));
     }
 
-    @Test
-    void shouldGetMonthByNamePT() {
-        checkMonth(1, JAN);
-        checkMonth(2, FEV);
-        checkMonth(3, MAR);
-        checkMonth(4, ABR);
-        checkMonth(5, MAI);
-        checkMonth(6, JUN);
-        checkMonth(7, JUL);
-        checkMonth(8, AGO);
-        checkMonth(9, SET);
-        checkMonth(10, OUT);
-        checkMonth(11, NOV);
-        checkMonth(12, DEZ);
+    @DisplayName("Get Month Value from Month Name PT")
+    @ParameterizedTest(name = "Month Name is \"{0}\", expected Value is \"{1}\"")
+    @MethodSource("getMonthNameValueParameters")
+    void getMonthValueByNamePT(String monthName, int mothValue) {
+        assertEquals(
+                mothValue,
+                DateUtils.getMonthByNamePT(StringUtils.capitalize(monthName)).getValue());
+        assertEquals(mothValue, DateUtils.getMonthByNamePT(monthName.toLowerCase()).getValue());
+        assertEquals(mothValue, DateUtils.getMonthByNamePT(monthName.toUpperCase()).getValue());
     }
 
-    @Test
-    void shouldGetMonthOrdinalByNamePT() {
-        Assertions.assertEquals(1, DateUtils.getMonthOrdinalByNamePT(JAN));
-        Assertions.assertEquals(2, DateUtils.getMonthOrdinalByNamePT(FEV));
-        Assertions.assertEquals(3, DateUtils.getMonthOrdinalByNamePT(MAR));
-        Assertions.assertEquals(4, DateUtils.getMonthOrdinalByNamePT(ABR));
-        Assertions.assertEquals(5, DateUtils.getMonthOrdinalByNamePT(MAI));
-        Assertions.assertEquals(6, DateUtils.getMonthOrdinalByNamePT(JUN));
-        Assertions.assertEquals(7, DateUtils.getMonthOrdinalByNamePT(JUL));
-        Assertions.assertEquals(8, DateUtils.getMonthOrdinalByNamePT(AGO));
-        Assertions.assertEquals(9, DateUtils.getMonthOrdinalByNamePT(SET));
-        Assertions.assertEquals(10, DateUtils.getMonthOrdinalByNamePT(OUT));
-        Assertions.assertEquals(11, DateUtils.getMonthOrdinalByNamePT(NOV));
-        Assertions.assertEquals(12, DateUtils.getMonthOrdinalByNamePT(DEZ));
+    @DisplayName("Get Month Name PT from Month Value")
+    @ParameterizedTest(name = "Month Value is \"{1}\", expected Name is \"{0}\"")
+    @MethodSource("getMonthNameValueParameters")
+    void getNameMonthPTByMonthOrdinal(String monthName, int mothValue) {
+        assertEquals(monthName, DateUtils.getNameMonthPtByOrdinal(mothValue));
     }
 
-    private void checkMonth(int value, String monthName) {
-        Assertions.assertEquals(
-                value, DateUtils.getMonthByNamePT(StringUtils.capitalize(monthName)).getValue());
-        Assertions.assertEquals(
-                value, DateUtils.getMonthByNamePT(monthName.toLowerCase()).getValue());
-        Assertions.assertEquals(
-                value, DateUtils.getMonthByNamePT(monthName.toUpperCase()).getValue());
-    }
-
-    @Test
-    void shouldGetNameMonthPTByOrdinal() {
-        Assertions.assertEquals(JAN, DateUtils.getNameMonthPtByOrdinal(1));
-        Assertions.assertEquals(FEV, DateUtils.getNameMonthPtByOrdinal(2));
-        Assertions.assertEquals(MAR, DateUtils.getNameMonthPtByOrdinal(3));
-        Assertions.assertEquals(ABR, DateUtils.getNameMonthPtByOrdinal(4));
-        Assertions.assertEquals(MAI, DateUtils.getNameMonthPtByOrdinal(5));
-        Assertions.assertEquals(JUN, DateUtils.getNameMonthPtByOrdinal(6));
-        Assertions.assertEquals(JUL, DateUtils.getNameMonthPtByOrdinal(7));
-        Assertions.assertEquals(AGO, DateUtils.getNameMonthPtByOrdinal(8));
-        Assertions.assertEquals(SET, DateUtils.getNameMonthPtByOrdinal(9));
-        Assertions.assertEquals(OUT, DateUtils.getNameMonthPtByOrdinal(10));
-        Assertions.assertEquals(NOV, DateUtils.getNameMonthPtByOrdinal(11));
-        Assertions.assertEquals(DEZ, DateUtils.getNameMonthPtByOrdinal(12));
+    private static Stream<Arguments> getMonthNameValueParameters() {
+        return Stream.of(
+                Arguments.of(JAN, 1),
+                Arguments.of(FEV, 2),
+                Arguments.of(MAR, 3),
+                Arguments.of(ABR, 4),
+                Arguments.of(MAI, 5),
+                Arguments.of(JUN, 6),
+                Arguments.of(JUL, 7),
+                Arguments.of(AGO, 8),
+                Arguments.of(SET, 9),
+                Arguments.of(OUT, 10),
+                Arguments.of(NOV, 11),
+                Arguments.of(DEZ, 12));
     }
 
     @Test
     void shouldFormatDDMMMM() {
-        Assertions.assertEquals("01 de janeiro", DateUtils.formatDDMMMM(LocalDate.of(2022, 1, 1)));
-        Assertions.assertEquals(
-                "02 de fevereiro", DateUtils.formatDDMMMM(LocalDate.of(2022, 2, 2)));
-        Assertions.assertEquals("03 de março", DateUtils.formatDDMMMM(LocalDate.of(2022, 3, 3)));
-        Assertions.assertEquals("04 de abril", DateUtils.formatDDMMMM(LocalDate.of(2022, 4, 4)));
-        Assertions.assertEquals("05 de maio", DateUtils.formatDDMMMM(LocalDate.of(2022, 5, 5)));
-        Assertions.assertEquals("06 de junho", DateUtils.formatDDMMMM(LocalDate.of(2022, 6, 6)));
-        Assertions.assertEquals("07 de julho", DateUtils.formatDDMMMM(LocalDate.of(2022, 7, 7)));
-        Assertions.assertEquals("08 de agosto", DateUtils.formatDDMMMM(LocalDate.of(2022, 8, 8)));
-        Assertions.assertEquals("09 de setembro", DateUtils.formatDDMMMM(LocalDate.of(2022, 9, 9)));
-        Assertions.assertEquals(
-                "10 de outubro", DateUtils.formatDDMMMM(LocalDate.of(2022, 10, 10)));
-        Assertions.assertEquals(
-                "11 de novembro", DateUtils.formatDDMMMM(LocalDate.of(2022, 11, 11)));
-        Assertions.assertEquals(
-                "12 de dezembro", DateUtils.formatDDMMMM(LocalDate.of(2022, 12, 12)));
+        assertEquals("01 de janeiro", DateUtils.formatDDMMMM(LocalDate.of(2022, 1, 1)));
+        assertEquals("02 de fevereiro", DateUtils.formatDDMMMM(LocalDate.of(2022, 2, 2)));
+        assertEquals("03 de março", DateUtils.formatDDMMMM(LocalDate.of(2022, 3, 3)));
+        assertEquals("04 de abril", DateUtils.formatDDMMMM(LocalDate.of(2022, 4, 4)));
+        assertEquals("05 de maio", DateUtils.formatDDMMMM(LocalDate.of(2022, 5, 5)));
+        assertEquals("06 de junho", DateUtils.formatDDMMMM(LocalDate.of(2022, 6, 6)));
+        assertEquals("07 de julho", DateUtils.formatDDMMMM(LocalDate.of(2022, 7, 7)));
+        assertEquals("08 de agosto", DateUtils.formatDDMMMM(LocalDate.of(2022, 8, 8)));
+        assertEquals("09 de setembro", DateUtils.formatDDMMMM(LocalDate.of(2022, 9, 9)));
+        assertEquals("10 de outubro", DateUtils.formatDDMMMM(LocalDate.of(2022, 10, 10)));
+        assertEquals("11 de novembro", DateUtils.formatDDMMMM(LocalDate.of(2022, 11, 11)));
+        assertEquals("12 de dezembro", DateUtils.formatDDMMMM(LocalDate.of(2022, 12, 12)));
     }
 
     @Test
@@ -221,30 +201,30 @@ class DateUtilsTest {
 
     @Test
     void shouldParseToLocalDate() {
-        Assertions.assertEquals(LocalDate.of(2022, 1, 1), DateUtils.parse("01-01-2022"));
-        Assertions.assertEquals(LocalDate.of(2022, 12, 31), DateUtils.parse("31-12-2022"));
+        assertEquals(LocalDate.of(2022, 1, 1), DateUtils.parse("01-01-2022"));
+        assertEquals(LocalDate.of(2022, 12, 31), DateUtils.parse("31-12-2022"));
     }
 
     @Test
     void shouldFormatLocalDate() {
-        Assertions.assertEquals("01/01/2022", DateUtils.format(LocalDate.of(2022, 1, 1)));
-        Assertions.assertEquals("31/12/2022", DateUtils.format(LocalDate.of(2022, 12, 31)));
+        assertEquals("01/01/2022", DateUtils.format(LocalDate.of(2022, 1, 1)));
+        assertEquals("31/12/2022", DateUtils.format(LocalDate.of(2022, 12, 31)));
     }
 
     @Test
     void shouldFormatDDMMM() {
-        Assertions.assertEquals("01/jan", DateUtils.formatDDMMM(LocalDate.of(2022, 1, 1)));
-        Assertions.assertEquals("02/fev", DateUtils.formatDDMMM(LocalDate.of(2022, 2, 2)));
-        Assertions.assertEquals("03/mar", DateUtils.formatDDMMM(LocalDate.of(2022, 3, 3)));
-        Assertions.assertEquals("04/abr", DateUtils.formatDDMMM(LocalDate.of(2022, 4, 4)));
-        Assertions.assertEquals("05/mai", DateUtils.formatDDMMM(LocalDate.of(2022, 5, 5)));
-        Assertions.assertEquals("06/jun", DateUtils.formatDDMMM(LocalDate.of(2022, 6, 6)));
-        Assertions.assertEquals("07/jul", DateUtils.formatDDMMM(LocalDate.of(2022, 7, 7)));
-        Assertions.assertEquals("08/ago", DateUtils.formatDDMMM(LocalDate.of(2022, 8, 8)));
-        Assertions.assertEquals("09/set", DateUtils.formatDDMMM(LocalDate.of(2022, 9, 9)));
-        Assertions.assertEquals("10/out", DateUtils.formatDDMMM(LocalDate.of(2022, 10, 10)));
-        Assertions.assertEquals("11/nov", DateUtils.formatDDMMM(LocalDate.of(2022, 11, 11)));
-        Assertions.assertEquals("12/dez", DateUtils.formatDDMMM(LocalDate.of(2022, 12, 12)));
+        assertEquals("01/jan", DateUtils.formatDDMMM(LocalDate.of(2022, 1, 1)));
+        assertEquals("02/fev", DateUtils.formatDDMMM(LocalDate.of(2022, 2, 2)));
+        assertEquals("03/mar", DateUtils.formatDDMMM(LocalDate.of(2022, 3, 3)));
+        assertEquals("04/abr", DateUtils.formatDDMMM(LocalDate.of(2022, 4, 4)));
+        assertEquals("05/mai", DateUtils.formatDDMMM(LocalDate.of(2022, 5, 5)));
+        assertEquals("06/jun", DateUtils.formatDDMMM(LocalDate.of(2022, 6, 6)));
+        assertEquals("07/jul", DateUtils.formatDDMMM(LocalDate.of(2022, 7, 7)));
+        assertEquals("08/ago", DateUtils.formatDDMMM(LocalDate.of(2022, 8, 8)));
+        assertEquals("09/set", DateUtils.formatDDMMM(LocalDate.of(2022, 9, 9)));
+        assertEquals("10/out", DateUtils.formatDDMMM(LocalDate.of(2022, 10, 10)));
+        assertEquals("11/nov", DateUtils.formatDDMMM(LocalDate.of(2022, 11, 11)));
+        assertEquals("12/dez", DateUtils.formatDDMMM(LocalDate.of(2022, 12, 12)));
     }
 
     @Test
@@ -256,7 +236,7 @@ class DateUtilsTest {
                         LocalDate.of(2022, 1, 11),
                         LocalDate.of(2022, 1, 18),
                         LocalDate.of(2022, 1, 25));
-        Assertions.assertEquals(listDatesExpeted, listDates);
+        assertEquals(listDatesExpeted, listDates);
     }
 
     @Test
@@ -268,11 +248,11 @@ class DateUtilsTest {
                         LocalDate.of(2022, 1, 12),
                         LocalDate.of(2022, 1, 19),
                         LocalDate.of(2022, 1, 26));
-        Assertions.assertEquals(listDatesExpeted, listDates);
+        assertEquals(listDatesExpeted, listDates);
     }
 
     @Test
-    void dextractDateByDayOfWeekShouldSaturday() {
+    void extractDateByDayOfWeekShouldSaturday() {
         var listDates = DateUtils.extractDateByDayOfWeek(listDateMock, DayOfWeek.SATURDAY);
         var listDatesExpeted =
                 List.of(
@@ -281,7 +261,7 @@ class DateUtilsTest {
                         LocalDate.of(2022, 1, 15),
                         LocalDate.of(2022, 1, 22),
                         LocalDate.of(2022, 1, 29));
-        Assertions.assertEquals(listDatesExpeted, listDates);
+        assertEquals(listDatesExpeted, listDates);
     }
 
     @Test
@@ -293,7 +273,7 @@ class DateUtilsTest {
                         LocalDate.of(2022, 1, 14),
                         LocalDate.of(2022, 1, 21),
                         LocalDate.of(2022, 1, 28));
-        Assertions.assertEquals(listDatesExpeted, listDates);
+        assertEquals(listDatesExpeted, listDates);
     }
 
     @Test
@@ -306,6 +286,6 @@ class DateUtilsTest {
                         LocalDate.of(2022, 1, 16),
                         LocalDate.of(2022, 1, 23),
                         LocalDate.of(2022, 1, 30));
-        Assertions.assertEquals(listDatesExpeted, listDates);
+        assertEquals(listDatesExpeted, listDates);
     }
 }

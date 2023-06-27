@@ -19,5 +19,4 @@ public class AppProperties {
 
     @Value("${audience.layout:full}")
     private String layoutAudience;
-
 }

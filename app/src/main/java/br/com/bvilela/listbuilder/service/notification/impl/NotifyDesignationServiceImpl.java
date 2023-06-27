@@ -8,15 +8,14 @@ import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
 import br.com.bvilela.listbuilder.enuns.DesignacaoEntityEnum;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.enuns.NotifDesignacaoEntityEnum;
+import br.com.bvilela.listbuilder.service.notification.NotifyDesignationService;
+import br.com.bvilela.listbuilder.service.notification.NotifyUtils;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
-
-import br.com.bvilela.listbuilder.service.notification.NotifyDesignationService;
-import br.com.bvilela.listbuilder.service.notification.NotifyUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

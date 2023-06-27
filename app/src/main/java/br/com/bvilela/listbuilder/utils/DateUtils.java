@@ -37,10 +37,6 @@ public final class DateUtils {
         return StringUtils.capitalize(getNameMonthShort(date));
     }
 
-    public static int getMonthOrdinalByNamePT(String namePT) {
-        return getMonthByNamePT(namePT).getValue();
-    }
-
     public static Month getMonthByNamePT(String namePT) {
         DateTimeFormatter formatter =
                 new DateTimeFormatterBuilder()
@@ -68,7 +64,7 @@ public final class DateUtils {
         return format(date, "dd/MM/yyyy");
     }
 
-    public static String format(LocalDate date, String pattern) {
+    private static String format(LocalDate date, String pattern) {
         DateTimeFormatter formatter = getFormatter(pattern);
         return date.format(formatter);
     }
@@ -87,6 +83,10 @@ public final class DateUtils {
 
     public static String formatMMMMyyyy(LocalDate date) {
         return format(date, "MMMM 'de' yyyy");
+    }
+
+    public static String formatDDMMyyyy(LocalDate date) {
+        return format(date, "dd-MM-yyyy");
     }
 
     public static String getNameMonthPtByOrdinal(int ordinal) {

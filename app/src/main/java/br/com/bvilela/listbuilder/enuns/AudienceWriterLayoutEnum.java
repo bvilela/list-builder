@@ -8,7 +8,6 @@ import lombok.SneakyThrows;
 @Getter
 @RequiredArgsConstructor
 public enum AudienceWriterLayoutEnum {
-
     FULL(2),
     COMPACT(3);
 
@@ -22,5 +21,4 @@ public enum AudienceWriterLayoutEnum {
             throw new WriterLayoutInvalidTypeException();
         }
     }
-
 }

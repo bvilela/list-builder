@@ -1,23 +1,18 @@
 package br.com.bvilela.listbuilder.service.audience.impl;
 
 import br.com.bvilela.listbuilder.config.AppProperties;
-import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.audience.FileInputDataAudienceDTO;
 import br.com.bvilela.listbuilder.enuns.AudienceWriterLayoutEnum;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import br.com.bvilela.listbuilder.exception.WriterLayoutInvalidTypeException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.audience.AudienceWriterService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
-import br.com.bvilela.listbuilder.validator.AudienceValidator;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Slf4j
 @Service("ASSISTENCIA")
@@ -42,16 +37,11 @@ public class AudienceGenerateServiceImpl implements BaseGenerateService {
 
             var dto = getFileInputDataDTO(properties, FileInputDataAudienceDTO.class);
 
-            var dateServiceInputDto = AudienceValidator.validAndConvertData(dto);
+            dto.validate();
 
             var layoutEnum = AudienceWriterLayoutEnum.getByLayout(properties.getLayoutAudience());
 
-            var listDates = dateService
-                    .generateAudienceListDates(dateServiceInputDto, layoutEnum.getNumberOfMonth());
-
-            if (listDates.isEmpty()) {
-                throw new ListBuilderException(MessageConfig.LIST_DATE_EMPTY);
-            }
+            var listDates = dateService.generateAudienceListDates(dto, layoutEnum);
 
             writerServiceMap.get(layoutEnum.name()).writerPDF(listDates);
 

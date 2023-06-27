@@ -9,5 +9,4 @@ public class WriterLayoutInvalidTypeException extends Exception {
     public WriterLayoutInvalidTypeException() {
         super("Layout do arquivo inválido!");
     }
-
 }

@@ -3,10 +3,9 @@ package br.com.bvilela.listbuilder.service.notification;
 import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
 import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.enuns.NotifDesignacaoEntityEnum;
+import br.com.bvilela.listbuilder.service.notification.impl.NotifyDesignationServiceImpl;
 import java.util.Collections;
 import java.util.List;
-
-import br.com.bvilela.listbuilder.service.notification.impl.NotifyDesignationServiceImpl;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;

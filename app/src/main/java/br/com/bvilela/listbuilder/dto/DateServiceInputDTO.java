@@ -34,13 +34,7 @@ public class DateServiceInputDTO {
 
     private void baseFileInputData(BaseFileInputDataDTO dto) {
         this.lastDate = DateUtils.parse(dto.getLastDate());
-        this.midweekDayWeekEnum = DayOfWeekEnum.valueOf(dto.getMeetingDayMidweek().toUpperCase());
-        this.weekendDayWeekEnum = DayOfWeekEnum.valueOf(dto.getMeetingDayWeekend().toUpperCase());
-    }
-
-    public DateServiceInputDTO(LocalDate lastDate, DateServiceInputDTO dto) {
-        this.lastDate = lastDate;
-        this.midweekDayWeekEnum = dto.getMidweekDayWeekEnum();
-        this.weekendDayWeekEnum = dto.getWeekendDayWeekEnum();
+        this.midweekDayWeekEnum = dto.getMeetingDayMidweekEnum();
+        this.weekendDayWeekEnum = dto.getMeetingDayWeekendEnum();
     }
 }

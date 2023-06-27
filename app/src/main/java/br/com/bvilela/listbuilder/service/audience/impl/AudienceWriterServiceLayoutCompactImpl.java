@@ -17,17 +17,16 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-
 import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 
 @Service("COMPACT")
 @RequiredArgsConstructor
@@ -92,7 +91,7 @@ public class AudienceWriterServiceLayoutCompactImpl implements AudienceWriterSer
 
     @SneakyThrows
     private static PdfPTable createPdfPTable() {
-        float[] columnsWidth = new float[] {155, 155, 200}; //160, 350
+        float[] columnsWidth = new float[] {155, 155, 200}; // 160, 350
         PdfPTable table = new PdfPTable(columnsWidth.length);
         table.setTotalWidth(columnsWidth);
         table.setLockedWidth(true);

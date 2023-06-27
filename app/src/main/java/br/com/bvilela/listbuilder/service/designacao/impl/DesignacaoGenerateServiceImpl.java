@@ -1,8 +1,6 @@
 package br.com.bvilela.listbuilder.service.designacao.impl;
 
 import br.com.bvilela.listbuilder.config.AppProperties;
-import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
@@ -53,21 +51,14 @@ public class DesignacaoGenerateServiceImpl implements BaseGenerateService {
 
             var dto = getFileInputDataDTO(properties, FileInputDataDesignacaoDTO.class);
 
-            DesignacaoValidator.validAndConvertData(dto);
+            dto.validate();
 
-            var dateServiceInputDTO = new DateServiceInputDTO(dto);
-            var listAllDates = dateService.generateListDatesDesignacao(dateServiceInputDTO);
-
-            if (listAllDates.isEmpty()) {
-                throw new ListBuilderException(MessageConfig.LIST_DATE_EMPTY);
-            }
+            var listAllDates = dateService.generateDesignationListDates(dto);
 
             var listDatesMidweek =
-                    DateUtils.extractDateByDayOfWeek(
-                            listAllDates, dateServiceInputDTO.getMidweekDayWeekEnum());
+                    DateUtils.extractDateByDayOfWeek(listAllDates, dto.getMeetingDayMidweekEnum());
             var listDatesWeekend =
-                    DateUtils.extractDateByDayOfWeek(
-                            listAllDates, dateServiceInputDTO.getWeekendDayWeekEnum());
+                    DateUtils.extractDateByDayOfWeek(listAllDates, dto.getMeetingDayWeekendEnum());
 
             var listPresident = groupService.generateListPresident(dto, listDatesWeekend);
             var listReaderWatchtower =

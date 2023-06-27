@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DesignacaoValidator {
 
-    public static void validAndConvertData(FileInputDataDesignacaoDTO dto) {
+    public static void validateData(FileInputDataDesignacaoDTO dto) {
         log.info("Validando Dados de Entrada!");
 
         GenericValidator.validateParseSubItemsDto(dto);
