@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
@@ -98,8 +97,7 @@ public class TestUtils {
         for (String date : datesDDMM) {
             var split = date.split("/");
             var localDate =
-                    LocalDate.of(
-                            year, Integer.parseInt(split[1]), Integer.parseInt(split[0]));
+                    LocalDate.of(year, Integer.parseInt(split[1]), Integer.parseInt(split[0]));
             list.add(localDate);
         }
         return list;

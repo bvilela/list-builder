@@ -1,5 +1,7 @@
 package br.com.bvilela.listbuilder.service.audience.impl;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import br.com.bvilela.listbuilder.builder.FileInputDataAudienceDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
@@ -10,6 +12,8 @@ import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.audience.AudienceWriterService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
@@ -25,11 +29,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootApplication
 class AudienceGenerateServiceImplTest

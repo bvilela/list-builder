@@ -5,5 +5,4 @@ public interface WriterUtils<T> {
     T getDocument();
 
     void addImageHeader(T document);
-
 }

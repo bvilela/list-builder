@@ -18,17 +18,16 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-
 import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -68,7 +67,7 @@ public class AudienceWriterServiceImpl implements AudienceWriterService {
 
     private static String getFileName(List<LocalDate> listDates) {
         return FileUtils.generateOutputFileNamePDF(
-                        LIST_TYPE, listDates.get(0), listDates.get(listDates.size() - 1));
+                LIST_TYPE, listDates.get(0), listDates.get(listDates.size() - 1));
     }
 
     private void writerDocument(
@@ -78,8 +77,7 @@ public class AudienceWriterServiceImpl implements AudienceWriterService {
 
         if (layoutEnum == AudienceWriterLayoutEnum.FULL) {
             writerDocumentLayoutFull(document, table, listDates);
-        }
-        else if (layoutEnum == AudienceWriterLayoutEnum.COMPACT) {
+        } else if (layoutEnum == AudienceWriterLayoutEnum.COMPACT) {
             writerDocumentLayoutCompact(document, table, listDates);
         }
     }
@@ -94,7 +92,8 @@ public class AudienceWriterServiceImpl implements AudienceWriterService {
     }
 
     @SneakyThrows
-    private void writerDocumentLayoutFull(Document document, PdfPTable table, List<LocalDate> listDates) {
+    private void writerDocumentLayoutFull(
+            Document document, PdfPTable table, List<LocalDate> listDates) {
         document.add(pdfUtils.createEmptyParagraph());
 
         int countMeetingDays = 0;
@@ -119,7 +118,8 @@ public class AudienceWriterServiceImpl implements AudienceWriterService {
     }
 
     @SneakyThrows
-    private void writerDocumentLayoutCompact(Document document, PdfPTable table, List<LocalDate> listDates) {
+    private void writerDocumentLayoutCompact(
+            Document document, PdfPTable table, List<LocalDate> listDates) {
 
         Month currentMonth = null;
         for (LocalDate date : listDates) {

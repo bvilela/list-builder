@@ -1,10 +1,6 @@
 package br.com.bvilela.listbuilder.exception;
 
-import br.com.bvilela.listbuilder.enuns.AudienceWriterLayoutEnum;
-import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-
 import java.io.Serial;
-import java.util.Arrays;
 
 public class WriterLayoutInvalidTypeException extends Exception {
 

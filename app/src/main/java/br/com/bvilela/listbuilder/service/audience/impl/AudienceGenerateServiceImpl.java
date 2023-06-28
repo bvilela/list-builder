@@ -8,7 +8,6 @@ import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.audience.AudienceWriterService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
