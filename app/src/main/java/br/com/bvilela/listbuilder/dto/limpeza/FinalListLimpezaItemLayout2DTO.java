@@ -7,7 +7,7 @@ import lombok.ToString;
 
 @ToString
 @Getter
-@Builder(setterPrefix = "with")
+@Builder
 public class FinalListLimpezaItemLayout2DTO {
 
     private String group;

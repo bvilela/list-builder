@@ -1,7 +1,12 @@
 package br.com.bvilela.listbuilder.service.notification;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.service.notification.impl.NotifyAudienceServiceImpl;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,15 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 class NotifyAudienceServiceImplTest {
-    @InjectMocks
-    private NotifyAudienceServiceImpl service;
+    @InjectMocks private NotifyAudienceServiceImpl service;
     @InjectMocks private NotifyProperties properties;
 
     @SneakyThrows
@@ -45,5 +43,4 @@ class NotifyAudienceServiceImplTest {
         var event = service.createEvent(List.of(LocalDate.now()));
         assertNotNull(event);
     }
-
 }

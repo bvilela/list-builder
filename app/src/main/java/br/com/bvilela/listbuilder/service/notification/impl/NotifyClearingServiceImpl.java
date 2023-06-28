@@ -106,14 +106,15 @@ public class NotifyClearingServiceImpl implements NotifyClearingService {
         return listNotification;
     }
 
-    private CalendarEvent createDoNextListEvent(FinalListLimpezaDTO limpezaDto) {
+    private CalendarEvent createDoNextListEvent(FinalListLimpezaDTO dto) {
         var notifyDate =
-                limpezaDto.getItemsLayout2().isEmpty()
-                        ? limpezaDto.getItems().get(limpezaDto.getItems().size() - 1).getDate()
-                        : limpezaDto
-                                .getItemsLayout2()
-                                .get(limpezaDto.getItemsLayout2().size() - 1)
-                                .getDate2();
+                isLayout1(dto)
+                        ? dto.getItems().get(dto.getItems().size() - 1).getDate()
+                        : dto.getItemsLayout2().get(dto.getItemsLayout2().size() - 1).getDate2();
         return NotifyUtils.createDoNextListEvent(ListTypeEnum.LIMPEZA, notifyDate);
+    }
+
+    private boolean isLayout1(FinalListLimpezaDTO dto) {
+        return dto.getItemsLayout2() == null || dto.getItemsLayout2().isEmpty();
     }
 }

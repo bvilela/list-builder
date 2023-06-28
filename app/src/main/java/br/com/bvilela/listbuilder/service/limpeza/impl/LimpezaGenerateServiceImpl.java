@@ -131,11 +131,11 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
 
             var item =
                     FinalListLimpezaItemLayout2DTO.builder()
-                            .withGroup(listGroups.get(i))
-                            .withDate1(date1)
-                            .withLabel1(label1)
-                            .withDate2(date2)
-                            .withLabel2(label2)
+                            .group(listGroups.get(i))
+                            .date1(date1)
+                            .label1(label1)
+                            .date2(date2)
+                            .label2(label2)
                             .build();
 
             list.add(item);

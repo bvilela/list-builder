@@ -62,16 +62,16 @@ class LimpezaWriterServiceImplTest {
                         .itemsLayout2(
                                 List.of(
                                         FinalListLimpezaItemLayout2DTO.builder()
-                                                .withGroup("P1, P2")
-                                                .withDate1(LocalDate.now())
-                                                .withLabel1("label1")
-                                                .withDate2(LocalDate.now())
-                                                .withLabel2("label2")
+                                                .group("P1, P2")
+                                                .date1(LocalDate.now())
+                                                .label1("label1")
+                                                .date2(LocalDate.now())
+                                                .label2("label2")
                                                 .build(),
                                         FinalListLimpezaItemLayout2DTO.builder()
-                                                .withGroup("P1, P2")
-                                                .withDate1(LocalDate.now())
-                                                .withLabel1("label1")
+                                                .group("P1, P2")
+                                                .date1(LocalDate.now())
+                                                .label1("label1")
                                                 .build()))
                         .build();
         Assertions.assertDoesNotThrow(
