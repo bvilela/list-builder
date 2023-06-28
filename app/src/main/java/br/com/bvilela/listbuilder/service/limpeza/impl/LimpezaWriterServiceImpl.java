@@ -32,7 +32,7 @@ public class LimpezaWriterServiceImpl implements LimpezaWriterService {
 
     private static final ListTypeEnum LIST_TYPE = ListTypeEnum.LIMPEZA;
 
-    private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
+    private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl(LIST_TYPE);
 
     @SneakyThrows
     @Override
@@ -50,12 +50,12 @@ public class LimpezaWriterServiceImpl implements LimpezaWriterService {
 
         try (var outputStream = new FileOutputStream(path.toString())) {
 
-            Document document = pdfUtils.getDocument(LIST_TYPE);
+            Document document = pdfUtils.getDocument();
             PdfWriter.getInstance(document, outputStream);
 
             document.open();
 
-            pdfUtils.addImageHeader(document, LIST_TYPE);
+            pdfUtils.addImageHeader(document);
             addImageMonth(document, dateBase);
             this.addHeaderMessage(document, headerMessage);
 

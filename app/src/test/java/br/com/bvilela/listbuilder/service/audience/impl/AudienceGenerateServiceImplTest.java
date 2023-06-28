@@ -1,7 +1,5 @@
 package br.com.bvilela.listbuilder.service.audience.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import br.com.bvilela.listbuilder.builder.FileInputDataAudienceDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
@@ -12,10 +10,6 @@ import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.audience.AudienceWriterService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
@@ -32,6 +26,11 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootApplication
 class AudienceGenerateServiceImplTest
         extends BaseGenerateServiceTest<FileInputDataAudienceDTO, FileInputDataAudienceDtoBuilder> {
@@ -42,9 +41,7 @@ class AudienceGenerateServiceImplTest
 
     @Mock private DateService dateService;
 
-    @Mock private AudienceWriterServiceLayoutFullImpl writerServiceLayoutFull;
-
-    @Mock private AudienceWriterServiceLayoutCompactImpl writerServiceLayoutCompact;
+    @Mock private AudienceWriterService writerService;
 
     @Mock private SendNotificationService notificationService;
 
@@ -59,12 +56,9 @@ class AudienceGenerateServiceImplTest
         FieldUtils.writeField(properties, "inputDir", testUtils.getResourceDirectory(), true);
         FieldUtils.writeField(
                 properties, "layoutAudience", AudienceWriterLayoutEnum.FULL.name(), true);
-        Map<String, AudienceWriterService> writerServiceMap = new HashMap<>();
-        writerServiceMap.put(AudienceWriterLayoutEnum.FULL.name(), writerServiceLayoutFull);
-        writerServiceMap.put(AudienceWriterLayoutEnum.COMPACT.name(), writerServiceLayoutCompact);
         service =
                 new AudienceGenerateServiceImpl(
-                        properties, dateService, notificationService, writerServiceMap);
+                        properties, dateService, notificationService, writerService);
     }
 
     @Test

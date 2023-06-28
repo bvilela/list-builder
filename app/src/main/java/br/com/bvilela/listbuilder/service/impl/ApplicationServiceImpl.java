@@ -23,7 +23,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         try {
             executeApplication();
         } catch (Exception e) {
-            log.error("Aplicação Finalizada com Erro!", e);
+            log.error("Aplicação Finalizada com Erro!");
             SpringApplication.exit(context, () -> -1);
         }
     }

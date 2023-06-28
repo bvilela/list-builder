@@ -45,8 +45,8 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
     private static final int BREAK_LINE_PRESIDENT = 1;
     private static final float HORIZONTAL_MARGINS_DISCOUNT =
             AppUtils.getHorizontalMargins(LIST_TYPE);
-    private final DocxWriterUtilsImpl docxUtils = new DocxWriterUtilsImpl();
-    private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
+    private final DocxWriterUtilsImpl docxUtils = new DocxWriterUtilsImpl(LIST_TYPE);
+    private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl(LIST_TYPE);
 
     @Override
     @SneakyThrows
@@ -71,7 +71,7 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
     private void writerPDFDocument(DesignacaoWriterDTO dto, Path path) {
 
         try (var outputStream = new FileOutputStream(path.toString())) {
-            Document document = pdfUtils.getDocument(LIST_TYPE);
+            Document document = pdfUtils.getDocument();
             PdfWriter.getInstance(document, outputStream);
 
             document.open();
@@ -164,7 +164,7 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
     }
 
     private PdfPTable addHeaderAndTableMaster(Document document) {
-        pdfUtils.addImageHeader(document, LIST_TYPE);
+        pdfUtils.addImageHeader(document);
         return pdfUtils.getTable(document, 2, LIST_TYPE);
     }
 
@@ -220,9 +220,9 @@ public class DesignacaoWriterServiceImpl implements DesignacaoWriterService {
 
     @SneakyThrows
     private void writeDocxDocument(DesignacaoWriterDTO dto, Path path) {
-        try (XWPFDocument doc = docxUtils.getDocument(LIST_TYPE)) {
+        try (XWPFDocument doc = docxUtils.getDocument()) {
 
-            docxUtils.addImageHeader(doc, LIST_TYPE);
+            docxUtils.addImageHeader(doc);
 
             // Create table e Config Widths
             XWPFTable table = doc.createTable();

@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import br.com.bvilela.listbuilder.utils.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,18 +56,6 @@ class DateServiceImplTest {
         return List.of(
                 new ItemDateDTO(ordinal, LocalDate.of(2022, month1, day1), ex1),
                 new ItemDateDTO(ordinal, LocalDate.of(2022, month2, day2), ex2));
-    }
-
-    private List<LocalDate> listLocalDate(String[] dates, int year) {
-        var list = new ArrayList<LocalDate>();
-        for (String date : dates) {
-            var splitted = date.split("/");
-            var localDate =
-                    LocalDate.of(
-                            year, Integer.parseInt(splitted[1]), Integer.parseInt(splitted[0]));
-            list.add(localDate);
-        }
-        return list;
     }
 
     @Test
@@ -142,12 +132,11 @@ class DateServiceImplTest {
 
     @Test
     void generateListDatesAudienceLayoutFullStartMonth() {
-        var dates =
-                new String[] {
-                    "02/04", "05/04", "09/04", "12/04", "16/04", "19/04", "23/04", "26/04", "30/04",
-                    "03/05", "07/05", "10/05", "14/05", "17/05", "21/05", "24/05", "28/05", "31/05"
-                };
-        var expected = listLocalDate(dates, 2022);
+        var dates = List.of(
+                "02/04", "05/04", "09/04", "12/04", "16/04", "19/04", "23/04", "26/04", "30/04",
+                "03/05", "07/05", "10/05", "14/05", "17/05", "21/05", "24/05", "28/05", "31/05"
+        );
+        var expected = TestUtils.createListLocalDates(dates, 2022);
 
         var fileInputDTO =
                 new FileInputDataAudienceDtoBuilder()
@@ -162,12 +151,11 @@ class DateServiceImplTest {
 
     @Test
     void generateListDatesAudienceLayoutFullMiddleMonth() {
-        var dates =
-                new String[] {
+        var dates = List.of(
                     "11/06", "14/06", "18/06", "21/06", "25/06", "28/06", "02/07", "05/07", "09/07",
                     "12/07", "16/07", "19/07", "23/07", "26/07", "30/07"
-                };
-        var expected = listLocalDate(dates, 2022);
+        );
+        var expected = TestUtils.createListLocalDates(dates, 2022);
 
         var fileInputDTO =
                 new FileInputDataAudienceDtoBuilder()
@@ -182,13 +170,12 @@ class DateServiceImplTest {
 
     @Test
     void generateListDatesAudienceLayoutCompact() {
-        var dates =
-                new String[] {
+        var dates = List.of(
                     "04/01", "08/01", "11/01", "15/01", "18/01", "22/01", "25/01", "29/01", "01/02",
                     "05/02", "08/02", "12/02", "15/02", "19/02", "22/02", "26/02", "01/03", "05/03",
                     "08/03", "12/03", "15/03", "19/03", "22/03", "26/03", "29/03"
-                };
-        var expected = listLocalDate(dates, 2023);
+        );
+        var expected = TestUtils.createListLocalDates(dates, 2023);
 
         var fileInputDTO =
                 new FileInputDataAudienceDtoBuilder()
@@ -203,12 +190,11 @@ class DateServiceImplTest {
 
     @Test
     void generateDesignationListDatesCase1() {
-        var dates =
-                new String[] {
+        var dates = List.of(
                     "01/11", "05/11", "08/11", "12/11", "15/11", "19/11", "22/11", "26/11", "29/11",
                     "03/12"
-                };
-        var expected = listLocalDate(dates, 2022);
+                );
+        var expected = TestUtils.createListLocalDates(dates, 2022);
 
         var fileInputDTO =
                 new FileInputDataDesignacaoDtoBuilder()
@@ -223,12 +209,11 @@ class DateServiceImplTest {
 
     @Test
     void generateDesignationListDatesCase2() {
-        var dates =
-                new String[] {
+        var dates = List.of(
                     "02/11", "06/11", "09/11", "13/11", "16/11", "20/11", "23/11", "27/11", "30/11",
                     "04/12"
-                };
-        var expected = listLocalDate(dates, 2022);
+        );
+        var expected = TestUtils.createListLocalDates(dates, 2022);
 
         var fileInputDTO =
                 new FileInputDataDesignacaoDtoBuilder()
@@ -242,11 +227,10 @@ class DateServiceImplTest {
 
     @Test
     void generateDesignationListDatesCase3() {
-        var dates =
-                new String[] {
+        var dates = List.of(
                     "05/10", "09/10", "12/10", "16/10", "19/10", "23/10", "26/10", "30/10"
-                };
-        var expected = listLocalDate(dates, 2022);
+        );
+        var expected = TestUtils.createListLocalDates(dates, 2022);
 
         var fileInputDTO =
                 new FileInputDataDesignacaoDtoBuilder()

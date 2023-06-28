@@ -87,8 +87,8 @@ public final class FileUtils {
     }
 
     public static String generateOutputFileNamePDF(
-            ListTypeEnum listType, LocalDate date1, LocalDate date2) {
-        return generateOutputFileName(listType, date1, date2, PDF_EXTENSION);
+            ListTypeEnum listType, LocalDate dateStart, LocalDate dateEnd) {
+        return generateOutputFileName(listType, dateStart, dateEnd, PDF_EXTENSION);
     }
 
     public static String generateOutputFileNameDocx(ListTypeEnum listType, LocalDate date) {
@@ -96,8 +96,8 @@ public final class FileUtils {
     }
 
     public static String generateOutputFileNameDocx(
-            ListTypeEnum listType, LocalDate date1, LocalDate date2) {
-        return generateOutputFileName(listType, date1, date2, DOCX_EXTENSION);
+            ListTypeEnum listType, LocalDate dateStart, LocalDate dateEnd) {
+        return generateOutputFileName(listType, dateStart, dateEnd, DOCX_EXTENSION);
     }
 
     private static String generateOutputFileName(
@@ -111,23 +111,23 @@ public final class FileUtils {
     }
 
     private static String generateOutputFileName(
-            ListTypeEnum listType, LocalDate date1, LocalDate date2, String extension) {
+            ListTypeEnum listType, LocalDate dateStart, LocalDate dateEnd, String extension) {
         var listName = getListName(listType);
-        var year1 = String.valueOf(date1.getYear());
-        var monthNumber1 = monthNumber(date1);
-        var monthNameShort1 = getMonthNameShort(date1);
-        var year2 = String.valueOf(date2.getYear());
-        var monthNumber2 = monthNumber(date2);
-        var monthNameShort2 = getMonthNameShort(date2);
+        var yearStart = String.valueOf(dateStart.getYear());
+        var monthNumberStart = monthNumber(dateStart);
+        var monthNameShortStart = getMonthNameShort(dateStart);
+        var yearEnd = String.valueOf(dateEnd.getYear());
+        var monthNumberEnd = monthNumber(dateEnd);
+        var monthNameShortEnd = getMonthNameShort(dateEnd);
         return String.format(
                 "%s_%s.%s_%s-%s.%s_%s%s",
                 listName,
-                monthNumber1,
-                monthNameShort1,
-                year1,
-                monthNumber2,
-                monthNameShort2,
-                year2,
+                monthNumberStart,
+                monthNameShortStart,
+                yearStart,
+                monthNumberEnd,
+                monthNameShortEnd,
+                yearEnd,
                 extension);
     }
 

@@ -6,6 +6,8 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.FileUtils;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 
 public interface BaseGenerateService {
@@ -22,9 +24,10 @@ public interface BaseGenerateService {
         log.info("Lista '{}' gerada com Sucesso!", getListType());
     }
 
-    default ListBuilderException defaultListBuilderException(Exception exception) {
-        return new ListBuilderException(
-                "Erro ao gerar lista '%s': %s", getListType(), exception.getMessage());
+    default ListBuilderException defaultListBuilderException(Logger log, Exception exception) {
+        var message = String.format("Erro ao gerar lista '%s': %s", getListType(), exception.getMessage());
+        log.error(message, exception);
+        return new ListBuilderException(message);
     }
 
     default <T> T getFileInputDataDTO(AppProperties appProperties, Class<T> clazz) {

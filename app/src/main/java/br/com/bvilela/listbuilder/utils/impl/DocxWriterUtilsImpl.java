@@ -32,8 +32,14 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation;
 
 public final class DocxWriterUtilsImpl implements WriterUtils<XWPFDocument> {
 
+    private final ListTypeEnum listType;
+
+    public DocxWriterUtilsImpl(ListTypeEnum listType) {
+        this.listType = listType;
+    }
+
     @Override
-    public XWPFDocument getDocument(ListTypeEnum listTypeEnum) {
+    public XWPFDocument getDocument() {
         XWPFDocument doc = new XWPFDocument();
         CTSectPr sectPr = doc.getDocument().getBody().addNewSectPr();
 
@@ -44,7 +50,7 @@ public final class DocxWriterUtilsImpl implements WriterUtils<XWPFDocument> {
         pageSize.setH(SizeConfig.DOCX_A4_HEIGHT_POINT);
 
         // Setting Margin
-        var pageMg = listTypeEnum.getPageMg();
+        var pageMg = listType.getPageMg();
         CTPageMar pageMar = sectPr.addNewPgMar();
         pageMar.setLeft(convertBigInt(pageMg.getLeft()));
         pageMar.setTop(convertBigInt(pageMg.getTop()));
@@ -60,7 +66,7 @@ public final class DocxWriterUtilsImpl implements WriterUtils<XWPFDocument> {
 
     @Override
     @SneakyThrows
-    public void addImageHeader(XWPFDocument document, ListTypeEnum listType) {
+    public void addImageHeader(XWPFDocument document) {
         try {
             var imgInputStream = FileUtils.getClassPathImageHeader(listType).getInputStream();
             File fileTmp = new File("file.tmp");

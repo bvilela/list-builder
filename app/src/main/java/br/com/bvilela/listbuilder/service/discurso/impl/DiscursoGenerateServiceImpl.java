@@ -57,7 +57,7 @@ public class DiscursoGenerateServiceImpl implements BaseGenerateService {
             logFinish(log);
 
         } catch (Exception e) {
-            throw defaultListBuilderException(e);
+            throw defaultListBuilderException(log, e);
         }
     }
 

@@ -42,7 +42,7 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 
 	private final AppProperties properties;
 	private static final ListTypeEnum LIST_TYPE = ListTypeEnum.VIDA_CRISTA;
-	private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
+	private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl(LIST_TYPE);
 
 	@Override
 	@SneakyThrows
@@ -65,7 +65,7 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 	private void writerDocument(List<VidaCristaExtractWeekDTO> listWeeks, Path path) {
 		
 		try (var outputStream = new FileOutputStream(path.toString())) {
-			Document document = pdfUtils.getDocument(LIST_TYPE);
+			Document document = pdfUtils.getDocument();
 			PdfWriter.getInstance(document, outputStream);
 
 			document.open();
@@ -187,7 +187,7 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 
 	@SneakyThrows
 	private PdfPTable addHeaderAndTable(Document document) {
-		pdfUtils.addImageHeader(document, LIST_TYPE);
+		pdfUtils.addImageHeader(document);
 
 		var columnWidth = document.getPageSize().getWidth() / 2;
 		float[] columnsWidth = new float[] { columnWidth, columnWidth };

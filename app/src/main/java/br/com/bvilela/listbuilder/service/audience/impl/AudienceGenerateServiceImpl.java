@@ -22,7 +22,7 @@ public class AudienceGenerateServiceImpl implements BaseGenerateService {
     private final AppProperties properties;
     private final DateService dateService;
     private final SendNotificationService notificationService;
-    private final Map<String, AudienceWriterService> writerServiceMap;
+    private final AudienceWriterService writerService;
 
     @Override
     public ListTypeEnum getListType() {
@@ -43,14 +43,14 @@ public class AudienceGenerateServiceImpl implements BaseGenerateService {
 
             var listDates = dateService.generateAudienceListDates(dto, layoutEnum);
 
-            writerServiceMap.get(layoutEnum.name()).writerPDF(listDates);
+            writerService.writerPDF(listDates, layoutEnum);
 
             notificationService.audience(listDates);
 
             logFinish(log);
 
         } catch (Exception e) {
-            throw defaultListBuilderException(e);
+            throw defaultListBuilderException(log, e);
         }
     }
 }

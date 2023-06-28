@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
+import java.util.Arrays;
+
 @Getter
 @RequiredArgsConstructor
 public enum AudienceWriterLayoutEnum {
@@ -18,7 +20,7 @@ public enum AudienceWriterLayoutEnum {
         try {
             return AudienceWriterLayoutEnum.valueOf(layout.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new WriterLayoutInvalidTypeException();
+            throw new WriterLayoutInvalidTypeException(Arrays.toString(AudienceWriterLayoutEnum.values()));
         }
     }
 }

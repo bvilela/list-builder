@@ -34,9 +34,15 @@ public final class PDFWriterUtilsImpl implements WriterUtils<Document> {
     private static final Font BOLD14 = new Font(FONT_FAMILY, 14, Font.BOLD);
     private static final Font BOLD16 = new Font(FONT_FAMILY, 16, Font.BOLD);
 
+    private final ListTypeEnum listType;
+
+    public PDFWriterUtilsImpl(ListTypeEnum listType) {
+        this.listType = listType;
+    }
+
     @Override
-    public Document getDocument(ListTypeEnum list) {
-        var pageMg = list.getPageMg();
+    public Document getDocument() {
+        var pageMg = listType.getPageMg();
         return new Document(
                 PageSize.A4,
                 pageMg.getLeft(),
@@ -45,28 +51,32 @@ public final class PDFWriterUtilsImpl implements WriterUtils<Document> {
                 pageMg.getBottom());
     }
 
-    public Paragraph createParagraphNormal(String message) {
-        return new Paragraph(message, NORMAL12);
+    public Paragraph createEmptyParagraph() {
+        return new Paragraph(" ");
     }
 
-    public Paragraph createParagraphBold12(String message) {
-        return new Paragraph(message, BOLD12);
+    public Paragraph createParagraphNormal(String text) {
+        return new Paragraph(text, NORMAL12);
     }
 
-    public Paragraph createParagraphBold14(String message) {
-        return new Paragraph(message, BOLD14);
+    public Paragraph createParagraphBold12(String text) {
+        return new Paragraph(text, BOLD12);
     }
 
-    public Paragraph createParagraphBold16(String message) {
-        return new Paragraph(message, BOLD16);
+    public Paragraph createParagraphBold14(String text) {
+        return new Paragraph(text, BOLD14);
     }
 
-    public Paragraph createParagraphBold12Normal14(String boldText, String normalText) {
-        return createParagraphBoldNormal(boldText, BOLD12, normalText, NORMAL14);
+    public Paragraph createParagraphBold16(String text) {
+        return new Paragraph(text, BOLD16);
     }
 
     public Paragraph createParagraphBold12Normal12(String boldText, String normalText) {
         return createParagraphBoldNormal(boldText, BOLD12, normalText, NORMAL12);
+    }
+
+    public Paragraph createParagraphBold12Normal14(String boldText, String normalText) {
+        return createParagraphBoldNormal(boldText, BOLD12, normalText, NORMAL14);
     }
 
     public Paragraph createParagraphBold13Normal13(String boldText, String normalText) {
@@ -96,7 +106,7 @@ public final class PDFWriterUtilsImpl implements WriterUtils<Document> {
 
     @Override
     @SneakyThrows
-    public void addImageHeader(Document document, ListTypeEnum listType) {
+    public void addImageHeader(Document document) {
         try {
             var imageUrl = FileUtils.getClassPathImageHeader(listType).getURL();
             Image image = getImage(listType.getHeader(), imageUrl);
