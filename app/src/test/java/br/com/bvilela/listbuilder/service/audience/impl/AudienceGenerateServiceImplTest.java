@@ -14,6 +14,8 @@ import br.com.bvilela.listbuilder.service.audience.AudienceWriterService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import java.time.LocalDate;
 import java.util.List;
+
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
@@ -36,13 +38,15 @@ class AudienceGenerateServiceImplTest
 
     @InjectMocks private AudienceGenerateServiceImpl service;
 
-    @InjectMocks private AppProperties properties;
+    @InjectMocks private AppProperties appProperties;
 
     @Mock private DateService dateService;
 
     @Mock private AudienceWriterService writerService;
 
     @Mock private SendNotificationService notificationService;
+
+    private PropertiesTestUtils propertiesUtils;
 
     public AudienceGenerateServiceImplTest() {
         super(ListTypeEnum.ASSISTENCIA, FileInputDataAudienceDtoBuilder.create());
@@ -52,12 +56,12 @@ class AudienceGenerateServiceImplTest
     @SneakyThrows
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        FieldUtils.writeField(properties, "inputDir", testUtils.getResourceDirectory(), true);
-        FieldUtils.writeField(
-                properties, "layoutAudience", AudienceWriterLayoutEnum.FULL.name(), true);
+        propertiesUtils = new PropertiesTestUtils(appProperties);
+        propertiesUtils.setInputDir(testUtils.getResourceDirectory());
+        propertiesUtils.setLayoutAudience(AudienceWriterLayoutEnum.FULL);
         service =
                 new AudienceGenerateServiceImpl(
-                        properties, dateService, notificationService, writerService);
+                        appProperties, dateService, notificationService, writerService);
     }
 
     @Test

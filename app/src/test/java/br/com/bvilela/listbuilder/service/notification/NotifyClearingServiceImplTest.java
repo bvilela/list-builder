@@ -1,57 +1,42 @@
 package br.com.bvilela.listbuilder.service.notification;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import br.com.bvilela.listbuilder.builder.clearing.FinalListLimpezaDtoBuilder;
 import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
-import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemDTO;
-import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.notification.impl.NotifyClearingServiceImpl;
-import java.time.LocalDate;
-import java.util.List;
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class NotifyClearingServiceImplTest {
 
     @InjectMocks private NotifyClearingServiceImpl service;
-    @InjectMocks private NotifyProperties properties;
+    @InjectMocks private NotifyProperties notifyProperties;
 
     private static final int CLEARING_LAYOUT_1 = 1;
     private static final int CLEARING_LAYOUT_2 = 2;
+
+    private PropertiesTestUtils propertiesUtils;
 
     @SneakyThrows
     @BeforeEach
     void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
-        service = new NotifyClearingServiceImpl(properties);
-    }
-
-    @SneakyThrows
-    private void setNotifyActive(boolean value) {
-        FieldUtils.writeField(properties, "notifyActive", value, true);
-    }
-
-    @SneakyThrows
-    private void setNotifyName(String value) {
-        FieldUtils.writeField(properties, "notifyName", value, true);
-    }
-
-    @SneakyThrows
-    private void setNotifyPreMeeting(boolean value) {
-        FieldUtils.writeField(properties, "notifyCleaningPreMeeting", value, true);
+        propertiesUtils = new PropertiesTestUtils(notifyProperties);
+        service = new NotifyClearingServiceImpl(notifyProperties);
     }
 
     @Test
     void createEventsNotifyInactive() {
-        setNotifyActive(false);
+        propertiesUtils.setNotifyActive(false);
         var dto = FinalListLimpezaDTO.builder().build();
         var events = service.createEvents(dto, CLEARING_LAYOUT_1);
         assertTrue(events.isEmpty());
@@ -59,7 +44,7 @@ class NotifyClearingServiceImplTest {
 
     @Test
     void createEventsNotifyActiveAndNotifyNameNotFilled() {
-        setNotifyActive(true);
+        propertiesUtils.setNotifyActive(true);
         var dto = FinalListLimpezaDTO.builder().build();
         assertThrows(
                 ListBuilderException.class, () -> service.createEvents(dto, CLEARING_LAYOUT_1));
@@ -67,9 +52,9 @@ class NotifyClearingServiceImplTest {
 
     @Test
     void createEventsNotifyActiveLayout1NotifyNanmeNotFoundSuccess() {
-        setNotifyActive(true);
-        setNotifyName("XPTO");
-        var dto = createFinalListLimpezaDto1();
+        propertiesUtils.setNotifyActive(true);
+        propertiesUtils.setNotifyName("XPTO");
+        var dto = FinalListLimpezaDtoBuilder.createMockLayout1();
         var events = service.createEvents(dto, CLEARING_LAYOUT_1);
         assertEquals(1, events.size());
         assertTrue(events.get(0).getSummary().contains("Fazer Lista"));
@@ -77,26 +62,20 @@ class NotifyClearingServiceImplTest {
 
     @Test
     void createEventsNotifyActiveLayout1Success() {
-        setNotifyActive(true);
-        setNotifyName("Person1");
-        var dto = createFinalListLimpezaDto1();
+        propertiesUtils.setNotifyActive(true);
+        propertiesUtils.setNotifyName("Person1");
+        var dto = FinalListLimpezaDtoBuilder.createMockLayout1();
         var events = service.createEvents(dto, CLEARING_LAYOUT_1);
         assertEquals(2, events.size());
         assertEquals("Limpeza Salão", events.get(0).getSummary());
         assertTrue(events.get(1).getSummary().contains("Fazer Lista"));
     }
 
-    private FinalListLimpezaDTO createFinalListLimpezaDto1() {
-        var group = "Person1, Person2, Person3";
-        var item = new FinalListLimpezaItemDTO(LocalDate.now(), "label", group);
-        return FinalListLimpezaDTO.builder().items(List.of(item)).build();
-    }
-
     @Test
     void createEventsNotifyActiveLayout2Success() {
-        setNotifyActive(true);
-        setNotifyName("Person1");
-        var dto = createFinalListLimpezaDto2();
+        propertiesUtils.setNotifyActive(true);
+        propertiesUtils.setNotifyName("Person1");
+        var dto = FinalListLimpezaDtoBuilder.createMockLayout2();
         var events = service.createEvents(dto, CLEARING_LAYOUT_2);
         assertEquals(2, events.size());
         assertEquals("Limpeza Salão", events.get(0).getSummary());
@@ -105,10 +84,10 @@ class NotifyClearingServiceImplTest {
 
     @Test
     void createEventsNotifyActiveLayout2AndNotifyPreMeetingSuccess() {
-        setNotifyActive(true);
-        setNotifyName("Person1");
-        setNotifyPreMeeting(true);
-        var dto = createFinalListLimpezaDto2();
+        propertiesUtils.setNotifyActive(true);
+        propertiesUtils.setNotifyName("Person1");
+        propertiesUtils.setNotifyCleaningPreMeeting(true);
+        var dto = FinalListLimpezaDtoBuilder.createMockLayout2();
         var events = service.createEvents(dto, CLEARING_LAYOUT_2);
         assertEquals(3, events.size());
         assertEquals("Limpeza Pré-Reunião", events.get(0).getSummary());
@@ -116,15 +95,4 @@ class NotifyClearingServiceImplTest {
         assertTrue(events.get(2).getSummary().contains("Fazer Lista"));
     }
 
-    private FinalListLimpezaDTO createFinalListLimpezaDto2() {
-        var item =
-                FinalListLimpezaItemLayout2DTO.builder()
-                        .group("Person1, Person2, Person3")
-                        .date1(LocalDate.now().minusDays(1))
-                        .label1("label1")
-                        .date2(LocalDate.now())
-                        .label2("label2")
-                        .build();
-        return FinalListLimpezaDTO.builder().itemsLayout2(List.of(item)).build();
-    }
 }

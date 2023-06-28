@@ -1,46 +1,36 @@
 package br.com.bvilela.listbuilder.service.limpeza.impl;
 
+import br.com.bvilela.listbuilder.builder.clearing.FinalListLimpezaDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
-import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
-import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemDTO;
-import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import br.com.bvilela.listbuilder.utils.TestUtils;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.List;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.nio.file.Paths;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 @SpringBootApplication
 class LimpezaWriterServiceImplTest {
 
     @InjectMocks private LimpezaWriterServiceImpl service;
 
-    @InjectMocks private AppProperties properties;
-
-    private FinalListLimpezaDTO dto;
+    @InjectMocks private AppProperties appProperties;
 
     @BeforeEach
     @SneakyThrows
     void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
-        FieldUtils.writeField(properties, "outputDir", pathOutput, true);
-        service = new LimpezaWriterServiceImpl(properties);
-        dto =
-                FinalListLimpezaDTO.builder()
-                        .items(
-                                List.of(
-                                        new FinalListLimpezaItemDTO(
-                                                LocalDate.now(), "label", "P1, P2")))
-                        .build();
+        new PropertiesTestUtils(appProperties).setOutputDir(pathOutput);
+        service = new LimpezaWriterServiceImpl(appProperties);
     }
 
     @AfterAll
@@ -50,32 +40,17 @@ class LimpezaWriterServiceImplTest {
 
     @Test
     void shouldWriterPDFLayout1Success() {
-        Assertions.assertDoesNotThrow(
+        var dto = FinalListLimpezaDtoBuilder.createMockLayout1();
+        assertDoesNotThrow(
                 () -> service.writerPDF(dto, "footerMessage", "headerMessage", 1));
-        Assertions.assertFalse(dto.toString().isBlank());
+        assertFalse(dto.toString().isBlank());
     }
 
     @Test
     void shouldWriterPDFLayout2Success() {
-        dto =
-                FinalListLimpezaDTO.builder()
-                        .itemsLayout2(
-                                List.of(
-                                        FinalListLimpezaItemLayout2DTO.builder()
-                                                .group("P1, P2")
-                                                .date1(LocalDate.now())
-                                                .label1("label1")
-                                                .date2(LocalDate.now())
-                                                .label2("label2")
-                                                .build(),
-                                        FinalListLimpezaItemLayout2DTO.builder()
-                                                .group("P1, P2")
-                                                .date1(LocalDate.now())
-                                                .label1("label1")
-                                                .build()))
-                        .build();
-        Assertions.assertDoesNotThrow(
+        var dto = FinalListLimpezaDtoBuilder.createMockLayout2();
+        assertDoesNotThrow(
                 () -> service.writerPDF(dto, "footerMessage", "headerMessage", 2));
-        Assertions.assertFalse(dto.toString().isBlank());
+        assertFalse(dto.toString().isBlank());
     }
 }

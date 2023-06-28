@@ -3,12 +3,8 @@ package br.com.bvilela.listbuilder.service.discurso.impl;
 import br.com.bvilela.listbuilder.builder.FileInputDataDiscursoDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import br.com.bvilela.listbuilder.utils.TestUtils;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import lombok.SneakyThrows;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,20 +13,22 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 @SpringBootApplication
 class DiscursoWriterServiceImplTest {
 
     @InjectMocks private DiscursoWriterServiceImpl service;
-
-    @InjectMocks private AppProperties properties;
+    @InjectMocks private AppProperties appProperties;
 
     @BeforeEach
-    @SneakyThrows
     void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
-        FieldUtils.writeField(properties, "outputDir", pathOutput, true);
-        service = new DiscursoWriterServiceImpl(properties);
+        new PropertiesTestUtils(appProperties).setOutputDir(pathOutput);
+        service = new DiscursoWriterServiceImpl(appProperties);
     }
 
     @AfterAll

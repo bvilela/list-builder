@@ -1,45 +1,44 @@
 package br.com.bvilela.listbuilder.service.notification;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.service.notification.impl.NotifyAudienceServiceImpl;
-import java.time.LocalDate;
-import java.util.List;
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 class NotifyAudienceServiceImplTest {
     @InjectMocks private NotifyAudienceServiceImpl service;
-    @InjectMocks private NotifyProperties properties;
+    @InjectMocks private NotifyProperties notifyProperties;
+
+    private PropertiesTestUtils propertiesUtils;
 
     @SneakyThrows
     @BeforeEach
     void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
-        service = new NotifyAudienceServiceImpl(properties);
-    }
-
-    @SneakyThrows
-    private void setNotifyActive(boolean value) {
-        FieldUtils.writeField(properties, "notifyActive", value, true);
+        propertiesUtils = new PropertiesTestUtils(notifyProperties);
+        service = new NotifyAudienceServiceImpl(notifyProperties);
     }
 
     @Test
     void createEventNotifyInactive() {
-        setNotifyActive(false);
+        propertiesUtils.setNotifyActive(false);
         var event = service.createEvent(List.of(LocalDate.now()));
         assertNull(event);
     }
 
     @Test
     void createEventNotifyActive() {
-        setNotifyActive(true);
+        propertiesUtils.setNotifyActive(true);
         var event = service.createEvent(List.of(LocalDate.now()));
         assertNotNull(event);
     }

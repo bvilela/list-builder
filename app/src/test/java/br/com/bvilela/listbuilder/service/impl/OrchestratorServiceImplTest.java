@@ -20,6 +20,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @SpringBootApplication
 class OrchestratorServiceImplTest {
 
@@ -43,21 +46,21 @@ class OrchestratorServiceImplTest {
     @SneakyThrows
     void executeListTypeNullShouldBeInvalid() {
         setListType(null);
-        Assertions.assertThrows(
+        assertThrows(
                 RequiredListTypeException.class, () -> service.validateAndGetServiceByListType());
     }
 
     @Test
     void executeListTypeEmptyShouldBeInvalid() {
         setListType("");
-        Assertions.assertThrows(
+        assertThrows(
                 RequiredListTypeException.class, () -> service.validateAndGetServiceByListType());
     }
 
     @Test
     void executeListTypeShouldBeInvalid() {
         setListType("xpto");
-        Assertions.assertThrows(
+        assertThrows(
                 InvalidListTypeException.class, () -> service.validateAndGetServiceByListType());
     }
 
@@ -65,7 +68,7 @@ class OrchestratorServiceImplTest {
     @SneakyThrows
     void shouldExecuteServiceNotFound() {
         setListType(ListTypeEnum.DESIGNACAO.toString());
-        Assertions.assertThrows(
+        assertThrows(
                 ServiceListTypeNotFoundException.class,
                 () -> service.validateAndGetServiceByListType());
     }
@@ -75,7 +78,7 @@ class OrchestratorServiceImplTest {
     void shouldExecuteServiceSuccess() {
         setListType(ListTypeEnum.LIMPEZA.toString());
         var serviceRet = service.validateAndGetServiceByListType();
-        Assertions.assertNotNull(serviceRet);
+        assertNotNull(serviceRet);
     }
 
     @SneakyThrows

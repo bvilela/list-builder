@@ -1,15 +1,10 @@
 package br.com.bvilela.listbuilder.service.audience.impl;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.enuns.AudienceWriterLayoutEnum;
 import br.com.bvilela.listbuilder.service.audience.AudienceWriterService;
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import br.com.bvilela.listbuilder.utils.TestUtils;
-import java.nio.file.Paths;
-import java.util.List;
-import lombok.SneakyThrows;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,18 +13,22 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.nio.file.Paths;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 @SpringBootApplication
 class AudienceWriterServiceImplTest {
 
-    @InjectMocks private AppProperties properties;
+    @InjectMocks private AppProperties appProperties;
     @Mock private AudienceWriterService service;
 
     @BeforeEach
-    @SneakyThrows
     void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
-        FieldUtils.writeField(properties, "outputDir", pathOutput, true);
+        new PropertiesTestUtils(appProperties).setOutputDir(pathOutput);
     }
 
     @AfterAll

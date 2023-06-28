@@ -16,8 +16,9 @@ import br.com.bvilela.listbuilder.service.designacao.DesignacaoCounterService;
 import br.com.bvilela.listbuilder.service.designacao.DesignacaoWriterService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import java.util.List;
+
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ class DesignacaoGenerateServiceImplTest
 
     @InjectMocks private DesignacaoGenerateServiceImpl service;
 
-    @InjectMocks private AppProperties properties;
+    @InjectMocks private AppProperties appProperties;
 
     @Mock private DateService dateService;
 
@@ -51,10 +52,10 @@ class DesignacaoGenerateServiceImplTest
     @SneakyThrows
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        FieldUtils.writeField(properties, "inputDir", this.testUtils.getResourceDirectory(), true);
+        new PropertiesTestUtils(appProperties).setInputDir(testUtils.getResourceDirectory());
         service =
                 new DesignacaoGenerateServiceImpl(
-                        properties,
+                        appProperties,
                         dateService,
                         groupService,
                         writerService,
@@ -69,7 +70,7 @@ class DesignacaoGenerateServiceImplTest
 
     @Test
     void shouldGetExecutionMode() {
-        assertEquals(this.testUtils.getListType(), service.getListType());
+        assertEquals(testUtils.getListType(), service.getListType());
     }
 
     @Test

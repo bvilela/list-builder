@@ -5,6 +5,7 @@ import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import br.com.bvilela.listbuilder.utils.TestUtils;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -24,15 +25,15 @@ class VidaCristaWriterServiceImplTest {
 
     @InjectMocks private VidaCristaWriterServiceImpl service;
 
-    @InjectMocks private AppProperties properties;
+    @InjectMocks private AppProperties appProperties;
 
     @BeforeEach
     @SneakyThrows
     void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
-        FieldUtils.writeField(properties, "outputDir", pathOutput, true);
-        service = new VidaCristaWriterServiceImpl(properties);
+        new PropertiesTestUtils(appProperties).setOutputDir(pathOutput);
+        service = new VidaCristaWriterServiceImpl(appProperties);
     }
 
     @AfterAll

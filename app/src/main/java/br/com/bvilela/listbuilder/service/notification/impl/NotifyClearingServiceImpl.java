@@ -91,10 +91,7 @@ public class NotifyClearingServiceImpl implements NotifyClearingService {
 
             CalendarEvent dto2 =
                     CalendarEvent.builder()
-                            .setSummary(
-                                    properties.isNotifyCleaningPreMeeting()
-                                            ? "Limpeza Pós-Reunião"
-                                            : "Limpeza Salão")
+                            .setSummary(getSummary())
                             .setDateTimeStart(
                                     LocalDateTime.of(item.getDate2(), LocalTime.of(21, 30, 0)))
                             .setDateTimeEnd(
@@ -104,6 +101,12 @@ public class NotifyClearingServiceImpl implements NotifyClearingService {
             listNotification.add(dto2);
         }
         return listNotification;
+    }
+
+    private String getSummary() {
+        return properties.isNotifyCleaningPreMeeting()
+                ? "Limpeza Pós-Reunião"
+                : "Limpeza Salão";
     }
 
     private CalendarEvent createDoNextListEvent(FinalListLimpezaDTO dto) {

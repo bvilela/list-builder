@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import br.com.bvilela.lib.model.CalendarEvent;
 import br.com.bvilela.lib.service.GoogleCalendarCreateService;
 import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekDtoBuilder;
+import br.com.bvilela.listbuilder.builder.clearing.FinalListLimpezaDtoBuilder;
 import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
@@ -52,25 +53,7 @@ class SendNotificationServiceImplTest {
                     .setDateTimeEnd(LocalDateTime.now().plusHours(1))
                     .build();
 
-    private final FinalListLimpezaDTO clearingDTO =
-            FinalListLimpezaDTO.builder()
-                    .itemsLayout2(
-                            List.of(
-                                    FinalListLimpezaItemLayout2DTO.builder()
-                                            .group("P1 P2")
-                                            .date1(LocalDate.now())
-                                            .label1("label1")
-                                            .date2(LocalDate.now())
-                                            .label2("label2")
-                                            .build(),
-                                    FinalListLimpezaItemLayout2DTO.builder()
-                                            .group("P1, P2")
-                                            .date1(LocalDate.now())
-                                            .label1("label1")
-                                            .date2(LocalDate.now())
-                                            .label2("label2")
-                                            .build()))
-                    .build();
+    private final FinalListLimpezaDTO clearingDTO = FinalListLimpezaDtoBuilder.createMockLayout2();
 
     @BeforeEach
     void setupBeforeEach() {
