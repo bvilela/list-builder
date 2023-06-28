@@ -1,5 +1,9 @@
 package br.com.bvilela.listbuilder.service.notification;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import br.com.bvilela.listbuilder.builder.clearing.FinalListLimpezaDtoBuilder;
 import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
@@ -11,10 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NotifyClearingServiceImplTest {
 
@@ -94,5 +94,4 @@ class NotifyClearingServiceImplTest {
         assertEquals("Limpeza Pós-Reunião", events.get(1).getSummary());
         assertTrue(events.get(2).getSummary().contains("Fazer Lista"));
     }
-
 }

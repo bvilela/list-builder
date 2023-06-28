@@ -3,10 +3,9 @@ package br.com.bvilela.listbuilder.utils;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.enuns.AudienceWriterLayoutEnum;
+import java.util.List;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.reflect.FieldUtils;
-
-import java.util.List;
 
 public class PropertiesTestUtils {
 
@@ -58,7 +57,7 @@ public class PropertiesTestUtils {
 
     @SneakyThrows
     public void setLayoutAudience(AudienceWriterLayoutEnum audienceWriterLayoutEnum) {
-        FieldUtils.writeField(appProperties, "layoutAudience", audienceWriterLayoutEnum.name(), true);
+        FieldUtils.writeField(
+                appProperties, "layoutAudience", audienceWriterLayoutEnum.name(), true);
     }
-
 }

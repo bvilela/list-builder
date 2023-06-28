@@ -5,6 +5,9 @@ import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import br.com.bvilela.listbuilder.utils.TestUtils;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,10 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 @SpringBootApplication
 class DiscursoWriterServiceImplTest {

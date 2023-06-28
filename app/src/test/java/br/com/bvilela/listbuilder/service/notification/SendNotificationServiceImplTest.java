@@ -13,7 +13,6 @@ import br.com.bvilela.listbuilder.builder.clearing.FinalListLimpezaDtoBuilder;
 import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaDTO;
-import br.com.bvilela.listbuilder.dto.limpeza.FinalListLimpezaItemLayout2DTO;
 import br.com.bvilela.listbuilder.service.notification.impl.NotifyAudienceServiceImpl;
 import br.com.bvilela.listbuilder.service.notification.impl.NotifyChristianLifeServiceImpl;
 import br.com.bvilela.listbuilder.service.notification.impl.NotifyClearingServiceImpl;

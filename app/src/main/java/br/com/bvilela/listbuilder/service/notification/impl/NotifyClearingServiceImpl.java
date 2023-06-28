@@ -104,9 +104,7 @@ public class NotifyClearingServiceImpl implements NotifyClearingService {
     }
 
     private String getSummary() {
-        return properties.isNotifyCleaningPreMeeting()
-                ? "Limpeza Pós-Reunião"
-                : "Limpeza Salão";
+        return properties.isNotifyCleaningPreMeeting() ? "Limpeza Pós-Reunião" : "Limpeza Salão";
     }
 
     private CalendarEvent createDoNextListEvent(FinalListLimpezaDTO dto) {

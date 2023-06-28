@@ -22,13 +22,12 @@ import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaExtractService;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaWriterService;
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-
-import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

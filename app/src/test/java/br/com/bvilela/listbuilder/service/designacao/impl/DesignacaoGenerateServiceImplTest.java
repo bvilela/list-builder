@@ -15,9 +15,8 @@ import br.com.bvilela.listbuilder.service.GroupService;
 import br.com.bvilela.listbuilder.service.designacao.DesignacaoCounterService;
 import br.com.bvilela.listbuilder.service.designacao.DesignacaoWriterService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
-import java.util.List;
-
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
+import java.util.List;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,12 +1,12 @@
 package br.com.bvilela.listbuilder.config;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AppPropertiesTest {
 

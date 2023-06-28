@@ -1,5 +1,8 @@
 package br.com.bvilela.listbuilder.service.limpeza.impl;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import br.com.bvilela.listbuilder.builder.FileInputDataLimpezaDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
@@ -13,6 +16,9 @@ import br.com.bvilela.listbuilder.service.impl.DateServiceImpl;
 import br.com.bvilela.listbuilder.service.impl.GroupServiceImpl;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,13 +33,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootApplication
 class LimpezaGenerateServiceImplTest
@@ -69,7 +68,11 @@ class LimpezaGenerateServiceImplTest
         propertiesUtils.setInputDir(testUtils.getResourceDirectory());
         service =
                 new LimpezaGenerateServiceImpl(
-                        appProperties, writerService, dateService, groupService, notificationService);
+                        appProperties,
+                        writerService,
+                        dateService,
+                        groupService,
+                        notificationService);
     }
 
     @Test
