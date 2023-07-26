@@ -70,10 +70,11 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 
 			document.open();
 
-			PdfPTable table;
-			int countWeekInPage = 0;
+			pdfUtils.addImageHeader(document);
 
-			table = addHeaderAndTable(document);
+			PdfPTable table = createPdfPTable(document);
+
+			int countWeekInPage = 0;
 			for (VidaCristaExtractWeekDTO week : listWeeks) {
 				if (countWeekInPage == 2) {
 					countWeekInPage = 0;
@@ -108,15 +109,14 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		}
 	}
 
-	@SneakyThrows
 	private PdfPTable addNewPage(Document document) {
 		var pageMg = LIST_TYPE.getPageMg();
 		document.setMargins(pageMg.getLeft(), pageMg.getRight(), pageMg.getTop() - AppUtils.getPointsFromMM(3), pageMg.getBottom());
 		document.newPage();
-		return addHeaderAndTable(document);
+		pdfUtils.addImageHeader(document);
+		return createPdfPTable(document);
 	}
 
-	@SneakyThrows
 	private void printContentWeek(VidaCristaExtractWeekDTO week, PdfPTable columnTable) {
 		if (week.isSkip()) {
 			var paragraph1 = pdfUtils.createParagraphBold16(" ");
@@ -158,7 +158,6 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		columnTable.addCell(cell);
 	}
 
-	@SneakyThrows
 	private void addItemLabel(PdfPTable columnTable, VidaCristaExtractWeekItemDTO item) {
 		var imgName = getImageNameByLabel(item.getTitle());
 		var cell = pdfUtils.addImageSubHeader(LIST_TYPE, imgName);
@@ -186,9 +185,7 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 	}
 
 	@SneakyThrows
-	private PdfPTable addHeaderAndTable(Document document) {
-		pdfUtils.addImageHeader(document);
-
+	private PdfPTable createPdfPTable(Document document) {
 		var columnWidth = document.getPageSize().getWidth() / 2;
 		float[] columnsWidth = new float[] { columnWidth, columnWidth };
 		PdfPTable table = new PdfPTable(columnsWidth.length);
@@ -197,7 +194,6 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		return table;
 	}
 
-	@SneakyThrows
 	private void addCellWeekHeader(PdfPTable table, VidaCristaExtractWeekDTO week) {
 		var text = getWeekHeaderLabel(week);
 		PdfPCell cell = new PdfPCell(pdfUtils.createParagraphBold12(text));
@@ -209,7 +205,6 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		table.addCell(cell);
 	}
 
-	@SneakyThrows
 	private String getWeekHeaderLabel(VidaCristaExtractWeekDTO week) {
 		var initialDate = week.getInitialDate();
 		var endDate = week.getEndDate();
