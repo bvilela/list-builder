@@ -56,6 +56,11 @@ public class PropertiesTestUtils {
     }
 
     @SneakyThrows
+    public void setNotifyChristianLifeMeetingDay(String value) {
+        FieldUtils.writeField(notifyProperties, "notifyChristianLifeMeetingDay", value, true);
+    }
+
+    @SneakyThrows
     public void setLayoutAudience(AudienceWriterLayoutEnum audienceWriterLayoutEnum) {
         FieldUtils.writeField(
                 appProperties, "layoutAudience", audienceWriterLayoutEnum.name(), true);

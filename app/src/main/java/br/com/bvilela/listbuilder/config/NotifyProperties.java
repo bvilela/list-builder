@@ -27,7 +27,6 @@ public class NotifyProperties {
     private boolean notifyCleaningPreMeeting;
 
     @Value("${notify.christianlife.meeting.day:#{null}}")
-    @Getter(AccessLevel.PRIVATE)
     private String notifyChristianLifeMeetingDay;
 
     public boolean notifyInactive() {
