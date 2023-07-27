@@ -3,14 +3,14 @@ package br.com.bvilela.listbuilder.service.vidacrista.impl;
 import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import br.com.bvilela.listbuilder.utils.TestUtils;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,15 +24,15 @@ class VidaCristaWriterServiceImplTest {
 
     @InjectMocks private VidaCristaWriterServiceImpl service;
 
-    @InjectMocks private AppProperties properties;
+    @InjectMocks private AppProperties appProperties;
 
     @BeforeEach
     @SneakyThrows
     void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
-        FieldUtils.writeField(properties, "outputDir", pathOutput, true);
-        service = new VidaCristaWriterServiceImpl(properties);
+        new PropertiesTestUtils(appProperties).setOutputDir(pathOutput);
+        service = new VidaCristaWriterServiceImpl(appProperties);
     }
 
     @AfterAll
@@ -46,7 +46,7 @@ class VidaCristaWriterServiceImplTest {
                 List.of(VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
 
         list.get(0).getItems().stream()
-                .filter(e -> e.getType() == VidaCristaExtractItemType.LABEL)
+                .filter(e -> e.getType() == VidaCristaExtractItemTypeEnum.LABEL)
                 .findFirst()
                 .ifPresent(e -> e.setTitle("abc"));
         var exception =
@@ -61,7 +61,7 @@ class VidaCristaWriterServiceImplTest {
         List<VidaCristaExtractWeekDTO> list =
                 List.of(VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
         var newListItems = new ArrayList<>(list.get(0).getItems());
-        newListItems.removeIf(e -> e.getType() == VidaCristaExtractItemType.READ_OF_WEEK);
+        newListItems.removeIf(e -> e.getType() == VidaCristaExtractItemTypeEnum.READ_OF_WEEK);
         list.get(0).setItems(newListItems);
 
         var exception =

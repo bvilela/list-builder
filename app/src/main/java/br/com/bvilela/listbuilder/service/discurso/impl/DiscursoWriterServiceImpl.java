@@ -39,7 +39,7 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
     private static final String RECEIVE = "receive";
     private static final ListTypeEnum LIST_TYPE = ListTypeEnum.DISCURSO;
 
-    private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
+    private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl(LIST_TYPE);
 
     @Override
     @SneakyThrows
@@ -73,12 +73,12 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
     private void writerDocument(FileInputDataDiscursoDTO dto, Path path) {
 
         try (var outputStream = new FileOutputStream(path.toString())) {
-            Document document = pdfUtils.getDocument(LIST_TYPE);
+            Document document = pdfUtils.getDocument();
             PdfWriter.getInstance(document, outputStream);
 
             document.open();
 
-            pdfUtils.addImageHeader(document, LIST_TYPE);
+            pdfUtils.addImageHeader(document);
 
             int numberOfColumns = getNumberOfColumns(dto);
             PdfPTable table = pdfUtils.getTable(document, numberOfColumns, LIST_TYPE);

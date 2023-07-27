@@ -1,6 +1,7 @@
 package br.com.bvilela.listbuilder.service.limpeza.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import br.com.bvilela.listbuilder.builder.FileInputDataLimpezaDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
@@ -11,14 +12,14 @@ import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
-import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.service.impl.DateServiceImpl;
 import br.com.bvilela.listbuilder.service.impl.GroupServiceImpl;
+import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +27,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.*;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
@@ -40,7 +45,7 @@ class LimpezaGenerateServiceImplTest
 
     @InjectMocks private LimpezaGenerateServiceImpl service;
 
-    @InjectMocks private AppProperties properties;
+    @InjectMocks private AppProperties appProperties;
 
     @Mock private DateServiceImpl dateService;
 
@@ -48,30 +53,36 @@ class LimpezaGenerateServiceImplTest
 
     @Mock private LimpezaWriterServiceImpl writerService;
 
-    @Mock private NotificationService notificationService;
+    @Mock private SendNotificationService notificationService;
+
+    private PropertiesTestUtils propertiesUtils;
 
     public LimpezaGenerateServiceImplTest() {
         super(ListTypeEnum.LIMPEZA, FileInputDataLimpezaDtoBuilder.create());
     }
 
     @BeforeEach
-    @SneakyThrows
     void setupBeforeEach() {
         MockitoAnnotations.openMocks(this);
-        FieldUtils.writeField(properties, "inputDir", this.testUtils.getResourceDirectory(), true);
+        propertiesUtils = new PropertiesTestUtils(appProperties);
+        propertiesUtils.setInputDir(testUtils.getResourceDirectory());
         service =
                 new LimpezaGenerateServiceImpl(
-                        properties, writerService, dateService, groupService, notificationService);
+                        appProperties,
+                        writerService,
+                        dateService,
+                        groupService,
+                        notificationService);
     }
 
     @Test
     void shouldModoExecutionNotNull() {
-        Assertions.assertNotNull(service.getListType());
+        assertNotNull(service.getListType());
     }
 
     @Test
     void shouldGetExecutionMode() {
-        assertEquals(this.testUtils.getListType(), service.getListType());
+        assertEquals(testUtils.getListType(), service.getListType());
     }
 
     @Test
@@ -86,7 +97,7 @@ class LimpezaGenerateServiceImplTest
 
     @Test
     void shouldGenerateListFileSintaxeException() {
-        this.testUtils.writeFileInputSyntaxError();
+        testUtils.writeFileInputSyntaxError();
         validateListBuilderException("Erro ao ler arquivo - Arquivo não é um JSON válido");
     }
 
@@ -185,7 +196,6 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    @SneakyThrows
     void shouldGenerateListLayout1Success() {
         var expectedList =
                 List.of(
@@ -210,12 +220,11 @@ class LimpezaGenerateServiceImplTest
                                 Mockito.<ItemDateDTO>anyList(),
                                 ArgumentMatchers.any(Integer.class)))
                 .thenReturn(MOCK_LIST_GROUPS);
-        FieldUtils.writeField(properties, "layoutLimpeza", 1, true);
+        propertiesUtils.setLayoutLimpeza(1);
         Assertions.assertDoesNotThrow(() -> service.generateList());
     }
 
     @Test
-    @SneakyThrows
     void shouldGenerateListLayout2SuccessCase1() {
         var expectedList =
                 List.of(
@@ -248,12 +257,11 @@ class LimpezaGenerateServiceImplTest
                                 Mockito.<ItemDateDTO>anyList(),
                                 ArgumentMatchers.any(Integer.class)))
                 .thenReturn(MOCK_LIST_GROUPS);
-        FieldUtils.writeField(properties, "layoutLimpeza", 2, true);
+        propertiesUtils.setLayoutLimpeza(2);
         Assertions.assertDoesNotThrow(() -> service.generateList());
     }
 
     @Test
-    @SneakyThrows
     void shouldGenerateListLayout2SuccessWithAddRemoveToList() {
         var expectedList =
                 List.of(
@@ -277,16 +285,15 @@ class LimpezaGenerateServiceImplTest
                                 Mockito.<ItemDateDTO>anyList(),
                                 ArgumentMatchers.any(Integer.class)))
                 .thenReturn(MOCK_LIST_GROUPS);
-        FieldUtils.writeField(properties, "layoutLimpeza", 2, true);
+        propertiesUtils.setLayoutLimpeza(2);
         Assertions.assertDoesNotThrow(() -> service.generateList());
     }
 
     @Test
-    @SneakyThrows
     void shouldGenerateListLayout2SuccessWithAddToListException() {
         var addToList = Map.of("aa-04-2022", "Após a Celebração");
         writeFileInputFromDto(builder.withSuccess().withAddToList(addToList).build());
-        FieldUtils.writeField(properties, "layoutLimpeza", 2, true);
+        propertiesUtils.setLayoutLimpeza(2);
         var exception =
                 Assertions.assertThrows(ListBuilderException.class, () -> service.generateList());
         assertEquals(
@@ -295,11 +302,10 @@ class LimpezaGenerateServiceImplTest
     }
 
     @Test
-    @SneakyThrows
     void shouldGenerateListLayout2SuccessWithRemoveToListException() {
         var removeToList = List.of("12-04-aaaaa");
         writeFileInputFromDto(builder.withSuccess().withRemoveFromList(removeToList).build());
-        FieldUtils.writeField(properties, "layoutLimpeza", 2, true);
+        propertiesUtils.setLayoutLimpeza(2);
         var exception =
                 Assertions.assertThrows(ListBuilderException.class, () -> service.generateList());
         assertEquals(
@@ -356,6 +362,6 @@ class LimpezaGenerateServiceImplTest
     }
 
     private void validateListBuilderException(String expectedMessageError) {
-        this.testUtils.validateException(() -> service.generateList(), expectedMessageError);
+        testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 }

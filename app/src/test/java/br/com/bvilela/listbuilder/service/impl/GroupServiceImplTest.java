@@ -195,7 +195,7 @@ class GroupServiceImplTest {
                         ListBuilderException.class,
                         () -> service.generateListAudioVideo(null, null));
         Assertions.assertTrue(
-                exception.getMessage().contains(DesignacaoEntityEnum.AUDIOVIDEO.getLabel()));
+                exception.getMessage().contains(DesignacaoEntityEnum.AUDIO_VIDEO.getLabel()));
     }
 
     @Test
@@ -239,7 +239,7 @@ class GroupServiceImplTest {
                         .contains(
                                 String.format(
                                         MessageConfig.LAST_INVALID,
-                                        DesignacaoEntityEnum.AUDIOVIDEO.getLabel())));
+                                        DesignacaoEntityEnum.AUDIO_VIDEO.getLabel())));
     }
 
     //	 --------------------- INDICATOR --------------------- \\

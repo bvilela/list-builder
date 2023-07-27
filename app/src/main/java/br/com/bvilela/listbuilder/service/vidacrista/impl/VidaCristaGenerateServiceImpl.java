@@ -6,10 +6,10 @@ import br.com.bvilela.listbuilder.dto.vidacrista.FileInputDataVidaCristaRenameIt
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
-import br.com.bvilela.listbuilder.service.NotificationService;
+import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaExtractService;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaWriterService;
 import br.com.bvilela.listbuilder.utils.DateUtils;
@@ -33,7 +33,7 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
     private final AppProperties properties;
     private final VidaCristaExtractService extractService;
     private final VidaCristaWriterService writerService;
-    private final NotificationService notificationService;
+    private final SendNotificationService notificationService;
 
     @Override
     public ListTypeEnum getListType() {
@@ -69,39 +69,48 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
             logFinish(log);
 
         } catch (Exception e) {
-            throw defaultListBuilderException(e);
+            throw defaultListBuilderException(log, e);
         }
     }
 
-    private List<VidaCristaExtractWeekDTO> adjustListByLastDate(
+    public List<VidaCristaExtractWeekDTO> adjustListByLastDate(
             List<VidaCristaExtractWeekDTO> listWeeks, FileInputDataVidaCristaDTO dto) {
         var lastDate = dto.getLastDateConverted();
-        var mapRemove = dto.getRemoveWeekFromListConverted();
 
         var nextMonth = DateUtils.nextDayOfWeek(lastDate, DayOfWeek.MONDAY).plusMonths(1);
         nextMonth = nextMonth.withDayOfMonth(1);
         var newListWeeks = new ArrayList<VidaCristaExtractWeekDTO>();
         for (VidaCristaExtractWeekDTO item : listWeeks) {
-            if (item.getDate1().isAfter(lastDate) && item.getDate1().isBefore(nextMonth)) {
+            if (item.getInitialDate().isAfter(lastDate)
+                    && item.getInitialDate().isBefore(nextMonth)) {
                 newListWeeks.add(item);
             }
         }
 
-        for (VidaCristaExtractWeekDTO week : newListWeeks) {
-            if (Objects.nonNull(mapRemove)) {
-                for (Entry<LocalDate, String> remove : mapRemove.entrySet()) {
-                    if (week.getDate1().compareTo(remove.getKey()) <= 0
-                            && week.getDate2().compareTo(remove.getKey()) >= 0) {
-                        week.setSkip(true);
-                        week.setSkipMessage(remove.getValue());
-                    }
-                }
-            }
-        }
+        var mapRemove = dto.getRemoveWeekFromListConverted();
+        removeWeeksIfNecessaryByInputDTO(newListWeeks, mapRemove);
 
         var dates = newListWeeks.stream().map(VidaCristaExtractWeekDTO::getLabelDate).toList();
         log.info("Datas: {}", dates);
         return newListWeeks;
+    }
+
+    public void removeWeeksIfNecessaryByInputDTO(
+            List<VidaCristaExtractWeekDTO> listWeeks, Map<LocalDate, String> mapRemove) {
+        if (mapRemove == null) {
+            return;
+        }
+
+        for (VidaCristaExtractWeekDTO week : listWeeks) {
+            for (Entry<LocalDate, String> entry : mapRemove.entrySet()) {
+                var dateToRemove = entry.getKey();
+                if (!dateToRemove.isBefore(week.getInitialDate())
+                        && !dateToRemove.isAfter(week.getEndDate())) {
+                    week.setSkip(true);
+                    week.setSkipMessage(entry.getValue());
+                }
+            }
+        }
     }
 
     @SneakyThrows
@@ -178,7 +187,7 @@ public class VidaCristaGenerateServiceImpl implements BaseGenerateService {
 
         var itemsCanRenamed =
                 week.getItems().stream()
-                        .filter(e -> e.getType() == VidaCristaExtractItemType.WITH_PARTICIPANTS)
+                        .filter(e -> e.getType() == VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS)
                         .toList();
 
         var listWeekItemToRemove = new ArrayList<VidaCristaExtractWeekItemDTO>();

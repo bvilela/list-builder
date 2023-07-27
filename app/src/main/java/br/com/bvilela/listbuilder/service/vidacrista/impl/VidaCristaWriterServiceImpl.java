@@ -4,7 +4,7 @@ import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaWriterService;
 import br.com.bvilela.listbuilder.utils.AppUtils;
@@ -42,14 +42,14 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 
 	private final AppProperties properties;
 	private static final ListTypeEnum LIST_TYPE = ListTypeEnum.VIDA_CRISTA;
-	private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl();
+	private final PDFWriterUtilsImpl pdfUtils = new PDFWriterUtilsImpl(LIST_TYPE);
 
 	@Override
 	@SneakyThrows
 	public Path writerPDF(List<VidaCristaExtractWeekDTO> listWeeks) {
 		try {
 			FileUtils.createDirectories(properties.getOutputDir());
-			String fileName = FileUtils.generateOutputFileNamePDF(LIST_TYPE, listWeeks.get(0).getDate1());
+			String fileName = FileUtils.generateOutputFileNamePDF(LIST_TYPE, listWeeks.get(0).getInitialDate());
 			Path path = Paths.get(properties.getOutputDir(), fileName);
 
 			writerDocument(listWeeks, path);
@@ -65,15 +65,16 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 	private void writerDocument(List<VidaCristaExtractWeekDTO> listWeeks, Path path) {
 		
 		try (var outputStream = new FileOutputStream(path.toString())) {
-			Document document = pdfUtils.getDocument(LIST_TYPE);
+			Document document = pdfUtils.getDocument();
 			PdfWriter.getInstance(document, outputStream);
 
 			document.open();
 
-			PdfPTable table;
-			int countWeekInPage = 0;
+			pdfUtils.addImageHeader(document);
 
-			table = addHeaderAndTable(document);
+			PdfPTable table = createPdfPTable(document);
+
+			int countWeekInPage = 0;
 			for (VidaCristaExtractWeekDTO week : listWeeks) {
 				if (countWeekInPage == 2) {
 					countWeekInPage = 0;
@@ -108,15 +109,14 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		}
 	}
 
-	@SneakyThrows
 	private PdfPTable addNewPage(Document document) {
 		var pageMg = LIST_TYPE.getPageMg();
 		document.setMargins(pageMg.getLeft(), pageMg.getRight(), pageMg.getTop() - AppUtils.getPointsFromMM(3), pageMg.getBottom());
 		document.newPage();
-		return addHeaderAndTable(document);
+		pdfUtils.addImageHeader(document);
+		return createPdfPTable(document);
 	}
 
-	@SneakyThrows
 	private void printContentWeek(VidaCristaExtractWeekDTO week, PdfPTable columnTable) {
 		if (week.isSkip()) {
 			var paragraph1 = pdfUtils.createParagraphBold16(" ");
@@ -158,7 +158,6 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		columnTable.addCell(cell);
 	}
 
-	@SneakyThrows
 	private void addItemLabel(PdfPTable columnTable, VidaCristaExtractWeekItemDTO item) {
 		var imgName = getImageNameByLabel(item.getTitle());
 		var cell = pdfUtils.addImageSubHeader(LIST_TYPE, imgName);
@@ -186,9 +185,7 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 	}
 
 	@SneakyThrows
-	private PdfPTable addHeaderAndTable(Document document) {
-		pdfUtils.addImageHeader(document, LIST_TYPE);
-
+	private PdfPTable createPdfPTable(Document document) {
 		var columnWidth = document.getPageSize().getWidth() / 2;
 		float[] columnsWidth = new float[] { columnWidth, columnWidth };
 		PdfPTable table = new PdfPTable(columnsWidth.length);
@@ -197,7 +194,6 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		return table;
 	}
 
-	@SneakyThrows
 	private void addCellWeekHeader(PdfPTable table, VidaCristaExtractWeekDTO week) {
 		var text = getWeekHeaderLabel(week);
 		PdfPCell cell = new PdfPCell(pdfUtils.createParagraphBold12(text));
@@ -209,24 +205,23 @@ public class VidaCristaWriterServiceImpl implements VidaCristaWriterService {
 		table.addCell(cell);
 	}
 
-	@SneakyThrows
 	private String getWeekHeaderLabel(VidaCristaExtractWeekDTO week) {
-		var date1 = week.getDate1();
-		var date2 = week.getDate2();
+		var initialDate = week.getInitialDate();
+		var endDate = week.getEndDate();
 		var readOfWeek = getReadOfWeek(week);
 
-		if (date1.getMonthValue() == date2.getMonthValue()) {
-			var label = date1.getDayOfMonth() + " - " + date2.getDayOfMonth() + " DE "
-					+ DateUtils.getNameMonthFull(date1) + " – " + readOfWeek;
+		if (initialDate.getMonthValue() == endDate.getMonthValue()) {
+			var label = initialDate.getDayOfMonth() + " - " + endDate.getDayOfMonth() + " DE "
+					+ DateUtils.getNameMonthFull(initialDate) + " – " + readOfWeek;
 			return label.toUpperCase();
 		}
-		var label = dayOfMonthLabel(date1) + " - " + dayOfMonthLabel(date2) + " – " + readOfWeek;
+		var label = dayOfMonthLabel(initialDate) + " - " + dayOfMonthLabel(endDate) + " – " + readOfWeek;
 		return label.toUpperCase();
 	}
 
 	@SneakyThrows
 	private String getReadOfWeek(VidaCristaExtractWeekDTO week) {
-		var readOfWeek = week.getItems().stream().filter(e -> e.getType() == VidaCristaExtractItemType.READ_OF_WEEK)
+		var readOfWeek = week.getItems().stream().filter(e -> e.getType() == VidaCristaExtractItemTypeEnum.READ_OF_WEEK)
 				.toList();
 
 		if (readOfWeek.size() != 1) {

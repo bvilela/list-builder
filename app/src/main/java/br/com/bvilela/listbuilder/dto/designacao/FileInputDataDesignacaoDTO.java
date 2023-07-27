@@ -2,6 +2,7 @@ package br.com.bvilela.listbuilder.dto.designacao;
 
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.BaseFileInputDataDTO;
+import br.com.bvilela.listbuilder.validator.DesignacaoValidator;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 import javax.validation.Valid;
@@ -40,4 +41,8 @@ public class FileInputDataDesignacaoDTO extends BaseFileInputDataDTO {
     @SerializedName("microfone")
     private List<@Valid @NotBlank(message = MessageConfig.MICROPHONE_ELEMENT_REQUIRED) String>
             microphone;
+
+    public void validate() {
+        DesignacaoValidator.validateData(this);
+    }
 }

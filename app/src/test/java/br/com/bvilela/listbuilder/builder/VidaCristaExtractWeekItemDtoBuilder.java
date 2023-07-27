@@ -1,7 +1,7 @@
 package br.com.bvilela.listbuilder.builder;
 
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 
@@ -21,7 +21,7 @@ public class VidaCristaExtractWeekItemDtoBuilder {
         return target;
     }
 
-    public VidaCristaExtractWeekItemDtoBuilder withRandomData(VidaCristaExtractItemType type) {
+    public VidaCristaExtractWeekItemDtoBuilder withRandomData(VidaCristaExtractItemTypeEnum type) {
         this.withTitle(RandomStringUtils.randomAlphabetic(15));
         this.withType(type);
         this.withParticipants(
@@ -39,7 +39,7 @@ public class VidaCristaExtractWeekItemDtoBuilder {
         return this;
     }
 
-    private VidaCristaExtractWeekItemDtoBuilder withType(VidaCristaExtractItemType type) {
+    private VidaCristaExtractWeekItemDtoBuilder withType(VidaCristaExtractItemTypeEnum type) {
         this.target.setType(type);
         return this;
     }

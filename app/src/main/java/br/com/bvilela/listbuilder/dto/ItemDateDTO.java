@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @AllArgsConstructor
-public class ItemDateDTO {
+public class ItemDateDTO implements Comparable<ItemDateDTO> {
 
     private Integer ordinal;
 
@@ -41,5 +41,16 @@ public class ItemDateDTO {
     public ItemDateDTO(int ordinal, LocalDate date) {
         this.ordinal = ordinal;
         this.date = date;
+    }
+
+    @Override
+    public int compareTo(ItemDateDTO item) {
+        if (this.date.isBefore(item.date)) {
+            return -1;
+        }
+        if (this.date.equals(item.date)) {
+            return 0;
+        }
+        return 1;
     }
 }

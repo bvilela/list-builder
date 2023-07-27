@@ -9,7 +9,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
@@ -87,5 +90,16 @@ public class TestUtils {
                                                 || p.endsWith(".png")
                                                 || p.endsWith(".docx"));
         Arrays.stream(files).forEach(File::delete);
+    }
+
+    public static List<LocalDate> createListLocalDates(List<String> datesDDMM, int year) {
+        var list = new ArrayList<LocalDate>();
+        for (String date : datesDDMM) {
+            var split = date.split("/");
+            var localDate =
+                    LocalDate.of(year, Integer.parseInt(split[1]), Integer.parseInt(split[0]));
+            list.add(localDate);
+        }
+        return list;
     }
 }

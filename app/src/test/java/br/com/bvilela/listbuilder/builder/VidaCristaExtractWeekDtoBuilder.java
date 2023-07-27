@@ -2,7 +2,7 @@ package br.com.bvilela.listbuilder.builder;
 
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import java.time.LocalDate;
 import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -23,6 +23,10 @@ public class VidaCristaExtractWeekDtoBuilder {
         return target;
     }
 
+    public VidaCristaExtractWeekDtoBuilder withRandomData() {
+        return base(null, null);
+    }
+
     public VidaCristaExtractWeekDtoBuilder withRandomDataOneMonth() {
         return base(LocalDate.of(2022, 6, 6), LocalDate.of(2022, 6, 12));
     }
@@ -34,33 +38,33 @@ public class VidaCristaExtractWeekDtoBuilder {
     private VidaCristaExtractWeekDtoBuilder base(LocalDate date1, LocalDate date2) {
         this.withLink(RandomStringUtils.randomAlphabetic(30));
         this.withLabelDate(RandomStringUtils.randomAlphabetic(15));
-        this.withDate1(date1);
-        this.withDate2(date2);
+        this.withInitialDate(date1);
+        this.withEndDate(date2);
         this.withItems(
                 List.of(
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemType.READ_OF_WEEK)
+                                .withRandomData(VidaCristaExtractItemTypeEnum.READ_OF_WEEK)
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemType.PRESIDENT)
+                                .withRandomData(VidaCristaExtractItemTypeEnum.PRESIDENT)
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemType.LABEL)
+                                .withRandomData(VidaCristaExtractItemTypeEnum.LABEL)
                                 .withTitle("TESOUROS DA PALAVRA")
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemType.LABEL)
+                                .withRandomData(VidaCristaExtractItemTypeEnum.LABEL)
                                 .withTitle("FAÇA SEU MELHOR")
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemType.LABEL)
+                                .withRandomData(VidaCristaExtractItemTypeEnum.LABEL)
                                 .withTitle("NOSSA VIDA CRISTÃ")
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemType.NO_PARTICIPANTS)
+                                .withRandomData(VidaCristaExtractItemTypeEnum.NO_PARTICIPANTS)
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemType.WITH_PARTICIPANTS)
+                                .withRandomData(VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS)
                                 .build()));
         return this;
     }
@@ -75,13 +79,13 @@ public class VidaCristaExtractWeekDtoBuilder {
         return this;
     }
 
-    private VidaCristaExtractWeekDtoBuilder withDate1(LocalDate date) {
-        this.target.setDate1(date);
+    public VidaCristaExtractWeekDtoBuilder withInitialDate(LocalDate date) {
+        this.target.setInitialDate(date);
         return this;
     }
 
-    private VidaCristaExtractWeekDtoBuilder withDate2(LocalDate date) {
-        this.target.setDate2(date);
+    public VidaCristaExtractWeekDtoBuilder withEndDate(LocalDate date) {
+        this.target.setEndDate(date);
         return this;
     }
 

@@ -22,12 +22,16 @@ public enum DayOfWeekEnum {
 
     @SneakyThrows
     public static DayOfWeekEnum getByDayOfWeek(DayOfWeek dayOfWeek) {
-        for (DayOfWeekEnum dia : DayOfWeekEnum.values()) {
-            if (dia.getDayOfWeek() == dayOfWeek) {
-                return dia;
+        for (DayOfWeekEnum day : DayOfWeekEnum.values()) {
+            if (day.getDayOfWeek() == dayOfWeek) {
+                return day;
             }
         }
         throw new ListBuilderException(
                 "Nenhum Dia da Semana encontrado para o valor: " + dayOfWeek);
+    }
+
+    public static DayOfWeekEnum getByValue(String value) {
+        return DayOfWeekEnum.valueOf(value.toUpperCase());
     }
 }

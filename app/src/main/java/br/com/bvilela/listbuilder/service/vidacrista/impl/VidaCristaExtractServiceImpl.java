@@ -1,14 +1,14 @@
 package br.com.bvilela.listbuilder.service.vidacrista.impl;
 
-import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType.LABEL;
-import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType.NO_PARTICIPANTS;
-import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType.PRESIDENT;
-import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType.READ_OF_WEEK;
-import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType.WITH_PARTICIPANTS;
+import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum.LABEL;
+import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum.NO_PARTICIPANTS;
+import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum.PRESIDENT;
+import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum.READ_OF_WEEK;
+import static br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS;
 
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.vidacrista.VidaCristaExtractService;
 import br.com.bvilela.listbuilder.utils.DateUtils;
@@ -90,8 +90,8 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
                     VidaCristaExtractWeekDTO.builder()
                             .link(link)
                             .labelDate(labelDate)
-                            .date1(listDate.get(0))
-                            .date2(listDate.get(1))
+                            .initialDate(listDate.get(0))
+                            .endDate(listDate.get(1))
                             .build();
             list.add(dto);
         }
@@ -144,7 +144,7 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
             var month = splitted[1];
             var day1 = StringUtils.leftPad(days.split("-")[0], 2, "0");
             var day2 = StringUtils.leftPad(days.split("-")[1], 2, "0");
-            var ordinalMonth = String.valueOf(DateUtils.getMonthOrdinalByNamePT(month));
+            var ordinalMonth = String.valueOf(DateUtils.getMonthByNamePT(month).getValue());
             ordinalMonth = StringUtils.leftPad(ordinalMonth, 2, "0");
             var date1 = formatDate(day1, ordinalMonth, year);
             var date2 = formatDate(day2, ordinalMonth, year);
@@ -159,8 +159,8 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
             var month1 = splitted[1].split(splitter)[0];
             var day2 = StringUtils.leftPad(splitted[1].split(splitter)[1], 2, "0");
             var month2 = splitted[2];
-            var ordinalMonth1 = String.valueOf(DateUtils.getMonthOrdinalByNamePT(month1));
-            var ordinalMonth2 = String.valueOf(DateUtils.getMonthOrdinalByNamePT(month2));
+            var ordinalMonth1 = String.valueOf(DateUtils.getMonthByNamePT(month1).getValue());
+            var ordinalMonth2 = String.valueOf(DateUtils.getMonthByNamePT(month2).getValue());
             ordinalMonth1 = StringUtils.leftPad(ordinalMonth1, 2, "0");
             ordinalMonth2 = StringUtils.leftPad(ordinalMonth2, 2, "0");
             var date1 = formatDate(day1, ordinalMonth1, year);
@@ -179,12 +179,12 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
             var day2 = StringUtils.leftPad(day2Original.replace(".º", ""), 2, "0");
             var month2 = splitted[3];
             var year2 = splitted[4];
-            var ordinalMonth1 = String.valueOf(DateUtils.getMonthOrdinalByNamePT(month1));
-            var ordinalMonth2 = String.valueOf(DateUtils.getMonthOrdinalByNamePT(month2));
+            var ordinalMonth1 = String.valueOf(DateUtils.getMonthByNamePT(month1).getValue());
+            var ordinalMonth2 = String.valueOf(DateUtils.getMonthByNamePT(month2).getValue());
             ordinalMonth1 = StringUtils.leftPad(ordinalMonth1, 2, "0");
             ordinalMonth2 = StringUtils.leftPad(ordinalMonth2, 2, "0");
-            var date1 = formatDate(day1, ordinalMonth1, Integer.valueOf(year1));
-            var date2 = formatDate(day2, ordinalMonth2, Integer.valueOf(year2));
+            var date1 = formatDate(day1, ordinalMonth1, Integer.parseInt(year1));
+            var date2 = formatDate(day2, ordinalMonth2, Integer.parseInt(year2));
 
             return List.of(DateUtils.parse(date1), DateUtils.parse(date2));
         }
@@ -254,7 +254,7 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
             var itemStrong = element.select("strong:first-child");
             var text = sanitizerText(itemStrong.html());
             if (text.contains("Cântico")) {
-                VidaCristaExtractItemType type = NO_PARTICIPANTS;
+                VidaCristaExtractItemTypeEnum type = NO_PARTICIPANTS;
                 var isPrayer = element.html().contains("e oração");
                 if (isPrayer) {
                     itemStrong = element.select(STRONG);
@@ -274,7 +274,7 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
     private void addItemSongAndPrayer(
             List<VidaCristaExtractWeekItemDTO> list,
             Elements elements,
-            VidaCristaExtractItemType type) {
+            VidaCristaExtractItemTypeEnum type) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Element e : elements) {
             stringBuilder.append(sanitizerText(e.html()));
@@ -287,7 +287,7 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
     private void addItem(
             List<VidaCristaExtractWeekItemDTO> list,
             Elements elements,
-            VidaCristaExtractItemType type) {
+            VidaCristaExtractItemTypeEnum type) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Element e : elements) {
             stringBuilder.append(sanitizerText(e.html()));
@@ -301,12 +301,14 @@ public class VidaCristaExtractServiceImpl implements VidaCristaExtractService {
     private void addItem(
             List<VidaCristaExtractWeekItemDTO> list,
             Element element,
-            VidaCristaExtractItemType type) {
+            VidaCristaExtractItemTypeEnum type) {
         addItem(list, sanitizerText(element.html()), type);
     }
 
     private void addItem(
-            List<VidaCristaExtractWeekItemDTO> list, String text, VidaCristaExtractItemType type) {
+            List<VidaCristaExtractWeekItemDTO> list,
+            String text,
+            VidaCristaExtractItemTypeEnum type) {
         list.add(new VidaCristaExtractWeekItemDTO(text, type));
     }
 

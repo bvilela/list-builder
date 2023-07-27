@@ -7,25 +7,22 @@ import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoList
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoReaderDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.GroupService;
-import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.service.designacao.DesignacaoCounterService;
 import br.com.bvilela.listbuilder.service.designacao.DesignacaoWriterService;
+import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import java.util.List;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 class DesignacaoGenerateServiceImplTest
@@ -34,7 +31,7 @@ class DesignacaoGenerateServiceImplTest
 
     @InjectMocks private DesignacaoGenerateServiceImpl service;
 
-    @InjectMocks private AppProperties properties;
+    @InjectMocks private AppProperties appProperties;
 
     @Mock private DateService dateService;
 
@@ -42,7 +39,7 @@ class DesignacaoGenerateServiceImplTest
 
     @Mock private DesignacaoWriterService writerService;
 
-    @Mock private NotificationService notificationService;
+    @Mock private SendNotificationService notificationService;
 
     @Mock private DesignacaoCounterService counterService;
 
@@ -54,10 +51,10 @@ class DesignacaoGenerateServiceImplTest
     @SneakyThrows
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        FieldUtils.writeField(properties, "inputDir", this.testUtils.getResourceDirectory(), true);
+        new PropertiesTestUtils(appProperties).setInputDir(testUtils.getResourceDirectory());
         service =
                 new DesignacaoGenerateServiceImpl(
-                        properties,
+                        appProperties,
                         dateService,
                         groupService,
                         writerService,
@@ -72,7 +69,7 @@ class DesignacaoGenerateServiceImplTest
 
     @Test
     void shouldGetExecutionMode() {
-        assertEquals(this.testUtils.getListType(), service.getListType());
+        assertEquals(testUtils.getListType(), service.getListType());
     }
 
     @Test
@@ -466,17 +463,6 @@ class DesignacaoGenerateServiceImplTest
         validateListBuilderException("Leitor A Sentinela: ".concat(MessageConfig.LAST_REQUIRED));
     }
     // *************************** READER - FIM *************************** \\
-
-    @Test
-    void shouldGenerateListDatesEmptyException() {
-        var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
-        Mockito.when(
-                        dateService.generateListDatesDesignacao(
-                                ArgumentMatchers.any(DateServiceInputDTO.class)))
-                .thenReturn(List.of());
-        writeFileInputFromDto(dto);
-        validateListBuilderException(MessageConfig.LIST_DATE_EMPTY);
-    }
 
     private void validateListBuilderException(String expectedMessageError) {
         this.testUtils.validateException(() -> service.generateList(), expectedMessageError);

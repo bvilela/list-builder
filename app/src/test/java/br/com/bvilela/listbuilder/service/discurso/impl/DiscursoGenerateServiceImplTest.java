@@ -1,6 +1,9 @@
 package br.com.bvilela.listbuilder.service.discurso.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import br.com.bvilela.listbuilder.builder.DiscursoAllThemesDtoBuilder;
 import br.com.bvilela.listbuilder.builder.FileInputDataDiscursoDtoBuilder;
@@ -9,8 +12,7 @@ import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.discurso.FileInputDataDiscursoDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
-import lombok.SneakyThrows;
-import org.apache.commons.lang3.reflect.FieldUtils;
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +29,7 @@ class DiscursoGenerateServiceImplTest
 
     @InjectMocks private DiscursoGenerateServiceImpl service;
 
-    @InjectMocks private AppProperties properties;
+    @InjectMocks private AppProperties appProperties;
 
     @Mock private DiscursoWriterServiceImpl writerService;
 
@@ -39,16 +41,15 @@ class DiscursoGenerateServiceImplTest
     }
 
     @BeforeEach
-    @SneakyThrows
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        FieldUtils.writeField(properties, "inputDir", this.testUtils.getResourceDirectory(), true);
-        service = new DiscursoGenerateServiceImpl(properties, writerService);
+        new PropertiesTestUtils(appProperties).setInputDir(testUtils.getResourceDirectory());
+        service = new DiscursoGenerateServiceImpl(appProperties, writerService);
         createFileThemes();
     }
 
     private void createFileThemes() {
-        this.testUtils.writeFileInputDiscursoAllThemes(
+        testUtils.writeFileInputDiscursoAllThemes(
                 DiscursoAllThemesDtoBuilder.create().withRandomData().build());
     }
 
@@ -59,7 +60,7 @@ class DiscursoGenerateServiceImplTest
 
     @Test
     void shouldGetExecutionMode() {
-        assertEquals(this.testUtils.getListType(), service.getListType());
+        assertEquals(testUtils.getListType(), service.getListType());
     }
 
     @Test
@@ -70,21 +71,21 @@ class DiscursoGenerateServiceImplTest
     @Test
     void shouldGenerateListFileAllThemesInvalidPathFileException() {
         createFileInputDataOK();
-        this.testUtils.cleanDirectory();
+        testUtils.cleanDirectory();
         validateListBuilderException(MessageConfig.FILE_NOT_FOUND);
     }
 
     @Test
     void shouldGenerateListFileAllThemesSintaxeException() {
         createFileInputDataOK();
-        this.testUtils.writeFileInputDiscursoAllThemesSyntaxError();
+        testUtils.writeFileInputDiscursoAllThemesSyntaxError();
         validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
     }
 
     @Test
     void shouldGenerateListFileAllThemesNullException() {
         createFileInputDataOK();
-        this.testUtils.writeFileInputDiscursoAllThemes(
+        testUtils.writeFileInputDiscursoAllThemes(
                 DiscursoAllThemesDtoBuilder.create().withNullData().build());
         validateListBuilderException(MessageConfig.THEMES_REQUIRED);
     }
@@ -92,7 +93,7 @@ class DiscursoGenerateServiceImplTest
     @Test
     void shouldGenerateListFileAllThemesEmptyException() {
         createFileInputDataOK();
-        this.testUtils.writeFileInputDiscursoAllThemes(
+        testUtils.writeFileInputDiscursoAllThemes(
                 DiscursoAllThemesDtoBuilder.create().withEmptyData().build());
         validateListBuilderException(MessageConfig.THEMES_REQUIRED);
     }
@@ -108,7 +109,7 @@ class DiscursoGenerateServiceImplTest
 
     @Test
     void shouldGenerateListFileInputSintaxeException() {
-        this.testUtils.writeFileInputSyntaxError();
+        testUtils.writeFileInputSyntaxError();
         validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
     }
 
@@ -211,6 +212,6 @@ class DiscursoGenerateServiceImplTest
     }
 
     private void validateListBuilderException(String expectedMessageError) {
-        this.testUtils.validateException(() -> service.generateList(), expectedMessageError);
+        testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 }

@@ -2,6 +2,7 @@ package br.com.bvilela.listbuilder.dto;
 
 import br.com.bvilela.lib.utils.annotation.javax.ValidParseDate;
 import br.com.bvilela.listbuilder.config.MessageConfig;
+import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import com.google.gson.annotations.SerializedName;
 import javax.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -29,4 +30,12 @@ public abstract class BaseFileInputDataDTO {
     @NotBlank(message = MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND)
     @SerializedName("diaReuniaoFimSemana")
     private String meetingDayWeekend;
+
+    public DayOfWeekEnum getMeetingDayMidweekEnum() {
+        return DayOfWeekEnum.getByValue(this.meetingDayMidweek);
+    }
+
+    public DayOfWeekEnum getMeetingDayWeekendEnum() {
+        return DayOfWeekEnum.getByValue(this.meetingDayWeekend);
+    }
 }

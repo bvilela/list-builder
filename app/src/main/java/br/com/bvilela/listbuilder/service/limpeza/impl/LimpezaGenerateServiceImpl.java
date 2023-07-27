@@ -12,8 +12,8 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.GroupService;
-import br.com.bvilela.listbuilder.service.NotificationService;
 import br.com.bvilela.listbuilder.service.limpeza.LimpezaWriterService;
+import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.validator.LimpezaValidator;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
     private final LimpezaWriterService writerService;
     private final DateService dateService;
     private final GroupService groupService;
-    private final NotificationService notificationService;
+    private final SendNotificationService notificationService;
 
     @Override
     public ListTypeEnum getListType() {
@@ -72,7 +72,7 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
             logFinish(log);
 
         } catch (Exception e) {
-            throw defaultListBuilderException(e);
+            throw defaultListBuilderException(log, e);
         }
     }
 
@@ -131,11 +131,11 @@ public class LimpezaGenerateServiceImpl implements BaseGenerateService {
 
             var item =
                     FinalListLimpezaItemLayout2DTO.builder()
-                            .withGroup(listGroups.get(i))
-                            .withDate1(date1)
-                            .withLabel1(label1)
-                            .withDate2(date2)
-                            .withLabel2(label2)
+                            .group(listGroups.get(i))
+                            .date1(date1)
+                            .label1(label1)
+                            .date2(date2)
+                            .label2(label2)
                             .build();
 
             list.add(item);

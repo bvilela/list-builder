@@ -1,21 +1,21 @@
-package br.com.bvilela.listbuilder.service.assistencia.impl;
+package br.com.bvilela.listbuilder.service.audience.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import br.com.bvilela.listbuilder.builder.FileInputDataAssistenciaDtoBuilder;
+import br.com.bvilela.listbuilder.builder.FileInputDataAudienceDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
-import br.com.bvilela.listbuilder.dto.assistencia.FileInputDataAssistenciaDTO;
+import br.com.bvilela.listbuilder.dto.audience.FileInputDataAudienceDTO;
+import br.com.bvilela.listbuilder.enuns.AudienceWriterLayoutEnum;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.DateService;
-import br.com.bvilela.listbuilder.service.NotificationService;
-import br.com.bvilela.listbuilder.service.assistencia.AssistenciaWriterService;
+import br.com.bvilela.listbuilder.service.audience.AudienceWriterService;
+import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,32 +31,33 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-class AssistenciaGenerateServiceImplTest
-        extends BaseGenerateServiceTest<
-                FileInputDataAssistenciaDTO, FileInputDataAssistenciaDtoBuilder> {
+class AudienceGenerateServiceImplTest
+        extends BaseGenerateServiceTest<FileInputDataAudienceDTO, FileInputDataAudienceDtoBuilder> {
 
-    @InjectMocks private AssistenciaGenerateServiceImpl service;
+    @InjectMocks private AudienceGenerateServiceImpl service;
 
-    @InjectMocks private AppProperties properties;
+    @InjectMocks private AppProperties appProperties;
 
     @Mock private DateService dateService;
 
-    @Mock private AssistenciaWriterService writerService;
+    @Mock private AudienceWriterService writerService;
 
-    @Mock private NotificationService notificationService;
+    @Mock private SendNotificationService notificationService;
 
-    public AssistenciaGenerateServiceImplTest() {
-        super(ListTypeEnum.ASSISTENCIA, FileInputDataAssistenciaDtoBuilder.create());
+    public AudienceGenerateServiceImplTest() {
+        super(ListTypeEnum.ASSISTENCIA, FileInputDataAudienceDtoBuilder.create());
     }
 
     @BeforeEach
     @SneakyThrows
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        FieldUtils.writeField(properties, "inputDir", testUtils.getResourceDirectory(), true);
+        var propertiesUtils = new PropertiesTestUtils(appProperties);
+        propertiesUtils.setInputDir(testUtils.getResourceDirectory());
+        propertiesUtils.setLayoutAudience(AudienceWriterLayoutEnum.FULL);
         service =
-                new AssistenciaGenerateServiceImpl(
-                        properties, dateService, writerService, notificationService);
+                new AudienceGenerateServiceImpl(
+                        appProperties, dateService, notificationService, writerService);
     }
 
     @Test
@@ -89,7 +90,6 @@ class AssistenciaGenerateServiceImplTest
     @ParameterizedTest(name = "Last Date is \"{0}\"")
     @NullAndEmptySource
     @ValueSource(strings = {" "})
-    @SneakyThrows
     void shouldGenerateListExceptionLastDate(String lastDate) {
         writeFileInputFromDto(builder.withSuccess().withLastDate(lastDate).build());
         validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
@@ -151,16 +151,6 @@ class AssistenciaGenerateServiceImplTest
     }
 
     @Test
-    void shouldGenerateListExceptionGeneratedListIsEmpty() {
-        writeFileInputFromDto(builder.withSuccess().build());
-        Mockito.when(
-                        dateService.generateListDatesAssistencia(
-                                ArgumentMatchers.any(DateServiceInputDTO.class)))
-                .thenReturn(List.of());
-        validateListBuilderException(MessageConfig.LIST_DATE_EMPTY);
-    }
-
-    @Test
     void shouldGenerateListSuccess() {
         var expectedList =
                 List.of(
@@ -177,8 +167,9 @@ class AssistenciaGenerateServiceImplTest
                         cld(4, 30));
         writeFileInputFromDto(builder.withSuccess().build());
         Mockito.when(
-                        dateService.generateListDatesAssistencia(
-                                ArgumentMatchers.any(DateServiceInputDTO.class)))
+                        dateService.generateAudienceListDates(
+                                ArgumentMatchers.any(FileInputDataAudienceDTO.class),
+                                ArgumentMatchers.any(AudienceWriterLayoutEnum.class)))
                 .thenReturn(expectedList);
         Assertions.assertDoesNotThrow(() -> service.generateList());
     }

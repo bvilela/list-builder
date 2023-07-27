@@ -1,12 +1,11 @@
 package br.com.bvilela.listbuilder.service.vidacrista.impl;
 
 import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemType;
+import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +29,6 @@ class VidaCristaExtractServiceImplTest {
     @DisplayName("Get URL Meeting Workbook from URL Success")
     @ParameterizedTest(name = "Date is \"{0}\"")
     @MethodSource("shouldGetUrlMeetingWorkbookParameters")
-    @SneakyThrows
     void shouldGetUrlMeetingWorkbook(LocalDate localDate, String expectedURL) {
         var url = service.getUrlMeetingWorkbook(localDate);
         Assertions.assertEquals(expectedURL, url);
@@ -58,7 +56,6 @@ class VidaCristaExtractServiceImplTest {
     @DisplayName("Sanitizer Text")
     @ParameterizedTest(name = "Source Text is \"{1}\"")
     @MethodSource("shouldSanitizerTextParameters")
-    @SneakyThrows
     void shouldSanitizerText(String target, String source) {
         baseSanitizerText(target, source);
     }
@@ -106,15 +103,14 @@ class VidaCristaExtractServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldExtractWeeksBySite() {
         var url = "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/maio-junho-2022-mwb/";
         var list = service.extractWeeksBySite(url);
         Assertions.assertDoesNotThrow(() -> service.extractWeekItemsBySite(list));
         var week = list.get(0);
         Assertions.assertEquals("2-8 de maio", week.getLabelDate());
-        Assertions.assertEquals(LocalDate.of(2022, 5, 2), week.getDate1());
-        Assertions.assertEquals(LocalDate.of(2022, 5, 8), week.getDate2());
+        Assertions.assertEquals(LocalDate.of(2022, 5, 2), week.getInitialDate());
+        Assertions.assertEquals(LocalDate.of(2022, 5, 8), week.getEndDate());
         Assertions.assertEquals(
                 "/pt/biblioteca/jw-apostila-do-mes/maio-junho-2022-mwb/Programa%C3%A7%C3%A3o-da-semana-de-2-8-de-maio-de-2022-na-Apostila-da-Reuni%C3%A3o-Vida-e-Minist%C3%A9rio/",
                 week.getLink());
@@ -122,73 +118,75 @@ class VidaCristaExtractServiceImplTest {
         int index = 0;
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.PRESIDENT,
+                VidaCristaExtractItemTypeEnum.PRESIDENT,
                 "Presidente da Reunião");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.READ_OF_WEEK,
+                VidaCristaExtractItemTypeEnum.READ_OF_WEEK,
                 "1 SAMUEL 27-29");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Cântico 71 e oração");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.NO_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.NO_PARTICIPANTS,
                 "Comentários iniciais");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.LABEL,
+                VidaCristaExtractItemTypeEnum.LABEL,
                 "TESOUROS DA PALAVRA DE DEUS");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "\"A estratégia de guerra de Davi\"");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Joias espirituais");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Leitura da Bíblia");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.LABEL,
+                VidaCristaExtractItemTypeEnum.LABEL,
                 "FAÇA SEU MELHOR NO MINISTÉRIO");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Vídeo da primeira conversa");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Primeira conversa — designação 1");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Primeira conversa — designação 2");
         checkWeekItem(
-                week.getItems().get(index++), VidaCristaExtractItemType.LABEL, "NOSSA VIDA CRISTÃ");
+                week.getItems().get(index++),
+                VidaCristaExtractItemTypeEnum.LABEL,
+                "NOSSA VIDA CRISTÃ");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.NO_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.NO_PARTICIPANTS,
                 "Cântico 129");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Firmes apesar de oposição");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Estudo bíblico de congregação");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.NO_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.NO_PARTICIPANTS,
                 "Comentários finais");
         checkWeekItem(
                 week.getItems().get(index++),
-                VidaCristaExtractItemType.WITH_PARTICIPANTS,
+                VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS,
                 "Cântico 94 e oração");
     }
 
@@ -211,14 +209,12 @@ class VidaCristaExtractServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldExtractMonthsAndConvertToDatesOneMonthSuccess() {
         var list = service.extractMonthsAndConvertToDates("5-11 de setembro", 2022);
         Assertions.assertEquals(List.of(LocalDate.of(2022, 9, 5), LocalDate.of(2022, 9, 11)), list);
     }
 
     @Test
-    @SneakyThrows
     void shouldExtractMonthsAndConvertToDatesTwoMonthsSuccess() {
         var list = service.extractMonthsAndConvertToDates("26 de setembro-2 de outubro", 2022);
         Assertions.assertEquals(
@@ -226,7 +222,6 @@ class VidaCristaExtractServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldExtractMonthsAndConvertToDatesTwoMonthsTwoYearCase1Success() {
         var list =
                 service.extractMonthsAndConvertToDates(
@@ -236,7 +231,6 @@ class VidaCristaExtractServiceImplTest {
     }
 
     @Test
-    @SneakyThrows
     void shouldExtractMonthsAndConvertToDatesTwoMonthsTwoYearCase2Success() {
         var list =
                 service.extractMonthsAndConvertToDates(
@@ -272,7 +266,7 @@ class VidaCristaExtractServiceImplTest {
     }
 
     private void checkWeekItem(
-            VidaCristaExtractWeekItemDTO item, VidaCristaExtractItemType type, String title) {
+            VidaCristaExtractWeekItemDTO item, VidaCristaExtractItemTypeEnum type, String title) {
         Assertions.assertEquals(type, item.getType());
         Assertions.assertEquals(title, item.getTitle());
         Assertions.assertNull(item.getParticipants());
