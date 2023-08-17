@@ -19,4 +19,8 @@ public class AppProperties {
 
     @Value("${audience.layout:full}")
     private String layoutAudience;
+
+    @Value("${discourse.include-president:false}")
+    private boolean discourseIncludePresident;
+
 }

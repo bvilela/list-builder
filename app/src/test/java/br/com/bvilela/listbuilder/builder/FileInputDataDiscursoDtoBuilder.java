@@ -1,22 +1,22 @@
 package br.com.bvilela.listbuilder.builder;
 
-import br.com.bvilela.listbuilder.dto.discurso.FileInputDataDiscursoDTO;
-import br.com.bvilela.listbuilder.dto.discurso.FileInputDataDiscursoItemDTO;
+import br.com.bvilela.listbuilder.dto.discourse.InputDiscourseDTO;
+import br.com.bvilela.listbuilder.dto.discourse.InputDiscourseItemDTO;
 import java.util.List;
 
 public class FileInputDataDiscursoDtoBuilder {
 
-    private FileInputDataDiscursoDTO target;
+    private InputDiscourseDTO target;
 
     public FileInputDataDiscursoDtoBuilder() {
-        this.target = new FileInputDataDiscursoDTO();
+        this.target = new InputDiscourseDTO();
     }
 
     public static FileInputDataDiscursoDtoBuilder create() {
         return new FileInputDataDiscursoDtoBuilder();
     }
 
-    public FileInputDataDiscursoDTO build() {
+    public InputDiscourseDTO build() {
         return target;
     }
 
@@ -36,12 +36,12 @@ public class FileInputDataDiscursoDtoBuilder {
         return this;
     }
 
-    public FileInputDataDiscursoDtoBuilder withSend(List<FileInputDataDiscursoItemDTO> send) {
+    public FileInputDataDiscursoDtoBuilder withSend(List<InputDiscourseItemDTO> send) {
         this.target.setSend(send);
         return this;
     }
 
-    public FileInputDataDiscursoDtoBuilder withReceive(List<FileInputDataDiscursoItemDTO> receive) {
+    public FileInputDataDiscursoDtoBuilder withReceive(List<InputDiscourseItemDTO> receive) {
         this.target.setReceive(receive);
         return this;
     }

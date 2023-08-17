@@ -1,4 +1,4 @@
-package br.com.bvilela.listbuilder.service.discurso.impl;
+package br.com.bvilela.listbuilder.service.discourse.impl;
 
 import br.com.bvilela.listbuilder.builder.FileInputDataDiscursoDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
@@ -17,9 +17,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-class DiscursoWriterServiceImplTest {
+class DiscourseWriterServiceImplTest {
 
-    @InjectMocks private DiscursoWriterServiceImpl service;
+    @InjectMocks private DiscourseWriterServiceImpl service;
     @InjectMocks private AppProperties appProperties;
 
     @BeforeEach
@@ -27,7 +27,7 @@ class DiscursoWriterServiceImplTest {
         MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
         new PropertiesTestUtils(appProperties).setOutputDir(pathOutput);
-        service = new DiscursoWriterServiceImpl(appProperties);
+        service = new DiscourseWriterServiceImpl(appProperties);
     }
 
     @AfterAll

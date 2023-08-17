@@ -5,7 +5,7 @@ import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterItemDtoBuil
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoDtoBuilder;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.ItemDateDTO;
-import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoListDTO;
+import br.com.bvilela.listbuilder.dto.InputListDTO;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
 import br.com.bvilela.listbuilder.enuns.DesignacaoEntityEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
@@ -282,7 +282,7 @@ class GroupServiceImplTest {
 
     //	 --------------------- OTHER --------------------- \\
     private void validListGenerated(
-            FileInputDataDesignacaoListDTO dto, List<DesignacaoWriterItemDTO> list) {
+            InputListDTO dto, List<DesignacaoWriterItemDTO> list) {
         Assertions.assertEquals(4, list.size());
         Assertions.assertEquals(dto.getList().get(1), list.get(0).getName());
         Assertions.assertEquals(dto.getList().get(2), list.get(1).getName());

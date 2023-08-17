@@ -1,7 +1,7 @@
 package br.com.bvilela.listbuilder.builder.designacao;
 
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
-import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoListDTO;
+import br.com.bvilela.listbuilder.dto.InputListDTO;
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoReaderDTO;
 import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -61,7 +61,7 @@ public class FileInputDataDesignacaoDtoBuilder {
     }
 
     public FileInputDataDesignacaoDtoBuilder withPresident(
-            FileInputDataDesignacaoListDTO president) {
+            InputListDTO president) {
         this.target.setPresident(president);
         return this;
     }
@@ -72,7 +72,7 @@ public class FileInputDataDesignacaoDtoBuilder {
     }
 
     public FileInputDataDesignacaoDtoBuilder withAudioVideo(
-            FileInputDataDesignacaoListDTO audioVideo) {
+            InputListDTO audioVideo) {
         this.target.setAudioVideo(audioVideo);
         return this;
     }

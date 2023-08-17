@@ -1,11 +1,11 @@
-package br.com.bvilela.listbuilder.service.discurso.impl;
+package br.com.bvilela.listbuilder.service.discourse.impl;
 
 import br.com.bvilela.listbuilder.config.AppProperties;
-import br.com.bvilela.listbuilder.dto.discurso.FileInputDataDiscursoDTO;
-import br.com.bvilela.listbuilder.dto.discurso.FileInputDataDiscursoItemDTO;
+import br.com.bvilela.listbuilder.dto.discourse.InputDiscourseDTO;
+import br.com.bvilela.listbuilder.dto.discourse.InputDiscourseItemDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import br.com.bvilela.listbuilder.service.discurso.DiscursoWriterService;
+import br.com.bvilela.listbuilder.service.discourse.DiscourseWriterService;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import br.com.bvilela.listbuilder.utils.DateUtils;
 import br.com.bvilela.listbuilder.utils.FileUtils;
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DiscursoWriterServiceImpl implements DiscursoWriterService {
+public class DiscourseWriterServiceImpl implements DiscourseWriterService {
 
     private final AppProperties properties;
 
@@ -43,7 +43,7 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
 
     @Override
     @SneakyThrows
-    public Path writerPDF(FileInputDataDiscursoDTO dto) {
+    public Path writerPDF(InputDiscourseDTO dto) {
         try {
 
             log.info("Iniciando Geração da lista em PDF");
@@ -62,7 +62,7 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
         }
     }
 
-    public LocalDate getBaseDate(FileInputDataDiscursoDTO dto) {
+    public LocalDate getBaseDate(InputDiscourseDTO dto) {
         if (!AppUtils.listIsNullOrEmpty(dto.getReceive())) {
             return dto.getReceive().get(0).getDateConverted();
         }
@@ -70,7 +70,7 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
     }
 
     @SneakyThrows
-    private void writerDocument(FileInputDataDiscursoDTO dto, Path path) {
+    private void writerDocument(InputDiscourseDTO dto, Path path) {
 
         try (var outputStream = new FileOutputStream(path.toString())) {
             Document document = pdfUtils.getDocument();
@@ -103,7 +103,7 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
     }
 
     @SneakyThrows
-    private void addReceiveSendHeaders(FileInputDataDiscursoDTO dto, PdfPTable table) {
+    private void addReceiveSendHeaders(InputDiscourseDTO dto, PdfPTable table) {
         var receiveNonEmpty = !AppUtils.listIsNullOrEmpty(dto.getReceive());
         var sendNonEmpty = !AppUtils.listIsNullOrEmpty(dto.getSend());
 
@@ -120,7 +120,7 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
         }
     }
 
-    private int getNumberOfColumns(FileInputDataDiscursoDTO dto) {
+    private int getNumberOfColumns(InputDiscourseDTO dto) {
         int numberOfColumns = 0;
         if (!AppUtils.listIsNullOrEmpty(dto.getReceive())) {
             numberOfColumns++;
@@ -131,7 +131,7 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
         return numberOfColumns;
     }
 
-    private void addItem(List<FileInputDataDiscursoItemDTO> list, PdfPTable table, int index) {
+    private void addItem(List<InputDiscourseItemDTO> list, PdfPTable table, int index) {
         if (AppUtils.listIsNullOrEmpty(list)) {
             addBlankRow(table, 20);
             return;
@@ -144,7 +144,7 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
         }
     }
 
-    private int getBiggestList(FileInputDataDiscursoDTO dto) {
+    private int getBiggestList(InputDiscourseDTO dto) {
         if (AppUtils.listIsNullOrEmpty(dto.getReceive())) {
             return dto.getSend().size();
         }
@@ -182,7 +182,7 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
         table.addCell(cell);
     }
 
-    private void addItem(PdfPTable table, FileInputDataDiscursoItemDTO dto) {
+    private void addItem(PdfPTable table, InputDiscourseItemDTO dto) {
         PdfPCell cell = new PdfPCell();
         cell.addElement(
                 pdfUtils.createParagraphBold12Normal12(
@@ -198,7 +198,7 @@ public class DiscursoWriterServiceImpl implements DiscursoWriterService {
         table.addCell(cell);
     }
 
-    private String getThemeLabel(FileInputDataDiscursoItemDTO dto) {
+    private String getThemeLabel(InputDiscourseItemDTO dto) {
         return dto.getThemeTitle().equals("?") ? "" : dto.getThemeTitle();
     }
 }

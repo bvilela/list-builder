@@ -58,7 +58,7 @@ build/
 .vscode/
 
 ### Genetared Files ###
-/arquivos/saida/
+app/arquivos/saida/
 *.pdf
 google-credentials.json
 /tokens/

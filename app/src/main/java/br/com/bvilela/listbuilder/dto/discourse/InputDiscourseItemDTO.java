@@ -1,4 +1,4 @@
-package br.com.bvilela.listbuilder.dto.discurso;
+package br.com.bvilela.listbuilder.dto.discourse;
 
 import br.com.bvilela.lib.utils.annotation.gson.NotSerialized;
 import br.com.bvilela.lib.utils.annotation.javax.ValidParseDate;
@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-public class FileInputDataDiscursoItemDTO {
+public class InputDiscourseItemDTO {
 
     @ValidParseDate(
             message = "Data inválida: '${validatedValue}' não é uma data válida",

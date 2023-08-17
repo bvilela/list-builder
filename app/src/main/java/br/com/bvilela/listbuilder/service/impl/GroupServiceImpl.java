@@ -3,7 +3,7 @@ package br.com.bvilela.listbuilder.service.impl;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.ItemDateDTO;
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
-import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoListDTO;
+import br.com.bvilela.listbuilder.dto.InputListDTO;
 import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
 import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
 import br.com.bvilela.listbuilder.enuns.DesignacaoEntityEnum;
@@ -161,7 +161,7 @@ public class GroupServiceImpl implements GroupService {
 
     @SneakyThrows
     private List<DesignacaoWriterItemDTO> generateSequenceListDesignacao(
-            FileInputDataDesignacaoListDTO dto,
+            InputListDTO dto,
             List<LocalDate> listDates,
             DesignacaoEntityEnum entity) {
 

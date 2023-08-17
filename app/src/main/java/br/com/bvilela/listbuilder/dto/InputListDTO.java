@@ -1,4 +1,4 @@
-package br.com.bvilela.listbuilder.dto.designacao;
+package br.com.bvilela.listbuilder.dto;
 
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import com.google.gson.annotations.SerializedName;
@@ -15,7 +15,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @NoArgsConstructor
-public class FileInputDataDesignacaoListDTO {
+public class InputListDTO {
 
     @NotEmpty(message = MessageConfig.LIST_REQUIRED)
     @SerializedName("lista")

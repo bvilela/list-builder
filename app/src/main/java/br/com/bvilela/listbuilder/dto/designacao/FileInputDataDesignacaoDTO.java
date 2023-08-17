@@ -2,6 +2,7 @@ package br.com.bvilela.listbuilder.dto.designacao;
 
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.BaseFileInputDataDTO;
+import br.com.bvilela.listbuilder.dto.InputListDTO;
 import br.com.bvilela.listbuilder.validator.DesignacaoValidator;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
@@ -22,7 +23,7 @@ public class FileInputDataDesignacaoDTO extends BaseFileInputDataDTO {
 
     @NotNull(message = MessageConfig.PRESIDENT_REQUIRED)
     @SerializedName("presidente")
-    private @Valid FileInputDataDesignacaoListDTO president;
+    private @Valid InputListDTO president;
 
     @NotNull(message = MessageConfig.READER_REQUIRED)
     @SerializedName("leitor")
@@ -30,7 +31,7 @@ public class FileInputDataDesignacaoDTO extends BaseFileInputDataDTO {
 
     @NotNull(message = MessageConfig.AUDIOVIDEO_REQUIRED)
     @SerializedName("audioVideo")
-    private @Valid FileInputDataDesignacaoListDTO audioVideo;
+    private @Valid InputListDTO audioVideo;
 
     @NotEmpty(message = MessageConfig.INDICATOR_REQUIRED)
     @SerializedName("indicador")
