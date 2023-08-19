@@ -1,22 +1,22 @@
 package br.com.bvilela.listbuilder.builder.designacao;
 
-import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoListDTO;
+import br.com.bvilela.listbuilder.dto.InputListDTO;
 import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 
 public class FileInputDataDesignacaoListDtoBuilder {
 
-    private FileInputDataDesignacaoListDTO target;
+    private InputListDTO target;
 
     public FileInputDataDesignacaoListDtoBuilder() {
-        this.target = new FileInputDataDesignacaoListDTO();
+        this.target = new InputListDTO();
     }
 
     public static FileInputDataDesignacaoListDtoBuilder create() {
         return new FileInputDataDesignacaoListDtoBuilder();
     }
 
-    public FileInputDataDesignacaoListDTO build() {
+    public InputListDTO build() {
         return target;
     }
 

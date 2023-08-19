@@ -1,4 +1,4 @@
-package br.com.bvilela.listbuilder.service.discurso.impl;
+package br.com.bvilela.listbuilder.service.discourse.impl;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,9 +9,11 @@ import br.com.bvilela.listbuilder.builder.DiscursoAllThemesDtoBuilder;
 import br.com.bvilela.listbuilder.builder.FileInputDataDiscursoDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.dto.discurso.FileInputDataDiscursoDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputDiscourseDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
+import br.com.bvilela.listbuilder.service.discourse.DiscourseGenerateServiceImpl;
+import br.com.bvilela.listbuilder.service.discourse.DiscourseWriterService;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,19 +26,19 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-class DiscursoGenerateServiceImplTest
-        extends BaseGenerateServiceTest<FileInputDataDiscursoDTO, FileInputDataDiscursoDtoBuilder> {
+class DiscourseGenerateServiceImplTest
+        extends BaseGenerateServiceTest<InputDiscourseDTO, FileInputDataDiscursoDtoBuilder> {
 
-    @InjectMocks private DiscursoGenerateServiceImpl service;
+    @InjectMocks private DiscourseGenerateServiceImpl service;
 
     @InjectMocks private AppProperties appProperties;
 
-    @Mock private DiscursoWriterServiceImpl writerService;
+    @Mock private DiscourseWriterService writerService;
 
     private static final String MSG_MISSING_THEME_NUMBER_TITLE =
             "Data: 05-06-2022 - Informe o Número do Tema ou Título!";
 
-    public DiscursoGenerateServiceImplTest() {
+    public DiscourseGenerateServiceImplTest() {
         super(ListTypeEnum.DISCURSO, FileInputDataDiscursoDtoBuilder.create().withRandomData());
     }
 
@@ -44,7 +46,7 @@ class DiscursoGenerateServiceImplTest
     public void setup() {
         MockitoAnnotations.openMocks(this);
         new PropertiesTestUtils(appProperties).setInputDir(testUtils.getResourceDirectory());
-        service = new DiscursoGenerateServiceImpl(appProperties, writerService);
+        service = new DiscourseGenerateServiceImpl(appProperties, writerService);
         createFileThemes();
     }
 
@@ -206,7 +208,7 @@ class DiscursoGenerateServiceImplTest
         assertFalse(dto.getReceive().get(0).toString().isBlank());
     }
 
-    void validateGenerateListSuccess(FileInputDataDiscursoDTO dto) {
+    void validateGenerateListSuccess(InputDiscourseDTO dto) {
         writeFileInputFromDto(dto);
         assertDoesNotThrow(() -> service.generateList());
     }

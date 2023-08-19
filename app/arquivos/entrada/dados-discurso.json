@@ -1,4 +1,8 @@
 {
+	"presidente": {
+		"lista": ["Presidente1", "Presidente2", "Presidente3", "Presidente4"],
+		"ultimo": "Presidente1"
+	},
 	"receber": [
 		{
 			"data": "03-12-2022",

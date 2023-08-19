@@ -1,7 +1,7 @@
 package br.com.bvilela.listbuilder.validator;
 
 import br.com.bvilela.lib.utils.ValidationUtils;
-import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoListDTO;
+import br.com.bvilela.listbuilder.dto.InputListDTO;
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoReaderDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.AppUtils;
@@ -87,7 +87,7 @@ public final class GenericValidator {
 
         @Override
         public String toString() {
-            if (myClass.equals(FileInputDataDesignacaoListDTO.class)
+            if (myClass.equals(InputListDTO.class)
                     || myClass.equals(FileInputDataDesignacaoReaderDTO.class)) {
                 var pathPT = path.contains("president") ? "Presidente" : path;
                 pathPT = pathPT.contains("audioVideo") ? "Aúdio e Vídeo" : pathPT;

@@ -1,9 +1,9 @@
 package br.com.bvilela.listbuilder.validator;
 
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.dto.discurso.DiscursoAllThemesDTO;
-import br.com.bvilela.listbuilder.dto.discurso.FileInputDataDiscursoDTO;
-import br.com.bvilela.listbuilder.dto.discurso.FileInputDataDiscursoItemDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputAllThemesDiscourseDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputDiscourseDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputDiscourseItemDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import java.util.List;
@@ -16,14 +16,14 @@ public final class DiscursoValidator {
 
     private DiscursoValidator() {}
 
-    public static void validAllThemesFile(DiscursoAllThemesDTO dto) {
+    public static void validAllThemesFile(InputAllThemesDiscourseDTO dto) {
         log.info("Arquivos de Temas - Validando Dados de Entrada!");
         GenericValidator.validateDto(dto);
         log.info("Arquivos de Temas - Validado com Sucesso!");
     }
 
     @SneakyThrows
-    public static void validFileInputData(FileInputDataDiscursoDTO dto) {
+    public static void validFileInputData(InputDiscourseDTO dto) {
         log.info("Validando Dados de Entrada!");
 
         GenericValidator.validateDto(dto);
@@ -39,7 +39,7 @@ public final class DiscursoValidator {
         log.info("Dados de Entrada Validados com Sucesso!");
     }
 
-    private static void validItem(List<FileInputDataDiscursoItemDTO> list, String message) {
+    private static void validItem(List<InputDiscourseItemDTO> list, String message) {
         log.info("{} - Validando", message);
 
         if (AppUtils.listIsNullOrEmpty(list)) {
@@ -47,7 +47,7 @@ public final class DiscursoValidator {
             return;
         }
 
-        for (FileInputDataDiscursoItemDTO item : list) {
+        for (InputDiscourseItemDTO item : list) {
             GenericValidator.validateDto(item);
             validTheme(item);
         }
@@ -56,7 +56,7 @@ public final class DiscursoValidator {
     }
 
     @SneakyThrows
-    private static void validTheme(FileInputDataDiscursoItemDTO item) {
+    private static void validTheme(InputDiscourseItemDTO item) {
         var themeNumberMissing =
                 Objects.isNull(item.getThemeNumber()) || item.getThemeNumber().isBlank();
         var themeTitleMissing =

@@ -1,22 +1,22 @@
 package br.com.bvilela.listbuilder.builder;
 
-import br.com.bvilela.listbuilder.dto.discurso.DiscursoAllThemesDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputAllThemesDiscourseDTO;
 import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 
 public class DiscursoAllThemesDtoBuilder {
 
-    private DiscursoAllThemesDTO target;
+    private InputAllThemesDiscourseDTO target;
 
     public DiscursoAllThemesDtoBuilder() {
-        this.target = new DiscursoAllThemesDTO();
+        this.target = new InputAllThemesDiscourseDTO();
     }
 
     public static DiscursoAllThemesDtoBuilder create() {
         return new DiscursoAllThemesDtoBuilder();
     }
 
-    public DiscursoAllThemesDTO build() {
+    public InputAllThemesDiscourseDTO build() {
         return target;
     }
 

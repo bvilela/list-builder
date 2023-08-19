@@ -1,7 +1,7 @@
 package br.com.bvilela.listbuilder.utils;
 
 import br.com.bvilela.lib.utils.GsonUtils;
-import br.com.bvilela.listbuilder.dto.discurso.DiscursoAllThemesDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputAllThemesDiscourseDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import java.io.File;
@@ -55,7 +55,7 @@ public class TestUtils {
                 this.listType.getInputFileName(), GsonUtils.getGson().toJson(dto));
     }
 
-    public void writeFileInputDiscursoAllThemes(DiscursoAllThemesDTO dto) {
+    public void writeFileInputDiscursoAllThemes(InputAllThemesDiscourseDTO dto) {
         this.writeFileInputFromDto(FILE_INPUT_DISCURSO_ALL_THEMES, GsonUtils.getGson().toJson(dto));
     }
 

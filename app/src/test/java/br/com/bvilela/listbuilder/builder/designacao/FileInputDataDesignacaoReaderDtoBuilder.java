@@ -1,6 +1,6 @@
 package br.com.bvilela.listbuilder.builder.designacao;
 
-import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoListDTO;
+import br.com.bvilela.listbuilder.dto.InputListDTO;
 import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoReaderDTO;
 
 public class FileInputDataDesignacaoReaderDtoBuilder {
@@ -27,14 +27,12 @@ public class FileInputDataDesignacaoReaderDtoBuilder {
         return this;
     }
 
-    public FileInputDataDesignacaoReaderDtoBuilder withWatchtower(
-            FileInputDataDesignacaoListDTO watchtower) {
+    public FileInputDataDesignacaoReaderDtoBuilder withWatchtower(InputListDTO watchtower) {
         this.target.setWatchtower(watchtower);
         return this;
     }
 
-    public FileInputDataDesignacaoReaderDtoBuilder withBibleStudy(
-            FileInputDataDesignacaoListDTO bibleStudy) {
+    public FileInputDataDesignacaoReaderDtoBuilder withBibleStudy(InputListDTO bibleStudy) {
         this.target.setBibleStudy(bibleStudy);
         return this;
     }

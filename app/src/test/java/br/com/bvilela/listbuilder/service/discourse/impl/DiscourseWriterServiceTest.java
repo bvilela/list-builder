@@ -1,8 +1,9 @@
-package br.com.bvilela.listbuilder.service.discurso.impl;
+package br.com.bvilela.listbuilder.service.discourse.impl;
 
 import br.com.bvilela.listbuilder.builder.FileInputDataDiscursoDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import br.com.bvilela.listbuilder.service.discourse.DiscourseWriterService;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import br.com.bvilela.listbuilder.utils.TestUtils;
 import java.nio.file.Paths;
@@ -17,9 +18,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-class DiscursoWriterServiceImplTest {
+class DiscourseWriterServiceTest {
 
-    @InjectMocks private DiscursoWriterServiceImpl service;
+    @InjectMocks private DiscourseWriterService service;
     @InjectMocks private AppProperties appProperties;
 
     @BeforeEach
@@ -27,7 +28,7 @@ class DiscursoWriterServiceImplTest {
         MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
         new PropertiesTestUtils(appProperties).setOutputDir(pathOutput);
-        service = new DiscursoWriterServiceImpl(appProperties);
+        service = new DiscourseWriterService(appProperties);
     }
 
     @AfterAll
@@ -40,28 +41,30 @@ class DiscursoWriterServiceImplTest {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         dto.getReceive().get(0).setDateConverted(null);
         var exception =
-                Assertions.assertThrows(ListBuilderException.class, () -> service.writerPDF(dto));
+                Assertions.assertThrows(
+                        ListBuilderException.class,
+                        () -> service.writerPDF(dto.convertToWriterDto()));
         Assertions.assertTrue(exception.getMessage().contains("Erro ao Gerar PDF - Erro: "));
     }
 
     @Test
     void shouldWriterPDFSuccessSendReceive() {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
-        Assertions.assertDoesNotThrow(() -> service.writerPDF(dto));
+        Assertions.assertDoesNotThrow(() -> service.writerPDF(dto.convertToWriterDto()));
     }
 
     @Test
     void shouldWriterPDFSuccessSendOnly() {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         dto.setReceive(null);
-        Assertions.assertDoesNotThrow(() -> service.writerPDF(dto));
+        Assertions.assertDoesNotThrow(() -> service.writerPDF(dto.convertToWriterDto()));
     }
 
     @Test
     void shouldWriterPDFSuccessReceiveOnly() {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         dto.setSend(null);
-        Assertions.assertDoesNotThrow(() -> service.writerPDF(dto));
+        Assertions.assertDoesNotThrow(() -> service.writerPDF(dto.convertToWriterDto()));
     }
 
     @Test
@@ -69,7 +72,7 @@ class DiscursoWriterServiceImplTest {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         dto.getReceive().get(0).setThemeNumber(null);
         dto.getReceive().get(0).setThemeTitle("?");
-        Assertions.assertDoesNotThrow(() -> service.writerPDF(dto));
+        Assertions.assertDoesNotThrow(() -> service.writerPDF(dto.convertToWriterDto()));
     }
 
     @Test
@@ -77,7 +80,7 @@ class DiscursoWriterServiceImplTest {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         dto.getSend().get(0).setThemeNumber(null);
         dto.getSend().get(0).setThemeTitle("?");
-        Assertions.assertDoesNotThrow(() -> service.writerPDF(dto));
+        Assertions.assertDoesNotThrow(() -> service.writerPDF(dto.convertToWriterDto()));
     }
 
     @Test
@@ -86,7 +89,7 @@ class DiscursoWriterServiceImplTest {
         var newList = new ArrayList<>(dto.getReceive());
         newList.remove(0);
         dto.setReceive(newList);
-        Assertions.assertDoesNotThrow(() -> service.writerPDF(dto));
+        Assertions.assertDoesNotThrow(() -> service.writerPDF(dto.convertToWriterDto()));
     }
 
     @Test
@@ -95,7 +98,7 @@ class DiscursoWriterServiceImplTest {
         var newList = new ArrayList<>(dto.getSend());
         newList.remove(0);
         dto.setSend(newList);
-        Assertions.assertDoesNotThrow(() -> service.writerPDF(dto));
+        Assertions.assertDoesNotThrow(() -> service.writerPDF(dto.convertToWriterDto()));
     }
 
     @Test
@@ -103,7 +106,8 @@ class DiscursoWriterServiceImplTest {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         dto.setSend(null);
         dto.getReceive().get(0).setDateConverted(LocalDate.of(2022, 1, 1));
-        Assertions.assertEquals(LocalDate.of(2022, 1, 1), service.getBaseDate(dto));
+        Assertions.assertEquals(
+                LocalDate.of(2022, 1, 1), service.getBaseDate(dto.convertToWriterDto()));
     }
 
     @Test
@@ -111,6 +115,7 @@ class DiscursoWriterServiceImplTest {
         var dto = FileInputDataDiscursoDtoBuilder.create().withRandomData().build();
         dto.setReceive(null);
         dto.getSend().get(0).setDateConverted(LocalDate.of(2022, 2, 1));
-        Assertions.assertEquals(LocalDate.of(2022, 2, 1), service.getBaseDate(dto));
+        Assertions.assertEquals(
+                LocalDate.of(2022, 2, 1), service.getBaseDate(dto.convertToWriterDto()));
     }
 }
