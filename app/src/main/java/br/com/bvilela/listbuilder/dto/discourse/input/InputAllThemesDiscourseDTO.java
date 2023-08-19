@@ -1,4 +1,4 @@
-package br.com.bvilela.listbuilder.dto.discourse;
+package br.com.bvilela.listbuilder.dto.discourse.input;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.Map;

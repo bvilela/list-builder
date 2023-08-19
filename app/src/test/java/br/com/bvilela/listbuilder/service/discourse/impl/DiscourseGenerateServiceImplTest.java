@@ -9,9 +9,11 @@ import br.com.bvilela.listbuilder.builder.DiscursoAllThemesDtoBuilder;
 import br.com.bvilela.listbuilder.builder.FileInputDataDiscursoDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.dto.discourse.InputDiscourseDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputDiscourseDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
+import br.com.bvilela.listbuilder.service.discourse.DiscourseGenerateServiceImpl;
+import br.com.bvilela.listbuilder.service.discourse.DiscourseWriterService;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,7 +33,7 @@ class DiscourseGenerateServiceImplTest
 
     @InjectMocks private AppProperties appProperties;
 
-    @Mock private DiscourseWriterServiceImpl writerService;
+    @Mock private DiscourseWriterService writerService;
 
     private static final String MSG_MISSING_THEME_NUMBER_TITLE =
             "Data: 05-06-2022 - Informe o Número do Tema ou Título!";

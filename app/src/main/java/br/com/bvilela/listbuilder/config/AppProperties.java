@@ -22,5 +22,4 @@ public class AppProperties {
 
     @Value("${discourse.include-president:false}")
     private boolean discourseIncludePresident;
-
 }

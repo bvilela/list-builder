@@ -1,6 +1,6 @@
 package br.com.bvilela.listbuilder.builder;
 
-import br.com.bvilela.listbuilder.dto.discourse.InputAllThemesDiscourseDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputAllThemesDiscourseDTO;
 import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 

@@ -1,23 +1,21 @@
-package br.com.bvilela.listbuilder.service.discourse.impl;
+package br.com.bvilela.listbuilder.service.discourse;
 
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
-import br.com.bvilela.listbuilder.dto.discourse.InputAllThemesDiscourseDTO;
-import br.com.bvilela.listbuilder.dto.discourse.InputDiscourseDTO;
-import br.com.bvilela.listbuilder.dto.discourse.InputDiscourseItemDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputAllThemesDiscourseDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputDiscourseDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputDiscourseItemDTO;
+import br.com.bvilela.listbuilder.dto.discourse.writer.DiscourseWriterDTO;
+import br.com.bvilela.listbuilder.dto.util.CircularList;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
-import br.com.bvilela.listbuilder.service.discourse.DiscourseWriterService;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import br.com.bvilela.listbuilder.utils.DateUtils;
 import br.com.bvilela.listbuilder.utils.FileUtils;
 import br.com.bvilela.listbuilder.validator.DiscursoValidator;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -56,13 +54,13 @@ public class DiscourseGenerateServiceImpl implements BaseGenerateService {
             setThemesByNumberAndConvertDate(dto.getReceive(), "Lista Receber", allThemesDto);
             setThemesByNumberAndConvertDate(dto.getSend(), "Lista Enviar", allThemesDto);
 
-            /*
-            if (properties.isDiscourseIncludePresident()){
-                includePresident(dto);
-            }
-            */
+            var writerDto = dto.convertToWriterDto();
 
-            writerService.writerPDF(dto);
+            if (properties.isDiscourseIncludePresident()) {
+                includePresident(dto, writerDto);
+            }
+
+            writerService.writerPDF(writerDto);
 
             logFinish(log);
 
@@ -71,27 +69,21 @@ public class DiscourseGenerateServiceImpl implements BaseGenerateService {
         }
     }
 
-    /*
     @SneakyThrows
-    private List<String> includePresident(InputDiscourseDTO dto) {
+    private void includePresident(InputDiscourseDTO dto, DiscourseWriterDTO writerDto) {
         if (dto.getPresident() == null) {
-            return null;
+            return;
         }
 
         var president = dto.getPresident();
-        var indexLast = president.getList().indexOf(president.getLast());
-        if (indexLast < 0) {
+        final int initialIndex = president.getList().indexOf(president.getLast());
+        if (initialIndex < 0) {
             throw new ListBuilderException(MessageConfig.LAST_INVALID, "Presidente");
         }
 
-        var listPresidents = new ArrayList<>();
-        for (LocalDate listDate : listDates) {
-            indexLast = indexLast == dto.getList().size() - 1 ? 0 : ++indexLast;
-            listWriterItems.add(
-                    new DesignacaoWriterItemDTO(listDate, dto.getList().get(indexLast)));
-        }
+        var circularList = new CircularList<>(dto.getPresident().getList(), initialIndex);
+        writerDto.getReceive().forEach(e -> e.setPresident(circularList.next()));
     }
-    */
 
     @SneakyThrows
     private static void setThemesByNumberAndConvertDate(

@@ -27,14 +27,12 @@ public class FileInputDataDesignacaoReaderDtoBuilder {
         return this;
     }
 
-    public FileInputDataDesignacaoReaderDtoBuilder withWatchtower(
-            InputListDTO watchtower) {
+    public FileInputDataDesignacaoReaderDtoBuilder withWatchtower(InputListDTO watchtower) {
         this.target.setWatchtower(watchtower);
         return this;
     }
 
-    public FileInputDataDesignacaoReaderDtoBuilder withBibleStudy(
-            InputListDTO bibleStudy) {
+    public FileInputDataDesignacaoReaderDtoBuilder withBibleStudy(InputListDTO bibleStudy) {
         this.target.setBibleStudy(bibleStudy);
         return this;
     }

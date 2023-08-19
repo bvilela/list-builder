@@ -1,6 +1,6 @@
 package br.com.bvilela.listbuilder.builder;
 
-import br.com.bvilela.listbuilder.dto.discourse.InputDiscourseItemDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputDiscourseItemDTO;
 import br.com.bvilela.listbuilder.utils.DateUtils;
 import java.time.LocalDate;
 import org.apache.commons.lang3.RandomStringUtils;

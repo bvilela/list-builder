@@ -1,9 +1,9 @@
 package br.com.bvilela.listbuilder.validator;
 
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.dto.discourse.InputAllThemesDiscourseDTO;
-import br.com.bvilela.listbuilder.dto.discourse.InputDiscourseDTO;
-import br.com.bvilela.listbuilder.dto.discourse.InputDiscourseItemDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputAllThemesDiscourseDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputDiscourseDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputDiscourseItemDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.AppUtils;
 import java.util.List;

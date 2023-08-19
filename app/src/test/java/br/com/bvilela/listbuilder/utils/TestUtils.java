@@ -1,7 +1,7 @@
 package br.com.bvilela.listbuilder.utils;
 
 import br.com.bvilela.lib.utils.GsonUtils;
-import br.com.bvilela.listbuilder.dto.discourse.InputAllThemesDiscourseDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.InputAllThemesDiscourseDTO;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import java.io.File;

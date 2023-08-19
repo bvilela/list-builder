@@ -1,8 +1,14 @@
 package br.com.bvilela.listbuilder.config;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import br.com.bvilela.listbuilder.enuns.NotifDesignacaoEntityEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,13 +16,6 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NotifyPropertiesTest {
 
@@ -54,8 +53,7 @@ class NotifyPropertiesTest {
     @ValueSource(strings = " ")
     void checkNotifyNameFilled(String name) {
         propertiesUtils.setNotifyName(name);
-        assertThrows(ListBuilderException.class,
-                () -> properties.checkNotifyNameFilled());
+        assertThrows(ListBuilderException.class, () -> properties.checkNotifyNameFilled());
     }
 
     @Test
@@ -76,8 +74,7 @@ class NotifyPropertiesTest {
     @ValueSource(strings = {" ", "teste", "guarta", "cesta"})
     void checkChristianLifeMeetingDayEnumFilled(String value) {
         propertiesUtils.setNotifyChristianLifeMeetingDay(value);
-        assertThrows(ListBuilderException.class,
-                () -> properties.getChristianLifeMeetingDayEnum());
+        assertThrows(ListBuilderException.class, () -> properties.getChristianLifeMeetingDayEnum());
     }
 
     @ParameterizedTest
@@ -86,5 +83,4 @@ class NotifyPropertiesTest {
         propertiesUtils.setNotifyChristianLifeMeetingDay(value);
         assertDoesNotThrow(() -> properties.getChristianLifeMeetingDayEnum());
     }
-
 }

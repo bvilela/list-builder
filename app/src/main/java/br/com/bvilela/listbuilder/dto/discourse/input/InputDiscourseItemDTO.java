@@ -1,4 +1,4 @@
-package br.com.bvilela.listbuilder.dto.discourse;
+package br.com.bvilela.listbuilder.dto.discourse.input;
 
 import br.com.bvilela.lib.utils.annotation.gson.NotSerialized;
 import br.com.bvilela.lib.utils.annotation.javax.ValidParseDate;
