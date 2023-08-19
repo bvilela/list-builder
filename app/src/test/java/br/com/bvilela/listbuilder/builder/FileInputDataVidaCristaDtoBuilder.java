@@ -1,8 +1,8 @@
 package br.com.bvilela.listbuilder.builder;
 
-import br.com.bvilela.listbuilder.dto.vidacrista.FileInputDataVidaCristaDTO;
-import br.com.bvilela.listbuilder.dto.vidacrista.FileInputDataVidaCristaRenameItemDTO;
-import br.com.bvilela.listbuilder.utils.DateUtils;
+import br.com.bvilela.listbuilder.dto.christianlife.input.ChristianLifeInputDTO;
+import br.com.bvilela.listbuilder.dto.christianlife.input.ChristianLifeInputRenameItemDTO;
+import br.com.bvilela.listbuilder.util.DateUtils;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -10,17 +10,17 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 public class FileInputDataVidaCristaDtoBuilder {
 
-    private FileInputDataVidaCristaDTO target;
+    private ChristianLifeInputDTO target;
 
     public FileInputDataVidaCristaDtoBuilder() {
-        this.target = new FileInputDataVidaCristaDTO();
+        this.target = new ChristianLifeInputDTO();
     }
 
     public static FileInputDataVidaCristaDtoBuilder create() {
         return new FileInputDataVidaCristaDtoBuilder();
     }
 
-    public FileInputDataVidaCristaDTO build() {
+    public ChristianLifeInputDTO build() {
         return target;
     }
 
@@ -69,7 +69,7 @@ public class FileInputDataVidaCristaDtoBuilder {
     }
 
     public FileInputDataVidaCristaDtoBuilder withRenameItems(
-            List<FileInputDataVidaCristaRenameItemDTO> renameItems) {
+            List<ChristianLifeInputRenameItemDTO> renameItems) {
         this.target.setRenameItems(renameItems);
         return this;
     }

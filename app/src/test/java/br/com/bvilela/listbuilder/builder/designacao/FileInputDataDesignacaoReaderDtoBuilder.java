@@ -1,21 +1,21 @@
 package br.com.bvilela.listbuilder.builder.designacao;
 
-import br.com.bvilela.listbuilder.dto.InputListDTO;
-import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoReaderDTO;
+import br.com.bvilela.listbuilder.dto.designation.input.DesignationInputReaderDTO;
+import br.com.bvilela.listbuilder.dto.util.InputListDTO;
 
 public class FileInputDataDesignacaoReaderDtoBuilder {
 
-    private FileInputDataDesignacaoReaderDTO target;
+    private DesignationInputReaderDTO target;
 
     public FileInputDataDesignacaoReaderDtoBuilder() {
-        this.target = new FileInputDataDesignacaoReaderDTO();
+        this.target = new DesignationInputReaderDTO();
     }
 
     public static FileInputDataDesignacaoReaderDtoBuilder create() {
         return new FileInputDataDesignacaoReaderDtoBuilder();
     }
 
-    public FileInputDataDesignacaoReaderDTO build() {
+    public DesignationInputReaderDTO build() {
         return target;
     }
 

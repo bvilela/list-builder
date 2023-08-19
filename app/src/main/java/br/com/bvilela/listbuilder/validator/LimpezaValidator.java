@@ -1,8 +1,8 @@
 package br.com.bvilela.listbuilder.validator;
 
-import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
-import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
-import br.com.bvilela.listbuilder.utils.AppUtils;
+import br.com.bvilela.listbuilder.dto.clearing.input.ClearingInputDTO;
+import br.com.bvilela.listbuilder.dto.util.DateServiceInputDTO;
+import br.com.bvilela.listbuilder.util.AppUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,7 +12,7 @@ public final class LimpezaValidator {
     private LimpezaValidator() {}
 
     @SneakyThrows
-    public static DateServiceInputDTO validAndConvertData(FileInputDataLimpezaDTO dto) {
+    public static DateServiceInputDTO validAndConvertData(ClearingInputDTO dto) {
         log.info("Validando dados de entrada");
 
         GenericValidator.validateDto(dto);

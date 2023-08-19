@@ -2,7 +2,7 @@ package br.com.bvilela.listbuilder.config;
 
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import br.com.bvilela.listbuilder.utils.AppUtils;
+import br.com.bvilela.listbuilder.util.AppUtils;
 import java.util.List;
 import lombok.Getter;
 import lombok.SneakyThrows;

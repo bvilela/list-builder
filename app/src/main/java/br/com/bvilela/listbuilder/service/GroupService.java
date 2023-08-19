@@ -1,36 +1,36 @@
 package br.com.bvilela.listbuilder.service;
 
-import br.com.bvilela.listbuilder.dto.ItemDateDTO;
-import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
-import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
-import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
+import br.com.bvilela.listbuilder.dto.clearing.input.ClearingInputDTO;
+import br.com.bvilela.listbuilder.dto.designation.input.DesignationInputDTO;
+import br.com.bvilela.listbuilder.dto.designation.writer.DesignationWriterItemDTO;
+import br.com.bvilela.listbuilder.dto.util.ItemDateDTO;
 import java.time.LocalDate;
 import java.util.List;
 
 public interface GroupService {
 
     List<String> generateListGroupsLimpeza(
-            FileInputDataLimpezaDTO dto, List<ItemDateDTO> listDates, int layout);
+            ClearingInputDTO dto, List<ItemDateDTO> listDates, int layout);
 
-    List<DesignacaoWriterItemDTO> generateListPresident(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesWeekend);
+    List<DesignationWriterItemDTO> generateListPresident(
+            DesignationInputDTO dto, List<LocalDate> listDatesWeekend);
 
-    List<DesignacaoWriterItemDTO> generateListReaderWatchtower(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesWeekend);
+    List<DesignationWriterItemDTO> generateListReaderWatchtower(
+            DesignationInputDTO dto, List<LocalDate> listDatesWeekend);
 
-    List<DesignacaoWriterItemDTO> generateListReaderBibleStudy(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesMidweek);
+    List<DesignationWriterItemDTO> generateListReaderBibleStudy(
+            DesignationInputDTO dto, List<LocalDate> listDatesMidweek);
 
-    List<DesignacaoWriterItemDTO> generateListAudioVideo(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesAll);
+    List<DesignationWriterItemDTO> generateListAudioVideo(
+            DesignationInputDTO dto, List<LocalDate> listDatesAll);
 
-    List<DesignacaoWriterItemDTO> generateListIndicator(
-            FileInputDataDesignacaoDTO dto,
+    List<DesignationWriterItemDTO> generateListIndicator(
+            DesignationInputDTO dto,
             List<LocalDate> listDatesAll,
-            List<DesignacaoWriterItemDTO> anotherLists);
+            List<DesignationWriterItemDTO> anotherLists);
 
-    List<DesignacaoWriterItemDTO> generateListMicrophone(
-            FileInputDataDesignacaoDTO dto,
+    List<DesignationWriterItemDTO> generateListMicrophone(
+            DesignationInputDTO dto,
             List<LocalDate> listDatesAll,
-            List<DesignacaoWriterItemDTO> anotherLists);
+            List<DesignationWriterItemDTO> anotherLists);
 }

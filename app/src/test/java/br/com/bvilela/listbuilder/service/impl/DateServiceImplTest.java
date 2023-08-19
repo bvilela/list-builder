@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import br.com.bvilela.listbuilder.builder.FileInputDataAudienceDtoBuilder;
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoDtoBuilder;
-import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
-import br.com.bvilela.listbuilder.dto.ItemDateDTO;
-import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
+import br.com.bvilela.listbuilder.dto.clearing.input.ClearingInputDTO;
+import br.com.bvilela.listbuilder.dto.util.DateServiceInputDTO;
+import br.com.bvilela.listbuilder.dto.util.ItemDateDTO;
 import br.com.bvilela.listbuilder.enuns.AudienceWriterLayoutEnum;
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import br.com.bvilela.listbuilder.utils.TestUtils;
@@ -70,7 +70,7 @@ class DateServiceImplTest {
                         cid(4, 23),
                         cid(4, 26),
                         cid(4, 30));
-        var fileInputData = new FileInputDataLimpezaDTO();
+        var fileInputData = new ClearingInputDTO();
         fileInputData.setLastDate("29-03-2022");
         fileInputData.setMeetingDayMidweek("terca");
         fileInputData.setMeetingDayWeekend("sabado");
@@ -94,7 +94,7 @@ class DateServiceImplTest {
                         cid(4, 23),
                         cid(4, 26),
                         cid(4, 30));
-        var fileInputData = new FileInputDataLimpezaDTO();
+        var fileInputData = new ClearingInputDTO();
         fileInputData.setLastDate("29-03-2022");
         fileInputData.setMeetingDayMidweek("terca");
         fileInputData.setMeetingDayWeekend("sabado");
@@ -118,7 +118,7 @@ class DateServiceImplTest {
         expected.addAll(cid(7, 4, 22, 4, 23));
         expected.addAll(cid(8, 4, 25, 4, 26));
         expected.addAll(cid(9, 4, 29, 4, 30));
-        var fileInputData = new FileInputDataLimpezaDTO();
+        var fileInputData = new ClearingInputDTO();
         fileInputData.setLastDate("29-03-2022");
         fileInputData.setMeetingDayMidweek("terca");
         fileInputData.setMeetingDayWeekend("sabado");

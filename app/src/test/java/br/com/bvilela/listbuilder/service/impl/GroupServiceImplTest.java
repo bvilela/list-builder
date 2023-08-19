@@ -4,10 +4,10 @@ import br.com.bvilela.listbuilder.builder.FileInputDataLimpezaDtoBuilder;
 import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterItemDtoBuilder;
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoDtoBuilder;
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.dto.InputListDTO;
-import br.com.bvilela.listbuilder.dto.ItemDateDTO;
-import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
-import br.com.bvilela.listbuilder.enuns.DesignacaoEntityEnum;
+import br.com.bvilela.listbuilder.dto.designation.writer.DesignationWriterItemDTO;
+import br.com.bvilela.listbuilder.dto.util.InputListDTO;
+import br.com.bvilela.listbuilder.dto.util.ItemDateDTO;
+import br.com.bvilela.listbuilder.enuns.DesignationEntityEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import java.time.LocalDate;
 import java.util.List;
@@ -90,7 +90,7 @@ class GroupServiceImplTest {
                         ListBuilderException.class,
                         () -> service.generateListPresident(null, null));
         Assertions.assertTrue(
-                exception.getMessage().contains(DesignacaoEntityEnum.PRESIDENT.getLabel()));
+                exception.getMessage().contains(DesignationEntityEnum.PRESIDENT.getLabel()));
     }
 
     @Test
@@ -107,7 +107,7 @@ class GroupServiceImplTest {
                         .contains(
                                 String.format(
                                         MessageConfig.LAST_INVALID,
-                                        DesignacaoEntityEnum.PRESIDENT.getLabel())));
+                                        DesignationEntityEnum.PRESIDENT.getLabel())));
     }
 
     @Test
@@ -125,7 +125,9 @@ class GroupServiceImplTest {
                         ListBuilderException.class,
                         () -> service.generateListReaderWatchtower(null, null));
         Assertions.assertTrue(
-                exception.getMessage().contains(DesignacaoEntityEnum.READER_WATCHTOWER.getLabel()));
+                exception
+                        .getMessage()
+                        .contains(DesignationEntityEnum.READER_WATCHTOWER.getLabel()));
     }
 
     @Test
@@ -149,7 +151,7 @@ class GroupServiceImplTest {
                         .contains(
                                 String.format(
                                         MessageConfig.LAST_INVALID,
-                                        DesignacaoEntityEnum.READER_WATCHTOWER.getLabel())));
+                                        DesignationEntityEnum.READER_WATCHTOWER.getLabel())));
     }
 
     //	 --------------------- READER BIBLESTUDY --------------------- \\
@@ -160,7 +162,9 @@ class GroupServiceImplTest {
                         ListBuilderException.class,
                         () -> service.generateListReaderBibleStudy(null, null));
         Assertions.assertTrue(
-                exception.getMessage().contains(DesignacaoEntityEnum.READER_BIBLESTUDY.getLabel()));
+                exception
+                        .getMessage()
+                        .contains(DesignationEntityEnum.READER_BIBLESTUDY.getLabel()));
     }
 
     @Test
@@ -184,7 +188,7 @@ class GroupServiceImplTest {
                         .contains(
                                 String.format(
                                         MessageConfig.LAST_INVALID,
-                                        DesignacaoEntityEnum.READER_BIBLESTUDY.getLabel())));
+                                        DesignationEntityEnum.READER_BIBLESTUDY.getLabel())));
     }
 
     //	 --------------------- AUDIOVIDEO --------------------- \\
@@ -195,7 +199,7 @@ class GroupServiceImplTest {
                         ListBuilderException.class,
                         () -> service.generateListAudioVideo(null, null));
         Assertions.assertTrue(
-                exception.getMessage().contains(DesignacaoEntityEnum.AUDIO_VIDEO.getLabel()));
+                exception.getMessage().contains(DesignationEntityEnum.AUDIO_VIDEO.getLabel()));
     }
 
     @Test
@@ -239,7 +243,7 @@ class GroupServiceImplTest {
                         .contains(
                                 String.format(
                                         MessageConfig.LAST_INVALID,
-                                        DesignacaoEntityEnum.AUDIO_VIDEO.getLabel())));
+                                        DesignationEntityEnum.AUDIO_VIDEO.getLabel())));
     }
 
     //	 --------------------- INDICATOR --------------------- \\
@@ -250,7 +254,7 @@ class GroupServiceImplTest {
                         ListBuilderException.class,
                         () -> service.generateListIndicator(null, null, null));
         Assertions.assertTrue(
-                exception.getMessage().contains(DesignacaoEntityEnum.INDICATOR.getLabel()));
+                exception.getMessage().contains(DesignationEntityEnum.INDICATOR.getLabel()));
     }
 
     @Test
@@ -269,7 +273,7 @@ class GroupServiceImplTest {
                         ListBuilderException.class,
                         () -> service.generateListMicrophone(null, null, null));
         Assertions.assertTrue(
-                exception.getMessage().contains(DesignacaoEntityEnum.MICROPHONE.getLabel()));
+                exception.getMessage().contains(DesignationEntityEnum.MICROPHONE.getLabel()));
     }
 
     @Test
@@ -281,7 +285,7 @@ class GroupServiceImplTest {
     }
 
     //	 --------------------- OTHER --------------------- \\
-    private void validListGenerated(InputListDTO dto, List<DesignacaoWriterItemDTO> list) {
+    private void validListGenerated(InputListDTO dto, List<DesignationWriterItemDTO> list) {
         Assertions.assertEquals(4, list.size());
         Assertions.assertEquals(dto.getList().get(1), list.get(0).getName());
         Assertions.assertEquals(dto.getList().get(2), list.get(1).getName());

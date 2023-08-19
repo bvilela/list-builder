@@ -3,7 +3,7 @@ package br.com.bvilela.listbuilder.service.notification;
 import br.com.bvilela.lib.enuns.ColorEnum;
 import br.com.bvilela.lib.model.CalendarEvent;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
-import br.com.bvilela.listbuilder.utils.DateUtils;
+import br.com.bvilela.listbuilder.util.DateUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

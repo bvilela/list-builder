@@ -1,7 +1,7 @@
 package br.com.bvilela.listbuilder.service.impl;
 
 import br.com.bvilela.listbuilder.service.OrchestratorService;
-import br.com.bvilela.listbuilder.service.limpeza.impl.LimpezaGenerateServiceImpl;
+import br.com.bvilela.listbuilder.service.clearing.LimpezaGenerateServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

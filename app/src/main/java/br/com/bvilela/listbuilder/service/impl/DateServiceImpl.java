@@ -1,13 +1,13 @@
 package br.com.bvilela.listbuilder.service.impl;
 
-import br.com.bvilela.listbuilder.dto.DateServiceInputDTO;
-import br.com.bvilela.listbuilder.dto.ItemDateDTO;
-import br.com.bvilela.listbuilder.dto.audience.FileInputDataAudienceDTO;
-import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
+import br.com.bvilela.listbuilder.dto.audience.AudienceInputDTO;
+import br.com.bvilela.listbuilder.dto.designation.input.DesignationInputDTO;
+import br.com.bvilela.listbuilder.dto.util.DateServiceInputDTO;
+import br.com.bvilela.listbuilder.dto.util.ItemDateDTO;
 import br.com.bvilela.listbuilder.enuns.AudienceWriterLayoutEnum;
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import br.com.bvilela.listbuilder.service.DateService;
-import br.com.bvilela.listbuilder.utils.DateUtils;
+import br.com.bvilela.listbuilder.util.DateUtils;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class DateServiceImpl implements DateService {
     @Override
     @SneakyThrows
     public List<LocalDate> generateAudienceListDates(
-            FileInputDataAudienceDTO fileInputData, AudienceWriterLayoutEnum layoutEnum) {
+            AudienceInputDTO fileInputData, AudienceWriterLayoutEnum layoutEnum) {
 
         var dto = new DateServiceInputDTO(fileInputData);
         var list = generateListDates(dto, layoutEnum.getNumberOfMonth());
@@ -55,7 +55,7 @@ public class DateServiceImpl implements DateService {
     }
 
     @Override
-    public List<LocalDate> generateDesignationListDates(FileInputDataDesignacaoDTO fileInputData) {
+    public List<LocalDate> generateDesignationListDates(DesignationInputDTO fileInputData) {
 
         var dto = new DateServiceInputDTO(fileInputData);
         var listDates = generateListDates(dto, 1);

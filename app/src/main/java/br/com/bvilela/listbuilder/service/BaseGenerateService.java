@@ -3,7 +3,7 @@ package br.com.bvilela.listbuilder.service;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import br.com.bvilela.listbuilder.utils.FileUtils;
+import br.com.bvilela.listbuilder.util.FileUtils;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.slf4j.Logger;

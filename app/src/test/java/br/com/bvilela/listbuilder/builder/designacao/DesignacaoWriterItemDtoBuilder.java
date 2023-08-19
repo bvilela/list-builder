@@ -1,22 +1,22 @@
 package br.com.bvilela.listbuilder.builder.designacao;
 
-import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
+import br.com.bvilela.listbuilder.dto.designation.writer.DesignationWriterItemDTO;
 import java.time.LocalDate;
 import org.apache.commons.lang3.RandomStringUtils;
 
 public class DesignacaoWriterItemDtoBuilder {
 
-    private DesignacaoWriterItemDTO target;
+    private DesignationWriterItemDTO target;
 
     public DesignacaoWriterItemDtoBuilder() {
-        this.target = new DesignacaoWriterItemDTO();
+        this.target = new DesignationWriterItemDTO();
     }
 
     public static DesignacaoWriterItemDtoBuilder create() {
         return new DesignacaoWriterItemDtoBuilder();
     }
 
-    public DesignacaoWriterItemDTO build() {
+    public DesignationWriterItemDTO build() {
         return target;
     }
 

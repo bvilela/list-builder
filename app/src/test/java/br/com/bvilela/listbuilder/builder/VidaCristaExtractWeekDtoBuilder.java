@@ -1,25 +1,25 @@
 package br.com.bvilela.listbuilder.builder;
 
-import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekDTO;
-import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
+import br.com.bvilela.listbuilder.dto.christianlife.extract.ChristianLifeExtractWeekDTO;
+import br.com.bvilela.listbuilder.dto.christianlife.extract.ChristianLifeExtractWeekItemDTO;
+import br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum;
 import java.time.LocalDate;
 import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 
 public class VidaCristaExtractWeekDtoBuilder {
 
-    private VidaCristaExtractWeekDTO target;
+    private ChristianLifeExtractWeekDTO target;
 
     public VidaCristaExtractWeekDtoBuilder() {
-        this.target = new VidaCristaExtractWeekDTO();
+        this.target = new ChristianLifeExtractWeekDTO();
     }
 
     public static VidaCristaExtractWeekDtoBuilder create() {
         return new VidaCristaExtractWeekDtoBuilder();
     }
 
-    public VidaCristaExtractWeekDTO build() {
+    public ChristianLifeExtractWeekDTO build() {
         return target;
     }
 
@@ -43,28 +43,28 @@ public class VidaCristaExtractWeekDtoBuilder {
         this.withItems(
                 List.of(
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemTypeEnum.READ_OF_WEEK)
+                                .withRandomData(ChristianLifeExtractItemTypeEnum.READ_OF_WEEK)
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemTypeEnum.PRESIDENT)
+                                .withRandomData(ChristianLifeExtractItemTypeEnum.PRESIDENT)
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemTypeEnum.LABEL)
+                                .withRandomData(ChristianLifeExtractItemTypeEnum.LABEL)
                                 .withTitle("TESOUROS DA PALAVRA")
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemTypeEnum.LABEL)
+                                .withRandomData(ChristianLifeExtractItemTypeEnum.LABEL)
                                 .withTitle("FAÇA SEU MELHOR")
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemTypeEnum.LABEL)
+                                .withRandomData(ChristianLifeExtractItemTypeEnum.LABEL)
                                 .withTitle("NOSSA VIDA CRISTÃ")
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemTypeEnum.NO_PARTICIPANTS)
+                                .withRandomData(ChristianLifeExtractItemTypeEnum.NO_PARTICIPANTS)
                                 .build(),
                         VidaCristaExtractWeekItemDtoBuilder.create()
-                                .withRandomData(VidaCristaExtractItemTypeEnum.WITH_PARTICIPANTS)
+                                .withRandomData(ChristianLifeExtractItemTypeEnum.WITH_PARTICIPANTS)
                                 .build()));
         return this;
     }
@@ -89,7 +89,7 @@ public class VidaCristaExtractWeekDtoBuilder {
         return this;
     }
 
-    private VidaCristaExtractWeekDtoBuilder withItems(List<VidaCristaExtractWeekItemDTO> items) {
+    private VidaCristaExtractWeekDtoBuilder withItems(List<ChristianLifeExtractWeekItemDTO> items) {
         this.target.setItems(items);
         return this;
     }
