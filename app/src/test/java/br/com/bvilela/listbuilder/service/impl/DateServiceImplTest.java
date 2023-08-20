@@ -1,7 +1,7 @@
 package br.com.bvilela.listbuilder.service.impl;
 
-import br.com.bvilela.listbuilder.builder.FileInputDataAudienceDtoBuilder;
-import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoDtoBuilder;
+import br.com.bvilela.listbuilder.builder.AudienceInputDtoBuilder;
+import br.com.bvilela.listbuilder.builder.designation.DesignationInputDtoBuilder;
 import br.com.bvilela.listbuilder.dto.clearing.input.ClearingInputDTO;
 import br.com.bvilela.listbuilder.dto.util.DateServiceInputDTO;
 import br.com.bvilela.listbuilder.dto.util.ItemDateDTO;
@@ -133,7 +133,7 @@ class DateServiceImplTest {
         var expected = TestUtils.createListLocalDates(dates, 2022);
 
         var fileInputDTO =
-                new FileInputDataAudienceDtoBuilder()
+                new AudienceInputDtoBuilder()
                         .withLastDate("29-03-2022")
                         .withMeetingDayMidweek("terca")
                         .withMeetingDayWeekend("sabado")
@@ -152,7 +152,7 @@ class DateServiceImplTest {
         var expected = TestUtils.createListLocalDates(dates, 2022);
 
         var fileInputDTO =
-                new FileInputDataAudienceDtoBuilder()
+                new AudienceInputDtoBuilder()
                         .withLastDate("07-06-2022")
                         .withMeetingDayMidweek("terca")
                         .withMeetingDayWeekend("sabado")
@@ -173,7 +173,7 @@ class DateServiceImplTest {
         var expected = TestUtils.createListLocalDates(dates, 2023);
 
         var fileInputDTO =
-                new FileInputDataAudienceDtoBuilder()
+                new AudienceInputDtoBuilder()
                         .withLastDate("31-12-2022")
                         .withMeetingDayMidweek("quarta")
                         .withMeetingDayWeekend("domingo")
@@ -192,7 +192,7 @@ class DateServiceImplTest {
         var expected = TestUtils.createListLocalDates(dates, 2022);
 
         var fileInputDTO =
-                new FileInputDataDesignacaoDtoBuilder()
+                new DesignationInputDtoBuilder()
                         .withLastDate("29-10-2022")
                         .withMeetingDayMidweek("terca")
                         .withMeetingDayWeekend("sabado")
@@ -211,7 +211,7 @@ class DateServiceImplTest {
         var expected = TestUtils.createListLocalDates(dates, 2022);
 
         var fileInputDTO =
-                new FileInputDataDesignacaoDtoBuilder()
+                new DesignationInputDtoBuilder()
                         .withLastDate("29-10-2022")
                         .withMeetingDayMidweek("quarta")
                         .withMeetingDayWeekend("domingo")
@@ -226,7 +226,7 @@ class DateServiceImplTest {
         var expected = TestUtils.createListLocalDates(dates, 2022);
 
         var fileInputDTO =
-                new FileInputDataDesignacaoDtoBuilder()
+                new DesignationInputDtoBuilder()
                         .withLastDate("02-10-2022")
                         .withMeetingDayMidweek("quarta")
                         .withMeetingDayWeekend("domingo")

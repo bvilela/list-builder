@@ -1,6 +1,6 @@
 package br.com.bvilela.listbuilder.service.audience;
 
-import br.com.bvilela.listbuilder.builder.FileInputDataAudienceDtoBuilder;
+import br.com.bvilela.listbuilder.builder.AudienceInputDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.audience.AudienceInputDTO;
@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class AudienceGenerateServiceImplTest
-        extends BaseGenerateServiceTest<AudienceInputDTO, FileInputDataAudienceDtoBuilder> {
+        extends BaseGenerateServiceTest<AudienceInputDTO, AudienceInputDtoBuilder> {
 
     @InjectMocks private AudienceGenerateServiceImpl service;
     @InjectMocks private AppProperties appProperties;
@@ -41,7 +41,7 @@ class AudienceGenerateServiceImplTest
     @Mock private SendNotificationService notificationService;
 
     public AudienceGenerateServiceImplTest() {
-        super(ListTypeEnum.ASSISTENCIA, FileInputDataAudienceDtoBuilder.create());
+        super(ListTypeEnum.ASSISTENCIA, AudienceInputDtoBuilder.create());
     }
 
     @BeforeEach

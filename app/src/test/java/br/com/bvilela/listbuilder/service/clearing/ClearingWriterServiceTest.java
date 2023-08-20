@@ -1,6 +1,6 @@
 package br.com.bvilela.listbuilder.service.clearing;
 
-import br.com.bvilela.listbuilder.builder.clearing.FinalListLimpezaDtoBuilder;
+import br.com.bvilela.listbuilder.builder.clearing.ClearingWriterDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import br.com.bvilela.listbuilder.utils.TestUtils;
@@ -37,14 +37,14 @@ class ClearingWriterServiceTest {
 
     @Test
     void shouldWriterPDFLayout1Success() {
-        var dto = FinalListLimpezaDtoBuilder.createMockLayout1();
+        var dto = ClearingWriterDtoBuilder.createMockLayout1();
         assertDoesNotThrow(() -> service.writerPDF(dto, "footerMessage", "headerMessage", 1));
         assertFalse(dto.toString().isBlank());
     }
 
     @Test
     void shouldWriterPDFLayout2Success() {
-        var dto = FinalListLimpezaDtoBuilder.createMockLayout2();
+        var dto = ClearingWriterDtoBuilder.createMockLayout2();
         assertDoesNotThrow(() -> service.writerPDF(dto, "footerMessage", "headerMessage", 2));
         assertFalse(dto.toString().isBlank());
     }

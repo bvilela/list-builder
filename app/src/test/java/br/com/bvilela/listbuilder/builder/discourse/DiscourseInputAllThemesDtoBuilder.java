@@ -1,36 +1,36 @@
-package br.com.bvilela.listbuilder.builder;
+package br.com.bvilela.listbuilder.builder.discourse;
 
 import br.com.bvilela.listbuilder.dto.discourse.input.DiscourseInputAllThemesDTO;
 import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 
-public class DiscursoAllThemesDtoBuilder {
+public class DiscourseInputAllThemesDtoBuilder {
 
     private DiscourseInputAllThemesDTO target;
 
-    public DiscursoAllThemesDtoBuilder() {
+    public DiscourseInputAllThemesDtoBuilder() {
         this.target = new DiscourseInputAllThemesDTO();
     }
 
-    public static DiscursoAllThemesDtoBuilder create() {
-        return new DiscursoAllThemesDtoBuilder();
+    public static DiscourseInputAllThemesDtoBuilder create() {
+        return new DiscourseInputAllThemesDtoBuilder();
     }
 
     public DiscourseInputAllThemesDTO build() {
         return target;
     }
 
-    public DiscursoAllThemesDtoBuilder withNullData() {
+    public DiscourseInputAllThemesDtoBuilder withNullData() {
         this.withThemes(null);
         return this;
     }
 
-    public DiscursoAllThemesDtoBuilder withEmptyData() {
+    public DiscourseInputAllThemesDtoBuilder withEmptyData() {
         this.withThemes(Map.of());
         return this;
     }
 
-    public DiscursoAllThemesDtoBuilder withRandomData() {
+    public DiscourseInputAllThemesDtoBuilder withRandomData() {
         this.withThemes(
                 Map.of(
                         1, RandomStringUtils.randomAlphabetic(30),
@@ -46,7 +46,7 @@ public class DiscursoAllThemesDtoBuilder {
         return this;
     }
 
-    private DiscursoAllThemesDtoBuilder withThemes(Map<Integer, String> themes) {
+    private DiscourseInputAllThemesDtoBuilder withThemes(Map<Integer, String> themes) {
         this.target.setThemes(themes);
         return this;
     }

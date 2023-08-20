@@ -1,26 +1,26 @@
-package br.com.bvilela.listbuilder.builder.designacao;
+package br.com.bvilela.listbuilder.builder.designation;
 
 import br.com.bvilela.listbuilder.dto.util.InputListDTO;
 import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 
-public class FileInputDataDesignacaoListDtoBuilder {
+public class InputListDtoBuilder {
 
     private InputListDTO target;
 
-    public FileInputDataDesignacaoListDtoBuilder() {
+    public InputListDtoBuilder() {
         this.target = new InputListDTO();
     }
 
-    public static FileInputDataDesignacaoListDtoBuilder create() {
-        return new FileInputDataDesignacaoListDtoBuilder();
+    public static InputListDtoBuilder create() {
+        return new InputListDtoBuilder();
     }
 
     public InputListDTO build() {
         return target;
     }
 
-    public FileInputDataDesignacaoListDtoBuilder withRandomData() {
+    public InputListDtoBuilder withRandomData() {
         var list =
                 List.of(
                         RandomStringUtils.randomAlphabetic(10),
@@ -32,12 +32,12 @@ public class FileInputDataDesignacaoListDtoBuilder {
         return this;
     }
 
-    public FileInputDataDesignacaoListDtoBuilder withList(List<String> list) {
+    public InputListDtoBuilder withList(List<String> list) {
         this.target.setList(list);
         return this;
     }
 
-    public FileInputDataDesignacaoListDtoBuilder withLast(String last) {
+    public InputListDtoBuilder withLast(String last) {
         this.target.setLast(last);
         return this;
     }

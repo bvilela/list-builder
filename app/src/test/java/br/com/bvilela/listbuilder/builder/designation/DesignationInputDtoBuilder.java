@@ -1,4 +1,4 @@
-package br.com.bvilela.listbuilder.builder.designacao;
+package br.com.bvilela.listbuilder.builder.designation;
 
 import br.com.bvilela.listbuilder.dto.designation.input.DesignationInputDTO;
 import br.com.bvilela.listbuilder.dto.designation.input.DesignationInputReaderDTO;
@@ -6,30 +6,30 @@ import br.com.bvilela.listbuilder.dto.util.InputListDTO;
 import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 
-public class FileInputDataDesignacaoDtoBuilder {
+public class DesignationInputDtoBuilder {
 
     private DesignationInputDTO target;
 
-    public FileInputDataDesignacaoDtoBuilder() {
+    public DesignationInputDtoBuilder() {
         this.target = new DesignationInputDTO();
     }
 
-    public static FileInputDataDesignacaoDtoBuilder create() {
-        return new FileInputDataDesignacaoDtoBuilder();
+    public static DesignationInputDtoBuilder create() {
+        return new DesignationInputDtoBuilder();
     }
 
     public DesignationInputDTO build() {
         return target;
     }
 
-    public FileInputDataDesignacaoDtoBuilder withRandomData() {
+    public DesignationInputDtoBuilder withRandomData() {
         this.withLastDate("01-01-2022");
         this.withMeetingDayMidweek("terça");
         this.withMeetingDayWeekend("sabado");
-        this.withPresident(FileInputDataDesignacaoListDtoBuilder.create().withRandomData().build());
+        this.withPresident(InputListDtoBuilder.create().withRandomData().build());
         this.withAudioVideo(
-                FileInputDataDesignacaoListDtoBuilder.create().withRandomData().build());
-        this.withReader(FileInputDataDesignacaoReaderDtoBuilder.create().withRandomData().build());
+                InputListDtoBuilder.create().withRandomData().build());
+        this.withReader(DesignationInputReaderDtoBuilder.create().withRandomData().build());
         this.withMicrophone(
                 List.of(
                         RandomStringUtils.randomAlphabetic(10),
@@ -45,42 +45,42 @@ public class FileInputDataDesignacaoDtoBuilder {
         return this;
     }
 
-    public FileInputDataDesignacaoDtoBuilder withLastDate(String lastDate) {
+    public DesignationInputDtoBuilder withLastDate(String lastDate) {
         this.target.setLastDate(lastDate);
         return this;
     }
 
-    public FileInputDataDesignacaoDtoBuilder withMeetingDayMidweek(String meetingDayMidweek) {
+    public DesignationInputDtoBuilder withMeetingDayMidweek(String meetingDayMidweek) {
         this.target.setMeetingDayMidweek(meetingDayMidweek);
         return this;
     }
 
-    public FileInputDataDesignacaoDtoBuilder withMeetingDayWeekend(String meetingDayWeekend) {
+    public DesignationInputDtoBuilder withMeetingDayWeekend(String meetingDayWeekend) {
         this.target.setMeetingDayWeekend(meetingDayWeekend);
         return this;
     }
 
-    public FileInputDataDesignacaoDtoBuilder withPresident(InputListDTO president) {
+    public DesignationInputDtoBuilder withPresident(InputListDTO president) {
         this.target.setPresident(president);
         return this;
     }
 
-    public FileInputDataDesignacaoDtoBuilder withReader(DesignationInputReaderDTO reader) {
+    public DesignationInputDtoBuilder withReader(DesignationInputReaderDTO reader) {
         this.target.setReader(reader);
         return this;
     }
 
-    public FileInputDataDesignacaoDtoBuilder withAudioVideo(InputListDTO audioVideo) {
+    public DesignationInputDtoBuilder withAudioVideo(InputListDTO audioVideo) {
         this.target.setAudioVideo(audioVideo);
         return this;
     }
 
-    public FileInputDataDesignacaoDtoBuilder withMicrophone(List<String> microphone) {
+    public DesignationInputDtoBuilder withMicrophone(List<String> microphone) {
         this.target.setMicrophone(microphone);
         return this;
     }
 
-    public FileInputDataDesignacaoDtoBuilder withIndicator(List<String> indicator) {
+    public DesignationInputDtoBuilder withIndicator(List<String> indicator) {
         this.target.setIndicator(indicator);
         return this;
     }

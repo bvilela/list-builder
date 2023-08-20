@@ -1,10 +1,10 @@
-package br.com.bvilela.listbuilder.builder;
+package br.com.bvilela.listbuilder.builder.clearing;
 
 import br.com.bvilela.listbuilder.dto.clearing.input.ClearingInputDTO;
 import java.util.List;
 import java.util.Map;
 
-public class FileInputDataLimpezaDtoBuilder {
+public class ClearingInputDtoBuilder {
 
     private static final String LAST_DATE_DEFAULT = "29-03-2022";
 
@@ -21,75 +21,75 @@ public class FileInputDataLimpezaDtoBuilder {
 
     private final ClearingInputDTO target;
 
-    public FileInputDataLimpezaDtoBuilder() {
+    public ClearingInputDtoBuilder() {
         this.target = new ClearingInputDTO();
     }
 
-    public static FileInputDataLimpezaDtoBuilder create() {
-        return new FileInputDataLimpezaDtoBuilder();
+    public static ClearingInputDtoBuilder create() {
+        return new ClearingInputDtoBuilder();
     }
 
     public ClearingInputDTO build() {
         return target;
     }
 
-    public FileInputDataLimpezaDtoBuilder withLastDateInvalid() {
+    public ClearingInputDtoBuilder withLastDateInvalid() {
         return baseLastDate("01-13-2022");
     }
 
-    public FileInputDataLimpezaDtoBuilder withLastGroupNull() {
+    public ClearingInputDtoBuilder withLastGroupNull() {
         return baseLastGroup(null);
     }
 
-    public FileInputDataLimpezaDtoBuilder withLastGroupInvalid() {
+    public ClearingInputDtoBuilder withLastGroupInvalid() {
         return baseLastGroup(0);
     }
 
-    public FileInputDataLimpezaDtoBuilder withGroupsNull() {
+    public ClearingInputDtoBuilder withGroupsNull() {
         return base(LAST_DATE_DEFAULT, 8, "terça", "sábado", null);
     }
 
-    public FileInputDataLimpezaDtoBuilder withMidweekInvalid() {
+    public ClearingInputDtoBuilder withMidweekInvalid() {
         return baseMidweekDay("tercaaa");
     }
 
-    public FileInputDataLimpezaDtoBuilder withWeekendNull() {
+    public ClearingInputDtoBuilder withWeekendNull() {
         return baseWeekendDay(null);
     }
 
-    public FileInputDataLimpezaDtoBuilder withWeekendEmpty() {
+    public ClearingInputDtoBuilder withWeekendEmpty() {
         return baseWeekendDay("");
     }
 
-    public FileInputDataLimpezaDtoBuilder withWeekendBlank() {
+    public ClearingInputDtoBuilder withWeekendBlank() {
         return baseWeekendDay(" ");
     }
 
-    public FileInputDataLimpezaDtoBuilder withWeekendInvalid() {
+    public ClearingInputDtoBuilder withWeekendInvalid() {
         return baseWeekendDay("sabadooo");
     }
 
-    public FileInputDataLimpezaDtoBuilder withSuccess() {
+    public ClearingInputDtoBuilder withSuccess() {
         return base(LAST_DATE_DEFAULT, 1, "terça", "sábado", groupsDefault);
     }
 
-    private FileInputDataLimpezaDtoBuilder baseMidweekDay(String midweekDay) {
+    private ClearingInputDtoBuilder baseMidweekDay(String midweekDay) {
         return base(LAST_DATE_DEFAULT, 1, midweekDay, "sábado", groupsDefault);
     }
 
-    private FileInputDataLimpezaDtoBuilder baseWeekendDay(String weekendDay) {
+    private ClearingInputDtoBuilder baseWeekendDay(String weekendDay) {
         return base(LAST_DATE_DEFAULT, 1, "terça", weekendDay, groupsDefault);
     }
 
-    private FileInputDataLimpezaDtoBuilder baseLastDate(String lastDate) {
+    private ClearingInputDtoBuilder baseLastDate(String lastDate) {
         return base(lastDate, 1, "terça", "sábado", groupsDefault);
     }
 
-    private FileInputDataLimpezaDtoBuilder baseLastGroup(Integer lastGroup) {
+    private ClearingInputDtoBuilder baseLastGroup(Integer lastGroup) {
         return base(LAST_DATE_DEFAULT, lastGroup, "terça", "sábado", groupsDefault);
     }
 
-    private FileInputDataLimpezaDtoBuilder base(
+    private ClearingInputDtoBuilder base(
             String lastDate,
             Integer lastGroup,
             String dayMidweek,
@@ -107,17 +107,17 @@ public class FileInputDataLimpezaDtoBuilder {
         return this;
     }
 
-    public FileInputDataLimpezaDtoBuilder withLastDate(String lastDate) {
+    public ClearingInputDtoBuilder withLastDate(String lastDate) {
         this.target.setLastDate(lastDate);
         return this;
     }
 
-    private FileInputDataLimpezaDtoBuilder withLastGroup(Integer lastGroup) {
+    private ClearingInputDtoBuilder withLastGroup(Integer lastGroup) {
         this.target.setLastGroup(lastGroup);
         return this;
     }
 
-    public FileInputDataLimpezaDtoBuilder withMeetingDayMidweek(String meetingDayMidweek) {
+    public ClearingInputDtoBuilder withMeetingDayMidweek(String meetingDayMidweek) {
         this.target.setMeetingDayMidweek(meetingDayMidweek);
         return this;
     }
@@ -138,12 +138,12 @@ public class FileInputDataLimpezaDtoBuilder {
         this.target.setFooterMessage(footerMessage);
     }
 
-    public FileInputDataLimpezaDtoBuilder withRemoveFromList(List<String> removeFromList) {
+    public ClearingInputDtoBuilder withRemoveFromList(List<String> removeFromList) {
         this.target.setRemoveFromList(removeFromList);
         return this;
     }
 
-    public FileInputDataLimpezaDtoBuilder withAddToList(Map<String, String> addToList) {
+    public ClearingInputDtoBuilder withAddToList(Map<String, String> addToList) {
         this.target.setAddToList(addToList);
         return this;
     }

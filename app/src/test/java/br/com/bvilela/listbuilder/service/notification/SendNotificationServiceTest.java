@@ -2,9 +2,9 @@ package br.com.bvilela.listbuilder.service.notification;
 
 import br.com.bvilela.lib.model.CalendarEvent;
 import br.com.bvilela.lib.service.GoogleCalendarCreateService;
-import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekDtoBuilder;
-import br.com.bvilela.listbuilder.builder.clearing.FinalListLimpezaDtoBuilder;
-import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
+import br.com.bvilela.listbuilder.builder.christianlife.ChristianLifeExtractWeekDtoBuilder;
+import br.com.bvilela.listbuilder.builder.clearing.ClearingWriterDtoBuilder;
+import br.com.bvilela.listbuilder.builder.designation.DesignationWriterDtoBuilder;
 import br.com.bvilela.listbuilder.dto.clearing.writer.ClearingWriterDTO;
 import br.com.bvilela.listbuilder.dto.designation.writer.DesignationWriterDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,7 +50,7 @@ class SendNotificationServiceTest {
                     .setDateTimeEnd(LocalDateTime.now().plusHours(1))
                     .build();
 
-    private final ClearingWriterDTO clearingDTO = FinalListLimpezaDtoBuilder.createMockLayout2();
+    private final ClearingWriterDTO clearingDTO = ClearingWriterDtoBuilder.createMockLayout2();
 
     @BeforeEach
     void setupBeforeEach() {
@@ -109,7 +109,7 @@ class SendNotificationServiceTest {
     @NullAndEmptySource
     void christianLifeEventsNullEmpty(List<CalendarEvent> events) {
         var dtoVidaCrista =
-                List.of(VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
+                List.of(ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
         when(notifyChristianLifeService.createEvents(ArgumentMatchers.anyList()))
                 .thenReturn(events);
         service.christianLife(dtoVidaCrista);
@@ -119,7 +119,7 @@ class SendNotificationServiceTest {
     @Test
     void christianLifeEventsNotNullEmpty() {
         var dtoVidaCrista =
-                List.of(VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
+                List.of(ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
         List<CalendarEvent> events = List.of(CALENDAR_EVENT);
         when(notifyChristianLifeService.createEvents(ArgumentMatchers.anyList()))
                 .thenReturn(events);
@@ -130,7 +130,7 @@ class SendNotificationServiceTest {
     // *********************** DESIGNATION *********************** \\
     @Test
     void designationEventsNull() {
-        var designationDTO = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        var designationDTO = DesignationWriterDtoBuilder.create().withRandomData().build();
         when(notifyDesignationService.createEvents(any(DesignationWriterDTO.class)))
                 .thenReturn(null);
         service.designation(designationDTO);
@@ -139,7 +139,7 @@ class SendNotificationServiceTest {
 
     @Test
     void designationEventsNotNull() {
-        var designationDTO = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        var designationDTO = DesignationWriterDtoBuilder.create().withRandomData().build();
         List<CalendarEvent> events = List.of(CALENDAR_EVENT);
         when(notifyDesignationService.createEvents(any(DesignationWriterDTO.class)))
                 .thenReturn(events);

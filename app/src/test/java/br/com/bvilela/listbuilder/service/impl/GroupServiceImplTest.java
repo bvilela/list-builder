@@ -1,8 +1,8 @@
 package br.com.bvilela.listbuilder.service.impl;
 
-import br.com.bvilela.listbuilder.builder.FileInputDataLimpezaDtoBuilder;
-import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterItemDtoBuilder;
-import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoDtoBuilder;
+import br.com.bvilela.listbuilder.builder.clearing.ClearingInputDtoBuilder;
+import br.com.bvilela.listbuilder.builder.designation.DesignationWriterItemDtoBuilder;
+import br.com.bvilela.listbuilder.builder.designation.DesignationInputDtoBuilder;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.designation.writer.DesignationWriterItemDTO;
 import br.com.bvilela.listbuilder.dto.util.InputListDTO;
@@ -12,13 +12,10 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @ExtendWith(MockitoExtension.class)
 class GroupServiceImplTest {
@@ -43,7 +40,7 @@ class GroupServiceImplTest {
     // --------------------- LIMPEZA --------------------- \\
     @Test
     void shouldGenerateListGroupExceptionLastGroupInvalid() {
-        var dto = FileInputDataLimpezaDtoBuilder.create().withLastGroupInvalid().build();
+        var dto = ClearingInputDtoBuilder.create().withLastGroupInvalid().build();
         var exception =
                 Assertions.assertThrows(
                         ListBuilderException.class,
@@ -55,7 +52,7 @@ class GroupServiceImplTest {
 
     @Test
     void shouldGenerateListGroupLayout1Success() {
-        var dto = FileInputDataLimpezaDtoBuilder.create().withSuccess().build();
+        var dto = ClearingInputDtoBuilder.create().withSuccess().build();
         dto.setLastDate("1");
         var list = service.generateListGroupsLimpeza(dto, listItemDate, 1);
         Assertions.assertNotNull(list);
@@ -69,7 +66,7 @@ class GroupServiceImplTest {
 
     @Test
     void shouldGenerateListGroupLayout2Success() {
-        var dto = FileInputDataLimpezaDtoBuilder.create().withSuccess().build();
+        var dto = ClearingInputDtoBuilder.create().withSuccess().build();
         dto.setLastGroup(dto.getGroups().size());
         var list = service.generateListGroupsLimpeza(dto, listItemDate, 2);
         Assertions.assertNotNull(list);
@@ -92,7 +89,7 @@ class GroupServiceImplTest {
 
     @Test
     void shouldgenerateListDesignacaoPresidentLastInvalidException() {
-        var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
+        var dto = DesignationInputDtoBuilder.create().withRandomData().build();
         dto.getPresident().setLast("Invalid");
         var exception =
                 Assertions.assertThrows(
@@ -109,7 +106,7 @@ class GroupServiceImplTest {
 
     @Test
     void shouldgenerateListDesignacaoPresidentSuccess() {
-        var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
+        var dto = DesignationInputDtoBuilder.create().withRandomData().build();
         var list = service.generateListPresident(dto, listLocalDate);
         validListGenerated(dto.getPresident(), list);
     }
@@ -129,14 +126,14 @@ class GroupServiceImplTest {
 
     @Test
     void shouldgenerateListDesignacaoReaderWatchtowerSuccess() {
-        var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
+        var dto = DesignationInputDtoBuilder.create().withRandomData().build();
         var list = service.generateListReaderWatchtower(dto, listLocalDate);
         validListGenerated(dto.getReader().getWatchtower(), list);
     }
 
     @Test
     void shouldgenerateListDesignacaoReaderWatchtowerLastInvalidException() {
-        var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
+        var dto = DesignationInputDtoBuilder.create().withRandomData().build();
         dto.getReader().getWatchtower().setLast("Invalid");
         var exception =
                 Assertions.assertThrows(
@@ -166,14 +163,14 @@ class GroupServiceImplTest {
 
     @Test
     void shouldgenerateListDesignacaoReaderBibleStudySuccess() {
-        var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
+        var dto = DesignationInputDtoBuilder.create().withRandomData().build();
         var list = service.generateListReaderBibleStudy(dto, listLocalDate);
         validListGenerated(dto.getReader().getBibleStudy(), list);
     }
 
     @Test
     void shouldgenerateListDesignacaoReaderBibleStudyLastInvalidException() {
-        var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
+        var dto = DesignationInputDtoBuilder.create().withRandomData().build();
         dto.getReader().getBibleStudy().setLast("Invalid");
         var exception =
                 Assertions.assertThrows(
@@ -201,7 +198,7 @@ class GroupServiceImplTest {
 
     @Test
     void shouldgenerateListDesignacaoAudioVideoSuccess() {
-        var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
+        var dto = DesignationInputDtoBuilder.create().withRandomData().build();
         var list = service.generateListAudioVideo(dto, listLocalDate);
         Assertions.assertEquals(4, list.size());
         Assertions.assertTrue(
@@ -228,7 +225,7 @@ class GroupServiceImplTest {
 
     @Test
     void shouldgenerateListDesignacaoAudioVideoLastInvalidException() {
-        var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
+        var dto = DesignationInputDtoBuilder.create().withRandomData().build();
         dto.getAudioVideo().setLast("Invalid");
         var exception =
                 Assertions.assertThrows(
@@ -256,8 +253,8 @@ class GroupServiceImplTest {
 
     @Test
     void shouldgenerateListDesignacaoIndicatorSuccess() {
-        var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
-        var anotherList = List.of(DesignacaoWriterItemDtoBuilder.create().withRandomData().build());
+        var dto = DesignationInputDtoBuilder.create().withRandomData().build();
+        var anotherList = List.of(DesignationWriterItemDtoBuilder.create().withRandomData().build());
         var list = service.generateListIndicator(dto, listLocalDate, anotherList);
         Assertions.assertEquals(4, list.size());
     }
@@ -275,8 +272,8 @@ class GroupServiceImplTest {
 
     @Test
     void shouldgenerateListDesignacaoMicrophoneSuccess() {
-        var dto = FileInputDataDesignacaoDtoBuilder.create().withRandomData().build();
-        var anotherList = List.of(DesignacaoWriterItemDtoBuilder.create().withRandomData().build());
+        var dto = DesignationInputDtoBuilder.create().withRandomData().build();
+        var anotherList = List.of(DesignationWriterItemDtoBuilder.create().withRandomData().build());
         var list = service.generateListMicrophone(dto, listLocalDate, anotherList);
         Assertions.assertEquals(4, list.size());
     }

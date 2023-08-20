@@ -1,4 +1,4 @@
-package br.com.bvilela.listbuilder.builder;
+package br.com.bvilela.listbuilder.builder.christianlife;
 
 import br.com.bvilela.listbuilder.dto.christianlife.input.ChristianLifeInputDTO;
 import br.com.bvilela.listbuilder.dto.christianlife.input.ChristianLifeInputRenameItemDTO;
@@ -8,23 +8,23 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 
-public class FileInputDataVidaCristaDtoBuilder {
+public class ChristianLifeInputDtoBuilder {
 
     private ChristianLifeInputDTO target;
 
-    public FileInputDataVidaCristaDtoBuilder() {
+    public ChristianLifeInputDtoBuilder() {
         this.target = new ChristianLifeInputDTO();
     }
 
-    public static FileInputDataVidaCristaDtoBuilder create() {
-        return new FileInputDataVidaCristaDtoBuilder();
+    public static ChristianLifeInputDtoBuilder create() {
+        return new ChristianLifeInputDtoBuilder();
     }
 
     public ChristianLifeInputDTO build() {
         return target;
     }
 
-    public FileInputDataVidaCristaDtoBuilder withRandomData() {
+    public ChristianLifeInputDtoBuilder withRandomData() {
         this.withAbbreviations(
                 Map.of(
                         RandomStringUtils.randomAlphabetic(2),
@@ -47,28 +47,28 @@ public class FileInputDataVidaCristaDtoBuilder {
         return this;
     }
 
-    private FileInputDataVidaCristaDtoBuilder withAbbreviations(Map<String, String> abbreviations) {
+    private ChristianLifeInputDtoBuilder withAbbreviations(Map<String, String> abbreviations) {
         this.target.setAbbreviations(abbreviations);
         return this;
     }
 
-    public FileInputDataVidaCristaDtoBuilder withLastDate(String lastDate) {
+    public ChristianLifeInputDtoBuilder withLastDate(String lastDate) {
         this.target.setLastDate(lastDate);
         return this;
     }
 
-    public FileInputDataVidaCristaDtoBuilder withParticipants(List<List<String>> participants) {
+    public ChristianLifeInputDtoBuilder withParticipants(List<List<String>> participants) {
         this.target.setParticipants(participants);
         return this;
     }
 
-    public FileInputDataVidaCristaDtoBuilder withRemoveWeekFromList(
+    public ChristianLifeInputDtoBuilder withRemoveWeekFromList(
             Map<String, String> removeFromList) {
         this.target.setRemoveWeekFromList(removeFromList);
         return this;
     }
 
-    public FileInputDataVidaCristaDtoBuilder withRenameItems(
+    public ChristianLifeInputDtoBuilder withRenameItems(
             List<ChristianLifeInputRenameItemDTO> renameItems) {
         this.target.setRenameItems(renameItems);
         return this;

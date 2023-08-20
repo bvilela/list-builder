@@ -1,6 +1,6 @@
 package br.com.bvilela.listbuilder.service.notification;
 
-import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
+import br.com.bvilela.listbuilder.builder.designation.DesignationWriterDtoBuilder;
 import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.enuns.NotifyDesignationEntityEnum;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
@@ -36,14 +36,14 @@ class NotifyDesignationServiceTest {
 
     @Test
     void getNotifyPresidentInactive() {
-        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        var dto = DesignationWriterDtoBuilder.create().withRandomData().build();
         var events = service.createPresidentEvents(dto);
         assertTrue(CollectionUtils.isEmpty(events));
     }
 
     @Test
     void getNotifyPresidentActive() {
-        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        var dto = DesignationWriterDtoBuilder.create().withRandomData().build();
         propertiesUtils.setNotifyName(dto.getPresident().get(0).getName());
         propertiesUtils.setNotifyDesignationTypeActive(
                 List.of(NotifyDesignationEntityEnum.PRESIDENT.getLabel()));
@@ -53,7 +53,7 @@ class NotifyDesignationServiceTest {
 
     @Test
     void getNotifyPresidentActiveNotifyNameNotFound() {
-        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        var dto = DesignationWriterDtoBuilder.create().withRandomData().build();
         propertiesUtils.setNotifyName("notFound");
         propertiesUtils.setNotifyDesignationTypeActive(
                 List.of(NotifyDesignationEntityEnum.PRESIDENT.getLabel()));
@@ -63,14 +63,14 @@ class NotifyDesignationServiceTest {
 
     @Test
     void getNotifyReaderInactive() {
-        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        var dto = DesignationWriterDtoBuilder.create().withRandomData().build();
         var events = service.createReaderEvents(dto);
         assertTrue(CollectionUtils.isEmpty(events));
     }
 
     @Test
     void getNotifyReaderActive() {
-        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        var dto = DesignationWriterDtoBuilder.create().withRandomData().build();
         propertiesUtils.setNotifyName(dto.getReaderWatchtower().get(0).getName());
         propertiesUtils.setNotifyDesignationTypeActive(
                 List.of(NotifyDesignationEntityEnum.READER.getLabel()));
@@ -80,7 +80,7 @@ class NotifyDesignationServiceTest {
 
     @Test
     void getNotifyReaderActiveNotifyNameNotFound() {
-        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        var dto = DesignationWriterDtoBuilder.create().withRandomData().build();
         propertiesUtils.setNotifyName("notFound");
         propertiesUtils.setNotifyDesignationTypeActive(
                 List.of(NotifyDesignationEntityEnum.READER.getLabel()));
@@ -90,14 +90,14 @@ class NotifyDesignationServiceTest {
 
     @Test
     void getNotifyAudioVideoInactive() {
-        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        var dto = DesignationWriterDtoBuilder.create().withRandomData().build();
         var events = service.createAudioVideoEvents(dto);
         assertTrue(CollectionUtils.isEmpty(events));
     }
 
     @Test
     void getNotifyAudioVideoActive() {
-        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        var dto = DesignationWriterDtoBuilder.create().withRandomData().build();
         var audioVideoFirstName = dto.getAudioVideo().get(0).getName().split(" e ")[0];
         propertiesUtils.setNotifyName(audioVideoFirstName);
         propertiesUtils.setNotifyDesignationTypeActive(
@@ -108,7 +108,7 @@ class NotifyDesignationServiceTest {
 
     @Test
     void getNotifyAudioVideoActiveNotifyNameNotFound() {
-        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        var dto = DesignationWriterDtoBuilder.create().withRandomData().build();
         propertiesUtils.setNotifyName("notFound");
         propertiesUtils.setNotifyDesignationTypeActive(
                 List.of(NotifyDesignationEntityEnum.AUDIO_VIDEO.getLabel()));

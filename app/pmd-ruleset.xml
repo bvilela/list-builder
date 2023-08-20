@@ -10,7 +10,7 @@
     </description>
 	
 	<!-- Excluse Files: Rule TooManyMethods -->
-	<exclude-pattern>.*/br.com.bvilela.listbuilder.builder.FileInputDataLimpezaDtoBuilder.*</exclude-pattern>
+	<exclude-pattern>.*/br.com.bvilela.listbuilder.builder.clearing.ClearingInputDtoBuilder.*</exclude-pattern>
 	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.designation.DesignationGenerateServiceImplTest.*</exclude-pattern>
 	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.discourse.DiscourseGenerateServiceImplTest.*</exclude-pattern>
 	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.impl.GroupServiceImplTest.*</exclude-pattern>

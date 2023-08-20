@@ -9,7 +9,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class FinalListLimpezaDtoBuilder {
+public class ClearingWriterDtoBuilder {
 
     public static ClearingWriterDTO createMockLayout1() {
         var group = "Person1, Person2, Person3";

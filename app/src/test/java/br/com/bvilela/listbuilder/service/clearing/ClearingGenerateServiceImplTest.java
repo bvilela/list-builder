@@ -1,6 +1,6 @@
 package br.com.bvilela.listbuilder.service.clearing;
 
-import br.com.bvilela.listbuilder.builder.FileInputDataLimpezaDtoBuilder;
+import br.com.bvilela.listbuilder.builder.clearing.ClearingInputDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.clearing.input.ClearingInputDTO;
@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class ClearingGenerateServiceImplTest
-        extends BaseGenerateServiceTest<ClearingInputDTO, FileInputDataLimpezaDtoBuilder> {
+        extends BaseGenerateServiceTest<ClearingInputDTO, ClearingInputDtoBuilder> {
 
     private static final List<String> MOCK_LIST_GROUPS =
             List.of(
@@ -58,7 +58,7 @@ class ClearingGenerateServiceImplTest
     private PropertiesTestUtils propertiesUtils;
 
     public ClearingGenerateServiceImplTest() {
-        super(ListTypeEnum.LIMPEZA, FileInputDataLimpezaDtoBuilder.create());
+        super(ListTypeEnum.LIMPEZA, ClearingInputDtoBuilder.create());
     }
 
     @BeforeEach

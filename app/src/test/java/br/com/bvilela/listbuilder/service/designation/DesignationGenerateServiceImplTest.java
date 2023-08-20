@@ -1,8 +1,8 @@
 package br.com.bvilela.listbuilder.service.designation;
 
-import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoDtoBuilder;
-import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoListDtoBuilder;
-import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoReaderDtoBuilder;
+import br.com.bvilela.listbuilder.builder.designation.DesignationInputDtoBuilder;
+import br.com.bvilela.listbuilder.builder.designation.InputListDtoBuilder;
+import br.com.bvilela.listbuilder.builder.designation.DesignationInputReaderDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.designation.input.DesignationInputDTO;
@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class DesignationGenerateServiceImplTest
-        extends BaseGenerateServiceTest<DesignationInputDTO, FileInputDataDesignacaoDtoBuilder> {
+        extends BaseGenerateServiceTest<DesignationInputDTO, DesignationInputDtoBuilder> {
 
     @InjectMocks private DesignationGenerateServiceImpl service;
 
@@ -43,7 +43,7 @@ class DesignationGenerateServiceImplTest
     @Mock private DesignationCounterService counterService;
 
     public DesignationGenerateServiceImplTest() {
-        super(ListTypeEnum.DESIGNACAO, FileInputDataDesignacaoDtoBuilder.create().withRandomData());
+        super(ListTypeEnum.DESIGNACAO, DesignationInputDtoBuilder.create().withRandomData());
     }
 
     @BeforeEach
@@ -275,7 +275,7 @@ class DesignationGenerateServiceImplTest
 
     private void validateGenerateListPresidentLastException(String last) {
         var presidentDto =
-                FileInputDataDesignacaoListDtoBuilder.create()
+                InputListDtoBuilder.create()
                         .withRandomData()
                         .withLast(last)
                         .build();
@@ -295,7 +295,7 @@ class DesignationGenerateServiceImplTest
 
     private void validateGenerateListPresidentListException(List<String> list) {
         var presidentDto =
-                FileInputDataDesignacaoListDtoBuilder.create()
+                InputListDtoBuilder.create()
                         .withRandomData()
                         .withList(list)
                         .build();
@@ -315,7 +315,7 @@ class DesignationGenerateServiceImplTest
 
     private void baseGenerateListExceptionPresidentListElementException(List<String> list) {
         var presidentDto =
-                FileInputDataDesignacaoListDtoBuilder.create()
+                InputListDtoBuilder.create()
                         .withRandomData()
                         .withList(list)
                         .build();
@@ -349,7 +349,7 @@ class DesignationGenerateServiceImplTest
 
     private void validateGenerateListAudioVideoLastException(String last) {
         var audioVideo =
-                FileInputDataDesignacaoListDtoBuilder.create()
+                InputListDtoBuilder.create()
                         .withRandomData()
                         .withLast(last)
                         .build();
@@ -369,7 +369,7 @@ class DesignationGenerateServiceImplTest
 
     private void validateGenerateListAudioVideoListException(List<String> list) {
         var audioVideo =
-                FileInputDataDesignacaoListDtoBuilder.create()
+                InputListDtoBuilder.create()
                         .withRandomData()
                         .withList(list)
                         .build();
@@ -389,7 +389,7 @@ class DesignationGenerateServiceImplTest
 
     private void validateGenerateListAudioVideoListElementException(List<String> list) {
         var audioVideo =
-                FileInputDataDesignacaoListDtoBuilder.create()
+                InputListDtoBuilder.create()
                         .withRandomData()
                         .withList(list)
                         .build();
@@ -408,7 +408,7 @@ class DesignationGenerateServiceImplTest
     @Test
     void shouldGenerateListExceptionReaderWatchtowerNull() {
         var readerDto =
-                FileInputDataDesignacaoReaderDtoBuilder.create()
+                DesignationInputReaderDtoBuilder.create()
                         .withRandomData()
                         .withWatchtower(null)
                         .build();
@@ -421,7 +421,7 @@ class DesignationGenerateServiceImplTest
     @Test
     void shouldGenerateListExceptionReaderBibleStudyNull() {
         var readerDto =
-                FileInputDataDesignacaoReaderDtoBuilder.create()
+                DesignationInputReaderDtoBuilder.create()
                         .withRandomData()
                         .withBibleStudy(null)
                         .build();
@@ -447,9 +447,9 @@ class DesignationGenerateServiceImplTest
     }
 
     private void validateGenerateListReaderWatchtowerLastException(String last) {
-        var readerDto = FileInputDataDesignacaoReaderDtoBuilder.create().withRandomData().build();
+        var readerDto = DesignationInputReaderDtoBuilder.create().withRandomData().build();
         readerDto.setWatchtower(
-                FileInputDataDesignacaoListDtoBuilder.create()
+                InputListDtoBuilder.create()
                         .withRandomData()
                         .withLast(last)
                         .build());

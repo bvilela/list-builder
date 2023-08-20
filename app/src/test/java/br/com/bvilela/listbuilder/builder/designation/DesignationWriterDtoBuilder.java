@@ -1,20 +1,20 @@
-package br.com.bvilela.listbuilder.builder.designacao;
+package br.com.bvilela.listbuilder.builder.designation;
 
 import br.com.bvilela.listbuilder.dto.designation.writer.DesignationWriterDTO;
 import br.com.bvilela.listbuilder.dto.designation.writer.DesignationWriterItemDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DesignacaoWriterDtoBuilder {
+public class DesignationWriterDtoBuilder {
 
     private DesignationWriterDTO target;
 
-    public DesignacaoWriterDtoBuilder() {
+    public DesignationWriterDtoBuilder() {
         this.target = new DesignationWriterDTO();
     }
 
-    public static DesignacaoWriterDtoBuilder create() {
-        return new DesignacaoWriterDtoBuilder();
+    public static DesignationWriterDtoBuilder create() {
+        return new DesignationWriterDtoBuilder();
     }
 
     public DesignationWriterDTO build() {
@@ -24,7 +24,7 @@ public class DesignacaoWriterDtoBuilder {
     private List<DesignationWriterItemDTO> generatedRandomList(int size) {
         List<DesignationWriterItemDTO> list = new ArrayList<DesignationWriterItemDTO>();
         for (int i = 0; i < size; i++) {
-            list.add(DesignacaoWriterItemDtoBuilder.create().withRandomData().build());
+            list.add(DesignationWriterItemDtoBuilder.create().withRandomData().build());
         }
         return list;
     }
@@ -32,12 +32,12 @@ public class DesignacaoWriterDtoBuilder {
     private List<DesignationWriterItemDTO> generatedRandomTwoPeopleList(int size) {
         List<DesignationWriterItemDTO> list = new ArrayList<DesignationWriterItemDTO>();
         for (int i = 0; i < size; i++) {
-            list.add(DesignacaoWriterItemDtoBuilder.create().withRandomTwoPeopleData().build());
+            list.add(DesignationWriterItemDtoBuilder.create().withRandomTwoPeopleData().build());
         }
         return list;
     }
 
-    public DesignacaoWriterDtoBuilder withRandomData() {
+    public DesignationWriterDtoBuilder withRandomData() {
         this.withPresident(generatedRandomList(3));
         this.withReaderWatchtower(generatedRandomList(3));
         this.withReaderBibleStudy(generatedRandomList(3));
@@ -47,34 +47,34 @@ public class DesignacaoWriterDtoBuilder {
         return this;
     }
 
-    public DesignacaoWriterDtoBuilder withPresident(List<DesignationWriterItemDTO> president) {
+    public DesignationWriterDtoBuilder withPresident(List<DesignationWriterItemDTO> president) {
         this.target.setPresident(president);
         return this;
     }
 
-    public DesignacaoWriterDtoBuilder withReaderWatchtower(
+    public DesignationWriterDtoBuilder withReaderWatchtower(
             List<DesignationWriterItemDTO> readerWatchtower) {
         this.target.setReaderWatchtower(readerWatchtower);
         return this;
     }
 
-    public DesignacaoWriterDtoBuilder withReaderBibleStudy(
+    public DesignationWriterDtoBuilder withReaderBibleStudy(
             List<DesignationWriterItemDTO> readerBibleStudy) {
         this.target.setReaderBibleStudy(readerBibleStudy);
         return this;
     }
 
-    public DesignacaoWriterDtoBuilder withAudioVideo(List<DesignationWriterItemDTO> audioVideo) {
+    public DesignationWriterDtoBuilder withAudioVideo(List<DesignationWriterItemDTO> audioVideo) {
         this.target.setAudioVideo(audioVideo);
         return this;
     }
 
-    public DesignacaoWriterDtoBuilder withIndicator(List<DesignationWriterItemDTO> indicator) {
+    public DesignationWriterDtoBuilder withIndicator(List<DesignationWriterItemDTO> indicator) {
         this.target.setIndicator(indicator);
         return this;
     }
 
-    public DesignacaoWriterDtoBuilder withMicrophone(List<DesignationWriterItemDTO> microphone) {
+    public DesignationWriterDtoBuilder withMicrophone(List<DesignationWriterItemDTO> microphone) {
         this.target.setMicrophone(microphone);
         return this;
     }
