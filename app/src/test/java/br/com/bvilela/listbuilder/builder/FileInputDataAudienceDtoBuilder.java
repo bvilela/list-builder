@@ -1,22 +1,22 @@
 package br.com.bvilela.listbuilder.builder;
 
-import br.com.bvilela.listbuilder.dto.audience.FileInputDataAudienceDTO;
+import br.com.bvilela.listbuilder.dto.audience.AudienceInputDTO;
 
 public class FileInputDataAudienceDtoBuilder {
 
     private static final String LAST_DATE_DEFAULT = "29-03-2022";
 
-    private FileInputDataAudienceDTO target;
+    private AudienceInputDTO target;
 
     public FileInputDataAudienceDtoBuilder() {
-        this.target = new FileInputDataAudienceDTO();
+        this.target = new AudienceInputDTO();
     }
 
     public static FileInputDataAudienceDtoBuilder create() {
         return new FileInputDataAudienceDtoBuilder();
     }
 
-    public FileInputDataAudienceDTO build() {
+    public AudienceInputDTO build() {
         return target;
     }
 

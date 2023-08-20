@@ -1,11 +1,11 @@
 package br.com.bvilela.listbuilder.validator;
 
 import br.com.bvilela.lib.utils.ValidationUtils;
-import br.com.bvilela.listbuilder.dto.InputListDTO;
-import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoReaderDTO;
+import br.com.bvilela.listbuilder.dto.designation.input.DesignationInputReaderDTO;
+import br.com.bvilela.listbuilder.dto.util.InputListDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import br.com.bvilela.listbuilder.utils.AppUtils;
-import br.com.bvilela.listbuilder.utils.DateUtils;
+import br.com.bvilela.listbuilder.util.AppUtils;
+import br.com.bvilela.listbuilder.util.DateUtils;
 import java.lang.reflect.InvocationTargetException;
 import javax.validation.ConstraintViolation;
 import lombok.AccessLevel;
@@ -88,7 +88,7 @@ public final class GenericValidator {
         @Override
         public String toString() {
             if (myClass.equals(InputListDTO.class)
-                    || myClass.equals(FileInputDataDesignacaoReaderDTO.class)) {
+                    || myClass.equals(DesignationInputReaderDTO.class)) {
                 var pathPT = path.contains("president") ? "Presidente" : path;
                 pathPT = pathPT.contains("audioVideo") ? "Aúdio e Vídeo" : pathPT;
                 pathPT = pathPT.contains("reader.watchtower") ? "Leitor A Sentinela" : pathPT;

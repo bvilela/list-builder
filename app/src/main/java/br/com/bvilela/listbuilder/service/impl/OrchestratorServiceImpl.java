@@ -5,7 +5,7 @@ import br.com.bvilela.listbuilder.exception.listtype.RequiredListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.OrchestratorService;
-import br.com.bvilela.listbuilder.utils.AppUtils;
+import br.com.bvilela.listbuilder.util.AppUtils;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

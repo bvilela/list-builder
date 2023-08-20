@@ -1,24 +1,24 @@
 package br.com.bvilela.listbuilder.builder.designacao;
 
-import br.com.bvilela.listbuilder.dto.InputListDTO;
-import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
-import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoReaderDTO;
+import br.com.bvilela.listbuilder.dto.designation.input.DesignationInputDTO;
+import br.com.bvilela.listbuilder.dto.designation.input.DesignationInputReaderDTO;
+import br.com.bvilela.listbuilder.dto.util.InputListDTO;
 import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 
 public class FileInputDataDesignacaoDtoBuilder {
 
-    private FileInputDataDesignacaoDTO target;
+    private DesignationInputDTO target;
 
     public FileInputDataDesignacaoDtoBuilder() {
-        this.target = new FileInputDataDesignacaoDTO();
+        this.target = new DesignationInputDTO();
     }
 
     public static FileInputDataDesignacaoDtoBuilder create() {
         return new FileInputDataDesignacaoDtoBuilder();
     }
 
-    public FileInputDataDesignacaoDTO build() {
+    public DesignationInputDTO build() {
         return target;
     }
 
@@ -65,7 +65,7 @@ public class FileInputDataDesignacaoDtoBuilder {
         return this;
     }
 
-    public FileInputDataDesignacaoDtoBuilder withReader(FileInputDataDesignacaoReaderDTO reader) {
+    public FileInputDataDesignacaoDtoBuilder withReader(DesignationInputReaderDTO reader) {
         this.target.setReader(reader);
         return this;
     }

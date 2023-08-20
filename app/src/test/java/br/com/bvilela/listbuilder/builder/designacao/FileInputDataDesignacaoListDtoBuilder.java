@@ -1,6 +1,6 @@
 package br.com.bvilela.listbuilder.builder.designacao;
 
-import br.com.bvilela.listbuilder.dto.InputListDTO;
+import br.com.bvilela.listbuilder.dto.util.InputListDTO;
 import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 

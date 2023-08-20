@@ -1,20 +1,20 @@
 package br.com.bvilela.listbuilder.builder;
 
-import br.com.bvilela.listbuilder.dto.vidacrista.FileInputDataVidaCristaRenameItemDTO;
+import br.com.bvilela.listbuilder.dto.christianlife.input.ChristianLifeInputRenameItemDTO;
 
 public class FileInputDataVidaCristaRenameItemDtoBuilder {
 
-    private FileInputDataVidaCristaRenameItemDTO target;
+    private ChristianLifeInputRenameItemDTO target;
 
     public FileInputDataVidaCristaRenameItemDtoBuilder() {
-        this.target = new FileInputDataVidaCristaRenameItemDTO();
+        this.target = new ChristianLifeInputRenameItemDTO();
     }
 
     public static FileInputDataVidaCristaRenameItemDtoBuilder create() {
         return new FileInputDataVidaCristaRenameItemDtoBuilder();
     }
 
-    public FileInputDataVidaCristaRenameItemDTO build() {
+    public ChristianLifeInputRenameItemDTO build() {
         return target;
     }
 

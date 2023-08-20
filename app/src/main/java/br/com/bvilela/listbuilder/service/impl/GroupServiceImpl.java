@@ -1,12 +1,12 @@
 package br.com.bvilela.listbuilder.service.impl;
 
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.dto.InputListDTO;
-import br.com.bvilela.listbuilder.dto.ItemDateDTO;
-import br.com.bvilela.listbuilder.dto.designacao.FileInputDataDesignacaoDTO;
-import br.com.bvilela.listbuilder.dto.designacao.writer.DesignacaoWriterItemDTO;
-import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
-import br.com.bvilela.listbuilder.enuns.DesignacaoEntityEnum;
+import br.com.bvilela.listbuilder.dto.clearing.input.ClearingInputDTO;
+import br.com.bvilela.listbuilder.dto.designation.input.DesignationInputDTO;
+import br.com.bvilela.listbuilder.dto.designation.writer.DesignationWriterItemDTO;
+import br.com.bvilela.listbuilder.dto.util.InputListDTO;
+import br.com.bvilela.listbuilder.dto.util.ItemDateDTO;
+import br.com.bvilela.listbuilder.enuns.DesignationEntityEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.GroupService;
 import java.security.SecureRandom;
@@ -24,7 +24,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @SneakyThrows
     public List<String> generateListGroupsLimpeza(
-            FileInputDataLimpezaDTO dto, List<ItemDateDTO> listDates, int layout) {
+            ClearingInputDTO dto, List<ItemDateDTO> listDates, int layout) {
         if (layout == 2) {
             var newList =
                     listDates.stream().collect(Collectors.groupingBy(ItemDateDTO::getOrdinal));
@@ -35,7 +35,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @SneakyThrows
-    private List<String> generateListGroupsBase(FileInputDataLimpezaDTO dto, int numberOfDates) {
+    private List<String> generateListGroupsBase(ClearingInputDTO dto, int numberOfDates) {
 
         var mapGroups = dto.getGroups();
         if (Objects.isNull(mapGroups.get(dto.getLastGroup()))) {
@@ -57,9 +57,9 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @SneakyThrows
-    public List<DesignacaoWriterItemDTO> generateListPresident(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesWeekend) {
-        var entity = DesignacaoEntityEnum.PRESIDENT;
+    public List<DesignationWriterItemDTO> generateListPresident(
+            DesignationInputDTO dto, List<LocalDate> listDatesWeekend) {
+        var entity = DesignationEntityEnum.PRESIDENT;
         try {
             return generateSequenceListDesignacao(dto.getPresident(), listDatesWeekend, entity);
         } catch (Exception e) {
@@ -69,9 +69,9 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @SneakyThrows
-    public List<DesignacaoWriterItemDTO> generateListReaderWatchtower(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesWeekend) {
-        var entity = DesignacaoEntityEnum.READER_WATCHTOWER;
+    public List<DesignationWriterItemDTO> generateListReaderWatchtower(
+            DesignationInputDTO dto, List<LocalDate> listDatesWeekend) {
+        var entity = DesignationEntityEnum.READER_WATCHTOWER;
         try {
             return generateSequenceListDesignacao(
                     dto.getReader().getWatchtower(), listDatesWeekend, entity);
@@ -82,9 +82,9 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @SneakyThrows
-    public List<DesignacaoWriterItemDTO> generateListReaderBibleStudy(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesMidweek) {
-        var entity = DesignacaoEntityEnum.READER_BIBLESTUDY;
+    public List<DesignationWriterItemDTO> generateListReaderBibleStudy(
+            DesignationInputDTO dto, List<LocalDate> listDatesMidweek) {
+        var entity = DesignationEntityEnum.READER_BIBLESTUDY;
         try {
             return generateSequenceListDesignacao(
                     dto.getReader().getBibleStudy(), listDatesMidweek, entity);
@@ -95,16 +95,16 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @SneakyThrows
-    public List<DesignacaoWriterItemDTO> generateListAudioVideo(
-            FileInputDataDesignacaoDTO dto, List<LocalDate> listDatesAll) {
+    public List<DesignationWriterItemDTO> generateListAudioVideo(
+            DesignationInputDTO dto, List<LocalDate> listDatesAll) {
 
-        var entity = DesignacaoEntityEnum.AUDIO_VIDEO;
+        var entity = DesignationEntityEnum.AUDIO_VIDEO;
         try {
             var list = generateSequenceListDesignacao(dto.getAudioVideo(), listDatesAll, entity);
 
             String lastHelper = null;
             SecureRandom rand = new SecureRandom();
-            for (DesignacaoWriterItemDTO item : list) {
+            for (DesignationWriterItemDTO item : list) {
                 final String lastHelperFinal = lastHelper;
                 var listPossibleNames =
                         dto.getAudioVideo().getList().stream()
@@ -125,12 +125,12 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @SneakyThrows
-    public List<DesignacaoWriterItemDTO> generateListIndicator(
-            FileInputDataDesignacaoDTO dto,
+    public List<DesignationWriterItemDTO> generateListIndicator(
+            DesignationInputDTO dto,
             List<LocalDate> listDatesAll,
-            List<DesignacaoWriterItemDTO> anotherLists) {
+            List<DesignationWriterItemDTO> anotherLists) {
 
-        var entity = DesignacaoEntityEnum.INDICATOR;
+        var entity = DesignationEntityEnum.INDICATOR;
         try {
 
             return generateListDesignacaoBaseIndicatorMicrophone(
@@ -143,12 +143,12 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @SneakyThrows
-    public List<DesignacaoWriterItemDTO> generateListMicrophone(
-            FileInputDataDesignacaoDTO dto,
+    public List<DesignationWriterItemDTO> generateListMicrophone(
+            DesignationInputDTO dto,
             List<LocalDate> listDatesAll,
-            List<DesignacaoWriterItemDTO> anotherLists) {
+            List<DesignationWriterItemDTO> anotherLists) {
 
-        var entity = DesignacaoEntityEnum.MICROPHONE;
+        var entity = DesignationEntityEnum.MICROPHONE;
         try {
 
             return generateListDesignacaoBaseIndicatorMicrophone(
@@ -160,31 +160,31 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @SneakyThrows
-    private List<DesignacaoWriterItemDTO> generateSequenceListDesignacao(
-            InputListDTO dto, List<LocalDate> listDates, DesignacaoEntityEnum entity) {
+    private List<DesignationWriterItemDTO> generateSequenceListDesignacao(
+            InputListDTO dto, List<LocalDate> listDates, DesignationEntityEnum entity) {
 
         var indexLast = dto.getList().indexOf(dto.getLast());
         if (indexLast < 0) {
             throw new ListBuilderException(MessageConfig.LAST_INVALID, entity.getLabel());
         }
 
-        List<DesignacaoWriterItemDTO> listWriterItems = new ArrayList<>();
+        List<DesignationWriterItemDTO> listWriterItems = new ArrayList<>();
         for (LocalDate listDate : listDates) {
             indexLast = indexLast == dto.getList().size() - 1 ? 0 : ++indexLast;
             listWriterItems.add(
-                    new DesignacaoWriterItemDTO(listDate, dto.getList().get(indexLast)));
+                    new DesignationWriterItemDTO(listDate, dto.getList().get(indexLast)));
         }
 
         return listWriterItems;
     }
 
-    private List<DesignacaoWriterItemDTO> generateListDesignacaoBaseIndicatorMicrophone(
+    private List<DesignationWriterItemDTO> generateListDesignacaoBaseIndicatorMicrophone(
             List<String> listNames,
             List<LocalDate> listDatesAll,
-            List<DesignacaoWriterItemDTO> anotherLists) {
+            List<DesignationWriterItemDTO> anotherLists) {
 
         int indexLast = 0;
-        List<DesignacaoWriterItemDTO> listWriterItems = new ArrayList<>();
+        List<DesignationWriterItemDTO> listWriterItems = new ArrayList<>();
 
         SecureRandom rand = new SecureRandom();
         for (int i = 0; i < listDatesAll.size(); i++) {
@@ -202,14 +202,14 @@ public class GroupServiceImpl implements GroupService {
             listPossibleNames.remove(name1);
             var name2 = listPossibleNames.get(rand.nextInt(listPossibleNames.size()));
             var names = name1 + " e " + name2;
-            listWriterItems.add(new DesignacaoWriterItemDTO(listDatesAll.get(i), names));
+            listWriterItems.add(new DesignationWriterItemDTO(listDatesAll.get(i), names));
             indexLast = indexLast == listNames.size() - 1 ? 0 : ++indexLast;
         }
         return listWriterItems;
     }
 
     private ListBuilderException newListBuilderException(
-            DesignacaoEntityEnum entity, Exception exception) {
+            DesignationEntityEnum entity, Exception exception) {
         return new ListBuilderException("%s: %s", entity.getLabel(), exception.getMessage());
     }
 }

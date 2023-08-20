@@ -1,23 +1,23 @@
 package br.com.bvilela.listbuilder.builder;
 
-import br.com.bvilela.listbuilder.dto.discourse.input.InputDiscourseItemDTO;
-import br.com.bvilela.listbuilder.utils.DateUtils;
+import br.com.bvilela.listbuilder.dto.discourse.input.DiscourseInputItemDTO;
+import br.com.bvilela.listbuilder.util.DateUtils;
 import java.time.LocalDate;
 import org.apache.commons.lang3.RandomStringUtils;
 
 public class FileInputDataDiscursoItemDtoBuilder {
 
-    private InputDiscourseItemDTO target;
+    private DiscourseInputItemDTO target;
 
     public FileInputDataDiscursoItemDtoBuilder() {
-        this.target = new InputDiscourseItemDTO();
+        this.target = new DiscourseInputItemDTO();
     }
 
     public static FileInputDataDiscursoItemDtoBuilder create() {
         return new FileInputDataDiscursoItemDtoBuilder();
     }
 
-    public InputDiscourseItemDTO build() {
+    public DiscourseInputItemDTO build() {
         return target;
     }
 

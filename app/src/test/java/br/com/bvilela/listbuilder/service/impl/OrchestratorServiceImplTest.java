@@ -8,8 +8,8 @@ import br.com.bvilela.listbuilder.exception.listtype.InvalidListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.RequiredListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
-import br.com.bvilela.listbuilder.service.audience.impl.AudienceGenerateServiceImpl;
-import br.com.bvilela.listbuilder.service.limpeza.impl.LimpezaGenerateServiceImpl;
+import br.com.bvilela.listbuilder.service.audience.AudienceGenerateServiceImpl;
+import br.com.bvilela.listbuilder.service.clearing.ClearingGenerateServiceImpl;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.SneakyThrows;
@@ -27,7 +27,7 @@ class OrchestratorServiceImplTest {
 
     @InjectMocks private OrchestratorServiceImpl service;
 
-    @Mock private LimpezaGenerateServiceImpl limpezaService;
+    @Mock private ClearingGenerateServiceImpl limpezaService;
 
     @Mock private AudienceGenerateServiceImpl assistenciaService;
 

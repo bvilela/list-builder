@@ -1,7 +1,7 @@
 package br.com.bvilela.listbuilder.validator;
 
-import br.com.bvilela.listbuilder.dto.vidacrista.FileInputDataVidaCristaDTO;
-import br.com.bvilela.listbuilder.utils.AppUtils;
+import br.com.bvilela.listbuilder.dto.christianlife.input.ChristianLifeInputDTO;
+import br.com.bvilela.listbuilder.util.AppUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 public final class VidaCristaValidator {
 
     @SneakyThrows
-    public static void validInputDto(FileInputDataVidaCristaDTO dto) {
+    public static void validInputDto(ChristianLifeInputDTO dto) {
         log.info("Validando Dados de Entrada!");
         GenericValidator.validateParseDto(dto);
         var mapDatesConverted =

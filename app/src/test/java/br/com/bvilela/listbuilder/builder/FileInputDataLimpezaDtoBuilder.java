@@ -1,6 +1,6 @@
 package br.com.bvilela.listbuilder.builder;
 
-import br.com.bvilela.listbuilder.dto.limpeza.FileInputDataLimpezaDTO;
+import br.com.bvilela.listbuilder.dto.clearing.input.ClearingInputDTO;
 import java.util.List;
 import java.util.Map;
 
@@ -19,17 +19,17 @@ public class FileInputDataLimpezaDtoBuilder {
                     7, "Group 7 (Person28, Person29, Person30, Person31, Person32)",
                     8, "Group 8 (Person33, Person34, Person35, Person36)");
 
-    private final FileInputDataLimpezaDTO target;
+    private final ClearingInputDTO target;
 
     public FileInputDataLimpezaDtoBuilder() {
-        this.target = new FileInputDataLimpezaDTO();
+        this.target = new ClearingInputDTO();
     }
 
     public static FileInputDataLimpezaDtoBuilder create() {
         return new FileInputDataLimpezaDtoBuilder();
     }
 
-    public FileInputDataLimpezaDTO build() {
+    public ClearingInputDTO build() {
         return target;
     }
 

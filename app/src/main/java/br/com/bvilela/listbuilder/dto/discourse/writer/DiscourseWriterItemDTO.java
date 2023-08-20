@@ -1,6 +1,6 @@
 package br.com.bvilela.listbuilder.dto.discourse.writer;
 
-import br.com.bvilela.listbuilder.dto.discourse.input.InputDiscourseItemDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.DiscourseInputItemDTO;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class DiscourseWriterItemDTO {
     private String speaker;
     private String congregation;
 
-    public DiscourseWriterItemDTO(InputDiscourseItemDTO dto) {
+    public DiscourseWriterItemDTO(DiscourseInputItemDTO dto) {
         this.date = dto.getDateConverted();
         this.president = null;
         this.themeTitle = dto.getThemeTitle();

@@ -1,6 +1,6 @@
 package br.com.bvilela.listbuilder.config;
 
-import br.com.bvilela.listbuilder.utils.AppUtils;
+import br.com.bvilela.listbuilder.util.AppUtils;
 
 public final class SizeConfig {
 

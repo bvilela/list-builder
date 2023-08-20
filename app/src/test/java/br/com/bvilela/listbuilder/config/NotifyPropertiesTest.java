@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import br.com.bvilela.listbuilder.enuns.NotifDesignacaoEntityEnum;
+import br.com.bvilela.listbuilder.enuns.NotifyDesignationEntityEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import java.util.List;
@@ -58,7 +58,7 @@ class NotifyPropertiesTest {
 
     @Test
     void getNotifyDesignationTypeActive() {
-        var expectedList = List.of(NotifDesignacaoEntityEnum.READER.getLabel());
+        var expectedList = List.of(NotifyDesignationEntityEnum.READER.getLabel());
         propertiesUtils.setNotifyDesignationTypeActive(expectedList);
         assertEquals(expectedList, properties.getNotifyDesignationTypeActive());
     }

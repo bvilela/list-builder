@@ -1,27 +1,28 @@
 package br.com.bvilela.listbuilder.builder;
 
-import br.com.bvilela.listbuilder.dto.vidacrista.VidaCristaExtractWeekItemDTO;
-import br.com.bvilela.listbuilder.enuns.VidaCristaExtractItemTypeEnum;
+import br.com.bvilela.listbuilder.dto.christianlife.extract.ChristianLifeExtractWeekItemDTO;
+import br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum;
 import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 
 public class VidaCristaExtractWeekItemDtoBuilder {
 
-    private VidaCristaExtractWeekItemDTO target;
+    private ChristianLifeExtractWeekItemDTO target;
 
     public VidaCristaExtractWeekItemDtoBuilder() {
-        this.target = new VidaCristaExtractWeekItemDTO();
+        this.target = new ChristianLifeExtractWeekItemDTO();
     }
 
     public static VidaCristaExtractWeekItemDtoBuilder create() {
         return new VidaCristaExtractWeekItemDtoBuilder();
     }
 
-    public VidaCristaExtractWeekItemDTO build() {
+    public ChristianLifeExtractWeekItemDTO build() {
         return target;
     }
 
-    public VidaCristaExtractWeekItemDtoBuilder withRandomData(VidaCristaExtractItemTypeEnum type) {
+    public VidaCristaExtractWeekItemDtoBuilder withRandomData(
+            ChristianLifeExtractItemTypeEnum type) {
         this.withTitle(RandomStringUtils.randomAlphabetic(15));
         this.withType(type);
         this.withParticipants(
@@ -39,7 +40,7 @@ public class VidaCristaExtractWeekItemDtoBuilder {
         return this;
     }
 
-    private VidaCristaExtractWeekItemDtoBuilder withType(VidaCristaExtractItemTypeEnum type) {
+    private VidaCristaExtractWeekItemDtoBuilder withType(ChristianLifeExtractItemTypeEnum type) {
         this.target.setType(type);
         return this;
     }

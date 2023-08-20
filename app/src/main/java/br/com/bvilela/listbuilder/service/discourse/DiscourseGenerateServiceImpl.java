@@ -2,17 +2,17 @@ package br.com.bvilela.listbuilder.service.discourse;
 
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.dto.discourse.input.InputAllThemesDiscourseDTO;
-import br.com.bvilela.listbuilder.dto.discourse.input.InputDiscourseDTO;
-import br.com.bvilela.listbuilder.dto.discourse.input.InputDiscourseItemDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.DiscourseInputAllThemesDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.DiscourseInputDTO;
+import br.com.bvilela.listbuilder.dto.discourse.input.DiscourseInputItemDTO;
 import br.com.bvilela.listbuilder.dto.discourse.writer.DiscourseWriterDTO;
 import br.com.bvilela.listbuilder.dto.util.CircularList;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
-import br.com.bvilela.listbuilder.utils.AppUtils;
-import br.com.bvilela.listbuilder.utils.DateUtils;
-import br.com.bvilela.listbuilder.utils.FileUtils;
+import br.com.bvilela.listbuilder.util.AppUtils;
+import br.com.bvilela.listbuilder.util.DateUtils;
+import br.com.bvilela.listbuilder.util.FileUtils;
 import br.com.bvilela.listbuilder.validator.DiscursoValidator;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -42,12 +42,12 @@ public class DiscourseGenerateServiceImpl implements BaseGenerateService {
         try {
             logInit(log);
 
-            var dto = getFileInputDataDTO(properties, InputDiscourseDTO.class);
+            var dto = getFileInputDataDTO(properties, DiscourseInputDTO.class);
 
             Path pathAllThemesFile =
                     Paths.get(properties.getInputDir(), "dados-discurso-temas.json");
             var allThemesDto =
-                    FileUtils.readInputFile(pathAllThemesFile, InputAllThemesDiscourseDTO.class);
+                    FileUtils.readInputFile(pathAllThemesFile, DiscourseInputAllThemesDTO.class);
 
             DiscursoValidator.validAllThemesFile(allThemesDto);
             DiscursoValidator.validFileInputData(dto);
@@ -70,7 +70,7 @@ public class DiscourseGenerateServiceImpl implements BaseGenerateService {
     }
 
     @SneakyThrows
-    private void includePresident(InputDiscourseDTO dto, DiscourseWriterDTO writerDto) {
+    private void includePresident(DiscourseInputDTO dto, DiscourseWriterDTO writerDto) {
         if (dto.getPresident() == null) {
             return;
         }
@@ -87,9 +87,9 @@ public class DiscourseGenerateServiceImpl implements BaseGenerateService {
 
     @SneakyThrows
     private static void setThemesByNumberAndConvertDate(
-            List<InputDiscourseItemDTO> list,
+            List<DiscourseInputItemDTO> list,
             String message,
-            InputAllThemesDiscourseDTO allThemesDto) {
+            DiscourseInputAllThemesDTO allThemesDto) {
 
         log.info("{} - Obtendo Títulos dos Discursos pelo número do tema", message);
 
@@ -98,7 +98,7 @@ public class DiscourseGenerateServiceImpl implements BaseGenerateService {
             return;
         }
 
-        for (InputDiscourseItemDTO item : list) {
+        for (DiscourseInputItemDTO item : list) {
             setThemeTitleByThemeNumber(allThemesDto, item);
             item.setDateConverted(DateUtils.parse(item.getDate()));
         }
@@ -108,7 +108,7 @@ public class DiscourseGenerateServiceImpl implements BaseGenerateService {
 
     @SneakyThrows
     private static void setThemeTitleByThemeNumber(
-            InputAllThemesDiscourseDTO allThemesDto, InputDiscourseItemDTO item) {
+            DiscourseInputAllThemesDTO allThemesDto, DiscourseInputItemDTO item) {
         var themeTitleMissing =
                 Objects.isNull(item.getThemeTitle()) || item.getThemeTitle().isEmpty();
         if (Objects.nonNull(item.getThemeNumber()) && themeTitleMissing) {
