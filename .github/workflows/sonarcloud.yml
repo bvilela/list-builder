@@ -2,14 +2,21 @@ name: SonarCloud
 on:
   push:
     branches:
-      - '**'        # matches every branch
-      - '!master'   # excludes master
+      - '**'        # include every branch
+      - '!master'   # exclude master
     paths-ignore:
       - '**/README.md'
-#      - '.github/workflows/**'
 
 jobs:
+  pmd-check-rules:
+    uses: bvilela/github-actions-workflows/.github/workflows/pmd-check-rules.yml@feature/add-reusable-workflows
+    with:
+      version: '6.53.0'
+      source-path: 'app/src'
+      rulesets: 'app/pmd-rulesets.json'
+      
   sonarcloud:
+    needs: pmd-check-rules
     name: SonarCloud
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'skip pipe')"
@@ -25,27 +32,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven # Memorizar dependências
-
-      - name: Check PMD
-        uses: pmd/pmd-github-action@v1
-        id: pmd
-        with:
-          version: '6.53.0'
-          sourcePath: 'app/src'
-          rulesets: 'app/pmd-ruleset.xml'
-          analyzeModifiedFilesOnly: false
-
-      - name: No Violation of PMD Rules
-        if: steps.pmd.outputs.violations == 0
-        run: |
-          echo "No violation of the PMD Rules. Congratulations! :)"         
-
-      - name: Validating Violations of PMD Rules
-        if: steps.pmd.outputs.violations != 0
-        run: |
-          echo "Number of Violations: ${{ steps.pmd.outputs.violations }} - (Must be Zero!!!)"
-          echo "Check previous step for more details!!!"
-          exit 1
 
       - name: Run Unit Test
         run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml test --file app/pom.xml 
