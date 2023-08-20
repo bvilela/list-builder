@@ -9,6 +9,7 @@ on:
 
 jobs:
   pmd-check-rules:
+    name: PMD Check Rules
     uses: bvilela/github-actions-workflows/.github/workflows/pmd-check-rules.yml@feature/add-reusable-workflows
     with:
       version: '6.53.0'
