@@ -13,7 +13,7 @@ jobs:
     with:
       version: '6.53.0'
       source-path: 'app/src'
-      rulesets: 'app/pmd-rulesets.json'
+      rulesets: 'app/pmd-ruleset.xml'
       
   sonarcloud:
     needs: pmd-check-rules
