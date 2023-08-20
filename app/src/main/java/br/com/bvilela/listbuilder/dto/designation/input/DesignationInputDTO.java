@@ -3,7 +3,7 @@ package br.com.bvilela.listbuilder.dto.designation.input;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.util.BaseInputDTO;
 import br.com.bvilela.listbuilder.dto.util.InputListDTO;
-import br.com.bvilela.listbuilder.validator.DesignacaoValidator;
+import br.com.bvilela.listbuilder.validator.DesignationValidator;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 import javax.validation.Valid;
@@ -44,6 +44,6 @@ public class DesignationInputDTO extends BaseInputDTO {
             microphone;
 
     public void validate() {
-        DesignacaoValidator.validateData(this);
+        DesignationValidator.validateData(this);
     }
 }

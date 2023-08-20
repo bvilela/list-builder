@@ -7,10 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import br.com.bvilela.listbuilder.builder.FileInputDataVidaCristaDtoBuilder;
-import br.com.bvilela.listbuilder.builder.FileInputDataVidaCristaRenameItemDtoBuilder;
-import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekDtoBuilder;
-import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekItemDtoBuilder;
+import br.com.bvilela.listbuilder.builder.christianlife.ChristianLifeInputDtoBuilder;
+import br.com.bvilela.listbuilder.builder.christianlife.ChristianLifeInputRenameItemDtoBuilder;
+import br.com.bvilela.listbuilder.builder.christianlife.ChristianLifeExtractWeekDtoBuilder;
+import br.com.bvilela.listbuilder.builder.christianlife.ChristianLifeExtractWeekItemDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.christianlife.extract.ChristianLifeExtractWeekDTO;
@@ -30,6 +30,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,10 +38,11 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class ChristianLifeGenerateServiceImplTest
-        extends BaseGenerateServiceTest<ChristianLifeInputDTO, FileInputDataVidaCristaDtoBuilder> {
+        extends BaseGenerateServiceTest<ChristianLifeInputDTO, ChristianLifeInputDtoBuilder> {
 
     @InjectMocks private ChristianLifeGenerateServiceImpl service;
 
@@ -55,12 +57,11 @@ class ChristianLifeGenerateServiceImplTest
     public ChristianLifeGenerateServiceImplTest() {
         super(
                 ListTypeEnum.VIDA_CRISTA,
-                FileInputDataVidaCristaDtoBuilder.create().withRandomData());
+                ChristianLifeInputDtoBuilder.create().withRandomData());
     }
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);
         new PropertiesTestUtils(appProperties).setInputDir(testUtils.getResourceDirectory());
         service =
                 new ChristianLifeGenerateServiceImpl(
@@ -139,7 +140,7 @@ class ChristianLifeGenerateServiceImplTest
     @Test
     void shouldGenerateListRenameItemsExceptionWeekIndexNull() {
         var renameItem =
-                FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                ChristianLifeInputRenameItemDtoBuilder.create()
                         .withData(null, "original Title", null)
                         .build();
         var dto = builder.withRandomData().withRenameItems(List.of(renameItem)).build();
@@ -154,7 +155,7 @@ class ChristianLifeGenerateServiceImplTest
     @ValueSource(strings = " ")
     void shouldGenerateListRenameItemsExceptionWeekOriginalNameNotFilled(String originalName) {
         var renameItem =
-                FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                ChristianLifeInputRenameItemDtoBuilder.create()
                         .withData(1, originalName, "new Title")
                         .build();
         var dto = builder.withRandomData().withRenameItems(List.of(renameItem)).build();
@@ -165,10 +166,10 @@ class ChristianLifeGenerateServiceImplTest
 
     @Test
     void shouldProcessRenameOrRemoveItemRename() {
-        var weekItemDto = VidaCristaExtractWeekItemDtoBuilder.create().withTitle("Title 1").build();
+        var weekItemDto = ChristianLifeExtractWeekItemDtoBuilder.create().withTitle("Title 1").build();
         var listItemWeekToRemove = new ArrayList<ChristianLifeExtractWeekItemDTO>();
         var itemRename =
-                FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                ChristianLifeInputRenameItemDtoBuilder.create()
                         .withData(1, "Title 1", "Title 1 renamed")
                         .build();
         service.processRenameOrRemoveItem(weekItemDto, itemRename, listItemWeekToRemove);
@@ -178,10 +179,10 @@ class ChristianLifeGenerateServiceImplTest
 
     @Test
     void shouldProcessRenameOrRemoveItemRemoveCaseNull() {
-        var weekItemDto = VidaCristaExtractWeekItemDtoBuilder.create().withTitle("Title 1").build();
+        var weekItemDto = ChristianLifeExtractWeekItemDtoBuilder.create().withTitle("Title 1").build();
         var listItemWeekToRemove = new ArrayList<ChristianLifeExtractWeekItemDTO>();
         var itemRename =
-                FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                ChristianLifeInputRenameItemDtoBuilder.create()
                         .withData(1, "Title 1", null)
                         .build();
         service.processRenameOrRemoveItem(weekItemDto, itemRename, listItemWeekToRemove);
@@ -191,10 +192,10 @@ class ChristianLifeGenerateServiceImplTest
 
     @Test
     void shouldProcessRenameOrRemoveItemRemoveCaseEmpty() {
-        var weekItemDto = VidaCristaExtractWeekItemDtoBuilder.create().withTitle("Title 1").build();
+        var weekItemDto = ChristianLifeExtractWeekItemDtoBuilder.create().withTitle("Title 1").build();
         var listItemWeekToRemove = new ArrayList<ChristianLifeExtractWeekItemDTO>();
         var itemRename =
-                FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                ChristianLifeInputRenameItemDtoBuilder.create()
                         .withData(1, "Title 1", "")
                         .build();
         service.processRenameOrRemoveItem(weekItemDto, itemRename, listItemWeekToRemove);
@@ -205,10 +206,10 @@ class ChristianLifeGenerateServiceImplTest
     @Test
     void shouldCheckRenameItemFromWeekNoRenameItemsForThisWeek() {
         int weekIndex = 0;
-        var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
+        var week = ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
         var listRenameItems =
                 List.of(
-                        FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                        ChristianLifeInputRenameItemDtoBuilder.create()
                                 .withData(
                                         weekIndex + 3,
                                         week.getItems().get(6).getTitle(),
@@ -220,10 +221,10 @@ class ChristianLifeGenerateServiceImplTest
     @Test
     void shouldCheckRenameItemFromWeekMatchNameToRename() {
         int weekIndex = 0;
-        var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
+        var week = ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
         var listRenameItems =
                 List.of(
-                        FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                        ChristianLifeInputRenameItemDtoBuilder.create()
                                 .withData(
                                         weekIndex + 1,
                                         week.getItems().get(week.getItems().size() - 1).getTitle(),
@@ -237,10 +238,10 @@ class ChristianLifeGenerateServiceImplTest
     @Test
     void shouldCheckRenameItemFromWeekNoMatchNameToRename() {
         int weekIndex = 0;
-        var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
+        var week = ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
         var listRenameItems =
                 List.of(
-                        FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                        ChristianLifeInputRenameItemDtoBuilder.create()
                                 .withData(weekIndex + 1, "ABC", "Title Renamed")
                                 .build());
         service.checkRenameItemFromWeek(week, listRenameItems, weekIndex);
@@ -254,12 +255,12 @@ class ChristianLifeGenerateServiceImplTest
     @Test
     void shouldCheckRenameItemFromWeekMatchNameToRemove() {
         int weekIndex = 0;
-        var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
+        var week = ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
         var originalWeekItems = new ArrayList<>(week.getItems());
         var initialWeekItemsSize = week.getItems().size();
         var listRenameItems =
                 List.of(
-                        FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                        ChristianLifeInputRenameItemDtoBuilder.create()
                                 .withData(
                                         weekIndex + 1,
                                         week.getItems().get(initialWeekItemsSize - 1).getTitle(),
@@ -278,7 +279,7 @@ class ChristianLifeGenerateServiceImplTest
     @Test
     void shouldCheckRenameItemFromWeekMatchNameToRenameNoItemsCanRenamed() {
         int weekIndex = 0;
-        var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
+        var week = ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
         var originalWeekItems = cloneListWithoutReference(week.getItems());
         var initialWeekItemsSize = week.getItems().size();
         var auxList = new ArrayList<>(week.getItems());
@@ -286,7 +287,7 @@ class ChristianLifeGenerateServiceImplTest
         week.setItems(auxList);
         var listRenameItems =
                 List.of(
-                        FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                        ChristianLifeInputRenameItemDtoBuilder.create()
                                 .withData(
                                         weekIndex + 1,
                                         week.getItems().get(1).getTitle(),
@@ -305,23 +306,23 @@ class ChristianLifeGenerateServiceImplTest
     @Test
     void shouldCheckRenameItemFromWeekMatchNameToRemoveAndRename() {
         int weekIndex = 0;
-        var week = VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
+        var week = ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build();
         var auxList = new ArrayList<>(week.getItems());
         auxList.add(
-                VidaCristaExtractWeekItemDtoBuilder.create()
+                ChristianLifeExtractWeekItemDtoBuilder.create()
                         .withRandomData(ChristianLifeExtractItemTypeEnum.WITH_PARTICIPANTS)
                         .build());
         week.setItems(auxList);
         var initialWeekItemsSize = week.getItems().size();
         var listRenameItems =
                 List.of(
-                        FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                        ChristianLifeInputRenameItemDtoBuilder.create()
                                 .withData(
                                         weekIndex + 1,
                                         week.getItems().get(initialWeekItemsSize - 2).getTitle(),
                                         "Title Renamed")
                                 .build(),
-                        FileInputDataVidaCristaRenameItemDtoBuilder.create()
+                        ChristianLifeInputRenameItemDtoBuilder.create()
                                 .withData(
                                         weekIndex + 1,
                                         week.getItems().get(initialWeekItemsSize - 1).getTitle(),
@@ -349,22 +350,22 @@ class ChristianLifeGenerateServiceImplTest
             Map<LocalDate, String> mapRemove, boolean isSkip, String skipMessage) {
         List<ChristianLifeExtractWeekDTO> weeks =
                 List.of(
-                        VidaCristaExtractWeekDtoBuilder.create()
+                        ChristianLifeExtractWeekDtoBuilder.create()
                                 .withRandomData()
                                 .withInitialDate(LocalDate.of(2023, 6, 5))
                                 .withEndDate(LocalDate.of(2023, 6, 11))
                                 .build(),
-                        VidaCristaExtractWeekDtoBuilder.create()
+                        ChristianLifeExtractWeekDtoBuilder.create()
                                 .withRandomData()
                                 .withInitialDate(LocalDate.of(2023, 6, 12))
                                 .withEndDate(LocalDate.of(2023, 6, 18))
                                 .build(),
-                        VidaCristaExtractWeekDtoBuilder.create()
+                        ChristianLifeExtractWeekDtoBuilder.create()
                                 .withRandomData()
                                 .withInitialDate(LocalDate.of(2023, 6, 19))
                                 .withEndDate(LocalDate.of(2023, 6, 25))
                                 .build(),
-                        VidaCristaExtractWeekDtoBuilder.create()
+                        ChristianLifeExtractWeekDtoBuilder.create()
                                 .withRandomData()
                                 .withInitialDate(LocalDate.of(2023, 6, 26))
                                 .withEndDate(LocalDate.of(2023, 7, 2))

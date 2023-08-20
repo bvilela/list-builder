@@ -12,7 +12,7 @@ import br.com.bvilela.listbuilder.service.GroupService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.util.DateUtils;
 import br.com.bvilela.listbuilder.util.FileUtils;
-import br.com.bvilela.listbuilder.validator.DesignacaoValidator;
+import br.com.bvilela.listbuilder.validator.DesignationValidator;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -89,7 +89,7 @@ public class DesignationGenerateServiceImpl implements BaseGenerateService {
             dtoWriter.setIndicator(listIndicator);
             dtoWriter.setMicrophone(listMicrophone);
 
-            DesignacaoValidator.checkDtoWriter(dtoWriter);
+            DesignationValidator.checkDtoWriter(dtoWriter);
 
             var pathDocx = writerService.writerDocx(dtoWriter);
 

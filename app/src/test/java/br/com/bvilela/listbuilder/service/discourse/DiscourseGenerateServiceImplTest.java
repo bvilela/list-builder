@@ -1,12 +1,7 @@
 package br.com.bvilela.listbuilder.service.discourse;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import br.com.bvilela.listbuilder.builder.DiscursoAllThemesDtoBuilder;
-import br.com.bvilela.listbuilder.builder.FileInputDataDiscursoDtoBuilder;
+import br.com.bvilela.listbuilder.builder.discourse.DiscourseInputAllThemesDtoBuilder;
+import br.com.bvilela.listbuilder.builder.discourse.DiscourseInputDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.discourse.input.DiscourseInputDTO;
@@ -16,16 +11,21 @@ import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootApplication
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@ExtendWith(MockitoExtension.class)
 class DiscourseGenerateServiceImplTest
-        extends BaseGenerateServiceTest<DiscourseInputDTO, FileInputDataDiscursoDtoBuilder> {
+        extends BaseGenerateServiceTest<DiscourseInputDTO, DiscourseInputDtoBuilder> {
 
     @InjectMocks private DiscourseGenerateServiceImpl service;
 
@@ -37,12 +37,11 @@ class DiscourseGenerateServiceImplTest
             "Data: 05-06-2022 - Informe o Número do Tema ou Título!";
 
     public DiscourseGenerateServiceImplTest() {
-        super(ListTypeEnum.DISCURSO, FileInputDataDiscursoDtoBuilder.create().withRandomData());
+        super(ListTypeEnum.DISCURSO, DiscourseInputDtoBuilder.create().withRandomData());
     }
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);
         new PropertiesTestUtils(appProperties).setInputDir(testUtils.getResourceDirectory());
         service = new DiscourseGenerateServiceImpl(appProperties, writerService);
         createFileThemes();
@@ -50,7 +49,7 @@ class DiscourseGenerateServiceImplTest
 
     private void createFileThemes() {
         testUtils.writeFileInputDiscursoAllThemes(
-                DiscursoAllThemesDtoBuilder.create().withRandomData().build());
+                DiscourseInputAllThemesDtoBuilder.create().withRandomData().build());
     }
 
     @Test
@@ -86,7 +85,7 @@ class DiscourseGenerateServiceImplTest
     void shouldGenerateListFileAllThemesNullException() {
         createFileInputDataOK();
         testUtils.writeFileInputDiscursoAllThemes(
-                DiscursoAllThemesDtoBuilder.create().withNullData().build());
+                DiscourseInputAllThemesDtoBuilder.create().withNullData().build());
         validateListBuilderException(MessageConfig.THEMES_REQUIRED);
     }
 
@@ -94,7 +93,7 @@ class DiscourseGenerateServiceImplTest
     void shouldGenerateListFileAllThemesEmptyException() {
         createFileInputDataOK();
         testUtils.writeFileInputDiscursoAllThemes(
-                DiscursoAllThemesDtoBuilder.create().withEmptyData().build());
+                DiscourseInputAllThemesDtoBuilder.create().withEmptyData().build());
         validateListBuilderException(MessageConfig.THEMES_REQUIRED);
     }
 

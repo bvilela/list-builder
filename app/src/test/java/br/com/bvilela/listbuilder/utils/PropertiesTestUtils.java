@@ -3,9 +3,10 @@ package br.com.bvilela.listbuilder.utils;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.enuns.AudienceWriterLayoutEnum;
+
 import java.util.List;
-import lombok.SneakyThrows;
-import org.apache.commons.lang3.reflect.FieldUtils;
+
+import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 public class PropertiesTestUtils {
 
@@ -20,49 +21,39 @@ public class PropertiesTestUtils {
         this.notifyProperties = notifyProperties;
     }
 
-    @SneakyThrows
     public void setInputDir(String value) {
-        FieldUtils.writeField(appProperties, "inputDir", value, true);
+        setField(appProperties, "inputDir", value);
     }
 
-    @SneakyThrows
     public void setOutputDir(String value) {
-        FieldUtils.writeField(appProperties, "outputDir", value, true);
+        setField(appProperties, "outputDir", value);
     }
 
-    @SneakyThrows
     public void setLayoutLimpeza(int layoutLimpeza) {
-        FieldUtils.writeField(appProperties, "layoutLimpeza", layoutLimpeza, true);
+        setField(appProperties, "layoutLimpeza", layoutLimpeza);
     }
 
-    @SneakyThrows
     public void setNotifyActive(boolean value) {
-        FieldUtils.writeField(notifyProperties, "notifyActive", value, true);
+        setField(notifyProperties, "active", value);
     }
 
-    @SneakyThrows
     public void setNotifyName(String name) {
-        FieldUtils.writeField(notifyProperties, "notifyName", name, true);
+        setField(notifyProperties, "name", name);
     }
 
-    @SneakyThrows
     public void setNotifyDesignationTypeActive(List<String> list) {
-        FieldUtils.writeField(notifyProperties, "notifyDesignationTypeActive", list, true);
+        setField(notifyProperties, "designationTypeActive", list);
     }
 
-    @SneakyThrows
     public void setNotifyCleaningPreMeeting(boolean value) {
-        FieldUtils.writeField(notifyProperties, "notifyCleaningPreMeeting", value, true);
+        setField(notifyProperties, "cleaningPreMeeting", value);
     }
 
-    @SneakyThrows
     public void setNotifyChristianLifeMeetingDay(String value) {
-        FieldUtils.writeField(notifyProperties, "notifyChristianLifeMeetingDay", value, true);
+        setField(notifyProperties, "christianLifeMeetingDay", value);
     }
 
-    @SneakyThrows
     public void setLayoutAudience(AudienceWriterLayoutEnum audienceWriterLayoutEnum) {
-        FieldUtils.writeField(
-                appProperties, "layoutAudience", audienceWriterLayoutEnum.name(), true);
+        setField(appProperties, "layoutAudience", audienceWriterLayoutEnum.name());
     }
 }

@@ -1,9 +1,6 @@
 package br.com.bvilela.listbuilder.service.clearing;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import br.com.bvilela.listbuilder.builder.FileInputDataLimpezaDtoBuilder;
+import br.com.bvilela.listbuilder.builder.clearing.ClearingInputDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.dto.clearing.input.ClearingInputDTO;
@@ -16,14 +13,11 @@ import br.com.bvilela.listbuilder.service.impl.DateServiceImpl;
 import br.com.bvilela.listbuilder.service.impl.GroupServiceImpl;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -31,12 +25,18 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootApplication
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@ExtendWith(MockitoExtension.class)
 class ClearingGenerateServiceImplTest
-        extends BaseGenerateServiceTest<ClearingInputDTO, FileInputDataLimpezaDtoBuilder> {
+        extends BaseGenerateServiceTest<ClearingInputDTO, ClearingInputDtoBuilder> {
 
     private static final List<String> MOCK_LIST_GROUPS =
             List.of(
@@ -58,12 +58,11 @@ class ClearingGenerateServiceImplTest
     private PropertiesTestUtils propertiesUtils;
 
     public ClearingGenerateServiceImplTest() {
-        super(ListTypeEnum.LIMPEZA, FileInputDataLimpezaDtoBuilder.create());
+        super(ListTypeEnum.LIMPEZA, ClearingInputDtoBuilder.create());
     }
 
     @BeforeEach
     void setupBeforeEach() {
-        MockitoAnnotations.openMocks(this);
         propertiesUtils = new PropertiesTestUtils(appProperties);
         propertiesUtils.setInputDir(testUtils.getResourceDirectory());
         service =
@@ -105,7 +104,6 @@ class ClearingGenerateServiceImplTest
     @ParameterizedTest(name = "Last Date is \"{0}\"")
     @NullAndEmptySource
     @ValueSource(strings = " ")
-    @SneakyThrows
     void generateListExceptionLastDateRequired(String lastDate) {
         writeFileInputFromDto(builder.withSuccess().withLastDate(lastDate).build());
         validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
@@ -138,7 +136,6 @@ class ClearingGenerateServiceImplTest
     @ParameterizedTest(name = "Last Date is \"{0}\"")
     @NullAndEmptySource
     @ValueSource(strings = " ")
-    @SneakyThrows
     void generateListExceptionMidweekDayRequired(String midweekDay) {
         writeFileInputFromDto(builder.withSuccess().withMeetingDayMidweek(midweekDay).build());
         validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);

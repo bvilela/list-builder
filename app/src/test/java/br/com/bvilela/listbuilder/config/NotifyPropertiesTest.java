@@ -1,22 +1,25 @@
 package br.com.bvilela.listbuilder.config;
 
+import br.com.bvilela.listbuilder.enuns.NotifyDesignationEntityEnum;
+import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import br.com.bvilela.listbuilder.enuns.NotifyDesignationEntityEnum;
-import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
-
+@ExtendWith(MockitoExtension.class)
 class NotifyPropertiesTest {
 
     @InjectMocks private NotifyProperties properties;
@@ -25,14 +28,13 @@ class NotifyPropertiesTest {
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);
         propertiesUtils = new PropertiesTestUtils(properties);
     }
 
     @Test
     void isNotifyActive() {
         propertiesUtils.setNotifyActive(true);
-        assertTrue(properties.isNotifyActive());
+        assertTrue(properties.isActive());
     }
 
     @Test
@@ -44,7 +46,7 @@ class NotifyPropertiesTest {
     @Test
     void getNotifyName() {
         propertiesUtils.setNotifyName("John");
-        assertEquals("John", properties.getNotifyName());
+        assertEquals("John", properties.getName());
         assertDoesNotThrow(() -> properties.checkNotifyNameFilled());
     }
 
@@ -60,13 +62,13 @@ class NotifyPropertiesTest {
     void getNotifyDesignationTypeActive() {
         var expectedList = List.of(NotifyDesignationEntityEnum.READER.getLabel());
         propertiesUtils.setNotifyDesignationTypeActive(expectedList);
-        assertEquals(expectedList, properties.getNotifyDesignationTypeActive());
+        assertEquals(expectedList, properties.getDesignationTypeActive());
     }
 
     @Test
     void notifyCleaningPreMeeting() {
         propertiesUtils.setNotifyCleaningPreMeeting(true);
-        assertTrue(properties.isNotifyCleaningPreMeeting());
+        assertTrue(properties.isCleaningPreMeeting());
     }
 
     @ParameterizedTest

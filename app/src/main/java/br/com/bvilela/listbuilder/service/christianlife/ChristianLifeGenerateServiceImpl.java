@@ -11,7 +11,7 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.util.DateUtils;
-import br.com.bvilela.listbuilder.validator.VidaCristaValidator;
+import br.com.bvilela.listbuilder.validator.ChristianLifeValidator;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -46,7 +46,7 @@ public class ChristianLifeGenerateServiceImpl implements BaseGenerateService {
 
             var dto = getFileInputDataDTO(properties, ChristianLifeInputDTO.class);
 
-            VidaCristaValidator.validInputDto(dto);
+            ChristianLifeValidator.validInputDto(dto);
             this.abbreviationMap = new LinkedHashMap<>(dto.getAbbreviations());
 
             var url = extractService.getUrlMeetingWorkbook(dto.getLastDateConverted());

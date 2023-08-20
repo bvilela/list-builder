@@ -1,27 +1,27 @@
-package br.com.bvilela.listbuilder.builder;
+package br.com.bvilela.listbuilder.builder.christianlife;
 
 import br.com.bvilela.listbuilder.dto.christianlife.extract.ChristianLifeExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum;
 import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 
-public class VidaCristaExtractWeekItemDtoBuilder {
+public class ChristianLifeExtractWeekItemDtoBuilder {
 
     private ChristianLifeExtractWeekItemDTO target;
 
-    public VidaCristaExtractWeekItemDtoBuilder() {
+    public ChristianLifeExtractWeekItemDtoBuilder() {
         this.target = new ChristianLifeExtractWeekItemDTO();
     }
 
-    public static VidaCristaExtractWeekItemDtoBuilder create() {
-        return new VidaCristaExtractWeekItemDtoBuilder();
+    public static ChristianLifeExtractWeekItemDtoBuilder create() {
+        return new ChristianLifeExtractWeekItemDtoBuilder();
     }
 
     public ChristianLifeExtractWeekItemDTO build() {
         return target;
     }
 
-    public VidaCristaExtractWeekItemDtoBuilder withRandomData(
+    public ChristianLifeExtractWeekItemDtoBuilder withRandomData(
             ChristianLifeExtractItemTypeEnum type) {
         this.withTitle(RandomStringUtils.randomAlphabetic(15));
         this.withType(type);
@@ -35,17 +35,17 @@ public class VidaCristaExtractWeekItemDtoBuilder {
         return this;
     }
 
-    public VidaCristaExtractWeekItemDtoBuilder withTitle(String title) {
+    public ChristianLifeExtractWeekItemDtoBuilder withTitle(String title) {
         this.target.setTitle(title);
         return this;
     }
 
-    private VidaCristaExtractWeekItemDtoBuilder withType(ChristianLifeExtractItemTypeEnum type) {
+    private ChristianLifeExtractWeekItemDtoBuilder withType(ChristianLifeExtractItemTypeEnum type) {
         this.target.setType(type);
         return this;
     }
 
-    private VidaCristaExtractWeekItemDtoBuilder withParticipants(List<String> participants) {
+    private ChristianLifeExtractWeekItemDtoBuilder withParticipants(List<String> participants) {
         this.target.setParticipants(participants);
         return this;
     }

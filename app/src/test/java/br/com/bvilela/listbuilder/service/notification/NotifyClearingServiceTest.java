@@ -1,20 +1,21 @@
 package br.com.bvilela.listbuilder.service.notification;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import br.com.bvilela.listbuilder.builder.clearing.FinalListLimpezaDtoBuilder;
+import br.com.bvilela.listbuilder.builder.clearing.ClearingWriterDtoBuilder;
 import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.dto.clearing.writer.ClearingWriterDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@ExtendWith(MockitoExtension.class)
 class NotifyClearingServiceTest {
 
     @InjectMocks private NotifyClearingService service;
@@ -25,10 +26,8 @@ class NotifyClearingServiceTest {
 
     private PropertiesTestUtils propertiesUtils;
 
-    @SneakyThrows
     @BeforeEach
     void setupBeforeEach() {
-        MockitoAnnotations.openMocks(this);
         propertiesUtils = new PropertiesTestUtils(notifyProperties);
         service = new NotifyClearingService(notifyProperties);
     }
@@ -53,7 +52,7 @@ class NotifyClearingServiceTest {
     void createEventsNotifyActiveLayout1NotifyNanmeNotFoundSuccess() {
         propertiesUtils.setNotifyActive(true);
         propertiesUtils.setNotifyName("XPTO");
-        var dto = FinalListLimpezaDtoBuilder.createMockLayout1();
+        var dto = ClearingWriterDtoBuilder.createMockLayout1();
         var events = service.createEvents(dto, CLEARING_LAYOUT_1);
         assertEquals(1, events.size());
         assertTrue(events.get(0).getSummary().contains("Fazer Lista"));
@@ -63,7 +62,7 @@ class NotifyClearingServiceTest {
     void createEventsNotifyActiveLayout1Success() {
         propertiesUtils.setNotifyActive(true);
         propertiesUtils.setNotifyName("Person1");
-        var dto = FinalListLimpezaDtoBuilder.createMockLayout1();
+        var dto = ClearingWriterDtoBuilder.createMockLayout1();
         var events = service.createEvents(dto, CLEARING_LAYOUT_1);
         assertEquals(2, events.size());
         assertEquals("Limpeza Salão", events.get(0).getSummary());
@@ -74,7 +73,7 @@ class NotifyClearingServiceTest {
     void createEventsNotifyActiveLayout2Success() {
         propertiesUtils.setNotifyActive(true);
         propertiesUtils.setNotifyName("Person1");
-        var dto = FinalListLimpezaDtoBuilder.createMockLayout2();
+        var dto = ClearingWriterDtoBuilder.createMockLayout2();
         var events = service.createEvents(dto, CLEARING_LAYOUT_2);
         assertEquals(2, events.size());
         assertEquals("Limpeza Salão", events.get(0).getSummary());
@@ -86,7 +85,7 @@ class NotifyClearingServiceTest {
         propertiesUtils.setNotifyActive(true);
         propertiesUtils.setNotifyName("Person1");
         propertiesUtils.setNotifyCleaningPreMeeting(true);
-        var dto = FinalListLimpezaDtoBuilder.createMockLayout2();
+        var dto = ClearingWriterDtoBuilder.createMockLayout2();
         var events = service.createEvents(dto, CLEARING_LAYOUT_2);
         assertEquals(3, events.size());
         assertEquals("Limpeza Pré-Reunião", events.get(0).getSummary());

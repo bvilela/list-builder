@@ -3,28 +3,24 @@ package br.com.bvilela.listbuilder.service.christianlife;
 import br.com.bvilela.listbuilder.dto.christianlife.extract.ChristianLifeExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Stream;
+
+@ExtendWith(MockitoExtension.class)
 class ChristianLifeExtractServiceTest {
 
     @InjectMocks private ChristianLifeExtractService service;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-        service = new ChristianLifeExtractService();
-    }
 
     @DisplayName("Get URL Meeting Workbook from URL Success")
     @ParameterizedTest(name = "Date is \"{0}\"")

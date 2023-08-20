@@ -13,7 +13,8 @@ import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.GroupService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
-import br.com.bvilela.listbuilder.validator.LimpezaValidator;
+import br.com.bvilela.listbuilder.validator.ClearingValidator;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public class ClearingGenerateServiceImpl implements BaseGenerateService {
 
             var dto = getFileInputDataDTO(properties, ClearingInputDTO.class);
 
-            var dateServiceInputDto = LimpezaValidator.validAndConvertData(dto);
+            var dateServiceInputDto = ClearingValidator.validAndConvertData(dto);
 
             var listDates =
                     dateService.generateListDatesLimpeza(

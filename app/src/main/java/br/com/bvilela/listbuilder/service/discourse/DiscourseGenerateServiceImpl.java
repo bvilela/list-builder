@@ -13,7 +13,8 @@ import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.util.AppUtils;
 import br.com.bvilela.listbuilder.util.DateUtils;
 import br.com.bvilela.listbuilder.util.FileUtils;
-import br.com.bvilela.listbuilder.validator.DiscursoValidator;
+import br.com.bvilela.listbuilder.validator.DiscourseValidator;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -49,8 +50,8 @@ public class DiscourseGenerateServiceImpl implements BaseGenerateService {
             var allThemesDto =
                     FileUtils.readInputFile(pathAllThemesFile, DiscourseInputAllThemesDTO.class);
 
-            DiscursoValidator.validAllThemesFile(allThemesDto);
-            DiscursoValidator.validFileInputData(dto);
+            DiscourseValidator.validAllThemesFile(allThemesDto);
+            DiscourseValidator.validFileInputData(dto);
             setThemesByNumberAndConvertDate(dto.getReceive(), "Lista Receber", allThemesDto);
             setThemesByNumberAndConvertDate(dto.getSend(), "Lista Enviar", allThemesDto);
 

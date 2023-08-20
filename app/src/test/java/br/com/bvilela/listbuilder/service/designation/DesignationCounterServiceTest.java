@@ -1,19 +1,19 @@
 package br.com.bvilela.listbuilder.service.designation;
 
-import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
+import br.com.bvilela.listbuilder.builder.designation.DesignationWriterDtoBuilder;
 import br.com.bvilela.listbuilder.dto.designation.writer.DesignationWriterItemDTO;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@ExtendWith(MockitoExtension.class)
 class DesignationCounterServiceTest {
 
     @InjectMocks private DesignationCounterService service;
@@ -23,21 +23,15 @@ class DesignationCounterServiceTest {
     private static final String PERSON_3 = "Person 3";
     private static final String PERSON_4 = "Person 4";
 
-    @BeforeEach
-    void setupBeforeEach() {
-        MockitoAnnotations.openMocks(this);
-        service = new DesignationCounterService();
-    }
-
     @Test
     void shouldCountNumberActiviesByName() {
-        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        var dto = DesignationWriterDtoBuilder.create().withRandomData().build();
         Assertions.assertDoesNotThrow(() -> service.countNumberActiviesByName(dto));
     }
 
     @Test
     void shouldCount() {
-        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        var dto = DesignationWriterDtoBuilder.create().withRandomData().build();
         List<DesignationWriterItemDTO> listAux = new ArrayList<>();
         addItem(listAux, PERSON_1, 3);
         addItem(listAux, PERSON_2, 2);
@@ -53,7 +47,7 @@ class DesignationCounterServiceTest {
 
     @Test
     void shouldCountSplit() {
-        var dto = DesignacaoWriterDtoBuilder.create().withRandomData().build();
+        var dto = DesignationWriterDtoBuilder.create().withRandomData().build();
         List<DesignationWriterItemDTO> listAux = new ArrayList<>();
         addItemTwoPeople(listAux, PERSON_1, PERSON_4, 4);
         addItemTwoPeople(listAux, PERSON_2, PERSON_3, 1);

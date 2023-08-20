@@ -1,25 +1,26 @@
 package br.com.bvilela.listbuilder.service.christianlife;
 
-import br.com.bvilela.listbuilder.builder.VidaCristaExtractWeekDtoBuilder;
+import br.com.bvilela.listbuilder.builder.christianlife.ChristianLifeExtractWeekDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.dto.christianlife.extract.ChristianLifeExtractWeekDTO;
 import br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import br.com.bvilela.listbuilder.utils.TestUtils;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootApplication
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+@ExtendWith(MockitoExtension.class)
 class ChristianLifeWriterServiceTest {
 
     @InjectMocks private ChristianLifeWriterService service;
@@ -29,7 +30,6 @@ class ChristianLifeWriterServiceTest {
     @BeforeEach
     @SneakyThrows
     void setupBeforeEach() {
-        MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
         new PropertiesTestUtils(appProperties).setOutputDir(pathOutput);
         service = new ChristianLifeWriterService(appProperties);
@@ -43,7 +43,7 @@ class ChristianLifeWriterServiceTest {
     @Test
     void shouldWriterExceptionNotFoundImage() {
         List<ChristianLifeExtractWeekDTO> list =
-                List.of(VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
+                List.of(ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
 
         list.get(0).getItems().stream()
                 .filter(e -> e.getType() == ChristianLifeExtractItemTypeEnum.LABEL)
@@ -59,7 +59,7 @@ class ChristianLifeWriterServiceTest {
     @Test
     void shouldWriterExceptionNotFoundReadOfWeek() {
         List<ChristianLifeExtractWeekDTO> list =
-                List.of(VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
+                List.of(ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
         var newListItems = new ArrayList<>(list.get(0).getItems());
         newListItems.removeIf(e -> e.getType() == ChristianLifeExtractItemTypeEnum.READ_OF_WEEK);
         list.get(0).setItems(newListItems);
@@ -74,10 +74,10 @@ class ChristianLifeWriterServiceTest {
     void shouldWriterPDFOneMonthSuccess() {
         List<ChristianLifeExtractWeekDTO> list =
                 List.of(
-                        VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
-                        VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
-                        VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
-                        VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
+                        ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
+                        ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
+                        ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
+                        ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
         Assertions.assertDoesNotThrow(() -> service.writerPDF(list));
     }
 
@@ -85,10 +85,10 @@ class ChristianLifeWriterServiceTest {
     void shouldWriterPDFOneMonthSuccessWithSkip1Week() {
         List<ChristianLifeExtractWeekDTO> list =
                 List.of(
-                        VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
-                        VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
-                        VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
-                        VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
+                        ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
+                        ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
+                        ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
+                        ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build());
         list.get(1).setSkip(true);
         list.get(1).setSkipMessage("Message");
         Assertions.assertFalse(list.get(1).toString().isBlank());
@@ -99,11 +99,11 @@ class ChristianLifeWriterServiceTest {
     void shouldWriterPDFTwoMonthsSuccess() {
         List<ChristianLifeExtractWeekDTO> list =
                 List.of(
-                        VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
-                        VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
-                        VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
-                        VidaCristaExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
-                        VidaCristaExtractWeekDtoBuilder.create().withRandomDataTwoMonths().build());
+                        ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
+                        ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
+                        ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
+                        ChristianLifeExtractWeekDtoBuilder.create().withRandomDataOneMonth().build(),
+                        ChristianLifeExtractWeekDtoBuilder.create().withRandomDataTwoMonths().build());
         Assertions.assertDoesNotThrow(() -> service.writerPDF(list));
     }
 

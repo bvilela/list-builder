@@ -2,53 +2,53 @@ package br.com.bvilela.listbuilder.builder;
 
 import br.com.bvilela.listbuilder.dto.audience.AudienceInputDTO;
 
-public class FileInputDataAudienceDtoBuilder {
+public class AudienceInputDtoBuilder {
 
     private static final String LAST_DATE_DEFAULT = "29-03-2022";
 
     private AudienceInputDTO target;
 
-    public FileInputDataAudienceDtoBuilder() {
+    public AudienceInputDtoBuilder() {
         this.target = new AudienceInputDTO();
     }
 
-    public static FileInputDataAudienceDtoBuilder create() {
-        return new FileInputDataAudienceDtoBuilder();
+    public static AudienceInputDtoBuilder create() {
+        return new AudienceInputDtoBuilder();
     }
 
     public AudienceInputDTO build() {
         return target;
     }
 
-    public FileInputDataAudienceDtoBuilder withLastDateInvalid() {
+    public AudienceInputDtoBuilder withLastDateInvalid() {
         return baseLastDate("01-13-2022");
     }
 
-    public FileInputDataAudienceDtoBuilder withMidweekInvalid() {
+    public AudienceInputDtoBuilder withMidweekInvalid() {
         return baseMidweekDay("tercaaa");
     }
 
-    public FileInputDataAudienceDtoBuilder withWeekendInvalid() {
+    public AudienceInputDtoBuilder withWeekendInvalid() {
         return baseWeekendDay("sabadooo");
     }
 
-    public FileInputDataAudienceDtoBuilder withSuccess() {
+    public AudienceInputDtoBuilder withSuccess() {
         return base(LAST_DATE_DEFAULT, "terça", "sábado");
     }
 
-    private FileInputDataAudienceDtoBuilder baseMidweekDay(String midweekDay) {
+    private AudienceInputDtoBuilder baseMidweekDay(String midweekDay) {
         return base(LAST_DATE_DEFAULT, midweekDay, "sábado");
     }
 
-    private FileInputDataAudienceDtoBuilder baseWeekendDay(String weekendDay) {
+    private AudienceInputDtoBuilder baseWeekendDay(String weekendDay) {
         return base(LAST_DATE_DEFAULT, "terça", weekendDay);
     }
 
-    private FileInputDataAudienceDtoBuilder baseLastDate(String lastDate) {
+    private AudienceInputDtoBuilder baseLastDate(String lastDate) {
         return base(lastDate, "terça", "sábado");
     }
 
-    private FileInputDataAudienceDtoBuilder base(
+    private AudienceInputDtoBuilder base(
             String lastDate, String dayMidweek, String dayWeekend) {
         this.withLastDate(lastDate);
         this.withMeetingDayMidweek(dayMidweek);
@@ -56,17 +56,17 @@ public class FileInputDataAudienceDtoBuilder {
         return this;
     }
 
-    public FileInputDataAudienceDtoBuilder withLastDate(String lastDate) {
+    public AudienceInputDtoBuilder withLastDate(String lastDate) {
         this.target.setLastDate(lastDate);
         return this;
     }
 
-    public FileInputDataAudienceDtoBuilder withMeetingDayMidweek(String meetingDayMidweek) {
+    public AudienceInputDtoBuilder withMeetingDayMidweek(String meetingDayMidweek) {
         this.target.setMeetingDayMidweek(meetingDayMidweek);
         return this;
     }
 
-    public FileInputDataAudienceDtoBuilder withMeetingDayWeekend(String meetingDayWeekend) {
+    public AudienceInputDtoBuilder withMeetingDayWeekend(String meetingDayWeekend) {
         this.target.setMeetingDayWeekend(meetingDayWeekend);
         return this;
     }
