@@ -1,7 +1,5 @@
 package br.com.bvilela.listbuilder.service.audience;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import br.com.bvilela.listbuilder.builder.FileInputDataAudienceDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
@@ -12,9 +10,6 @@ import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
-import java.time.LocalDate;
-import java.util.List;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,9 +22,12 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @ExtendWith(MockitoExtension.class)

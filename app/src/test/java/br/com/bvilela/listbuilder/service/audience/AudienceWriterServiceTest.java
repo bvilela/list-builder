@@ -1,21 +1,20 @@
 package br.com.bvilela.listbuilder.service.audience;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.enuns.AudienceWriterLayoutEnum;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import br.com.bvilela.listbuilder.utils.TestUtils;
-import java.nio.file.Paths;
-import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.nio.file.Paths;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @ExtendWith(MockitoExtension.class)
 class AudienceWriterServiceTest {

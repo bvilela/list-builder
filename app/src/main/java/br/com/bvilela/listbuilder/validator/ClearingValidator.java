@@ -7,9 +7,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public final class LimpezaValidator {
+public final class ClearingValidator {
 
-    private LimpezaValidator() {}
+    private ClearingValidator() {}
 
     @SneakyThrows
     public static DateServiceInputDTO validAndConvertData(ClearingInputDTO dto) {

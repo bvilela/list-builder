@@ -1,21 +1,21 @@
 package br.com.bvilela.listbuilder.service.notification;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
 import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.enuns.NotifyDesignationEntityEnum;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
-import java.util.Collections;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.util.CollectionUtils;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 class NotifyDesignationServiceTest {

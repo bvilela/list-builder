@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DesignacaoValidator {
+public final class DesignationValidator {
 
     public static void validateData(DesignationInputDTO dto) {
         log.info("Validando Dados de Entrada!");

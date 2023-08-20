@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class VidaCristaValidator {
+public final class ChristianLifeValidator {
 
     @SneakyThrows
     public static void validInputDto(ChristianLifeInputDTO dto) {

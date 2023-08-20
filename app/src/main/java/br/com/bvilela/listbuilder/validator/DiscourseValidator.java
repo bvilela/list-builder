@@ -12,9 +12,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public final class DiscursoValidator {
+public final class DiscourseValidator {
 
-    private DiscursoValidator() {}
+    private DiscourseValidator() {}
 
     public static void validAllThemesFile(DiscourseInputAllThemesDTO dto) {
         log.info("Arquivos de Temas - Validando Dados de Entrada!");
