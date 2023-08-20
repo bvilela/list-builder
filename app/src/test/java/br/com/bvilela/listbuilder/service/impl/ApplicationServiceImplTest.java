@@ -1,7 +1,7 @@
 package br.com.bvilela.listbuilder.service.impl;
 
 import br.com.bvilela.listbuilder.service.OrchestratorService;
-import br.com.bvilela.listbuilder.service.clearing.LimpezaGenerateServiceImpl;
+import br.com.bvilela.listbuilder.service.clearing.ClearingGenerateServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class ApplicationServiceImplTest {
 
     @Mock private OrchestratorService orchestratorService;
 
-    @Mock private LimpezaGenerateServiceImpl limpezaService;
+    @Mock private ClearingGenerateServiceImpl limpezaService;
 
     @BeforeEach
     public void setup() {

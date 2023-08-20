@@ -1,7 +1,7 @@
 package br.com.bvilela.listbuilder.dto.designation.input;
 
 import br.com.bvilela.listbuilder.config.MessageConfig;
-import br.com.bvilela.listbuilder.dto.util.BaseFileInputDataDTO;
+import br.com.bvilela.listbuilder.dto.util.BaseInputDTO;
 import br.com.bvilela.listbuilder.dto.util.InputListDTO;
 import br.com.bvilela.listbuilder.validator.DesignacaoValidator;
 import com.google.gson.annotations.SerializedName;
@@ -19,7 +19,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @NoArgsConstructor
-public class DesignationInputDTO extends BaseFileInputDataDTO {
+public class DesignationInputDTO extends BaseInputDTO {
 
     @NotNull(message = MessageConfig.PRESIDENT_REQUIRED)
     @SerializedName("presidente")

@@ -35,7 +35,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-class LimpezaGenerateServiceImplTest
+class ClearingGenerateServiceImplTest
         extends BaseGenerateServiceTest<ClearingInputDTO, FileInputDataLimpezaDtoBuilder> {
 
     private static final List<String> MOCK_LIST_GROUPS =
@@ -43,7 +43,7 @@ class LimpezaGenerateServiceImplTest
                     "1, 2, 3", "1, 2, 3", "1, 2, 3", "1, 2, 3", "1, 2, 3", "1, 2, 3", "1, 2, 3",
                     "1, 2, 3", "1, 2, 3");
 
-    @InjectMocks private LimpezaGenerateServiceImpl service;
+    @InjectMocks private ClearingGenerateServiceImpl service;
 
     @InjectMocks private AppProperties appProperties;
 
@@ -51,13 +51,13 @@ class LimpezaGenerateServiceImplTest
 
     @Mock private GroupServiceImpl groupService;
 
-    @Mock private LimpezaWriterService writerService;
+    @Mock private ClearingWriterService writerService;
 
     @Mock private SendNotificationService notificationService;
 
     private PropertiesTestUtils propertiesUtils;
 
-    public LimpezaGenerateServiceImplTest() {
+    public ClearingGenerateServiceImplTest() {
         super(ListTypeEnum.LIMPEZA, FileInputDataLimpezaDtoBuilder.create());
     }
 
@@ -67,7 +67,7 @@ class LimpezaGenerateServiceImplTest
         propertiesUtils = new PropertiesTestUtils(appProperties);
         propertiesUtils.setInputDir(testUtils.getResourceDirectory());
         service =
-                new LimpezaGenerateServiceImpl(
+                new ClearingGenerateServiceImpl(
                         appProperties,
                         writerService,
                         dateService,

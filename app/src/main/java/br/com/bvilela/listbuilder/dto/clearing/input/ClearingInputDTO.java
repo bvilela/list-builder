@@ -1,6 +1,6 @@
 package br.com.bvilela.listbuilder.dto.clearing.input;
 
-import br.com.bvilela.listbuilder.dto.util.BaseFileInputDataDTO;
+import br.com.bvilela.listbuilder.dto.util.BaseInputDTO;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ClearingInputDTO extends BaseFileInputDataDTO {
+public class ClearingInputDTO extends BaseInputDTO {
 
     @NotNull(message = "Último grupo não informado!")
     @SerializedName("ultimoGrupo")

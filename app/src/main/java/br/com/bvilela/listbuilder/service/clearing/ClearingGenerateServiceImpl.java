@@ -27,11 +27,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service("LIMPEZA")
 @RequiredArgsConstructor
-public class LimpezaGenerateServiceImpl implements BaseGenerateService {
+public class ClearingGenerateServiceImpl implements BaseGenerateService {
 
     private final AppProperties properties;
 
-    private final LimpezaWriterService writerService;
+    private final ClearingWriterService writerService;
     private final DateService dateService;
     private final GroupService groupService;
     private final SendNotificationService notificationService;

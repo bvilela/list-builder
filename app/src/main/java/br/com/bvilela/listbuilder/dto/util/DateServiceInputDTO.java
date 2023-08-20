@@ -28,11 +28,11 @@ public class DateServiceInputDTO {
         this.addToList = addToList;
     }
 
-    public DateServiceInputDTO(BaseFileInputDataDTO dto) {
+    public DateServiceInputDTO(BaseInputDTO dto) {
         baseFileInputData(dto);
     }
 
-    private void baseFileInputData(BaseFileInputDataDTO dto) {
+    private void baseFileInputData(BaseInputDTO dto) {
         this.lastDate = DateUtils.parse(dto.getLastDate());
         this.midweekDayWeekEnum = dto.getMeetingDayMidweekEnum();
         this.weekendDayWeekEnum = dto.getMeetingDayWeekendEnum();

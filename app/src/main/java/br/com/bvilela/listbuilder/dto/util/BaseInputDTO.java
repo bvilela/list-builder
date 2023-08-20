@@ -12,7 +12,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-public abstract class BaseFileInputDataDTO {
+public abstract class BaseInputDTO {
 
     @ValidParseDate(
             message =

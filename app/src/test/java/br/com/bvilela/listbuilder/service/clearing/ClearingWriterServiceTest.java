@@ -17,9 +17,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-class LimpezaWriterServiceTest {
+class ClearingWriterServiceTest {
 
-    @InjectMocks private LimpezaWriterService service;
+    @InjectMocks private ClearingWriterService service;
 
     @InjectMocks private AppProperties appProperties;
 
@@ -29,7 +29,7 @@ class LimpezaWriterServiceTest {
         MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
         new PropertiesTestUtils(appProperties).setOutputDir(pathOutput);
-        service = new LimpezaWriterService(appProperties);
+        service = new ClearingWriterService(appProperties);
     }
 
     @AfterAll
