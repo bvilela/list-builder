@@ -9,7 +9,7 @@ on:
 
 jobs:
   pmd-check-rules:
-    uses: bvilela/github-actions-workflows/.github/workflows/java-maven/pmd-check-rules.yml@feature/add-reusable-workflows
+    uses: bvilela/github-actions-workflows/.github/workflows/java-maven-pmd-check-rules.yml@feature/add-reusable-workflows
 
   sonarcloud:
     needs: pmd-check-rules
