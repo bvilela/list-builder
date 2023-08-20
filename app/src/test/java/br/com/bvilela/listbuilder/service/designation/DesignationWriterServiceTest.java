@@ -1,24 +1,25 @@
 package br.com.bvilela.listbuilder.service.designation;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import br.com.bvilela.listbuilder.utils.TestUtils;
-import java.nio.file.Paths;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootApplication
+import java.nio.file.Paths;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@ExtendWith(MockitoExtension.class)
 class DesignationWriterServiceTest {
 
     @InjectMocks private DesignationWriterService service;
@@ -29,7 +30,6 @@ class DesignationWriterServiceTest {
 
     @BeforeEach
     void setupBeforeEach() {
-        MockitoAnnotations.openMocks(this);
         propertiesUtils = new PropertiesTestUtils(appProperties);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
         propertiesUtils.setOutputDir(pathOutput);

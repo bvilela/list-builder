@@ -5,18 +5,19 @@ import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import br.com.bvilela.listbuilder.utils.TestUtils;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootApplication
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+@ExtendWith(MockitoExtension.class)
 class DiscourseWriterServiceTest {
 
     @InjectMocks private DiscourseWriterService service;
@@ -24,7 +25,6 @@ class DiscourseWriterServiceTest {
 
     @BeforeEach
     void setupBeforeEach() {
-        MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
         new PropertiesTestUtils(appProperties).setOutputDir(pathOutput);
         service = new DiscourseWriterService(appProperties);

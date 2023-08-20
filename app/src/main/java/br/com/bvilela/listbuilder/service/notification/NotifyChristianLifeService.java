@@ -44,7 +44,7 @@ public class NotifyChristianLifeService {
                                     item ->
                                             NotifyUtils.containsName(
                                                     item.getParticipants(),
-                                                    properties.getNotifyName()))
+                                                    properties.getName()))
                             .toList();
             if (!list.isEmpty()) {
                 var recordItem = new NotifyVidaCrista(list, week.getInitialDate());

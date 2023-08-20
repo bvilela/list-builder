@@ -43,7 +43,7 @@ public class NotifyClearingService {
                         .filter(
                                 e ->
                                         NotifyUtils.containsName(
-                                                e.getGroup(), properties.getNotifyName()))
+                                                e.getGroup(), properties.getName()))
                         .toList();
         for (ClearingWriterItemDTO item : list) {
 
@@ -69,11 +69,11 @@ public class NotifyClearingService {
                         .filter(
                                 e ->
                                         NotifyUtils.containsName(
-                                                e.getGroup(), properties.getNotifyName()))
+                                                e.getGroup(), properties.getName()))
                         .toList();
         for (ClearingWriterItemLayout2DTO item : list) {
 
-            if (properties.isNotifyCleaningPreMeeting()) {
+            if (properties.isCleaningPreMeeting()) {
                 CalendarEvent dto1 =
                         CalendarEvent.builder()
                                 .setSummary("Limpeza Pré-Reunião")
@@ -101,7 +101,7 @@ public class NotifyClearingService {
     }
 
     private String getSummary() {
-        return properties.isNotifyCleaningPreMeeting() ? "Limpeza Pós-Reunião" : "Limpeza Salão";
+        return properties.isCleaningPreMeeting() ? "Limpeza Pós-Reunião" : "Limpeza Salão";
     }
 
     private CalendarEvent createDoNextListEvent(ClearingWriterDTO dto) {

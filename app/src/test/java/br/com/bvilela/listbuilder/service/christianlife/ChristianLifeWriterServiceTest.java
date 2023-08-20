@@ -15,11 +15,13 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@ExtendWith(MockitoExtension.class)
 class ChristianLifeWriterServiceTest {
 
     @InjectMocks private ChristianLifeWriterService service;
@@ -29,7 +31,6 @@ class ChristianLifeWriterServiceTest {
     @BeforeEach
     @SneakyThrows
     void setupBeforeEach() {
-        MockitoAnnotations.openMocks(this);
         String pathOutput = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
         new PropertiesTestUtils(appProperties).setOutputDir(pathOutput);
         service = new ChristianLifeWriterService(appProperties);

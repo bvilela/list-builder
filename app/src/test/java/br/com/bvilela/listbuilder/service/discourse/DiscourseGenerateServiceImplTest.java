@@ -1,10 +1,5 @@
 package br.com.bvilela.listbuilder.service.discourse;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import br.com.bvilela.listbuilder.builder.DiscursoAllThemesDtoBuilder;
 import br.com.bvilela.listbuilder.builder.FileInputDataDiscursoDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
@@ -16,14 +11,19 @@ import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootApplication
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@ExtendWith(MockitoExtension.class)
 class DiscourseGenerateServiceImplTest
         extends BaseGenerateServiceTest<DiscourseInputDTO, FileInputDataDiscursoDtoBuilder> {
 
@@ -42,7 +42,6 @@ class DiscourseGenerateServiceImplTest
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);
         new PropertiesTestUtils(appProperties).setInputDir(testUtils.getResourceDirectory());
         service = new DiscourseGenerateServiceImpl(appProperties, writerService);
         createFileThemes();

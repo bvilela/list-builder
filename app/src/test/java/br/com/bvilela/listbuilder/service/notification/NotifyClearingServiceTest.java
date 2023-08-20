@@ -1,20 +1,21 @@
 package br.com.bvilela.listbuilder.service.notification;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import br.com.bvilela.listbuilder.builder.clearing.FinalListLimpezaDtoBuilder;
 import br.com.bvilela.listbuilder.config.NotifyProperties;
 import br.com.bvilela.listbuilder.dto.clearing.writer.ClearingWriterDTO;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@ExtendWith(MockitoExtension.class)
 class NotifyClearingServiceTest {
 
     @InjectMocks private NotifyClearingService service;
@@ -25,10 +26,8 @@ class NotifyClearingServiceTest {
 
     private PropertiesTestUtils propertiesUtils;
 
-    @SneakyThrows
     @BeforeEach
     void setupBeforeEach() {
-        MockitoAnnotations.openMocks(this);
         propertiesUtils = new PropertiesTestUtils(notifyProperties);
         service = new NotifyClearingService(notifyProperties);
     }

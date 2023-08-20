@@ -14,11 +14,13 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@ExtendWith(MockitoExtension.class)
 class GroupServiceImplTest {
 
     @InjectMocks private GroupServiceImpl service;
@@ -37,11 +39,6 @@ class GroupServiceImplTest {
                     LocalDate.now().plusDays(1),
                     LocalDate.now().plusDays(1));
 
-    @BeforeEach
-    void setupBeforeEach() {
-        MockitoAnnotations.openMocks(this);
-        service = new GroupServiceImpl();
-    }
 
     // --------------------- LIMPEZA --------------------- \\
     @Test

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppProperties {
 
-    @Value("${input.dir}")
+    @Value("${folder.input}")
     private String inputDir;
 
-    @Value("${output.dir}")
+    @Value("${folder.output}")
     private String outputDir;
 
     @Value("${layout.limpeza}")
@@ -19,6 +19,9 @@ public class AppProperties {
 
     @Value("${audience.layout:full}")
     private String layoutAudience;
+
+    @Value("${christianlife.include.bible-study-reader:false}")
+    private boolean christianlifeAddBibleStudyReader;
 
     @Value("${discourse.include-president:false}")
     private boolean discourseIncludePresident;

@@ -2,18 +2,18 @@ package br.com.bvilela.listbuilder.service.designation;
 
 import br.com.bvilela.listbuilder.builder.designacao.DesignacaoWriterDtoBuilder;
 import br.com.bvilela.listbuilder.dto.designation.writer.DesignationWriterItemDTO;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@ExtendWith(MockitoExtension.class)
 class DesignationCounterServiceTest {
 
     @InjectMocks private DesignationCounterService service;
@@ -22,12 +22,6 @@ class DesignationCounterServiceTest {
     private static final String PERSON_2 = "Person 2";
     private static final String PERSON_3 = "Person 3";
     private static final String PERSON_4 = "Person 4";
-
-    @BeforeEach
-    void setupBeforeEach() {
-        MockitoAnnotations.openMocks(this);
-        service = new DesignationCounterService();
-    }
 
     @Test
     void shouldCountNumberActiviesByName() {

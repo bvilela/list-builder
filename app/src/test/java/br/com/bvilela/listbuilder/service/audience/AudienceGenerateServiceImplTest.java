@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -27,20 +28,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+
+@ExtendWith(MockitoExtension.class)
 class AudienceGenerateServiceImplTest
         extends BaseGenerateServiceTest<AudienceInputDTO, FileInputDataAudienceDtoBuilder> {
 
     @InjectMocks private AudienceGenerateServiceImpl service;
-
     @InjectMocks private AppProperties appProperties;
-
     @Mock private DateService dateService;
-
     @Mock private AudienceWriterService writerService;
-
     @Mock private SendNotificationService notificationService;
 
     public AudienceGenerateServiceImplTest() {
@@ -48,9 +47,7 @@ class AudienceGenerateServiceImplTest
     }
 
     @BeforeEach
-    @SneakyThrows
     public void setup() {
-        MockitoAnnotations.openMocks(this);
         var propertiesUtils = new PropertiesTestUtils(appProperties);
         propertiesUtils.setInputDir(testUtils.getResourceDirectory());
         propertiesUtils.setLayoutAudience(AudienceWriterLayoutEnum.FULL);
@@ -109,7 +106,6 @@ class AudienceGenerateServiceImplTest
     @ParameterizedTest(name = "Midweek is \"{0}\"")
     @NullAndEmptySource
     @ValueSource(strings = {" "})
-    @SneakyThrows
     void shouldGenerateListExceptionMidweek(String meetingDayMidweek) {
         writeFileInputFromDto(
                 builder.withSuccess().withMeetingDayMidweek(meetingDayMidweek).build());
@@ -131,7 +127,6 @@ class AudienceGenerateServiceImplTest
     @ParameterizedTest(name = "Weekend is \"{0}\"")
     @NullAndEmptySource
     @ValueSource(strings = {" "})
-    @SneakyThrows
     void shouldGenerateListExceptionWeekend(String meetingDayWeekend) {
         writeFileInputFromDto(
                 builder.withSuccess().withMeetingDayWeekend(meetingDayWeekend).build());

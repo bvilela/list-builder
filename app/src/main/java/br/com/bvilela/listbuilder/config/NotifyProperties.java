@@ -2,8 +2,9 @@ package br.com.bvilela.listbuilder.config;
 
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import br.com.bvilela.listbuilder.util.AppUtils;
 import java.util.List;
+
+import br.com.bvilela.listbuilder.util.AppUtils;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,47 +14,46 @@ import org.springframework.stereotype.Component;
 @Component
 public class NotifyProperties {
 
-    @Value("${notify.active:false}")
-    private boolean notifyActive;
+    @Value("${notifications.active:false}")
+    private boolean active;
 
-    @Value("${notify.name:#{null}}")
-    private String notifyName;
+    @Value("${notifications.name:#{null}}")
+    private String name;
 
-    @Value("${notify.designation.type.active}")
-    private List<String> notifyDesignationTypeActive;
+    @Value("${notifications.designation.type-active:#{null}}")
+    private List<String> designationTypeActive;
 
-    @Value("${notify.cleaning.premeeting:false}")
-    private boolean notifyCleaningPreMeeting;
+    @Value("${notifications.cleaning.premeeting:false}")
+    private boolean cleaningPreMeeting;
 
-    @Value("${notify.christianlife.meeting.day:#{null}}")
-    private String notifyChristianLifeMeetingDay;
+    @Value("${notifications.christianlife.meeting-day:#{null}}")
+    private String christianLifeMeetingDay;
 
     public boolean notifyInactive() {
-        return !this.notifyActive;
+        return !this.active;
     }
 
     @SneakyThrows
     public void checkNotifyNameFilled() {
-        if (this.notifyName == null || this.notifyName.isBlank()) {
-            throw new ListBuilderException("Defina a propriedade 'notify.name'!");
+        if (AppUtils.valueIsNullOrBlank(this.name)) {
+            throw new ListBuilderException("Defina a propriedade 'notifications.name'!");
         }
     }
 
     @SneakyThrows
     public DayOfWeekEnum getChristianLifeMeetingDayEnum() {
-        if (this.notifyChristianLifeMeetingDay == null
-                || this.notifyChristianLifeMeetingDay.isBlank()) {
+        if (AppUtils.valueIsNullOrBlank(this.christianLifeMeetingDay)) {
             throw new ListBuilderException(
-                    "Defina a propriedade 'notify.christianlife.meeting.day'!");
+                    "Defina a propriedade 'notifications.christianlife.meeting.day'!");
         }
 
-        var meetingDay = AppUtils.removeAccents(this.notifyChristianLifeMeetingDay);
+        var meetingDay = AppUtils.removeAccents(this.christianLifeMeetingDay);
         DayOfWeekEnum meetingDayEnum;
         try {
             meetingDayEnum = DayOfWeekEnum.valueOf(meetingDay.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new ListBuilderException(
-                    "Propriedade 'notify.christianlife.midweek.meeting.day' não é um Dia da Semana Válido!");
+                    "Propriedade 'notifications.christianlife.midweek.meeting.day' não é um Dia da Semana Válido!");
         }
 
         return meetingDayEnum;

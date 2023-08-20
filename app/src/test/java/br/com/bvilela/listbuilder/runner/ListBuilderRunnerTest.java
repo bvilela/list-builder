@@ -1,7 +1,4 @@
-package br.com.bvilela.listbuilder.service.impl;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+package br.com.bvilela.listbuilder.runner;
 
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.listtype.InvalidListTypeException;
@@ -10,78 +7,73 @@ import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundExce
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.audience.AudienceGenerateServiceImpl;
 import br.com.bvilela.listbuilder.service.clearing.ClearingGenerateServiceImpl;
-import java.util.HashMap;
-import java.util.Map;
-import lombok.SneakyThrows;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationContext;
 
-@SpringBootApplication
-class OrchestratorServiceImplTest {
+import java.util.HashMap;
+import java.util.Map;
 
-    @InjectMocks private OrchestratorServiceImpl service;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.test.util.ReflectionTestUtils.setField;
 
+@ExtendWith(MockitoExtension.class)
+class ListBuilderRunnerTest {
+
+    @InjectMocks private ListBuilderRunner runner;
+    @Mock private ApplicationContext context;
     @Mock private ClearingGenerateServiceImpl limpezaService;
-
     @Mock private AudienceGenerateServiceImpl assistenciaService;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);
-        Map<String, BaseGenerateService> generateServiceStrategyMap = new HashMap<>();
-        generateServiceStrategyMap.put(ListTypeEnum.LIMPEZA.name(), limpezaService);
-        generateServiceStrategyMap.put(ListTypeEnum.ASSISTENCIA.name(), assistenciaService);
-        service = new OrchestratorServiceImpl(generateServiceStrategyMap);
+        Map<String, BaseGenerateService> serviceMap = new HashMap<>();
+        serviceMap.put(ListTypeEnum.LIMPEZA.name(), limpezaService);
+        serviceMap.put(ListTypeEnum.ASSISTENCIA.name(), assistenciaService);
+        runner = new ListBuilderRunner(context, serviceMap);
     }
 
     @Test
     @DisplayName("If ListTypeNull, then throws RequiredListTypeException")
-    @SneakyThrows
     void executeListTypeNullShouldBeInvalid() {
         setListType(null);
-        assertThrows(
-                RequiredListTypeException.class, () -> service.validateAndGetServiceByListType());
+        assertThrows(RequiredListTypeException.class, () -> runner.runApplication());
     }
 
     @Test
     void executeListTypeEmptyShouldBeInvalid() {
         setListType("");
-        assertThrows(
-                RequiredListTypeException.class, () -> service.validateAndGetServiceByListType());
+        assertThrows(RequiredListTypeException.class, () -> runner.runApplication());
     }
 
     @Test
     void executeListTypeShouldBeInvalid() {
         setListType("xpto");
-        assertThrows(
-                InvalidListTypeException.class, () -> service.validateAndGetServiceByListType());
+        assertThrows(InvalidListTypeException.class, () -> runner.runApplication());
     }
 
     @Test
-    @SneakyThrows
     void shouldExecuteServiceNotFound() {
         setListType(ListTypeEnum.DESIGNACAO.toString());
         assertThrows(
                 ServiceListTypeNotFoundException.class,
-                () -> service.validateAndGetServiceByListType());
+                () -> runner.runApplication());
     }
 
     @Test
-    @SneakyThrows
     void shouldExecuteServiceSuccess() {
         setListType(ListTypeEnum.LIMPEZA.toString());
-        var serviceRet = service.validateAndGetServiceByListType();
-        assertNotNull(serviceRet);
+        runner.run();
+        assertDoesNotThrow(() -> runner.runApplication());
     }
 
-    @SneakyThrows
     private void setListType(String listType) {
-        FieldUtils.writeField(service, "listType", listType, true);
+        setField(runner, "listType", listType);
     }
 }

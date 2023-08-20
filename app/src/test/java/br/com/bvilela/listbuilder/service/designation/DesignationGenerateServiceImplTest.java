@@ -1,7 +1,5 @@
 package br.com.bvilela.listbuilder.service.designation;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoDtoBuilder;
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoListDtoBuilder;
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoReaderDtoBuilder;
@@ -14,15 +12,19 @@ import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.GroupService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
-import java.util.List;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@ExtendWith(MockitoExtension.class)
 class DesignationGenerateServiceImplTest
         extends BaseGenerateServiceTest<DesignationInputDTO, FileInputDataDesignacaoDtoBuilder> {
 
@@ -45,9 +47,7 @@ class DesignationGenerateServiceImplTest
     }
 
     @BeforeEach
-    @SneakyThrows
     public void setup() {
-        MockitoAnnotations.openMocks(this);
         new PropertiesTestUtils(appProperties).setInputDir(testUtils.getResourceDirectory());
         service =
                 new DesignationGenerateServiceImpl(
@@ -432,19 +432,16 @@ class DesignationGenerateServiceImplTest
     }
 
     @Test
-    @SneakyThrows
     void shouldGenerateListExceptionReaderWatchtowerLastNull() {
         validateGenerateListReaderWatchtowerLastException(null);
     }
 
     @Test
-    @SneakyThrows
     void shouldGenerateListExceptionReaderWatchtowerLastEmpty() {
         validateGenerateListReaderWatchtowerLastException("");
     }
 
     @Test
-    @SneakyThrows
     void shouldGenerateListExceptionReaderWatchtowerLastBlank() {
         validateGenerateListReaderWatchtowerLastException(" ");
     }

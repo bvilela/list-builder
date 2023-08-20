@@ -1,32 +1,52 @@
-package br.com.bvilela.listbuilder.service.impl;
+package br.com.bvilela.listbuilder.runner;
 
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.listtype.RequiredListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
-import br.com.bvilela.listbuilder.service.OrchestratorService;
 import br.com.bvilela.listbuilder.util.AppUtils;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OrchestratorServiceImpl implements OrchestratorService {
+public class ListBuilderRunner implements CommandLineRunner {
 
-    @Value("${tipo.lista:#{null}}")
+    @Value("${tipo-lista:#{null}}")
     private String listType;
 
+    private final ApplicationContext context;
     private final Map<String, BaseGenerateService> generateServiceStrategyMap;
 
+    @SneakyThrows
     @Override
-    public BaseGenerateService validateAndGetServiceByListType() {
+    public void run(String... args)  {
+        try {
+            runApplication();
+            SpringApplication.exit(context, () -> 0);
+        } catch (Exception e) {
+            log.error("Aplicação Finalizada com Erro!");
+            SpringApplication.exit(context, () -> -1);
+        }
+    }
+
+    public void runApplication() {
+        log.info("Aplicação Iniciada...");
+
         var validListType = validateListType();
-        return getServiceByListType(validListType);
+        var service = getServiceByListType(validListType);
+        service.generateList();
+
+        log.info("Aplicação Finalizada com Sucesso!");
     }
 
     @SneakyThrows
@@ -39,7 +59,7 @@ public class OrchestratorServiceImpl implements OrchestratorService {
 
     @SneakyThrows
     private BaseGenerateService getServiceByListType(ListTypeEnum listType) {
-        log.info("Verificando qual Service utilizar...");
+        log.debug("Verificando qual Service utilizar...");
 
         var strategy = generateServiceStrategyMap.get(listType.toString());
 
@@ -47,7 +67,8 @@ public class OrchestratorServiceImpl implements OrchestratorService {
             throw new ServiceListTypeNotFoundException(listType);
         }
 
-        log.info("Utilizando Service: {}", strategy.getClass().getSimpleName());
+        log.debug("Utilizando Service: {}", strategy.getClass().getSimpleName());
         return strategy;
     }
+
 }

@@ -1,7 +1,5 @@
 package br.com.bvilela.listbuilder.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import br.com.bvilela.listbuilder.builder.FileInputDataAudienceDtoBuilder;
 import br.com.bvilela.listbuilder.builder.designacao.FileInputDataDesignacaoDtoBuilder;
 import br.com.bvilela.listbuilder.dto.clearing.input.ClearingInputDTO;
@@ -10,27 +8,23 @@ import br.com.bvilela.listbuilder.dto.util.ItemDateDTO;
 import br.com.bvilela.listbuilder.enuns.AudienceWriterLayoutEnum;
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import br.com.bvilela.listbuilder.utils.TestUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@ExtendWith(MockitoExtension.class)
 class DateServiceImplTest {
 
     @InjectMocks private DateServiceImpl service;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-        service = new DateServiceImpl();
-    }
 
     /** CreateItemDate */
     private ItemDateDTO cid(int month, int day) {

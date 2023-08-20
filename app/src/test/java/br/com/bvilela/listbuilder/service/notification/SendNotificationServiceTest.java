@@ -19,13 +19,16 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class SendNotificationServiceTest {
 
     @InjectMocks private SendNotificationService service;
@@ -51,7 +54,6 @@ class SendNotificationServiceTest {
 
     @BeforeEach
     void setupBeforeEach() {
-        MockitoAnnotations.openMocks(this);
         service =
                 new SendNotificationService(
                         notifyDesignationService,
