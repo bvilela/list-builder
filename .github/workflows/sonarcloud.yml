@@ -17,8 +17,11 @@ jobs:
   maven-build-test:
     needs: pmd-check-rules
     uses: bvilela/github-actions-workflows/.github/workflows/java-maven-build-and-test.yml@feature/add-reusable-workflows
+    with:
+      java-version: 17
         
   sonar-analyze:
+    needs: maven-build-test
     runs-on: ubuntu-latest
     steps:
       - name: Cache SonarCloud packages
