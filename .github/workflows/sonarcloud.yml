@@ -21,7 +21,7 @@ jobs:
       java-version: 17
       maven-settings-file: maven-settings.xml
 
-  sonar-analyze:
+  sonar-analyze: 
     needs: maven-build-test
     runs-on: ubuntu-latest
     steps:
