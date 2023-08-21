@@ -19,6 +19,7 @@ jobs:
     uses: bvilela/github-actions-workflows/.github/workflows/java-maven-build-and-test.yml@feature/add-reusable-workflows
     with:
       java-version: 17
+      maven-settings-file: maven-settings.xml
         
   sonar-analyze:
     needs: maven-build-test
