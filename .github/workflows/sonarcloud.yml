@@ -24,6 +24,9 @@ jobs:
   sonar-analyse:
     needs: maven-build-test
     uses: bvilela/github-actions-workflows/.github/workflows/java-maven-sonar-analyse.yml@feature/add-reusable-workflows
-    secrets: 
+    with:
+      projectKey: bvilela_list-builder
+      java-version: 17
+    secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
       sonar-token: ${{ secrets.GITHUB_TOKEN }}
