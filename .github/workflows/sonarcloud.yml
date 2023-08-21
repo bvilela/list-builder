@@ -29,5 +29,5 @@ jobs:
       java-version: 17
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
-      sonar-token: ${{ secrets.GITHUB_TOKEN }}
+      sonar-token: ${{ secrets.SONAR_TOKEN }}
  
