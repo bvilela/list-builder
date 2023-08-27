@@ -2,8 +2,8 @@ name: SonarCloud
 on:
   push:
     branches:
-      - '**'        # include every branch
-      - '!master'   # exclude master
+      - '**'        # include all branches
+      - '!master'   # exclude branche master
     paths-ignore:
       - '**/README.md'
 
