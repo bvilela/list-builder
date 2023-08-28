@@ -34,6 +34,7 @@ jobs:
   open-pr-to-main:
     needs: ci-java-maven
     uses: bvilela/github-actions-workflows/.github/workflows/open-pr-to-main.yml@feature/add-reusable-workflows
-    secrets: inherit
+    secrets: 
+      token: ${{ secrets.ACCESS_TOKEN_AUTO_PR_CREATE }}
     with:
       base_branch: master
