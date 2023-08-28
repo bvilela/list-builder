@@ -1,0 +1,30 @@
+name: "1. commit"
+on:
+  push:
+    branches:
+      - '**'        # include all branches
+      - '!master'   # exclude branche master
+    paths-ignore:
+      - '**/README.md'
+
+jobs:
+  # Skipping workflow: add '[skip ci]' string in commit message
+  # Ref: https://docs.github.com/en/actions/managing-workflow-runs/skipping-workflow-runs
+
+  pmd-java-maven:
+    uses: bvilela/github-actions-workflows/.github/workflows/pmd-java-maven.yml@feature/add-reusable-workflows
+
+  ci-java-maven:
+    needs: pmd-java-maven
+    uses: bvilela/github-actions-workflows/.github/workflows/ci-java-maven.yml@feature/add-reusable-workflows
+    with:
+      java-version: 17
+      maven-settings-file: maven-settings.xml
+
+  sonarcloud-java-maven:
+    needs: ci-java-maven
+    uses: bvilela/github-actions-workflows/.github/workflows/sonarcloud-java-maven.yml@feature/add-reusable-workflows
+    with:
+      projectKey: bvilela_list-builder
+      java-version: 17
+    secrets: inherit
