@@ -35,4 +35,3 @@ jobs:
     needs: ci-java-maven
     uses: bvilela/github-actions-workflows/.github/workflows/open-pr-to-main.yml@feature/add-reusable-workflows
     secrets: inherit
- 
