@@ -2,7 +2,7 @@
 
 ### Quality Status
 [![ci](https://github.com/bvilela/list-builder/actions/workflows/2.ci.yml/badge.svg)](https://github.com/bvilela/list-builder/actions/workflows/2.ci.yml)
-[![cd](https://github.com/bvilela/list-builder/actions/workflows/maven_ci_cd_publish.yml/badge.svg)](https://github.com/bvilela/list-builder/actions/workflows/maven_ci_cd_publish.yml)
+[![cd](https://github.com/bvilela/list-builder/actions/workflows/3.cd.yml/badge.svg)](https://github.com/bvilela/list-builder/actions/workflows/3.cd.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bvilela_list-builder&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=bvilela_list-builder)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=bvilela_list-builder&metric=coverage)](https://sonarcloud.io/summary/new_code?id=bvilela_list-builder)
 
