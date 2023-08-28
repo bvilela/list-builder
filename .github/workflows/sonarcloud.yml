@@ -1,4 +1,4 @@
-name: SonarCloud
+name: "[1].ci-branch"
 on:
   push:
     branches:
@@ -27,7 +27,4 @@ jobs:
     with:
       projectKey: bvilela_list-builder
       java-version: 17
-    secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
-      sonar-token: ${{ secrets.SONAR_TOKEN }}
- 
+    secrets: inherit
