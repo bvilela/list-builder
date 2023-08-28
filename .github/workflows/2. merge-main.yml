@@ -1,13 +1,10 @@
-name: 1. commit
+name: 2. merge-main
 
 on:
   push:
-    branches:
-      - '**'      # include all branches
-      - '!master' # exclude branche master
-      - '!main'   # exclude branche main
-    paths-ignore:
-      - '**/README.md'
+    branches: [ master, main ]
+  # pull_request:
+  #   branches: [ master, main ]
 
 env:
   JAVA_VERSION: 17
@@ -32,9 +29,4 @@ jobs:
     with:
       projectKey: bvilela_list-builder
       java-version: $JAVA_VERSION
-    secrets: inherit
-
-  open-pr-to-main:
-    needs: ci-java-maven
-    uses: bvilela/github-actions-workflows/.github/workflows/open-pr-to-main.yml@feature/add-reusable-workflows
     secrets: inherit
