@@ -22,6 +22,7 @@ jobs:
     with:
       java_version: 17
       maven_settings_file: maven-settings.xml
+    secrets: inherit
 
   # sonarcloud-java-maven:
   #   needs: ci-java-maven
