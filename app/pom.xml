@@ -12,7 +12,7 @@
 
 	<groupId>br.com.bvilela</groupId>
 	<artifactId>list-builder</artifactId>
-	<version>3.0.0</version>
+	<version>3.0.1</version>
 	<name>list-builder</name>
 	<description>Spring Boot Project to Builder Lists</description>
 
