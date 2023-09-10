@@ -24,14 +24,6 @@ jobs:
       maven_settings_file: maven-settings.xml
     secrets: inherit
 
-  sonarcloud-java-maven: 
-    needs: ci-java-maven
-    uses: bvilela/github-actions-workflows/.github/workflows/sonarcloud-java-maven.yml@feature/add-reusable-workflows
-    with:
-      java_version: 17
-      projectKey: bvilela_list-builder
-    secrets: inherit
-
   open-pr-to-main:
     needs: ci-java-maven
     uses: bvilela/github-actions-workflows/.github/workflows/open-pr-to-main.yml@feature/add-reusable-workflows
