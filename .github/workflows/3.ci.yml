@@ -1,9 +1,7 @@
-name: 2.ci
+name: 3.ci
 
 on:
   push:
-    branches: [ master, main ]
-  pull_request:
     branches: [ master, main ]
 
 jobs:
