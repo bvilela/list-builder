@@ -3,8 +3,6 @@ name: 2.ci
 on:
   push:
     branches: [ master, main ]
-  # pull_request:
-  #  branches: [ master, main ]
 
 jobs:
   # Skipping workflow: add '[skip ci]' string in commit message
