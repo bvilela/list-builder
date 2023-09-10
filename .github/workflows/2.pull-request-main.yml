@@ -1,0 +1,13 @@
+name: 2.pull-request-main
+
+on:
+  pull_request:
+    branches: [ master, main ] # Add sonarcloud comment to PR
+
+jobs:
+  sonarcloud-java-maven:
+    uses: bvilela/github-actions-workflows/.github/workflows/sonarcloud-java-maven.yml@feature/add-reusable-workflows
+    with:
+      java_version: 17
+      projectKey: bvilela_list-builder
+    secrets: inherit
