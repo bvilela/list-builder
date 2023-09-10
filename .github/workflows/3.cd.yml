@@ -7,7 +7,7 @@ on:
 jobs:
   # Skipping workflow: add '[skip ci]' string in commit message
   # Ref: https://docs.github.com/en/actions/managing-workflow-runs/skipping-workflow-runs
-
+ 
   cd-java-maven:
     uses: bvilela/github-actions-workflows/.github/workflows/cd-java-maven.yml@feature/add-reusable-workflows
     with:
