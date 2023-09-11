@@ -6,7 +6,7 @@ on:
 
 jobs:
   sonarcloud-java-maven:
-    uses: bvilela/github-actions-workflows/.github/workflows/sonarcloud-java-maven.yml@feature/add-reusable-workflows
+    uses: bvilela/github-actions-workflows/.github/workflows/sonarcloud-java-maven.yml@v0.2.0
     with:
       java_version: 17
       projectKey: bvilela_list-builder
