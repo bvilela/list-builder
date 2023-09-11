@@ -10,16 +10,24 @@ import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
+import br.com.bvilela.listbuilder.util.ChristianLifeUtils;
 import br.com.bvilela.listbuilder.util.DateUtils;
 import br.com.bvilela.listbuilder.validator.ChristianLifeValidator;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.Map.Entry;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Slf4j
 @Service("VIDA_CRISTA")
@@ -57,6 +65,8 @@ public class ChristianLifeGenerateServiceImpl implements BaseGenerateService {
             extractService.extractWeekItemsBySite(listWeeks);
 
             renameItems(listWeeks, dto.getRenameItems());
+
+            includeBibleStudyReader(listWeeks);
 
             populateExtractListWithParticipants(listWeeks, dto.getParticipants());
 
@@ -135,15 +145,26 @@ public class ChristianLifeGenerateServiceImpl implements BaseGenerateService {
 
     private void addParticipantsOfWeek(
             ChristianLifeExtractWeekDTO week, List<String> participantsOfWeek) {
-        int participantsIndex = 0;
 
-        for (ChristianLifeExtractWeekItemDTO item : week.getItems()) {
+        var participantsIterator = participantsOfWeek.iterator();
 
-            if (item.getType().isHasParticipants()) {
-                String participant = participantsOfWeek.get(participantsIndex);
-                item.setParticipants(List.of(getAbbreviation(participant)));
-                participantsIndex++;
-            }
+        week.getItems().stream()
+                .filter(i -> i.getType().isHasParticipants())
+                .forEach(i -> setParticipantsInVidaCristaWeekItem(i, participantsIterator));
+    }
+
+    @SneakyThrows
+    private void setParticipantsInVidaCristaWeekItem(
+            ChristianLifeExtractWeekItemDTO item, Iterator<String> participantsIterator) {
+
+        try {
+            String participant = getAbbreviation(participantsIterator.next());
+            log.debug("Item {}: {}", item.getTitle(), participant);
+            item.setParticipants(List.of(participant));
+        } catch (NoSuchElementException e) {
+            throw new ListBuilderException(
+                    "Quantidade de Participantes Informada no Arquivo de Entrada MENOR "
+                            + "que o necessário para a semana");
         }
     }
 
@@ -218,5 +239,30 @@ public class ChristianLifeGenerateServiceImpl implements BaseGenerateService {
         } else {
             item.setTitle(newName);
         }
+    }
+
+    private void includeBibleStudyReader(List<ChristianLifeExtractWeekDTO> listWeeks) {
+        if (!properties.isChristianlifeAddBibleStudyReader()) {
+            return;
+        }
+        listWeeks.forEach(this::includeBibleStudyReaderInWeekDto);
+    }
+
+    private void includeBibleStudyReaderInWeekDto(ChristianLifeExtractWeekDTO week) {
+        if (week.isSkip()) {
+            return;
+        }
+
+        var bibleStudyOptional =
+                week.getItems().stream().filter(ChristianLifeUtils::isBibleStudy).findFirst();
+
+        bibleStudyOptional.ifPresent(
+                bibleStudy -> {
+                    var bibleStudyIndex = week.getItems().indexOf(bibleStudy);
+                    var item =
+                            new ChristianLifeExtractWeekItemDTO(
+                                    "Leitor", ChristianLifeExtractItemTypeEnum.BIBLE_STUDY_READER);
+                    week.getItems().add(bibleStudyIndex + 1, item);
+                });
     }
 }

@@ -83,6 +83,23 @@ public final class PDFWriterUtilsImpl implements WriterUtils<Document> {
         return createParagraphBoldNormal(boldText, BOLD13, normalText, NORMAL13);
     }
 
+    public Paragraph createParagraphNormal12Bold12Normal12(
+            String normalText1, String boldText, String normalText2) {
+        Chunk chunkNormal1 = new Chunk(normalText1, NORMAL12);
+        Chunk chunkBold = new Chunk(boldText, BOLD12);
+        Chunk chunkNormal2 = new Chunk(normalText2, NORMAL12);
+
+        Phrase phrase = new Phrase();
+        phrase.add(chunkNormal1);
+        phrase.add(chunkBold);
+        phrase.add(chunkNormal2);
+
+        var paragraph = new Paragraph();
+        paragraph.add(phrase);
+
+        return paragraph;
+    }
+
     public PdfPCell newCellNoBorder(Paragraph paragraph) {
         var cell = new PdfPCell(paragraph);
         cell.setBorder(Rectangle.NO_BORDER);

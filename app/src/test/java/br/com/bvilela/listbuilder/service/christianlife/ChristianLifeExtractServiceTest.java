@@ -174,7 +174,7 @@ class ChristianLifeExtractServiceTest {
                 "Firmes apesar de oposição");
         checkWeekItem(
                 week.getItems().get(index++),
-                ChristianLifeExtractItemTypeEnum.WITH_PARTICIPANTS,
+                ChristianLifeExtractItemTypeEnum.BIBLE_STUDY,
                 "Estudo bíblico de congregação");
         checkWeekItem(
                 week.getItems().get(index++),

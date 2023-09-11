@@ -1,5 +1,6 @@
 package br.com.bvilela.listbuilder.service.christianlife;
 
+import static br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum.BIBLE_STUDY;
 import static br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum.LABEL;
 import static br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum.NO_PARTICIPANTS;
 import static br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum.PRESIDENT;
@@ -10,6 +11,7 @@ import br.com.bvilela.listbuilder.dto.christianlife.extract.ChristianLifeExtract
 import br.com.bvilela.listbuilder.dto.christianlife.extract.ChristianLifeExtractWeekItemDTO;
 import br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
+import br.com.bvilela.listbuilder.util.ChristianLifeUtils;
 import br.com.bvilela.listbuilder.util.DateUtils;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -128,7 +130,7 @@ public class ChristianLifeExtractService {
     public int extractYearFromLabelDate(String label) {
         var labelSplitted = label.split(" ");
         var year = labelSplitted[labelSplitted.length - 1];
-        return Integer.valueOf(year);
+        return Integer.parseInt(year);
     }
 
     @SneakyThrows
@@ -220,7 +222,7 @@ public class ChristianLifeExtractService {
         addItem(list, initialComment, NO_PARTICIPANTS);
 
         var treasuresLabel = doc.getElementById("p5");
-        addItem(list, treasuresLabel, LABEL);
+        addItemLabel(list, treasuresLabel);
 
         var treasuresTitle = getElementStrongById(doc, "p6");
         addItem(list, treasuresTitle, WITH_PARTICIPANTS);
@@ -242,10 +244,24 @@ public class ChristianLifeExtractService {
             addItem(list, element.select(STRONG), WITH_PARTICIPANTS);
         }
 
+        extractChristianLifeSession(list, doc);
+
+        return list;
+    }
+
+    private void extractChristianLifeSession(
+            List<ChristianLifeExtractWeekItemDTO> list, Document doc) {
+
         var christianLife = doc.getElementById("section4");
         addItem(list, christianLife.select("h2"), LABEL);
 
         var christianLifeItens = christianLife.select("div.pGroup").select("li");
+
+        processChristianLifeExtractedItems(list, christianLifeItens);
+    }
+
+    private void processChristianLifeExtractedItems(
+            List<ChristianLifeExtractWeekItemDTO> list, Elements christianLifeItens) {
         for (Element element : christianLifeItens) {
             var itemStrong = element.select("strong:first-child");
             var text = sanitizerText(itemStrong.html());
@@ -258,13 +274,17 @@ public class ChristianLifeExtractService {
                 }
                 addItemSongAndPrayer(list, itemStrong, type);
             } else {
-                var type =
-                        text.contains("Comentários finais") ? NO_PARTICIPANTS : WITH_PARTICIPANTS;
+                ChristianLifeExtractItemTypeEnum type;
+                if (text.contains("Comentários finais")) {
+                    type = NO_PARTICIPANTS;
+                } else if (ChristianLifeUtils.isBibleStudy(text)) {
+                    type = BIBLE_STUDY;
+                } else {
+                    type = WITH_PARTICIPANTS;
+                }
                 addItem(list, itemStrong, type);
             }
         }
-
-        return list;
     }
 
     private void addItemSongAndPrayer(
@@ -294,11 +314,10 @@ public class ChristianLifeExtractService {
         addItem(list, adjustQuotes(stringBuilder.toString()), type);
     }
 
-    private void addItem(
+    private void addItemLabel(
             List<ChristianLifeExtractWeekItemDTO> list,
-            Element element,
-            ChristianLifeExtractItemTypeEnum type) {
-        addItem(list, sanitizerText(element.html()), type);
+            Element element) {
+        addItem(list, sanitizerText(element.html()), LABEL);
     }
 
     private void addItem(
