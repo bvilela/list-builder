@@ -1,11 +1,6 @@
 package br.com.bvilela.listbuilder.service.christianlife;
 
-import static br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum.BIBLE_STUDY;
-import static br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum.LABEL;
-import static br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum.NO_PARTICIPANTS;
-import static br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum.PRESIDENT;
-import static br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum.READ_OF_WEEK;
-import static br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum.WITH_PARTICIPANTS;
+import static br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum.*;
 
 import br.com.bvilela.listbuilder.dto.christianlife.extract.ChristianLifeExtractWeekDTO;
 import br.com.bvilela.listbuilder.dto.christianlife.extract.ChristianLifeExtractWeekItemDTO;
