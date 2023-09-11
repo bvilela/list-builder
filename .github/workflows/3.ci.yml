@@ -9,11 +9,11 @@ jobs:
   # Ref: https://docs.github.com/en/actions/managing-workflow-runs/skipping-workflow-runs
 
   pmd-java-maven:
-    uses: bvilela/github-actions-workflows/.github/workflows/pmd-java-maven.yml@feature/add-reusable-workflows
+    uses: bvilela/github-actions-workflows/.github/workflows/pmd-java-maven.yml@v0.2.0
 
   ci-java-maven:
     needs: pmd-java-maven
-    uses: bvilela/github-actions-workflows/.github/workflows/ci-java-maven.yml@feature/add-reusable-workflows
+    uses: bvilela/github-actions-workflows/.github/workflows/ci-java-maven.yml@v0.2.0
     with:
       java_version: 17
       maven_settings_file: maven-settings.xml
@@ -21,7 +21,7 @@ jobs:
 
   sonarcloud-java-maven:
     needs: ci-java-maven
-    uses: bvilela/github-actions-workflows/.github/workflows/sonarcloud-java-maven.yml@feature/add-reusable-workflows
+    uses: bvilela/github-actions-workflows/.github/workflows/sonarcloud-java-maven.yml@v0.2.0
     with:
       java_version: 17
       projectKey: bvilela_list-builder

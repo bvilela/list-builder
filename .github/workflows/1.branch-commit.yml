@@ -14,11 +14,11 @@ jobs:
   # Ref: https://docs.github.com/en/actions/managing-workflow-runs/skipping-workflow-runs
 
   pmd-java-maven:
-    uses: bvilela/github-actions-workflows/.github/workflows/pmd-java-maven.yml@feature/add-reusable-workflows
+    uses: bvilela/github-actions-workflows/.github/workflows/pmd-java-maven.yml@v0.2.0
 
   ci-java-maven:
     needs: pmd-java-maven
-    uses: bvilela/github-actions-workflows/.github/workflows/ci-java-maven.yml@feature/add-reusable-workflows
+    uses: bvilela/github-actions-workflows/.github/workflows/ci-java-maven.yml@v0.2.0
     with:
       java_version: 17
       maven_settings_file: maven-settings.xml
@@ -26,7 +26,7 @@ jobs:
 
   open-pr-to-main:
     needs: ci-java-maven
-    uses: bvilela/github-actions-workflows/.github/workflows/open-pr-to-main.yml@feature/add-reusable-workflows
+    uses: bvilela/github-actions-workflows/.github/workflows/open-pr-to-main.yml@v0.2.0
     secrets: 
       token: ${{ secrets.ACCESS_TOKEN_AUTO_PR_CREATE }}
     with:
