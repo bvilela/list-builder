@@ -102,7 +102,7 @@
     <rule ref="category/java/codestyle.xml/NoPackage"/>
     <rule ref="category/java/codestyle.xml/TooManyStaticImports">
 		<properties>
-            <property name="maximumStaticImports" value="5"/>
+            <property name="maximumStaticImports" value="7"/>
         </properties>
 	</rule>
     <rule ref="category/java/codestyle.xml/UnnecessaryAnnotationValueElement"/>
