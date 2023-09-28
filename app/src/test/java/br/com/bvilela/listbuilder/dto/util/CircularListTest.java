@@ -1,6 +1,5 @@
 package br.com.bvilela.listbuilder.dto.util;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -9,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CircularListTest {
 
-    private final String P1 = "Person1";
-    private final String P2 = "Person2";
-    private final String P3 = "Person3";
-    private final String P4 = "Person4";
-    private final String P5 = "Person5";
+    private static final String P1 = "Person1";
+    private static final String P2 = "Person2";
+    private static final String P3 = "Person3";
+    private static final String P4 = "Person4";
+    private static final String P5 = "Person5";
 
     private final List<String> list = List.of(P1, P2, P3, P4, P5);
 
