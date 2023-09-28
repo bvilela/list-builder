@@ -13,10 +13,10 @@ public class CircularList<T> {
     }
 
     public T next() {
-        if (this.index > this.list.size() - 1) {
-            this.index = 0;
-        } else {
+        if (this.index < this.list.size() - 1) {
             this.index++;
+        } else {
+            this.index = 0;
         }
         return list.get(this.index);
     }

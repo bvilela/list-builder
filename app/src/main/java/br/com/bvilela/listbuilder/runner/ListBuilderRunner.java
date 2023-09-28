@@ -21,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ListBuilderRunner implements CommandLineRunner {
 
-    @Value("${tipo-lista:#{null}}")
+    @Value("${tipo.lista:#{null}}")
     private String listType;
 
     private final ApplicationContext context;
