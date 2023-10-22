@@ -13,6 +13,8 @@ import br.com.bvilela.listbuilder.enuns.ChristianLifeExtractItemTypeEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.util.ChristianLifeUtils;
 import br.com.bvilela.listbuilder.util.DateUtils;
+
+import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -56,10 +58,9 @@ public class ChristianLifeExtractService {
 
     @SneakyThrows
     public List<ChristianLifeExtractWeekDTO> extractWeeksBySite(String url) {
-        log.info("Sanitizando URL");
         url = sanitizeUrl(url);
-        log.info("Extraindo Dados da URL: {}", url);
-        Document doc = Jsoup.connect(url).get();
+
+        Document doc = getExtractDataFromURL(url);
 
         Elements header = doc.select("span.contextTitle");
         checkEmpty(header, "Erro ao ler Cabeçalho do site");
@@ -98,7 +99,18 @@ public class ChristianLifeExtractService {
         return list;
     }
 
+    @SneakyThrows
+    private Document getExtractDataFromURL(String url) {
+        log.info("Extraindo Dados da URL: {}", url);
+        try {
+            return Jsoup.connect(url).get();
+        } catch (IOException e) {
+            throw new ListBuilderException("Erro ao extrair dados da URL. Verifique a conexão com a internet");
+        }
+    }
+
     private String sanitizeUrl(String url) {
+        log.info("Sanitizando URL");
         return url.replace("março", "marco");
     }
 

@@ -34,6 +34,7 @@ public class ListBuilderRunner implements CommandLineRunner {
             runApplication();
             SpringApplication.exit(context, () -> 0);
         } catch (Exception e) {
+            log.error("Erro: {}", e.getMessage());
             log.error("Aplicação Finalizada com Erro!");
             SpringApplication.exit(context, () -> -1);
         }

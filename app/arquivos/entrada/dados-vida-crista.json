@@ -1,55 +1,41 @@
 {
 	"abreviacoes": {
-		"AD": "Adilson Silveira",
-		"PV": "Paulo Volante",
-		"RA": "Rogério Araujo",
-		"RC": "Renato Cunis",
-		"DZ": "Danilo Zanesco",
-		"CL": "Carlos Lopes",
-		"CH": "Charles Lopes",
-		"CLA": "Cláudio Ferreira",
-		"W": "Wellington",
-		"WM": "Wendel Matos"
+		"P1": "Pessoa1",
+		"P2": "Pessoa2",
+		"P3": "Pessoa3",
+		"P4": "Pessoa4",
+		"P5": "Pessoa5"
 	},
-	"-removerSemanaLista": { "28-06-2023": "Congresso: Seja Paciente" },
-	"ultimaData": "02-07-2023",
-	"participantes": [
-		[
-			"DZ", "RC", "PV", "Wendel Matos", 
-			"Marcos Oliveira", "DZ", "Mayara e Marcilene", "Nilvandra e Lucia Delpasso",
-			"Matias", "CL", "CH"
-		],
-		[
-			"RA", "CL", "CLA", "CH", 
-			"Eromar", "RA", "Jéssica Souza e Ericka", "Cleide e Juliana",
-			"PV", "RC", "W"
-		],
-		[
-			"RC", "Eromar", "CL", "Matias", 
-			"José Reinaldo", "Adriana Godoi e Marcia", "Tamires e Elizete", "Daiana e Luciana Dias",
-			"CLA", "PV", "DZ"
-		],
-		[
-			"CL", "CLA", "Matias", "Eromar", 
-			"WM", "Cleide Oliveira e Antonia", "Uli e Esther", "Priscila Silva e Letícia",
-			"PV", "RA", "Geraldo Dias"
-		],
-		[
-			"Matias", "RC", "WM", "CH", 
-			"W", "Ligia e Bianca", "Evelin e Elizabete", "Geraldo Dias",
-			"CLA", "RC", "AD", "RA"
-		]
-	],
-	"-renomearItem": [
+	"removerSemanaLista": { "13-09-2022": "Assembleia Tema: 'abc'" },
+	"renomearItem": [
 		{
-			"semana": 3,
-			"nomeOriginal": "Estudo bíblico de congregação",
-			"nomeNovo": "Discurso do Viajante: Continue bem estabelecido na Verdade"
+			"semana": 1,
+			"nomeOriginal": "Título da parte 1",
+			"nomeNovo": "Novo título da parte"
 		},
 		{
-			"semana": 2,
-			"nomeOriginal": "Necessidades locais",
-			"nomeNovo": ""
+			"semana": 1,
+			"nomeOriginal": "Título da parte 2",
+			"nomeNovo": null
 		}
+	],
+	"ultimaData": "04-09-2022",
+	"participantes": [
+		[
+			"P1", "P2", "P2", "P3", 
+			"Pessoa6", "P1", "Pessoa7 e Pessoa8", "Pessoa9 e Pessoa10",
+			"P4", "P1", "P3", "P5"
+		],
+		[],
+		[
+			"P1", "P2", "P2", "P3", 
+			"Pessoa6", "P1", "Pessoa7 e Pessoa8", "Pessoa9 e Pessoa10",
+			"P4", "P1", "P3", "P5"
+		],
+		[
+			"P1", "P2", "P2", "P3", 
+			"Pessoa6", "P1", "Pessoa7 e Pessoa8", "Pessoa9 e Pessoa10",
+			"P4", "P1", "P3", "P5"
+		]
 	]
 }

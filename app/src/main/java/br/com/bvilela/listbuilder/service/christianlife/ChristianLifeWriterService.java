@@ -145,7 +145,7 @@ public class ChristianLifeWriterService {
 
 	private void addItemBibleStudy(PdfPTable columnTable, ChristianLifeExtractWeekItemDTO studyBibleLeader,
 								   List<ChristianLifeExtractWeekItemDTO> items) {
-		if (properties.isChristianlifeAddBibleStudyReader()) {
+		if (properties.isChristianlifeIncludeBibleStudyReader()) {
 			addBibleStudyLeaderAndReader(columnTable, studyBibleLeader, items);
 		} else {
 			addItemWithParticipants(columnTable, studyBibleLeader);
