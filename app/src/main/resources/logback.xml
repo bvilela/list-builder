@@ -7,19 +7,15 @@
 	<property name="LOG_DIRECTORY" value="LOGs" />
 	<property name="LOG_FILE_NAME" value="listBuilder" />
 
-	<!-- Pattner -->
-	<property name="PATTERN"
-		value="[%d{yyyy-MM-dd HH:mm:ss}] - [%-5level] - [%-60(%class{0}.%method:%line)] - %msg%n" />
-	<property name="PATTERN_HIGHLIGHT"
-		value="[%d{yyyy-MM-dd HH:mm:ss}] - %highlight([%-5level]) - [%-60(%class{0}.%method:%line)] - %msg%n" />
-	<property name="PATTERN_FULL"
-		value="[%d{yyyy-MM-dd HH:mm:ss}] - [%-5level] - [%thread] - [%-60(%class{0}.%method:%line)] - %msg%n" />
-	<property name="PATTERN_FULL_HIGHLIGHT"
-		value="[%d{yyyy-MM-dd HH:mm:ss}] - %highlight([%-5level]) - [%thread] - [%-60(%class{0}.%method:%line)] - %msg%n" />
-
-	<!-- DateTime LOG -->
+	<!-- DatePatterns -->
 	<timestamp key="DATE_TIME" datePattern="yyyyMMdd_HHmmss" />
 	<timestamp key="DATE" datePattern="yyyyMMdd" />
+
+	<!-- Pattner -->
+	<property name="PATTERN"
+		value="[%-5level] [%d{yyyy-MM-dd HH:mm:ss}] [%-60(%class{0}.%method:%line)] - %msg%n" />
+	<property name="PATTERN_HIGHLIGHT"
+		value="%highlight([%-5level]) [%d{yyyy-MM-dd HH:mm:ss}] [%-60(%class{0}.%method:%line)] - %msg%n" />
 
 	<appender name="CONSOLE"
 		class="ch.qos.logback.core.ConsoleAppender">
@@ -31,23 +27,18 @@
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${LOG_DIRECTORY}/${LOG_FILE_NAME}_${DATE}.log</file>
-
+		<encoder>
+			<pattern>${PATTERN}</pattern>
+		</encoder>
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
 			<fileNamePattern>${LOG_DIRECTORY}/archived/${LOG_FILE_NAME}-%d{yyyy-MM-dd}.%i.log.gz
 			</fileNamePattern>
-			<!-- each archived file, size max 5MB -->
-			<maxFileSize>5MB</maxFileSize>
-			<!-- total size of all archive files, if total size > 20GB, it will delete 
-				old archived file -->
+			<maxFileSize>2MB</maxFileSize>
+			<!-- total size of all archive files -->
 			<totalSizeCap>20MB</totalSizeCap>
-			<!-- 10 days to keep -->
 			<maxHistory>10</maxHistory>
 		</rollingPolicy>
-
-		<encoder>
-			<pattern>${PATTERN}</pattern>
-		</encoder>
 	</appender>
 
 	<springProfile name="default,prd,PRD">
