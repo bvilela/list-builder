@@ -21,7 +21,7 @@ public class AppProperties {
     private String layoutAudience;
 
     @Value("${christianlife.include.bible-study-reader:false}")
-    private boolean christianlifeIncludeBibleStudyReader;
+    private boolean christianlifeAddBibleStudyReader;
 
     @Value("${discourse.include-president:false}")
     private boolean discourseIncludePresident;

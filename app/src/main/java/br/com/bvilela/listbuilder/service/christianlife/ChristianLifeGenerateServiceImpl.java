@@ -242,7 +242,7 @@ public class ChristianLifeGenerateServiceImpl implements BaseGenerateService {
     }
 
     private void includeBibleStudyReader(List<ChristianLifeExtractWeekDTO> listWeeks) {
-        if (!properties.isChristianlifeIncludeBibleStudyReader()) {
+        if (!properties.isChristianlifeAddBibleStudyReader()) {
             return;
         }
         listWeeks.forEach(this::includeBibleStudyReaderInWeekDto);
