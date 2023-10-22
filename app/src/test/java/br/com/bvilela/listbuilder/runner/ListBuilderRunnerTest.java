@@ -5,67 +5,67 @@ import br.com.bvilela.listbuilder.exception.listtype.InvalidListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.RequiredListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
-import br.com.bvilela.listbuilder.service.audience.AudienceGenerateServiceImpl;
 import br.com.bvilela.listbuilder.service.clearing.ClearingGenerateServiceImpl;
 import br.com.bvilela.listbuilder.util.annotation.NullAndBlankSource;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.ApplicationContext;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @ExtendWith(MockitoExtension.class)
 class ListBuilderRunnerTest {
 
+    @InjectMocks
     private ListBuilderRunner runner;
+
     @Mock
-    private ApplicationContext context;
+    private Map<String, BaseGenerateService> listTypeStrategyMap;
+
     @Mock
     private ClearingGenerateServiceImpl clearingService;
-    @Mock
-    private AudienceGenerateServiceImpl audienceService;
-
-    @BeforeEach
-    public void setup() {
-        Map<String, BaseGenerateService> serviceMap = new HashMap<>();
-        serviceMap.put(ListTypeEnum.LIMPEZA.name(), clearingService);
-        serviceMap.put(ListTypeEnum.ASSISTENCIA.name(), audienceService);
-        runner = new ListBuilderRunner(context, serviceMap);
-    }
 
     @ParameterizedTest
     @NullAndBlankSource
     void givenRun_whenListTypeNotFilled_ThenThrowsException(String listType) {
         setListType(listType);
-        runner.run();
         assertThrows(RequiredListTypeException.class, () -> runner.run());
+        verify(listTypeStrategyMap, never()).get(anyString());
     }
 
     @Test
     void givenRun_whenListTypeInvalid_ThenThrowsException() {
         setListType("xpto");
         assertThrows(InvalidListTypeException.class, () -> runner.run());
+        verify(listTypeStrategyMap, never()).get(anyString());
     }
 
     @Test
     void givenRun_whenListTypeStrategyNotFound_ThenThrowsException() {
-        setListType(ListTypeEnum.DESIGNACAO.toString());
+        setListType(ListTypeEnum.DESIGNACAO.name());
         assertThrows(ServiceListTypeNotFoundException.class, () -> runner.run());
+        verify(listTypeStrategyMap, times(1)).get(anyString());
     }
 
     @Test
     void givenRun_whenListTypeValid_ThenSuccessRunApplication() {
-        setListType(ListTypeEnum.LIMPEZA.toString());
+        String listType = ListTypeEnum.LIMPEZA.name();
+        setListType(listType);
+        when(listTypeStrategyMap.get(listType)).thenReturn(clearingService);
         assertDoesNotThrow(() -> runner.run());
+        verify(listTypeStrategyMap, times(1)).get(anyString());
     }
 
     private void setListType(String listType) {

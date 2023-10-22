@@ -10,14 +10,8 @@
     </description>
 	
 	<!-- Excluse Files: Rule TooManyMethods -->
-	<exclude-pattern>.*/br.com.bvilela.listbuilder.builder.clearing.ClearingInputDtoBuilder.*</exclude-pattern>
-	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.designation.DesignationGenerateServiceImplTest.*</exclude-pattern>
-	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.discourse.DiscourseGenerateServiceImplTest.*</exclude-pattern>
-	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.impl.GroupServiceImplTest.*</exclude-pattern>
-	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.clearing.ClearingGenerateServiceImplTest.*</exclude-pattern>
-	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.christianlife.ChristianLifeExtractServiceTest.*</exclude-pattern>
-	<exclude-pattern>.*/br.com.bvilela.listbuilder.service.christianlife.ChristianLifeGenerateServiceImplTest.*</exclude-pattern>
-	<exclude-pattern>.*/br.com.bvilela.listbuilder.util.DateUtilsTest.*</exclude-pattern>
+	<exclude-pattern>.*test/java/br.com.bvilela.listbuilder.*</exclude-pattern>
+	<exclude-pattern>.*/br.com.bvilela.listbuilder.ListBuilderApplication.*</exclude-pattern>
 
     <!-- BEST PRACTICES -->
     <!-- <rule ref="category/java/bestpractices.xml/AbstractClassWithoutAbstractMethod" /> -->

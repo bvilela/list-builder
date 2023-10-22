@@ -8,14 +8,10 @@ import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.util.AppUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -26,7 +22,6 @@ public class ListBuilderRunner implements CommandLineRunner {
     @Value("${tipo.lista:#{null}}")
     private String listType;
 
-    private final ApplicationContext context;
     private final Map<String, BaseGenerateService> listTypeStrategyMap;
 
     @Override
@@ -41,7 +36,7 @@ public class ListBuilderRunner implements CommandLineRunner {
             log.info("Aplicação Finalizada com Sucesso!");
         } catch (Exception e) {
             log.error("Aplicação Finalizada com Erro!");
-            SpringApplication.exit(context, () -> -1);
+            throw e;
         }
     }
 
@@ -54,7 +49,7 @@ public class ListBuilderRunner implements CommandLineRunner {
         try {
             return ListTypeEnum.getByName(listType);
         } catch (IllegalArgumentException e) {
-            log.error("Tipo da Lista inválido! Valores aceitos: " + ListTypeEnum.valuesToString());
+            log.error("Tipo da Lista inválido. Valores aceitos: " + ListTypeEnum.valuesToString());
             throw new InvalidListTypeException();
         }
     }
