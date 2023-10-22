@@ -17,7 +17,7 @@
 	<description>Spring Boot Project to Builder Lists</description>
 
 	<properties>
-		<start-class>br.com.bvilela.listbuilder.Application</start-class>
+		<start-class>br.com.bvilela.listbuilder.ListBuilderApplication</start-class>
 		<sonar.organization>bvilela</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<java.version>17</java.version>

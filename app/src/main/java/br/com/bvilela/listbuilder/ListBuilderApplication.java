@@ -13,11 +13,11 @@ import java.util.TimeZone;
 @SpringBootApplication
 @RequiredArgsConstructor
 @ComponentScan({"br.com.bvilela.listbuilder", "br.com.bvilela.lib"})
-public class Application {
+public class ListBuilderApplication {
 
     public static void main(String[] args) {
         TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(ListBuilderApplication.class, args);
     }
 
     @Bean
