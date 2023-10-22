@@ -85,7 +85,7 @@ public class ChristianLifeWriterService {
 
 				addCellWeekHeader(columnTable, week);
 				
-				printContentWeek(week, columnTable);
+				addContentWeek(week, columnTable);
 
 				var columnCell = new PdfPCell(columnTable);
 				columnCell.setBorder(Rectangle.NO_BORDER);
@@ -115,7 +115,7 @@ public class ChristianLifeWriterService {
 		return createPdfPTable(document);
 	}
 
-	private void printContentWeek(ChristianLifeExtractWeekDTO week, PdfPTable columnTable) {
+	private void addContentWeek(ChristianLifeExtractWeekDTO week, PdfPTable columnTable) {
 		if (week.isSkip()) {
 			var paragraph1 = pdfUtils.createParagraphBold16(" ");
 			var paragraph2 = pdfUtils.createParagraphBold16(week.getSkipMessage());
@@ -126,19 +126,29 @@ public class ChristianLifeWriterService {
 			columnTable.addCell(cell1);
 			columnTable.addCell(cell2);
 		} else {
-			for (ChristianLifeExtractWeekItemDTO item : week.getItems()) {
-				addItemByItemType(columnTable, item);
-			}	
+			addItemByItemType(columnTable, week.getItems());
 		}
 	}
 
-	private void addItemByItemType(PdfPTable columnTable, ChristianLifeExtractWeekItemDTO item) {
-		switch (item.getType()) {
-			case PRESIDENT -> addItemPresident(columnTable, item);
-			case NO_PARTICIPANTS -> addItemTitle(columnTable, item);
-			case WITH_PARTICIPANTS -> addItemWithParticipants(columnTable, item);
-			case LABEL -> addItemLabel(columnTable, item);
-			default -> log.info("Nenhuma ação para o tipo {}", item.getType());
+	private void addItemByItemType(PdfPTable columnTable, List<ChristianLifeExtractWeekItemDTO> items) {
+		items.forEach(item -> {
+			switch (item.getType()) {
+				case PRESIDENT -> addItemPresident(columnTable, item);
+				case NO_PARTICIPANTS -> addItemTitle(columnTable, item);
+				case WITH_PARTICIPANTS -> addItemWithParticipants(columnTable, item);
+				case LABEL -> addItemLabel(columnTable, item);
+				case BIBLE_STUDY -> addItemBibleStudy(columnTable, item, items);
+				default -> log.info("Nenhuma ação para o tipo {}", item.getType());
+			}
+		});
+	}
+
+	private void addItemBibleStudy(PdfPTable columnTable, ChristianLifeExtractWeekItemDTO studyBibleLeader,
+								   List<ChristianLifeExtractWeekItemDTO> items) {
+		if (properties.isChristianlifeAddBibleStudyReader()) {
+			addBibleStudyLeaderAndReader(columnTable, studyBibleLeader, items);
+		} else {
+			addItemWithParticipants(columnTable, studyBibleLeader);
 		}
 	}
 
@@ -163,6 +173,29 @@ public class ChristianLifeWriterService {
 		cell.setPaddingBottom(-8);
 		cell.setPaddingLeft(0);
 		cell.setPaddingRight(15);
+		columnTable.addCell(cell);
+	}
+
+	@SneakyThrows
+	private void addBibleStudyLeaderAndReader(PdfPTable columnTable,
+											  ChristianLifeExtractWeekItemDTO studyBibleLeader,
+											  List<ChristianLifeExtractWeekItemDTO> items) {
+		addItemTitle(columnTable, studyBibleLeader);
+
+		var indexStudyBibleLeader = items.indexOf(studyBibleLeader);
+		var studyBibleReader = items.get(indexStudyBibleLeader+1);
+		if (!ChristianLifeExtractItemTypeEnum.BIBLE_STUDY_READER.equals(studyBibleReader.getType())) {
+			throw new ListBuilderException("Item após o Dirigente do Estudo Não é do tipo Leitor!");
+		}
+
+		var readerName = AppUtils.printList(studyBibleReader.getParticipants());
+		var leaderName = AppUtils.printList(studyBibleLeader.getParticipants());
+		var paragraph = pdfUtils.createParagraphNormal12Bold12Normal12(
+				leaderName + "   -   ",
+				studyBibleReader.getTitle() + ": ",
+				readerName);
+		var cell = pdfUtils.newCellNoBorder(paragraph);
+		cell.setPaddingTop(-1);
 		columnTable.addCell(cell);
 	}
 
