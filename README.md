@@ -42,3 +42,6 @@ To check PMD rules in your machine, run follow command in `app` dir:
 ```
 mvn pmd:check
 ```
+
+## Local Tests
+Add `SPRING_PROFILES_ACTIVE=dev` in environment variables.
