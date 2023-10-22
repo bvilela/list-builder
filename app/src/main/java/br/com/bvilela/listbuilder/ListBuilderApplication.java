@@ -1,6 +1,5 @@
 package br.com.bvilela.listbuilder;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ExitCodeEvent;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +10,6 @@ import org.springframework.context.event.EventListener;
 import java.util.TimeZone;
 
 @SpringBootApplication
-@RequiredArgsConstructor
 @ComponentScan({"br.com.bvilela.listbuilder", "br.com.bvilela.lib"})
 public class ListBuilderApplication {
 
