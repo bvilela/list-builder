@@ -8,7 +8,6 @@ import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +27,6 @@ public class AudienceGenerateServiceImpl implements BaseGenerateService {
     }
 
     @Override
-    @SneakyThrows
     public void generateList() {
         try {
             logInit(log);
