@@ -14,4 +14,5 @@ public class ListBuilderApplication {
         TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
         SpringApplication.run(ListBuilderApplication.class, args);
     }
+
 }
