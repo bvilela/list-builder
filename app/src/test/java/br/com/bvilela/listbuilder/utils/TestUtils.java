@@ -15,17 +15,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+@Getter
 public class TestUtils {
 
     private static final String FILE_INPUT_DISCURSO_ALL_THEMES = "dados-discurso-temas.json";
 
-    @Getter private final ListTypeEnum listType;
-
-    @Getter private final String resourceDirectory;
+    private final ListTypeEnum listType;
+    private final String resourceDirectory;
 
     public TestUtils(ListTypeEnum listType) {
         this.listType = listType;
@@ -75,10 +79,8 @@ public class TestUtils {
     }
 
     public <T> void validateException(Executable executable, String expectedMessageError) {
-        var exception = Assertions.assertThrows(ListBuilderException.class, executable);
-        String expectedMessage =
-                String.format("Erro ao gerar lista '%s': %s", this.listType, expectedMessageError);
-        Assertions.assertEquals(expectedMessage, exception.getMessage());
+        var ex = assertThrows(ListBuilderException.class, executable);
+        assertEquals(expectedMessageError, ex.getMessage());
     }
 
     public static void cleanResourceDir() {

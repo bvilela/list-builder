@@ -6,7 +6,7 @@ import br.com.bvilela.listbuilder.exception.listtype.RequiredListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.clearing.ClearingGenerateServiceImpl;
-import br.com.bvilela.listbuilder.util.annotation.NullAndBlankSource;
+import br.com.bvilela.listbuilder.annotation.NullAndBlankSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

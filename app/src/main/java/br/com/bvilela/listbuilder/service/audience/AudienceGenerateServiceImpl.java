@@ -29,7 +29,7 @@ public class AudienceGenerateServiceImpl implements BaseGenerateService {
     @Override
     public void generateList() {
         try {
-            logInit(log);
+            log.info(logInitMessage());
 
             var dto = getFileInputDataDTO(properties, AudienceInputDTO.class);
 
@@ -43,10 +43,11 @@ public class AudienceGenerateServiceImpl implements BaseGenerateService {
 
             notificationService.audience(listDates);
 
-            logFinish(log);
+            log.info(logFinishMessage());
 
-        } catch (Exception e) {
-            throw defaultListBuilderException(log, e);
+        } catch (Exception ex) {
+            log.error(logErrorMessage(ex));
+            throw ex;
         }
     }
 }

@@ -14,17 +14,32 @@ public interface BaseGenerateService {
 
     void generateList();
 
+    // TODO: remover
     default void logInit(Logger log) {
         log.info("Iniciando Geração Lista: '{}'", getListType());
     }
 
+    default String logInitMessage() {
+        return "Iniciando Geração Lista: '" + getListType() + "'";
+    }
+
+    // TODO: remover
     default void logFinish(Logger log) {
         log.info("Lista '{}' gerada com Sucesso!", getListType());
     }
 
+    default String logFinishMessage() {
+        return "Lista '" + getListType() + "' gerada com Sucesso!";
+    }
+
+    // TODO: remover
     default ListBuilderException defaultListBuilderException(Logger log, Exception exception) {
         log.error("Erro ao gerar lista '{}': {}", getListType(), exception.getMessage());
         return new ListBuilderException(exception);
+    }
+
+    default String logErrorMessage(Exception ex) {
+        return String.format("Erro ao gerar lista '%s': %s", getListType(), ex.getMessage());
     }
 
     default <T> T getFileInputDataDTO(AppProperties appProperties, Class<T> clazz) {
