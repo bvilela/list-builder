@@ -25,11 +25,11 @@ public abstract class BaseInputDTO {
 
     @NotBlank(message = MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND)
     @SerializedName("diaReuniaoMeioSemana")
-    private String meetingDayMidweek;
+    private String meetingDayMidweek; //TODO: renomear midweekMeetingDay
 
     @NotBlank(message = MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND)
     @SerializedName("diaReuniaoFimSemana")
-    private String meetingDayWeekend;
+    private String meetingDayWeekend; //TODO: renomar weekendMeetingDay
 
     public DayOfWeekEnum getMeetingDayMidweekEnum() {
         return DayOfWeekEnum.getByValue(this.meetingDayMidweek);

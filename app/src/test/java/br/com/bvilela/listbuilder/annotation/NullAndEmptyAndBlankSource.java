@@ -1,7 +1,6 @@
 package br.com.bvilela.listbuilder.annotation;
 
 import org.junit.jupiter.params.provider.NullAndEmptySource;
-import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.lang.annotation.ElementType;
@@ -13,5 +12,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @NullAndEmptySource
 @ValueSource(strings = {" "})
-public @interface NullAndBlankSource {
+public @interface NullAndEmptyAndBlankSource {
 }

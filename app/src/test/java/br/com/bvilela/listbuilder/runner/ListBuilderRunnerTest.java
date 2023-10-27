@@ -1,12 +1,12 @@
 package br.com.bvilela.listbuilder.runner;
 
+import br.com.bvilela.listbuilder.annotation.NullAndEmptyAndBlankSource;
 import br.com.bvilela.listbuilder.enuns.ListTypeEnum;
 import br.com.bvilela.listbuilder.exception.listtype.InvalidListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.RequiredListTypeException;
 import br.com.bvilela.listbuilder.exception.listtype.ServiceListTypeNotFoundException;
 import br.com.bvilela.listbuilder.service.BaseGenerateService;
 import br.com.bvilela.listbuilder.service.clearing.ClearingGenerateServiceImpl;
-import br.com.bvilela.listbuilder.annotation.NullAndBlankSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -38,29 +38,29 @@ class ListBuilderRunnerTest {
     private ClearingGenerateServiceImpl clearingService;
 
     @ParameterizedTest
-    @NullAndBlankSource
-    void givenRun_whenListTypeNotFilled_ThenThrowsException(String listType) {
+    @NullAndEmptyAndBlankSource
+    void givenRun_whenListTypeNotFilled_thenThrowsException(String listType) {
         setListType(listType);
         assertThrows(RequiredListTypeException.class, () -> runner.run());
         verify(listTypeStrategyMap, never()).get(anyString());
     }
 
     @Test
-    void givenRun_whenListTypeInvalid_ThenThrowsException() {
+    void givenRun_whenListTypeInvalid_thenThrowsException() {
         setListType("xpto");
         assertThrows(InvalidListTypeException.class, () -> runner.run());
         verify(listTypeStrategyMap, never()).get(anyString());
     }
 
     @Test
-    void givenRun_whenListTypeStrategyNotFound_ThenThrowsException() {
+    void givenRun_whenListTypeStrategyNotFound_thenThrowsException() {
         setListType(ListTypeEnum.DESIGNACAO.name());
         assertThrows(ServiceListTypeNotFoundException.class, () -> runner.run());
         verify(listTypeStrategyMap, times(1)).get(anyString());
     }
 
     @Test
-    void givenRun_whenListTypeValid_ThenSuccessRunApplication() {
+    void givenRun_whenListTypeValid_thenSuccessRunApplication() {
         String listType = ListTypeEnum.LIMPEZA.name();
         setListType(listType);
         when(listTypeStrategyMap.get(listType)).thenReturn(clearingService);

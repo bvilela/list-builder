@@ -1,6 +1,6 @@
 package br.com.bvilela.listbuilder.service.audience;
 
-import br.com.bvilela.listbuilder.annotation.NullAndBlankSource;
+import br.com.bvilela.listbuilder.annotation.NullAndEmptyAndBlankSource;
 import br.com.bvilela.listbuilder.builder.AudienceInputDtoBuilder;
 import br.com.bvilela.listbuilder.config.AppProperties;
 import br.com.bvilela.listbuilder.config.MessageConfig;
@@ -11,16 +11,18 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
-import br.com.bvilela.listbuilder.utils.PropertiesTestUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import br.com.bvilela.listbuilder.utils.DateStringRandomizer;
+import br.com.bvilela.listbuilder.utils.WeekDayStringRandomizer;
+import org.jeasy.random.EasyRandom;
+import org.jeasy.random.EasyRandomParameters;
+import org.jeasy.random.FieldPredicates;
+import org.jeasy.random.randomizers.time.LocalDateRandomizer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.mockito.ArgumentMatchers;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
@@ -31,6 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -53,133 +57,129 @@ class AudienceGenerateServiceImplTest
         super(ListTypeEnum.ASSISTENCIA, AudienceInputDtoBuilder.create());
     }
 
-    /*
-    @BeforeEach
-    public void setup() {
-        var propertiesUtils = new PropertiesTestUtils(appProperties);
-        propertiesUtils.setInputDir(testUtils.getResourceDirectory());
-        propertiesUtils.setLayoutAudience(AudienceWriterLayoutEnum.FULL);
-        service = new AudienceGenerateServiceImpl(
-                appProperties, dateService, notificationService, writerService);
-    }
-    */
-
     @Test
-    void givenGetListType_whenListTypeNotNull_ThenReturn() {
+    void whenGetListType_thenReturnListTypeNotNull() {
         assertNotNull(service.getListType());
     }
 
     @Test
-    void givenBaseTestService_whenListType_ThenReturnSame() {
+    void givenTestUtils_whenGetListType_thenReturnSameType() {
         assertEquals(testUtils.getListType(), service.getListType());
     }
 
     @Test
-    void shouldCorrectFileInputName() {
+    void givenGetListType_whenGetInputFileName_thenReturnExpectedName() {
         assertEquals("dados-assistencia.json", service.getListType().getInputFileName());
     }
 
     @Test
-    void givenRun_whenFileNotFound_ThenException() {
-        callGenerateListAndVerifyException("Erro ao ler arquivo - Arquivo não encontrado");
+    void givenRun_whenFileNotFound_thenException() {
+        callGenerateListAndVerifyExceptionMessage("Erro ao ler arquivo - Arquivo não encontrado");
     }
 
     @Test
-    void givenRun_whenInputFileSyntaxError_ThenException() {
+    void givenRun_whenInputFileSyntaxError_thenException() {
         testUtils.writeFileInputSyntaxError();
-        callGenerateListAndVerifyException("Erro ao ler arquivo - Arquivo não é um JSON válido");
+        callGenerateListAndVerifyExceptionMessage("Erro ao ler arquivo - Arquivo não é um JSON válido");
     }
 
     @ParameterizedTest
-    @NullAndBlankSource
-    void givenInputFile_whenLasDateNotFilled_ThenException(String lastDate) {
+    @NullAndEmptyAndBlankSource
+    void givenInputFile_whenLasDateNotFilled_thenException(String lastDate) {
         writeFileInputFromDto(builder.withSuccess().withLastDate(lastDate).build());
-        callGenerateListAndVerifyException(MessageConfig.LAST_DATE_REQUIRED);
-    }
-
-    @Test
-    void shouldGenerateListExceptionLastDateInvalid() {
-        var dto = builder.withLastDateInvalid().build();
-        writeFileInputFromDto(dto);
-        var expectedMessageError =
-                String.format(
-                        "Última Data da Lista Anterior inválida: '%s' não é uma data válida",
-                        dto.getLastDate());
-        callGenerateListAndVerifyException(expectedMessageError);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.LAST_DATE_REQUIRED);
     }
 
     @ParameterizedTest
-    @NullAndBlankSource
-    void shouldGenerateListExceptionMidweek(String meetingDayMidweek) {
-        writeFileInputFromDto(
-                builder.withSuccess().withMeetingDayMidweek(meetingDayMidweek).build());
-        callGenerateListAndVerifyException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
-    }
-
-    @Test
-    void shouldGenerateListExceptionMidweekInvalid() {
-        var dto = builder.withMidweekInvalid().build();
+    @ValueSource(strings = {"01-13-2022", "40-01-2022", "29-02-2023"})
+    void givenInputFile_whenLastDateInvalid_thenException(String lastDate) {
+        var dto = getRandomDTO();
+        dto.setLastDate(lastDate);
         writeFileInputFromDto(dto);
-        var expectedMessageError =
-                String.format(
-                        "Dia da Reunião de Meio de Semana - Valor '%s' não é um Dia da Semana válido!",
-                        dto.getMeetingDayMidweek());
-        callGenerateListAndVerifyException(expectedMessageError);
+        callGenerateListAndVerifyExceptionMessage(
+                "Última Data da Lista Anterior inválida: '%s' não é uma data válida", dto.getLastDate()
+        );
     }
 
     @ParameterizedTest
-    @NullAndBlankSource
-    void shouldGenerateListExceptionWeekend(String meetingDayWeekend) {
+    @NullAndEmptyAndBlankSource
+    void givenInputFile_whenMeetingDayMidweekNotFilled_thenException(String midweekMeetingDay) {
         writeFileInputFromDto(
-                builder.withSuccess().withMeetingDayWeekend(meetingDayWeekend).build());
-        callGenerateListAndVerifyException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
+                builder.withSuccess().withMeetingDayMidweek(midweekMeetingDay).build());
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
     }
 
-    @Test
-    void shouldGenerateListExceptionWeekendInvalid() {
-        var dto = builder.withWeekendInvalid().build();
+    @ParameterizedTest
+    @ValueSource(strings = {"tercaaa", "XPTO", "333"})
+    void givenInputFile_whenMeetingDayMidweekInvalid_thenException(String midweekMeetingDay) {
+        var dto = getRandomDTO();
+        dto.setMeetingDayMidweek(midweekMeetingDay);
         writeFileInputFromDto(dto);
-        var expectedMessageError =
-                String.format(
-                        "Dia da Reunião de Fim de Semana - Valor '%s' não é um Dia da Semana válido!",
-                        dto.getMeetingDayWeekend());
-        callGenerateListAndVerifyException(expectedMessageError);
+        callGenerateListAndVerifyExceptionMessage(
+                "Dia da Reunião de Meio de Semana - Valor '%s' não é um Dia da Semana válido!",
+                dto.getMeetingDayMidweek()
+        );
+    }
+
+    @ParameterizedTest
+    @NullAndEmptyAndBlankSource
+    void givenInputFile_whenMeetingDayWeekendNotFilled_thenException(String meetingDayWeekend) {
+        var dto = getRandomDTO();
+        dto.setMeetingDayWeekend(meetingDayWeekend);
+        writeFileInputFromDto(dto);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"doming", "XPTO", "333"})
+    void givenInputFile_whenMeetingDayWeekendInvalid_thenException(String meetingDayWeekend) {
+        var dto = getRandomDTO();
+        dto.setMeetingDayWeekend(meetingDayWeekend);
+        writeFileInputFromDto(dto);
+        callGenerateListAndVerifyExceptionMessage(
+                "Dia da Reunião de Fim de Semana - Valor '%s' não é um Dia da Semana válido!",
+                dto.getMeetingDayWeekend()
+        );
     }
 
     @Test
-    void shouldGenerateListSuccess() {
-        var expectedList =
-                List.of(
-                        cld(4, 2),
-                        cld(4, 4),
-                        cld(4, 8),
-                        cld(4, 12),
-                        cld(4, 16),
-                        cld(4, 19),
-                        cld(4, 8),
-                        cld(4, 23),
-                        cld(4, 26),
-                        cld(4, 19),
-                        cld(4, 30));
+    void givenInputFile_whenGenerateList_thenSuccess() {
         writeFileInputFromDto(builder.withSuccess().build());
         when(appProperties.getInputDir()).thenReturn(testUtils.getResourceDirectory());
+        when(appProperties.getLayoutAudience()).thenReturn(AudienceWriterLayoutEnum.FULL.name());
         when(dateService.generateAudienceListDates(
                 any(AudienceInputDTO.class), any(AudienceWriterLayoutEnum.class)))
-                .thenReturn(expectedList);
+                .thenReturn(new EasyRandom().objects(LocalDate.class, 5).toList());
+
         assertDoesNotThrow(() -> service.generateList());
+
+        verify(appProperties).getInputDir();
+        verify(dateService).generateAudienceListDates(any(AudienceInputDTO.class), any(AudienceWriterLayoutEnum.class));
+        verify(writerService).writerPDF(anyList(), any(AudienceWriterLayoutEnum.class));
+        verify(notificationService).audience(anyList());
     }
 
-    /** Create Local Date */
-    private LocalDate cld(int month, int day) {
-        return LocalDate.of(2022, month, day);
+    private AudienceInputDTO getRandomDTO() {
+        EasyRandomParameters parameters = new EasyRandomParameters();
+        parameters.randomize(FieldPredicates.named("lastDate"), new DateStringRandomizer());
+        parameters.randomize(FieldPredicates.named("meetingDayMidweek"), new WeekDayStringRandomizer());
+        parameters.randomize(FieldPredicates.named("meetingDayWeekend"), new WeekDayStringRandomizer());
+        return new EasyRandom(parameters).nextObject(AudienceInputDTO.class);
     }
 
-    private void callGenerateListAndVerifyException(String expectedMessageError) {
+    private void callGenerateListAndVerifyExceptionMessage(String expectedMessageError, Object...args) {
+        callGenerateListAndVerifyExceptionMessage(String.format(expectedMessageError, args));
+    }
+
+    private void callGenerateListAndVerifyExceptionMessage(String expectedMessageError) {
         when(appProperties.getInputDir()).thenReturn(testUtils.getResourceDirectory());
 
         var ex = assertThrows(ListBuilderException.class, () -> service.generateList());
         assertEquals(expectedMessageError, ex.getMessage());
 
         verify(appProperties).getInputDir();
+        verify(dateService, never()).generateAudienceListDates(any(AudienceInputDTO.class), any(AudienceWriterLayoutEnum.class));
+        verify(writerService, never()).writerPDF(anyList(), any(AudienceWriterLayoutEnum.class));
+        verify(notificationService, never()).audience(anyList());
     }
 }
