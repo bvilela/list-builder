@@ -165,7 +165,7 @@ class AudienceGenerateServiceImplTest
         var ex = assertThrows(ListBuilderException.class, () -> service.generateList());
         assertEquals(expectedMessageError, ex.getMessage());
 
-        verify(appProperties).getInputDicr();
+        verify(appProperties).getInputDir();
         verify(dateService, never()).generateAudienceListDates(any(AudienceInputDTO.class), any(AudienceWriterLayoutEnum.class));
         verify(writerService, never()).writerPDF(anyList(), any(AudienceWriterLayoutEnum.class));
         verify(notificationService, never()).audience(anyList());
