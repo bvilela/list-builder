@@ -16,7 +16,7 @@ call :validAndPrintParameters
 
 :: chamando .jar
 call :log "Iniciando Programa..."
-java -jar list-builder.jar --spring.profiles.active=PRD --tipo.lista=%list% --notifications.active=%notificationsActive% %extraOptions%
+java -jar list-builder.jar --spring.profiles.active=PRD --list-type=%list% --notifications.active=%notificationsActive% %extraOptions%
 	
 IF %ERRORLEVEL% NEQ 0 (
 	call :finishError

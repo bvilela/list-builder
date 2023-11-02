@@ -19,7 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ListBuilderRunner implements CommandLineRunner {
 
-    @Value("${tipo.lista:#{null}}")
+    @Value("${list-type:#{null}}")
     private String listType;
 
     private final Map<String, BaseGenerateService> listTypeStrategyMap;

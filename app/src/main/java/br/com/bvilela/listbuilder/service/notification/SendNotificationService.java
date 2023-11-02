@@ -31,8 +31,13 @@ public class SendNotificationService {
     }
 
     public void audience(List<LocalDate> dates) {
-        var nextListEvent = notifyAudienceService.createEvent(dates);
-        sendEventNullSafe(nextListEvent);
+        try {
+            var nextListEvent = notifyAudienceService.createEvent(dates);
+            sendEventNullSafe(nextListEvent);
+        } catch (Exception ex) {
+            throw ex; //TODO: finalizar: log para a questao de permissao TOKEN
+        }
+
     }
 
     public void christianLife(List<ChristianLifeExtractWeekDTO> weeks) {

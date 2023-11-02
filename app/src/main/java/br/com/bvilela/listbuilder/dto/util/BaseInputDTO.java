@@ -35,6 +35,6 @@ public abstract class BaseInputDTO {
     }
 
     public DayOfWeekEnum getMeetingDayWeekendEnum() {
-        return DayOfWeekEnum.getByValue(this.weekendMeetingDay);
+        return DayOfWeekEnum.getByValue(weekendMeetingDay);
     }
 }

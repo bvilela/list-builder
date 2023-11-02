@@ -2,32 +2,31 @@ package br.com.bvilela.listbuilder.config;
 
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import br.com.bvilela.listbuilder.exception.ListBuilderException;
-import java.util.List;
-
 import br.com.bvilela.listbuilder.util.AppUtils;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Getter
 @Configuration
 public class NotifyProperties {
 
-    @Value("${notifications.active:false}")
+    @Value("${notify.active:false}")
     private boolean active;
 
-    @Value("${notifications.name:#{null}}")
+    @Value("${notify.name:#{null}}")
     private String name;
 
-    @Value("${notifications.designation.type-active:#{null}}")
+    @Value("${notify.designation.active-type:#{null}}")
     private List<String> designationTypeActive;
 
-    @Value("${notifications.cleaning.premeeting:false}")
+    @Value("${notify.cleaning.premeeting:false}")
     private boolean cleaningPreMeeting;
 
-    @Value("${notifications.christianlife.meeting-day:#{null}}")
+    @Value("${notify.christianlife.meeting-day:#{null}}")
     private String christianLifeMeetingDay;
 
     public boolean notifyInactive() {
