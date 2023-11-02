@@ -5,7 +5,8 @@ chcp 65001
 set caminhoOrigem="arquivos\saida\Designacao_"
 set caminhoDestino="[YOUR-PATH]"
 set lista="DESIGNACAO"
-set opcoesExtra="--notif.active=true"
+set notificacoesAtivas=true
+set opcoesExtra=""
 
 :: Chamando Programa
-call gerar-lista-base.bat %caminhoOrigem% %caminhoDestino% %lista% %opcoesExtra%
+call gerar-lista-base.bat %caminhoOrigem% %caminhoDestino% %lista% %notificacoesAtivas% %opcoesExtra%
