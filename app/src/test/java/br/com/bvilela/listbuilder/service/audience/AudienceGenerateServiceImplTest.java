@@ -113,11 +113,11 @@ class AudienceGenerateServiceImplTest
     @ValueSource(strings = {"tercaaa", "XPTO", "333"})
     void givenInputFile_whenMeetingDayMidweekInvalid_thenException(String midweekMeetingDay) {
         var dto = getRandomDTO();
-        dto.setMeetingDayMidweek(midweekMeetingDay);
+        dto.setMidweekMeetingDay(midweekMeetingDay);
         writeFileInputFromDto(dto);
         callGenerateListAndVerifyExceptionMessage(
                 "Dia da Reunião de Meio de Semana - Valor '%s' não é um Dia da Semana válido!",
-                dto.getMeetingDayMidweek()
+                dto.getMidweekMeetingDay()
         );
     }
 
@@ -125,7 +125,7 @@ class AudienceGenerateServiceImplTest
     @NullAndEmptyAndBlankSource
     void givenInputFile_whenMeetingDayWeekendNotFilled_thenException(String meetingDayWeekend) {
         var dto = getRandomDTO();
-        dto.setMeetingDayWeekend(meetingDayWeekend);
+        dto.setWeekendMeetingDay(meetingDayWeekend);
         writeFileInputFromDto(dto);
         callGenerateListAndVerifyExceptionMessage(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
     }
@@ -134,11 +134,11 @@ class AudienceGenerateServiceImplTest
     @ValueSource(strings = {"doming", "XPTO", "333"})
     void givenInputFile_whenMeetingDayWeekendInvalid_thenException(String meetingDayWeekend) {
         var dto = getRandomDTO();
-        dto.setMeetingDayWeekend(meetingDayWeekend);
+        dto.setWeekendMeetingDay(meetingDayWeekend);
         writeFileInputFromDto(dto);
         callGenerateListAndVerifyExceptionMessage(
                 "Dia da Reunião de Fim de Semana - Valor '%s' não é um Dia da Semana válido!",
-                dto.getMeetingDayWeekend()
+                dto.getWeekendMeetingDay()
         );
     }
 
@@ -162,8 +162,8 @@ class AudienceGenerateServiceImplTest
     private AudienceInputDTO getRandomDTO() {
         EasyRandomParameters parameters = new EasyRandomParameters();
         parameters.randomize(FieldPredicates.named("lastDate"), new DateStringRandomizer());
-        parameters.randomize(FieldPredicates.named("meetingDayMidweek"), new WeekDayStringRandomizer());
-        parameters.randomize(FieldPredicates.named("meetingDayWeekend"), new WeekDayStringRandomizer());
+        parameters.randomize(FieldPredicates.named("midweekMeetingDay"), new WeekDayStringRandomizer());
+        parameters.randomize(FieldPredicates.named("weekendMeetingDay"), new WeekDayStringRandomizer());
         return new EasyRandom(parameters).nextObject(AudienceInputDTO.class);
     }
 

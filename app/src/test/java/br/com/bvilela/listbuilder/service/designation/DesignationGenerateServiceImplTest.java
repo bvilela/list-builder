@@ -148,7 +148,7 @@ class DesignationGenerateServiceImplTest
         var expectedMessageError =
                 String.format(
                         "Dia da Reunião de Meio de Semana - Valor '%s' não é um Dia da Semana válido!",
-                        dto.getMeetingDayMidweek());
+                        dto.getMidweekMeetingDay());
         callGenerateListAndVerifyExceptionMessage(expectedMessageError);
     }
     // *************************** MIDWEEK - FIM *************************** \\
@@ -181,7 +181,7 @@ class DesignationGenerateServiceImplTest
         var expectedMessageError =
                 String.format(
                         "Dia da Reunião de Fim de Semana - Valor '%s' não é um Dia da Semana válido!",
-                        dto.getMeetingDayWeekend());
+                        dto.getWeekendMeetingDay());
         callGenerateListAndVerifyExceptionMessage(expectedMessageError);
     }
     // *************************** WEEKEND - FIM *************************** \\

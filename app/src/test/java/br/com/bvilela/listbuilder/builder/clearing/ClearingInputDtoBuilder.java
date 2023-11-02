@@ -118,12 +118,12 @@ public class ClearingInputDtoBuilder {
     }
 
     public ClearingInputDtoBuilder withMeetingDayMidweek(String meetingDayMidweek) {
-        this.target.setMeetingDayMidweek(meetingDayMidweek);
+        this.target.setMidweekMeetingDay(meetingDayMidweek);
         return this;
     }
 
     private void withMeetingDayWeekend(String meetingDayWeekend) {
-        this.target.setMeetingDayWeekend(meetingDayWeekend);
+        this.target.setWeekendMeetingDay(meetingDayWeekend);
     }
 
     private void withGroups(Map<Integer, String> groups) {

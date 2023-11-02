@@ -13,10 +13,10 @@ public final class AudienceValidator {
 
         GenericValidator.validateDto(dto);
 
-        dto.setMeetingDayMidweek(
-                GenericValidator.validMeetingDay(dto.getMeetingDayMidweek(), "Meio de Semana"));
-        dto.setMeetingDayWeekend(
-                GenericValidator.validMeetingDay(dto.getMeetingDayWeekend(), "Fim de Semana"));
+        dto.setMidweekMeetingDay(
+                GenericValidator.validMeetingDay(dto.getMidweekMeetingDay(), "Meio de Semana"));
+        dto.setWeekendMeetingDay(
+                GenericValidator.validMeetingDay(dto.getWeekendMeetingDay(), "Fim de Semana"));
 
         log.info("Dados de entrada validados com sucesso!");
     }

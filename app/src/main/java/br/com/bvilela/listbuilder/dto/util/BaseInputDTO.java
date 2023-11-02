@@ -4,14 +4,16 @@ import br.com.bvilela.lib.utils.annotation.javax.ValidParseDate;
 import br.com.bvilela.listbuilder.config.MessageConfig;
 import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import com.google.gson.annotations.SerializedName;
-import javax.validation.constraints.NotBlank;
+import lombok.Data;
+import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@ToString
-@Getter
-@Setter
+import javax.validation.constraints.NotBlank;
+
+@Generated
+@Data
 public abstract class BaseInputDTO {
 
     @ValidParseDate(
@@ -25,17 +27,17 @@ public abstract class BaseInputDTO {
 
     @NotBlank(message = MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND)
     @SerializedName("diaReuniaoMeioSemana")
-    private String meetingDayMidweek; //TODO: renomear midweekMeetingDay
+    private String midweekMeetingDay;
 
     @NotBlank(message = MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND)
     @SerializedName("diaReuniaoFimSemana")
-    private String meetingDayWeekend; //TODO: renomar weekendMeetingDay
+    private String weekendMeetingDay;
 
     public DayOfWeekEnum getMeetingDayMidweekEnum() {
-        return DayOfWeekEnum.getByValue(this.meetingDayMidweek);
+        return DayOfWeekEnum.getByValue(midweekMeetingDay);
     }
 
     public DayOfWeekEnum getMeetingDayWeekendEnum() {
-        return DayOfWeekEnum.getByValue(this.meetingDayWeekend);
+        return DayOfWeekEnum.getByValue(this.weekendMeetingDay);
     }
 }

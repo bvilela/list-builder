@@ -42,12 +42,12 @@ public class AudienceInputDtoBuilder {
     }
 
     public AudienceInputDtoBuilder withMeetingDayMidweek(String meetingDayMidweek) {
-        this.target.setMeetingDayMidweek(meetingDayMidweek);
+        this.target.setMidweekMeetingDay(meetingDayMidweek);
         return this;
     }
 
     public AudienceInputDtoBuilder withMeetingDayWeekend(String meetingDayWeekend) {
-        this.target.setMeetingDayWeekend(meetingDayWeekend);
+        this.target.setWeekendMeetingDay(meetingDayWeekend);
         return this;
     }
 }

@@ -66,8 +66,8 @@ class DateServiceImplTest {
                         cid(4, 30));
         var fileInputData = new ClearingInputDTO();
         fileInputData.setLastDate("29-03-2022");
-        fileInputData.setMeetingDayMidweek("terca");
-        fileInputData.setMeetingDayWeekend("sabado");
+        fileInputData.setMidweekMeetingDay("terca");
+        fileInputData.setWeekendMeetingDay("sabado");
         var input = new DateServiceInputDTO(fileInputData, null, null);
         var dto = service.generateListDatesLimpeza(input, 1);
         assertEquals(expected, dto);
@@ -90,8 +90,8 @@ class DateServiceImplTest {
                         cid(4, 30));
         var fileInputData = new ClearingInputDTO();
         fileInputData.setLastDate("29-03-2022");
-        fileInputData.setMeetingDayMidweek("terca");
-        fileInputData.setMeetingDayWeekend("sabado");
+        fileInputData.setMidweekMeetingDay("terca");
+        fileInputData.setWeekendMeetingDay("sabado");
         var remove = List.of(LocalDate.of(2022, 4, 12));
         var add = Map.of(LocalDate.of(2022, 4, 15), "exception1");
         var input = new DateServiceInputDTO(fileInputData, remove, add);
@@ -114,8 +114,8 @@ class DateServiceImplTest {
         expected.addAll(cid(9, 4, 29, 4, 30));
         var fileInputData = new ClearingInputDTO();
         fileInputData.setLastDate("29-03-2022");
-        fileInputData.setMeetingDayMidweek("terca");
-        fileInputData.setMeetingDayWeekend("sabado");
+        fileInputData.setMidweekMeetingDay("terca");
+        fileInputData.setWeekendMeetingDay("sabado");
         var remove = List.of(LocalDate.of(2022, 4, 12));
         var add = Map.of(LocalDate.of(2022, 4, 15), "exception1");
         var input = new DateServiceInputDTO(fileInputData, remove, add);
