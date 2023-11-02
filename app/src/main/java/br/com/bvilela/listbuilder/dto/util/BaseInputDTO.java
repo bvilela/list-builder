@@ -6,14 +6,11 @@ import br.com.bvilela.listbuilder.enuns.DayOfWeekEnum;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.Generated;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
-@Generated
 @Data
+@Generated
 public abstract class BaseInputDTO {
 
     @ValidParseDate(

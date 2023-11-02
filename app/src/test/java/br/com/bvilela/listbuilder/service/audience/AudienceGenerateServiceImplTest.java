@@ -11,12 +11,7 @@ import br.com.bvilela.listbuilder.exception.ListBuilderException;
 import br.com.bvilela.listbuilder.service.BaseGenerateServiceTest;
 import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
-import br.com.bvilela.listbuilder.utils.DateStringRandomizer;
-import br.com.bvilela.listbuilder.utils.WeekDayStringRandomizer;
 import org.jeasy.random.EasyRandom;
-import org.jeasy.random.EasyRandomParameters;
-import org.jeasy.random.FieldPredicates;
-import org.jeasy.random.randomizers.time.LocalDateRandomizer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,8 +21,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.List;
 
+import static br.com.bvilela.listbuilder.utils.RandomUtils.getMockedAudienceInputDTO;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -93,11 +88,12 @@ class AudienceGenerateServiceImplTest
     @ParameterizedTest
     @ValueSource(strings = {"01-13-2022", "40-01-2022", "29-02-2023"})
     void givenInputFile_whenLastDateInvalid_thenException(String lastDate) {
-        var dto = getRandomDTO();
+        var dto = getMockedAudienceInputDTO();
         dto.setLastDate(lastDate);
         writeFileInputFromDto(dto);
         callGenerateListAndVerifyExceptionMessage(
-                "Última Data da Lista Anterior inválida: '%s' não é uma data válida", dto.getLastDate()
+                "Última Data da Lista Anterior inválida: '%s' não é uma data válida",
+                dto.getLastDate()
         );
     }
 
@@ -112,7 +108,7 @@ class AudienceGenerateServiceImplTest
     @ParameterizedTest
     @ValueSource(strings = {"tercaaa", "XPTO", "333"})
     void givenInputFile_whenMeetingDayMidweekInvalid_thenException(String midweekMeetingDay) {
-        var dto = getRandomDTO();
+        var dto = getMockedAudienceInputDTO();
         dto.setMidweekMeetingDay(midweekMeetingDay);
         writeFileInputFromDto(dto);
         callGenerateListAndVerifyExceptionMessage(
@@ -124,7 +120,7 @@ class AudienceGenerateServiceImplTest
     @ParameterizedTest
     @NullAndEmptyAndBlankSource
     void givenInputFile_whenMeetingDayWeekendNotFilled_thenException(String meetingDayWeekend) {
-        var dto = getRandomDTO();
+        var dto = getMockedAudienceInputDTO();
         dto.setWeekendMeetingDay(meetingDayWeekend);
         writeFileInputFromDto(dto);
         callGenerateListAndVerifyExceptionMessage(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
@@ -133,7 +129,7 @@ class AudienceGenerateServiceImplTest
     @ParameterizedTest
     @ValueSource(strings = {"doming", "XPTO", "333"})
     void givenInputFile_whenMeetingDayWeekendInvalid_thenException(String meetingDayWeekend) {
-        var dto = getRandomDTO();
+        var dto = getMockedAudienceInputDTO();
         dto.setWeekendMeetingDay(meetingDayWeekend);
         writeFileInputFromDto(dto);
         callGenerateListAndVerifyExceptionMessage(
@@ -159,14 +155,6 @@ class AudienceGenerateServiceImplTest
         verify(notificationService).audience(anyList());
     }
 
-    private AudienceInputDTO getRandomDTO() {
-        EasyRandomParameters parameters = new EasyRandomParameters();
-        parameters.randomize(FieldPredicates.named("lastDate"), new DateStringRandomizer());
-        parameters.randomize(FieldPredicates.named("midweekMeetingDay"), new WeekDayStringRandomizer());
-        parameters.randomize(FieldPredicates.named("weekendMeetingDay"), new WeekDayStringRandomizer());
-        return new EasyRandom(parameters).nextObject(AudienceInputDTO.class);
-    }
-
     private void callGenerateListAndVerifyExceptionMessage(String expectedMessageError, Object...args) {
         callGenerateListAndVerifyExceptionMessage(String.format(expectedMessageError, args));
     }
@@ -177,7 +165,7 @@ class AudienceGenerateServiceImplTest
         var ex = assertThrows(ListBuilderException.class, () -> service.generateList());
         assertEquals(expectedMessageError, ex.getMessage());
 
-        verify(appProperties).getInputDir();
+        verify(appProperties).getInputDicr();
         verify(dateService, never()).generateAudienceListDates(any(AudienceInputDTO.class), any(AudienceWriterLayoutEnum.class));
         verify(writerService, never()).writerPDF(anyList(), any(AudienceWriterLayoutEnum.class));
         verify(notificationService, never()).audience(anyList());
