@@ -13,15 +13,16 @@ import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.util.DateUtils;
 import br.com.bvilela.listbuilder.util.FileUtils;
 import br.com.bvilela.listbuilder.validator.DesignationValidator;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service("DESIGNACAO")
@@ -42,10 +43,9 @@ public class DesignationGenerateServiceImpl implements BaseGenerateService {
     }
 
     @Override
-    @SneakyThrows
     public void generateList() {
         try {
-            logInit(log);
+            log.info(logInitMessage());
 
             var dto = getFileInputDataDTO(properties, DesignationInputDTO.class);
 
@@ -100,10 +100,11 @@ public class DesignationGenerateServiceImpl implements BaseGenerateService {
 
             notificationService.designation(dtoWriter);
 
-            logFinish(log);
+            log.info(logFinishMessage());
 
-        } catch (Exception e) {
-            throw defaultListBuilderException(log, e);
+        } catch (Exception ex) {
+            log.error(logErrorMessage(ex));
+            throw ex;
         }
     }
 

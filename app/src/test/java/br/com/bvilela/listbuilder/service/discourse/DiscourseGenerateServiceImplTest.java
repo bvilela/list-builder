@@ -71,14 +71,14 @@ class DiscourseGenerateServiceImplTest
     void shouldGenerateListFileAllThemesInvalidPathFileException() {
         createFileInputDataOK();
         testUtils.cleanDirectory();
-        validateListBuilderException(MessageConfig.FILE_NOT_FOUND);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.FILE_NOT_FOUND);
     }
 
     @Test
     void shouldGenerateListFileAllThemesSintaxeException() {
         createFileInputDataOK();
         testUtils.writeFileInputDiscursoAllThemesSyntaxError();
-        validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.FILE_SYNTAX_ERROR);
     }
 
     @Test
@@ -86,7 +86,7 @@ class DiscourseGenerateServiceImplTest
         createFileInputDataOK();
         testUtils.writeFileInputDiscursoAllThemes(
                 DiscourseInputAllThemesDtoBuilder.create().withNullData().build());
-        validateListBuilderException(MessageConfig.THEMES_REQUIRED);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.THEMES_REQUIRED);
     }
 
     @Test
@@ -94,7 +94,7 @@ class DiscourseGenerateServiceImplTest
         createFileInputDataOK();
         testUtils.writeFileInputDiscursoAllThemes(
                 DiscourseInputAllThemesDtoBuilder.create().withEmptyData().build());
-        validateListBuilderException(MessageConfig.THEMES_REQUIRED);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.THEMES_REQUIRED);
     }
 
     private void createFileInputDataOK() {
@@ -103,13 +103,13 @@ class DiscourseGenerateServiceImplTest
 
     @Test
     void shouldGenerateListFileInputInvalidPathException() {
-        validateListBuilderException(MessageConfig.FILE_NOT_FOUND);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.FILE_NOT_FOUND);
     }
 
     @Test
     void shouldGenerateListFileInputSintaxeException() {
         testUtils.writeFileInputSyntaxError();
-        validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.FILE_SYNTAX_ERROR);
     }
 
     @Test
@@ -151,13 +151,13 @@ class DiscourseGenerateServiceImplTest
         dto.getReceive().get(0).setThemeNumber(themeNumber);
         dto.getReceive().get(0).setThemeTitle(themeTitle);
         writeFileInputFromDto(dto);
-        validateListBuilderException(expectedMessageError);
+        callGenerateListAndVerifyExceptionMessage(expectedMessageError);
     }
 
     @Test
     void shouldGenerateListFileInputSendAndReceiveNull() {
         writeFileInputFromDto(builder.withRandomData().withReceive(null).withSend(null).build());
-        validateListBuilderException(MessageConfig.LIST_SEND_REVEICE_NULL);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.LIST_SEND_REVEICE_NULL);
     }
 
     @Test
@@ -210,7 +210,7 @@ class DiscourseGenerateServiceImplTest
         assertDoesNotThrow(() -> service.generateList());
     }
 
-    private void validateListBuilderException(String expectedMessageError) {
+    private void callGenerateListAndVerifyExceptionMessage(String expectedMessageError) {
         testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 }

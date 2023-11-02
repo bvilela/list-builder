@@ -14,16 +14,16 @@ import br.com.bvilela.listbuilder.service.DateService;
 import br.com.bvilela.listbuilder.service.GroupService;
 import br.com.bvilela.listbuilder.service.notification.SendNotificationService;
 import br.com.bvilela.listbuilder.validator.ClearingValidator;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service("LIMPEZA")
@@ -43,10 +43,9 @@ public class ClearingGenerateServiceImpl implements BaseGenerateService {
     }
 
     @Override
-    @SneakyThrows
     public void generateList() {
         try {
-            logInit(log);
+            log.info(logInitMessage());
 
             var dto = getFileInputDataDTO(properties, ClearingInputDTO.class);
 
@@ -69,10 +68,11 @@ public class ClearingGenerateServiceImpl implements BaseGenerateService {
 
             notificationService.clearing(listGenerated, properties.getLayoutLimpeza());
 
-            logFinish(log);
+            log.info(logFinishMessage());
 
-        } catch (Exception e) {
-            throw defaultListBuilderException(log, e);
+        } catch (Exception ex) {
+            log.error(logErrorMessage(ex));
+            throw ex;
         }
     }
 

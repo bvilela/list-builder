@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import br.com.bvilela.listbuilder.annotation.NullAndEmptyAndBlankSource;
 import br.com.bvilela.listbuilder.builder.christianlife.ChristianLifeInputDtoBuilder;
 import br.com.bvilela.listbuilder.builder.christianlife.ChristianLifeInputRenameItemDtoBuilder;
 import br.com.bvilela.listbuilder.builder.christianlife.ChristianLifeExtractWeekDtoBuilder;
@@ -85,33 +86,20 @@ class ChristianLifeGenerateServiceImplTest
 
     @Test
     void shouldGenerateListFileNotFoundException() {
-        validateListBuilderException(MessageConfig.FILE_NOT_FOUND);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.FILE_NOT_FOUND);
     }
 
     @Test
     void shouldGenerateListFileSyntaxException() {
         testUtils.writeFileInputSyntaxError();
-        validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.FILE_SYNTAX_ERROR);
     }
 
-    @Test
-    void shouldGenerateListExceptionLastDateNull() {
-        validateGenerateListLastDateException(null);
-    }
-
-    @Test
-    void shouldGenerateListExceptionLastDateEmpty() {
-        validateGenerateListLastDateException("");
-    }
-
-    @Test
-    void shouldGenerateListExceptionLastDateBlank() {
-        validateGenerateListLastDateException(" ");
-    }
-
-    private void validateGenerateListLastDateException(String lastDate) {
+    @ParameterizedTest
+    @NullAndEmptyAndBlankSource
+    void givenInputFile_whenLastDateNotFilled_thenException(String lastDate) {
         writeFileInputFromDto(builder.withLastDate(lastDate).build());
-        validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.LAST_DATE_REQUIRED);
     }
 
     @Test
@@ -126,7 +114,7 @@ class ChristianLifeGenerateServiceImplTest
 
     private void validateGenerateListParticipantsException(List<List<String>> participants) {
         writeFileInputFromDto(builder.withParticipants(participants).build());
-        validateListBuilderException(MessageConfig.PARTICIPANTS_REQUIRED);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.PARTICIPANTS_REQUIRED);
     }
 
     @Test
@@ -134,7 +122,7 @@ class ChristianLifeGenerateServiceImplTest
         writeFileInputFromDto(builder.build());
         var expectedMessageError =
                 "Quantidade de semanas extraída do site é diferente da quantidade de semanas com participantes";
-        validateListBuilderException(expectedMessageError);
+        callGenerateListAndVerifyExceptionMessage(expectedMessageError);
     }
 
     @Test
@@ -146,7 +134,7 @@ class ChristianLifeGenerateServiceImplTest
         var dto = builder.withRandomData().withRenameItems(List.of(renameItem)).build();
         writeFileInputFromDto(dto);
         var expectedMessageError = "Numero da Semana é obrigatório";
-        validateListBuilderException(expectedMessageError);
+        callGenerateListAndVerifyExceptionMessage(expectedMessageError);
     }
 
     @DisplayName("Generate List - Rename Items Exception: Week OriginalName Not Filled")
@@ -161,7 +149,7 @@ class ChristianLifeGenerateServiceImplTest
         var dto = builder.withRandomData().withRenameItems(List.of(renameItem)).build();
         writeFileInputFromDto(dto);
         var expectedMessageError = "Nome Original do Item é obrigatório";
-        validateListBuilderException(expectedMessageError);
+        callGenerateListAndVerifyExceptionMessage(expectedMessageError);
     }
 
     @Test
@@ -402,7 +390,7 @@ class ChristianLifeGenerateServiceImplTest
                 argumentsBeforeWeeks);
     }
 
-    private void validateListBuilderException(String expectedMessageError) {
+    private void callGenerateListAndVerifyExceptionMessage(String expectedMessageError) {
         this.testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 

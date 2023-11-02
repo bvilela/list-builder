@@ -38,10 +38,9 @@ public class DiscourseGenerateServiceImpl implements BaseGenerateService {
     }
 
     @Override
-    @SneakyThrows
     public void generateList() {
         try {
-            logInit(log);
+            log.info(logInitMessage());
 
             var dto = getFileInputDataDTO(properties, DiscourseInputDTO.class);
 
@@ -63,10 +62,11 @@ public class DiscourseGenerateServiceImpl implements BaseGenerateService {
 
             writerService.writerPDF(writerDto);
 
-            logFinish(log);
+            log.info(logFinishMessage());
 
-        } catch (Exception e) {
-            throw defaultListBuilderException(log, e);
+        } catch (Exception ex) {
+            log.error(logErrorMessage(ex));
+            throw ex;
         }
     }
 
