@@ -3,11 +3,13 @@ package br.com.bvilela.listbuilder.enuns;
 import br.com.bvilela.listbuilder.config.MarginBase;
 import br.com.bvilela.listbuilder.config.SizeBase;
 import br.com.bvilela.listbuilder.config.SizeConfig;
-import br.com.bvilela.listbuilder.exception.listtype.InvalidListTypeException;
 import lombok.Getter;
-import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Arrays;
 
 @Getter
+@Slf4j
 public enum ListTypeEnum {
     LIMPEZA,
     DESIGNACAO,
@@ -36,14 +38,12 @@ public enum ListTypeEnum {
         }
     }
 
-    @SneakyThrows
     public static ListTypeEnum getByName(String name) {
-        try {
-            return ListTypeEnum.valueOf(name.toUpperCase());
+        return ListTypeEnum.valueOf(name.toUpperCase());
+    }
 
-        } catch (IllegalArgumentException e) {
-            throw new InvalidListTypeException();
-        }
+    public static String valuesToString() {
+        return Arrays.toString(ListTypeEnum.values());
     }
 
     public String getInputFileName() {

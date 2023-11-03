@@ -1,11 +1,11 @@
 package br.com.bvilela.listbuilder.exception;
 
-import java.io.Serial;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotNull;
 
-public class ListBuilderException extends Exception {
-
-    @Serial private static final long serialVersionUID = 4682053954814519272L;
+@NoArgsConstructor
+public class ListBuilderException extends RuntimeException {
 
     public ListBuilderException(@NotNull String message, Object... args) {
         super(String.format(message, args));
@@ -13,5 +13,9 @@ public class ListBuilderException extends Exception {
 
     public ListBuilderException(@NotNull String message) {
         super(message);
+    }
+
+    public ListBuilderException(Throwable throwable) {
+        super(throwable);
     }
 }

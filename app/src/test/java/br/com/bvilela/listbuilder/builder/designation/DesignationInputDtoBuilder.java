@@ -51,12 +51,12 @@ public class DesignationInputDtoBuilder {
     }
 
     public DesignationInputDtoBuilder withMeetingDayMidweek(String meetingDayMidweek) {
-        this.target.setMeetingDayMidweek(meetingDayMidweek);
+        this.target.setMidweekMeetingDay(meetingDayMidweek);
         return this;
     }
 
     public DesignationInputDtoBuilder withMeetingDayWeekend(String meetingDayWeekend) {
-        this.target.setMeetingDayWeekend(meetingDayWeekend);
+        this.target.setWeekendMeetingDay(meetingDayWeekend);
         return this;
     }
 

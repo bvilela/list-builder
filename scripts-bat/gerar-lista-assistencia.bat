@@ -5,7 +5,8 @@ chcp 65001
 set caminhoOrigem="arquivos\saida\Assistencia_"
 set caminhoDestino="[YOUR-PATH]"
 set lista="ASSISTENCIA"
-set opcoesExtra="--notif.active=true --audience.layout=COMPACT"
+set notificacoesAtivas=true
+set opcoesExtra="--audience.layout=COMPACT"
 
 :: Chamando Programa
-call gerar-lista-base.bat %caminhoOrigem% %caminhoDestino% %lista% %opcoesExtra%
+call gerar-lista-base.bat %caminhoOrigem% %caminhoDestino% %lista% %notificacoesAtivas% %opcoesExtra%

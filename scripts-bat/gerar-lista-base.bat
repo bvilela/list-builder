@@ -9,13 +9,14 @@ call :logTitle "Iniciando"
 set pathSrc=%1
 set pathDes=%2
 set list=%3
-set extraOptions=%4
+set notificationsActive=%4
+set extraOptions=%5
 
 call :validAndPrintParameters
 
 :: chamando .jar
 call :log "Iniciando Programa..."
-java -jar list-builder.jar --spring.profiles.active=PRD --tipo.lista=%list% %extraOptions%
+java -jar list-builder.jar --spring.profiles.active=PRD --list-type=%list% --notifications.active=%notificationsActive% %extraOptions%
 	
 IF %ERRORLEVEL% NEQ 0 (
 	call :finishError

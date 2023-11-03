@@ -33,6 +33,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class ClearingGenerateServiceImplTest
@@ -91,13 +92,13 @@ class ClearingGenerateServiceImplTest
 
     @Test
     void shouldGenerateListInvalidFilePathException() {
-        validateListBuilderException("Erro ao ler arquivo - Arquivo não encontrado");
+        callGenerateListAndVerifyExceptionMessage("Erro ao ler arquivo - Arquivo não encontrado");
     }
 
     @Test
     void shouldGenerateListFileSintaxeException() {
         testUtils.writeFileInputSyntaxError();
-        validateListBuilderException("Erro ao ler arquivo - Arquivo não é um JSON válido");
+        callGenerateListAndVerifyExceptionMessage("Erro ao ler arquivo - Arquivo não é um JSON válido");
     }
 
     @DisplayName("Generate List Exception - Last Date Required")
@@ -106,7 +107,7 @@ class ClearingGenerateServiceImplTest
     @ValueSource(strings = " ")
     void generateListExceptionLastDateRequired(String lastDate) {
         writeFileInputFromDto(builder.withSuccess().withLastDate(lastDate).build());
-        validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.LAST_DATE_REQUIRED);
     }
 
     @Test
@@ -117,19 +118,19 @@ class ClearingGenerateServiceImplTest
                 String.format(
                         "Última Data da Lista Anterior inválida: '%s' não é uma data válida",
                         dto.getLastDate());
-        validateListBuilderException(expectedMessageError);
+        callGenerateListAndVerifyExceptionMessage(expectedMessageError);
     }
 
     @Test
     void shouldGenerateListExceptionGroupsNull() {
         writeFileInputFromDto(builder.withGroupsNull().build());
-        validateListBuilderException("Grupos está vazio!");
+        callGenerateListAndVerifyExceptionMessage("Grupos está vazio!");
     }
 
     @Test
     void shouldGenerateListExceptionLastGroupNull() {
         writeFileInputFromDto(builder.withLastGroupNull().build());
-        validateListBuilderException("Último grupo não informado!");
+        callGenerateListAndVerifyExceptionMessage("Último grupo não informado!");
     }
 
     @DisplayName("Generate List Exception - Midweek Day Required")
@@ -138,7 +139,7 @@ class ClearingGenerateServiceImplTest
     @ValueSource(strings = " ")
     void generateListExceptionMidweekDayRequired(String midweekDay) {
         writeFileInputFromDto(builder.withSuccess().withMeetingDayMidweek(midweekDay).build());
-        validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
     }
 
     @Test
@@ -148,26 +149,26 @@ class ClearingGenerateServiceImplTest
         var expectedMessageError =
                 String.format(
                         "Dia da Reunião de Meio de Semana - Valor '%s' não é um Dia da Semana válido!",
-                        dto.getMeetingDayMidweek());
-        validateListBuilderException(expectedMessageError);
+                        dto.getMidweekMeetingDay());
+        callGenerateListAndVerifyExceptionMessage(expectedMessageError);
     }
 
     @Test
     void shouldGenerateListExceptionWeekendNull() {
         writeFileInputFromDto(builder.withWeekendNull().build());
-        validateListBuilderException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
     }
 
     @Test
     void shouldGenerateListExceptionWeekendEmpty() {
         writeFileInputFromDto(builder.withWeekendEmpty().build());
-        validateListBuilderException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
     }
 
     @Test
     void shouldGenerateListExceptionWeekendBlank() {
         writeFileInputFromDto(builder.withWeekendBlank().build());
-        validateListBuilderException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
     }
 
     @Test
@@ -177,8 +178,8 @@ class ClearingGenerateServiceImplTest
         var expectedMessageError =
                 String.format(
                         "Dia da Reunião de Fim de Semana - Valor '%s' não é um Dia da Semana válido!",
-                        dto.getMeetingDayWeekend());
-        validateListBuilderException(expectedMessageError);
+                        dto.getWeekendMeetingDay());
+        callGenerateListAndVerifyExceptionMessage(expectedMessageError);
     }
 
     @Test
@@ -189,7 +190,7 @@ class ClearingGenerateServiceImplTest
                                 ArgumentMatchers.any(DateServiceInputDTO.class),
                                 ArgumentMatchers.any(Integer.class)))
                 .thenReturn(List.of());
-        validateListBuilderException("Lista de Datas e/ou Lista de Grupos VAZIA!");
+        callGenerateListAndVerifyExceptionMessage("Lista de Datas e/ou Lista de Grupos VAZIA!");
     }
 
     @Test
@@ -291,11 +292,8 @@ class ClearingGenerateServiceImplTest
         var addToList = Map.of("aa-04-2022", "Após a Celebração");
         writeFileInputFromDto(builder.withSuccess().withAddToList(addToList).build());
         propertiesUtils.setLayoutLimpeza(2);
-        var exception =
-                Assertions.assertThrows(ListBuilderException.class, () -> service.generateList());
-        assertEquals(
-                "Erro ao gerar lista 'LIMPEZA': Valor 'aa-04-2022' não é uma data válida",
-                exception.getMessage());
+        var exception = assertThrows(ListBuilderException.class, () -> service.generateList());
+        assertEquals("Valor 'aa-04-2022' não é uma data válida", exception.getMessage());
     }
 
     @Test
@@ -304,9 +302,9 @@ class ClearingGenerateServiceImplTest
         writeFileInputFromDto(builder.withSuccess().withRemoveFromList(removeToList).build());
         propertiesUtils.setLayoutLimpeza(2);
         var exception =
-                Assertions.assertThrows(ListBuilderException.class, () -> service.generateList());
+                assertThrows(ListBuilderException.class, () -> service.generateList());
         assertEquals(
-                "Erro ao gerar lista 'LIMPEZA': Valor '12-04-aaaaa' não é uma data válida",
+                "Valor '12-04-aaaaa' não é uma data válida",
                 exception.getMessage());
     }
 
@@ -358,7 +356,7 @@ class ClearingGenerateServiceImplTest
         assertEquals("Terça - myMessage", ret);
     }
 
-    private void validateListBuilderException(String expectedMessageError) {
+    private void callGenerateListAndVerifyExceptionMessage(String expectedMessageError) {
         testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 }

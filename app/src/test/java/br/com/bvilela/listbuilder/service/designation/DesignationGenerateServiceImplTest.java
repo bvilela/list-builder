@@ -76,13 +76,13 @@ class DesignationGenerateServiceImplTest
 
     @Test
     void shouldGenerateListFileNotFoundException() {
-        validateListBuilderException(MessageConfig.FILE_NOT_FOUND);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.FILE_NOT_FOUND);
     }
 
     @Test
     void shouldGenerateListFileSyntaxException() {
         this.testUtils.writeFileInputSyntaxError();
-        validateListBuilderException(MessageConfig.FILE_SYNTAX_ERROR);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.FILE_SYNTAX_ERROR);
     }
 
     // *************************** LASTDATE - INICIO *************************** \\
@@ -104,7 +104,7 @@ class DesignationGenerateServiceImplTest
     private void validateGenerateListExceptionLastDate(String lastDate) {
         var dto = builder.withLastDate(lastDate).build();
         writeFileInputFromDto(dto);
-        validateListBuilderException(MessageConfig.LAST_DATE_REQUIRED);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.LAST_DATE_REQUIRED);
         Assertions.assertFalse(dto.toString().isBlank());
     }
 
@@ -116,7 +116,7 @@ class DesignationGenerateServiceImplTest
                 String.format(
                         "Última Data da Lista Anterior inválida: '%s' não é uma data válida",
                         dto.getLastDate());
-        validateListBuilderException(expectedMessageError);
+        callGenerateListAndVerifyExceptionMessage(expectedMessageError);
     }
     // *************************** LASTDATE - FIM *************************** \\
 
@@ -138,7 +138,7 @@ class DesignationGenerateServiceImplTest
 
     private void validateGenerateListExceptionMidweek(String dayMidweek) {
         writeFileInputFromDto(builder.withMeetingDayMidweek(dayMidweek).build());
-        validateListBuilderException(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.MSG_ERROR_MIDWEEK_DAY_NOT_FOUND);
     }
 
     @Test
@@ -148,8 +148,8 @@ class DesignationGenerateServiceImplTest
         var expectedMessageError =
                 String.format(
                         "Dia da Reunião de Meio de Semana - Valor '%s' não é um Dia da Semana válido!",
-                        dto.getMeetingDayMidweek());
-        validateListBuilderException(expectedMessageError);
+                        dto.getMidweekMeetingDay());
+        callGenerateListAndVerifyExceptionMessage(expectedMessageError);
     }
     // *************************** MIDWEEK - FIM *************************** \\
 
@@ -171,7 +171,7 @@ class DesignationGenerateServiceImplTest
 
     private void validateGenerateListExceptionWeekend(String dayWeekend) {
         writeFileInputFromDto(builder.withMeetingDayWeekend(dayWeekend).build());
-        validateListBuilderException(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.MSG_ERROR_WEEKEND_DAY_NOT_FOUND);
     }
 
     @Test
@@ -181,8 +181,8 @@ class DesignationGenerateServiceImplTest
         var expectedMessageError =
                 String.format(
                         "Dia da Reunião de Fim de Semana - Valor '%s' não é um Dia da Semana válido!",
-                        dto.getMeetingDayWeekend());
-        validateListBuilderException(expectedMessageError);
+                        dto.getWeekendMeetingDay());
+        callGenerateListAndVerifyExceptionMessage(expectedMessageError);
     }
     // *************************** WEEKEND - FIM *************************** \\
 
@@ -213,7 +213,7 @@ class DesignationGenerateServiceImplTest
             List<String> indicator, String expectedMessageError) {
         var dto = builder.withIndicator(indicator).build();
         writeFileInputFromDto(dto);
-        validateListBuilderException(expectedMessageError);
+        callGenerateListAndVerifyExceptionMessage(expectedMessageError);
         Assertions.assertFalse(dto.toString().isBlank());
     }
     // *************************** INDICATOR - FIM *************************** \\
@@ -246,7 +246,7 @@ class DesignationGenerateServiceImplTest
             List<String> microphone, String expectedMessageError) {
         var dto = builder.withMicrophone(microphone).build();
         writeFileInputFromDto(dto);
-        validateListBuilderException(expectedMessageError);
+        callGenerateListAndVerifyExceptionMessage(expectedMessageError);
         Assertions.assertFalse(dto.toString().isBlank());
     }
     // *************************** MICROPHONE - FIM *************************** \\
@@ -255,7 +255,7 @@ class DesignationGenerateServiceImplTest
     @Test
     void shouldGenerateListExceptionPresidentNull() {
         writeFileInputFromDto(builder.withPresident(null).build());
-        validateListBuilderException(MessageConfig.PRESIDENT_REQUIRED);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.PRESIDENT_REQUIRED);
     }
 
     @Test
@@ -280,7 +280,7 @@ class DesignationGenerateServiceImplTest
                         .withLast(last)
                         .build();
         writeFileInputFromDto(builder.withPresident(presidentDto).build());
-        validateListBuilderException("Presidente: ".concat(MessageConfig.LAST_REQUIRED));
+        callGenerateListAndVerifyExceptionMessage("Presidente: ".concat(MessageConfig.LAST_REQUIRED));
     }
 
     @Test
@@ -300,7 +300,7 @@ class DesignationGenerateServiceImplTest
                         .withList(list)
                         .build();
         writeFileInputFromDto(builder.withPresident(presidentDto).build());
-        validateListBuilderException("Presidente: ".concat(MessageConfig.LIST_REQUIRED));
+        callGenerateListAndVerifyExceptionMessage("Presidente: ".concat(MessageConfig.LIST_REQUIRED));
     }
 
     @Test
@@ -320,7 +320,7 @@ class DesignationGenerateServiceImplTest
                         .withList(list)
                         .build();
         writeFileInputFromDto(builder.withPresident(presidentDto).build());
-        validateListBuilderException("Presidente: ".concat(MessageConfig.LIST_ELEMENT_REQUIRED));
+        callGenerateListAndVerifyExceptionMessage("Presidente: ".concat(MessageConfig.LIST_ELEMENT_REQUIRED));
     }
     // *************************** PRESIDENT - FIM *************************** \\
 
@@ -329,7 +329,7 @@ class DesignationGenerateServiceImplTest
     @Test
     void shouldGenerateListExceptionAudioVideoNull() {
         writeFileInputFromDto(builder.withAudioVideo(null).build());
-        validateListBuilderException(MessageConfig.AUDIOVIDEO_REQUIRED);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.AUDIOVIDEO_REQUIRED);
     }
 
     @Test
@@ -354,7 +354,7 @@ class DesignationGenerateServiceImplTest
                         .withLast(last)
                         .build();
         writeFileInputFromDto(builder.withAudioVideo(audioVideo).build());
-        validateListBuilderException("Aúdio e Vídeo: ".concat(MessageConfig.LAST_REQUIRED));
+        callGenerateListAndVerifyExceptionMessage("Aúdio e Vídeo: ".concat(MessageConfig.LAST_REQUIRED));
     }
 
     @Test
@@ -374,7 +374,7 @@ class DesignationGenerateServiceImplTest
                         .withList(list)
                         .build();
         writeFileInputFromDto(builder.withAudioVideo(audioVideo).build());
-        validateListBuilderException("Aúdio e Vídeo: ".concat(MessageConfig.LIST_REQUIRED));
+        callGenerateListAndVerifyExceptionMessage("Aúdio e Vídeo: ".concat(MessageConfig.LIST_REQUIRED));
     }
 
     @Test
@@ -394,7 +394,7 @@ class DesignationGenerateServiceImplTest
                         .withList(list)
                         .build();
         writeFileInputFromDto(builder.withAudioVideo(audioVideo).build());
-        validateListBuilderException("Aúdio e Vídeo: ".concat(MessageConfig.LIST_ELEMENT_REQUIRED));
+        callGenerateListAndVerifyExceptionMessage("Aúdio e Vídeo: ".concat(MessageConfig.LIST_ELEMENT_REQUIRED));
     }
     // *************************** AUDIOVIDEO - FIM *************************** \\
 
@@ -402,7 +402,7 @@ class DesignationGenerateServiceImplTest
     @Test
     void shouldGenerateListExceptionReaderNull() {
         writeFileInputFromDto(builder.withReader(null).build());
-        validateListBuilderException(MessageConfig.READER_REQUIRED);
+        callGenerateListAndVerifyExceptionMessage(MessageConfig.READER_REQUIRED);
     }
 
     @Test
@@ -415,7 +415,7 @@ class DesignationGenerateServiceImplTest
         writeFileInputFromDto(builder.withReader(readerDto).build());
         var expectedMessageError =
                 "Leitor A Sentinela: ".concat(MessageConfig.READER_WATCHTOWER_REQUIRED);
-        validateListBuilderException(expectedMessageError);
+        callGenerateListAndVerifyExceptionMessage(expectedMessageError);
     }
 
     @Test
@@ -428,7 +428,7 @@ class DesignationGenerateServiceImplTest
         writeFileInputFromDto(builder.withReader(readerDto).build());
         var expectedMessageError =
                 "Leitor Estudo Bíblico: ".concat(MessageConfig.READER_BIBLESTUDY_REQUIRED);
-        validateListBuilderException(expectedMessageError);
+        callGenerateListAndVerifyExceptionMessage(expectedMessageError);
     }
 
     @Test
@@ -454,11 +454,11 @@ class DesignationGenerateServiceImplTest
                         .withLast(last)
                         .build());
         writeFileInputFromDto(builder.withReader(readerDto).build());
-        validateListBuilderException("Leitor A Sentinela: ".concat(MessageConfig.LAST_REQUIRED));
+        callGenerateListAndVerifyExceptionMessage("Leitor A Sentinela: ".concat(MessageConfig.LAST_REQUIRED));
     }
     // *************************** READER - FIM *************************** \\
 
-    private void validateListBuilderException(String expectedMessageError) {
+    private void callGenerateListAndVerifyExceptionMessage(String expectedMessageError) {
         this.testUtils.validateException(() -> service.generateList(), expectedMessageError);
     }
 }

@@ -2,10 +2,10 @@ package br.com.bvilela.listbuilder.config;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 @Getter
-@Component
+@Configuration
 public class AppProperties {
 
     @Value("${folder.input}")
